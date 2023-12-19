@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a14ea40aa1be66b4281865508d377ae2, type: 3}
+  m_Name: Item0
+  m_EditorClassIdentifier: 
+  Name: item 0
+  Description: Restore all team
+  Rare: 2
+  Usage: 0
+  Icon: {fileID: 0}
+  Event: {fileID: 0}
+  Direction: 4
+  AttackEffect: {fileID: 0}
+  AddHeal: 25
+  AddMana: 25
+  AddConcentration: 0
+  CharacterBecomeAlive: 1
+  ForAlive: 1
+  ForDeath: 1
+  WriteMessage: 0

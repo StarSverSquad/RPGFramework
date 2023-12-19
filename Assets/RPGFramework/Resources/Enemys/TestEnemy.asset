@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fa69f607e8d1464da177f131bcaf235, type: 3}
+  m_Name: TestEnemy
+  m_EditorClassIdentifier: 
+  Name: Valodya
+  Description: 
+  DefaultHeal: 150
+  DefaultMana: 0
+  DefaultDamage: 0
+  DefaultDefence: 0
+  DefaultAgility: 0
+  Patterns:
+  - {fileID: 4869993089437226105, guid: df5e4ea55872b2840a69542afd50538e, type: 3}
+  Acts:
+  - Name: Check
+    Description: 
+    Event: {fileID: 11400000, guid: 60a011d3450895a41a4827a93e666adf, type: 2}
+  EnemyModel: {fileID: 8208525189484323897, guid: 800914027482b2d47973bfcc0b484933, type: 3}

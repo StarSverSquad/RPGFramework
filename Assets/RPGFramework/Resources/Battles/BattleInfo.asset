@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b38ac1850faa414a99b31d042071223, type: 3}
+  m_Name: BattleInfo
+  m_EditorClassIdentifier: 
+  enemySquad: {fileID: 11400000, guid: 3c575e88abe7d7541b2cb8eb1cc2e486, type: 2}
+  EnemyStart: 0
+  CanLose: 1
+  CanFlee: 0
+  BattleMusic: {fileID: 8300000, guid: b3cc12bac971cdd4ab92ab148bf868f7, type: 3}
+  MusicVolume: 1
+  Background: {fileID: 4620171788711976551, guid: 48dacab542990f8488bf7db3b0198a66, type: 3}

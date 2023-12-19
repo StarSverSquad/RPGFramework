@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe97e40a44dd7654c9407e220512335a, type: 3}
+  m_Name: Nikita
+  m_EditorClassIdentifier: 
+  Name: "\u041D\u0438\u043A\u0438\u0442\u043E\u0441"
+  Description: 
+  DefaultHeal: 75
+  DefaultMana: 50
+  DefaultDamage: 25
+  DefaultDefence: 5
+  DefaultAgility: 5
+  ClassName: "\u0418\u043D\u0436\u0435\u043D\u0435\u0440"
+  Icon: {fileID: -574080388, guid: e4547c401ed1aaf45906d594afcf674d, type: 3}
+  Model: {fileID: 421402362892778112, guid: e4cec0d5c56ea974d89a6a97a2130c30, type: 3}
+  ParticipateInBattle: 1
+  CanMoveInBattle: 1
+  Level: 1
+  Expireance: 0
+  ExpireanceBorder: 0
+  ExpireanceBorderFactor: 1.25
+  LvlHealFactor: 1.25
+  LvlManaFactor: 1.25
+  LvlDamageFactor: 1.25
+  LvlDefenceFactor: 1.25
+  LvlAgilityFactor: 1.25
+  Abilities:
+  - {fileID: 11400000, guid: 9a01a1f7d491a094888b2d60c99da81e, type: 2}
+  WeaponSlot: {fileID: 0}
+  HeadSlot: {fileID: 0}
+  BodySlot: {fileID: 0}
+  ShieldSlot: {fileID: 0}
+  TalismanSlot: {fileID: 0}

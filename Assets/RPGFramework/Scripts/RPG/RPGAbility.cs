@@ -21,8 +21,11 @@ public class RPGAbility : ScriptableObject
     public int ConcentrationCost;
 
     public int AddHeal;
+    public int AddMana;
 
-    public RPGEntityState AddState;
+    public bool WakeupCharacter;
+
+    public List<RPGEntityState> AddStates = new();
 
     public AttackEffect Effect;
 

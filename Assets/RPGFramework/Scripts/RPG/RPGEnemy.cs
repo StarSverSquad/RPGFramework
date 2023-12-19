@@ -12,6 +12,10 @@ public class RPGEnemy : RPGEntity
         public string Name;
         public string Description;
         public GraphEvent Event;
+
+        public bool OnlyOne;
+
+        public static EnemyAct NullAct => new EnemyAct() { Name = "NULL" };
     }
 
     [Tooltip("—юда нужны объекты которые имеют RPGAttackPattern!")]

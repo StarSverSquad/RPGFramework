@@ -6,28 +6,25 @@ using UnityEngine.UI;
 
 public class AttackEffect : MonoBehaviour
 {
-    [Serializable]
-    public struct KeyFrame
-    {
-        public Sprite sprite;
-        public AudioClip audio;
-        public float frameTime;
-    }
+    [SerializeField]
+    private Image spriteRenderer;
+    [SerializeField]
+    private AudioSource audioSource;
+    [SerializeField]
+    private Animator animator;
 
+    [Space]
+    [SerializeField]
+    private string animatorTriggerName = "START";
+    [SerializeField]
+    private string animatorIdleStateName = "IDLE";
+
+    [Space]
     [Tooltip("Ёффект будет происходить по центру экрана")]
     [SerializeField]
     private bool locateInCenter = false;
     public bool LocaleInCenter => locateInCenter;
 
-    [SerializeField]
-    private Image spriteRenderer;
-    [SerializeField]
-    private AudioSource audioSource;
-
-    [SerializeField]
-    private List<KeyFrame> keyframes = new List<KeyFrame>();
-
-    [SerializeField]
     private bool isAnimating = false;
     public bool IsAnimating => isAnimating;
 
@@ -40,19 +37,13 @@ public class AttackEffect : MonoBehaviour
     {
         isAnimating = true;
 
-        foreach (var frame in keyframes)
-        {
-            if (frame.sprite != null)
-                spriteRenderer.sprite = frame.sprite;
+        animator.SetTrigger(animatorTriggerName);
 
-            if (frame.audio != null)
-            {
-                audioSource.clip = frame.audio;
-                audioSource.Play();
-            }
+        audioSource.Play();
 
-            yield return new WaitForSeconds(frame.frameTime);
-        }
+        yield return new WaitForSeconds(0.1f);
+
+        yield return new WaitWhile(() => !animator.GetCurrentAnimatorStateInfo(0).IsName(animatorIdleStateName));
 
         isAnimating = false;
     }

@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class BattlePipeline : MonoBehaviour
 {
@@ -30,7 +31,7 @@ public class BattlePipeline : MonoBehaviour
     private List<ChoiceAction> choiceActions = new List<ChoiceAction>();
     public ChoiceAction CurrentChoiceAction => choiceActions.Last();
 
-    public BattleCharacterInfo CurrentChoiceCharacter => Data.Characters[currentCharacterChoiceIndex];
+    public BattleCharacterInfo CurrentChoicingCharacter => Data.Characters[currentCharacterChoiceIndex];
 
     // Переключатели запоминающие что нужно ли возвращать BGM и BGS
     private bool restoreBGM = false;
@@ -117,30 +118,37 @@ public class BattlePipeline : MonoBehaviour
 
         yield return new WaitWhile(() => GameManager.Instance.loadingScreen.BgIsFade);
 
-        // Старт врага
-        bool enemyStart = Data.BattleInfo.EnemyStart;
         while (true)
         {
-            // Если старт врага
-            if (enemyStart)
+            /// REFACTOR
+
+            if (Data.BattleInfo.EnemyStart)
             {
                 yield return StartCoroutine(EnemyTurn());
-                enemyStart = false;
+                yield return StartCoroutine(UpdateEntitysStates());
+                yield return StartCoroutine(PlayerTurn());
+
+                if (Data.Enemys.Count <= 0)
+                {
+                    yield return StartCoroutine(Win());
+
+                    break;
+                }
             }
-
-            // Запуск хода игрока
-            yield return StartCoroutine(PlayerTurn());
-
-            // Завершение битвы если врагов не осталось
-            if (Data.Enemys.Count <= 0)
+            else
             {
-                // Запуск победной курутины
-                yield return StartCoroutine(Win());
-                break;
-            }
+                yield return StartCoroutine(UpdateEntitysStates());
+                yield return StartCoroutine(PlayerTurn());
 
-            // Запуск хода врага
-            yield return StartCoroutine(EnemyTurn());
+                if (Data.Enemys.Count <= 0)
+                {
+                    yield return StartCoroutine(Win());
+
+                    break;
+                }
+
+                yield return StartCoroutine(EnemyTurn());
+            }
         }
 
         /// END BATTLE
@@ -179,34 +187,6 @@ public class BattlePipeline : MonoBehaviour
     {
         IsPlayerTurn = true;
 
-        // Обработка состояний
-        foreach (var character in Data.Characters)
-        {
-            if (character.States.Count == 0)
-                break;
-
-            foreach (var state in character.States)
-            {
-                if (state.rpg.Event != null)
-                {
-                    state.rpg.Event.Invoke(this);
-
-                    yield return new WaitWhile(() => state.rpg.Event.IsPlaying);
-                }
-            }
-
-            int oldHeal = character.Entity.Heal;
-
-            character.UpdateAllStates();
-
-            CharacterBox box = BattleManager.instance.characterBox.GetBox(character);
-
-            if (character.Entity.Heal != oldHeal)
-            {
-                BattleManager.Utility.SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1.4f), oldHeal - character.Entity.Heal);
-            }
-        }
-
         // Очистка ходов
         choiceActions.Clear();
 
@@ -243,7 +223,12 @@ public class BattlePipeline : MonoBehaviour
             {
                 choiceActions.Add(ChoiceAction.Primary);
             }
-                
+             
+            if (currentCharacter.ReservedConcentration != 0)
+            {
+                Utility.AddConcetration(-currentCharacter.ReservedConcentration);
+                currentCharacter.ReservedConcentration = 0;
+            }
 
             switch (choiceActions.Last())
             {
@@ -316,7 +301,7 @@ public class BattlePipeline : MonoBehaviour
 
                     // Если отмена то откат
                     if (BattleManager.instance.choice.IsCanceled)
-                        choiceActions.Remove(choiceActions.Last());
+                        PreviewCharacter();
                     else
                     {
                         if ((int)Choice.CurrentItem.value == 0)
@@ -340,18 +325,19 @@ public class BattlePipeline : MonoBehaviour
 
                     // Если отмена то откат
                     if (BattleManager.instance.choice.IsCanceled)
-                        choiceActions.Remove(choiceActions.Last());
+                    {
+                        currentCharacter.InteractionAct = RPGEnemy.EnemyAct.NullAct;
+
+                        PreviewCharacter();
+                    }
                     else
                     {
                         currentCharacter.InteractionAct = (RPGEnemy.EnemyAct)Choice.CurrentItem.value;
+                        currentCharacter.IsAbility = false;
 
                         BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
 
-                        // Переключение на следующего персонажа
-                        currentCharacterChoiceIndex++;
-
-                        // Обнуляет все менюшки выбора
-                        choiceActions.Clear();
+                        NextCharacter();
                     }
 
                     Choice.CleanUp();
@@ -364,10 +350,38 @@ public class BattlePipeline : MonoBehaviour
 
                     // Если отмена то откат
                     if (Choice.IsCanceled)
-                        choiceActions.Remove(choiceActions.Last());
+                    {
+                        currentCharacter.Ability = null;
+
+                        PreviewCharacter();
+                    }
                     else
                     {
-                        BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
+                        currentCharacter.IsAbility = true;
+                        currentCharacter.Ability = (RPGAbility)Choice.CurrentItem.value;
+
+                        switch (currentCharacter.Ability.Direction)
+                        {
+                            case RPGAbility.AbilityDirection.All:
+                            case RPGAbility.AbilityDirection.AllEnemys:
+                            case RPGAbility.AbilityDirection.AllTeam:
+                                BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
+
+                                currentCharacter.ReservedConcentration = -currentCharacter.Ability.ConcentrationCost;
+                                Utility.AddConcetration(-currentCharacter.Ability.ConcentrationCost);
+
+                                NextCharacter();
+                                break;
+                            case RPGAbility.AbilityDirection.Teammate:
+                                choiceActions.Add(ChoiceAction.Teammate);
+                                break;
+                            case RPGAbility.AbilityDirection.Enemy:
+                                choiceActions.Add(ChoiceAction.Enemy);
+                                break;
+                            case RPGAbility.AbilityDirection.Any:
+                                choiceActions.Add(ChoiceAction.Entity);
+                                break;
+                        }
                     }
 
                     BattleManager.instance.choice.CleanUp();
@@ -385,7 +399,7 @@ public class BattlePipeline : MonoBehaviour
                         if (currentCharacter.BattleAction == BattleCharacterAction.Item)
                             currentCharacter.Item = null;
 
-                        choiceActions.Remove(choiceActions.Last());
+                        PreviewCharacter();
                     }
                     else
                     {
@@ -397,11 +411,10 @@ public class BattlePipeline : MonoBehaviour
                             {
                                 BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
 
-                                // Переключение на следующего персонажа
-                                currentCharacterChoiceIndex++;
+                                currentCharacter.ReservedConcentration = -currentCharacter.Ability.ConcentrationCost;
+                                Utility.AddConcetration(-currentCharacter.Ability.ConcentrationCost);
 
-                                // Обнуляет все менюшки выбора
-                                choiceActions.Clear();
+                                NextCharacter();
                             }
                             else
                             {
@@ -413,11 +426,7 @@ public class BattlePipeline : MonoBehaviour
                             // Утанавливаем соотвествующую иконку действия
                             BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(currentCharacter.BattleAction);
 
-                            // Переключение на следующего персонажа
-                            currentCharacterChoiceIndex++;
-
-                            // Обнуляет все менюшки выбора
-                            choiceActions.Clear();
+                            NextCharacter();
                         }
                     }
 
@@ -435,22 +444,26 @@ public class BattlePipeline : MonoBehaviour
                         if (currentCharacter.BattleAction == BattleCharacterAction.Item)
                             currentCharacter.Item = null;
 
-                        choiceActions.Remove(choiceActions.Last());
+                        PreviewCharacter();
                     }
                     else
                     {
                         currentCharacter.CharacterBuffer = (BattleCharacterInfo)Choice.CurrentItem.value;
 
-                        if (currentCharacter.BattleAction == BattleCharacterAction.Item)
+                        switch (currentCharacter.BattleAction)
                         {
-                            BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
+                            case BattleCharacterAction.Act:
+                                BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
 
-                            // Переключение на следующего персонажа
-                            currentCharacterChoiceIndex++;
-
-                            // Обнуляет все менюшки выбора
-                            choiceActions.Clear();
+                                currentCharacter.ReservedConcentration = -currentCharacter.Ability.ConcentrationCost;
+                                Utility.AddConcetration(-currentCharacter.Ability.ConcentrationCost);
+                                break;
+                            case BattleCharacterAction.Item:
+                                BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
+                                break;
                         }
+
+                        NextCharacter();
                     }
 
                     Choice.CleanUp();
@@ -468,7 +481,7 @@ public class BattlePipeline : MonoBehaviour
                         if (currentCharacter.BattleAction == BattleCharacterAction.Item)
                             currentCharacter.Item = null;
 
-                        choiceActions.Remove(choiceActions.Last());
+                        PreviewCharacter();
                     }
                     else
                     {
@@ -481,11 +494,10 @@ public class BattlePipeline : MonoBehaviour
                             {
                                 BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
 
-                                // Переключение на следующего персонажа
-                                currentCharacterChoiceIndex++;
+                                currentCharacter.ReservedConcentration = -currentCharacter.Ability.ConcentrationCost;
+                                Utility.AddConcetration(-currentCharacter.Ability.ConcentrationCost);
 
-                                // Обнуляет все менюшки выбора
-                                choiceActions.Clear();
+                                NextCharacter();
                             }
                             else
                             {
@@ -497,11 +509,7 @@ public class BattlePipeline : MonoBehaviour
                             // Утанавливаем соотвествующую иконку действия
                             BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(currentCharacter.BattleAction);
 
-                            // Переключение на следующего персонажа
-                            currentCharacterChoiceIndex++;
-
-                            // Обнуляет все менюшки выбора
-                            choiceActions.Clear();
+                            NextCharacter();
                         }
                     }
 
@@ -517,7 +525,7 @@ public class BattlePipeline : MonoBehaviour
 
                     // Если отмена то откат 
                     if (BattleManager.instance.choice.IsCanceled)
-                        choiceActions.Remove(choiceActions.Last());
+                        PreviewCharacter();
                     else
                     {
                         // Запоминаем предмет
@@ -532,11 +540,10 @@ public class BattlePipeline : MonoBehaviour
                             {
                                 case RPGConsumed.ConsumingDirection.AllEnemys:
                                 case RPGConsumed.ConsumingDirection.AllTeam:
+                                case RPGConsumed.ConsumingDirection.All:
                                     BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
 
-                                    currentCharacterChoiceIndex++;
-
-                                    choiceActions.Clear();
+                                    NextCharacter();
                                     break;
                                 case RPGConsumed.ConsumingDirection.Teammate:
                                     choiceActions.Add(ChoiceAction.Teammate);
@@ -553,9 +560,7 @@ public class BattlePipeline : MonoBehaviour
                         {
                             BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
 
-                            currentCharacterChoiceIndex++;
-
-                            choiceActions.Clear();
+                            NextCharacter();
                         }
                     }
 
@@ -571,28 +576,27 @@ public class BattlePipeline : MonoBehaviour
 
                     // Если отмена то откат
                     if (BattleManager.instance.choice.IsCanceled)
-                        choiceActions.Remove(choiceActions.Last());
+                        PreviewCharacter();
                     else
                     {
                         // Бество это или защита
                         currentCharacter.IsFlee = (int)BattleManager.instance.choice.CurrentItem.value == 1;
                         currentCharacter.IsDefence = (int)BattleManager.instance.choice.CurrentItem.value == 0;
 
+                        if (currentCharacter.IsDefence)
+                        {
+                            Utility.AddConcetration(Data.AdditionConcentrationOnDefence);
+                            currentCharacter.ReservedConcentration = Data.AdditionConcentrationOnDefence;
+                        }
+
                         // Утанавливаем соотвествующую иконку действия
                         BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Defence);
 
-                        // Переключение на следующего персонажа
-                        currentCharacterChoiceIndex++;
-
-                        // Обнуляет все менюшки выбора
-                        choiceActions.Clear();
+                        NextCharacter();
                     }
 
                     // Очистка меню выбора
                     BattleManager.instance.choice.CleanUp();
-                    break;
-                default:
-                    Debug.LogError("Unknown battle menu!");
                     break;
             }
 
@@ -617,6 +621,8 @@ public class BattlePipeline : MonoBehaviour
 
             yield return new WaitForSeconds(0.5f);
 
+            characterInfo.ReservedConcentration = 0;
+
             switch (characterInfo.BattleAction)
             {
                 // Если персонаж атакует
@@ -627,27 +633,25 @@ public class BattlePipeline : MonoBehaviour
 
                         yield return new WaitWhile(() => BattleManager.instance.attackQTE.QTE.IsWorking);
 
-                        // Эффект удара
-                        AttackEffect effect;
+                        AttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
 
-                        // Получение эффекта удара. Если его нет, то использовать стандартный
-                        effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
+                        if (effect.LocaleInCenter)
+                            effect = BattleManager.Utility.SpawnAttackEffect(effect);
+                        else
+                        {
+                            Vector2 attackPos = BattleManager.instance.enemyModels.GetModel(characterInfo.EnemyBuffer).AttackGlobalPoint;
 
-                        // Расчёт позици эффекта удара
-                        Vector2 attackPos = BattleManager.instance.enemyModels.GetModel(characterInfo.EnemyBuffer).AttackGlobalPoint;
+                            effect = BattleManager.Utility.SpawnAttackEffect(effect, attackPos);
+                        }
 
-                        // Получение экземпляра эффекта удара
-                        AttackEffect neffect = BattleManager.Utility.SpawnAttackEffect(effect, attackPos);
+                        effect.Invoke();
 
-                        // Запуск анимации удара
-                        neffect.Invoke();
+                        yield return new WaitWhile(() => effect.IsAnimating);
 
-                        yield return new WaitWhile(() => neffect.IsAnimating);
-
-                        yield return new WaitForSeconds(1f);
+                        //yield return new WaitForSeconds(1f);
 
                         // Удаление объекта эффекта удара
-                        Destroy(neffect.gameObject);
+                        Destroy(effect.gameObject);
 
                         // Убрать QTE
                         BattleManager.instance.attackQTE.DropQTE();
@@ -660,27 +664,134 @@ public class BattlePipeline : MonoBehaviour
                 case BattleCharacterAction.Act:
                     if (characterInfo.IsAbility)
                     {
+                        characterInfo.Mana -= characterInfo.Ability.ManaCost;
 
+                        if (characterInfo.Ability.StartEvent != null)
+                        {
+                            characterInfo.Ability.StartEvent.Invoke(this);
+
+                            yield return new WaitWhile(() => characterInfo.Ability.StartEvent.IsPlaying);
+                        } 
+
+                        switch (characterInfo.Ability.Direction)
+                        {
+                            case RPGAbility.AbilityDirection.AllTeam:
+                                Utility.UseAbility(characterInfo.Ability, Data.Characters.ToArray());
+                                break;
+                            case RPGAbility.AbilityDirection.Teammate:
+                                Utility.UseAbility(characterInfo.Ability, characterInfo.CharacterBuffer);
+                                break;
+                            case RPGAbility.AbilityDirection.AllEnemys:
+                                {
+                                    AttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
+
+                                    effect = BattleManager.Utility.SpawnAttackEffect(effect);
+
+                                    effect.Invoke();
+
+                                    yield return new WaitWhile(() => effect.IsAnimating);
+
+                                    Utility.UseAbility(characterInfo.Ability, Data.Enemys.ToArray());
+                                }
+                                break;
+                            case RPGAbility.AbilityDirection.Enemy:
+                                {
+                                    AttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
+
+                                    if (effect.LocaleInCenter)
+                                        effect = BattleManager.Utility.SpawnAttackEffect(effect);
+                                    else
+                                    {
+                                        Vector2 attackPos = BattleManager.instance.enemyModels.GetModel(characterInfo.EnemyBuffer).AttackGlobalPoint;
+
+                                        effect = BattleManager.Utility.SpawnAttackEffect(effect, attackPos);
+                                    }
+
+                                    effect.Invoke();
+
+                                    yield return new WaitWhile(() => effect.IsAnimating);
+
+                                    Utility.UseAbility(characterInfo.Ability, characterInfo.EnemyBuffer);
+                                }
+                                break;
+                            case RPGAbility.AbilityDirection.Any:
+                                if (characterInfo.EntityBuffer is BattleEnemyInfo enemy)
+                                {
+                                    AttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
+
+                                    if (effect.LocaleInCenter)
+                                        effect = BattleManager.Utility.SpawnAttackEffect(effect);
+                                    else
+                                    {
+                                        Vector2 attackPos = BattleManager.instance.enemyModels.GetModel(enemy).AttackGlobalPoint;
+
+                                        effect = BattleManager.Utility.SpawnAttackEffect(effect, attackPos);
+                                    }
+
+                                    effect.Invoke();
+
+                                    yield return new WaitWhile(() => effect.IsAnimating);
+
+                                    Utility.UseAbility(characterInfo.Ability, characterInfo.EntityBuffer);
+                                }
+                                break;
+                            case RPGAbility.AbilityDirection.All:
+                                {
+                                    Utility.UseAbility(characterInfo.Ability, Data.Characters.ToArray());
+
+                                    yield return new WaitForSeconds(0.25f);
+
+                                    AttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
+
+                                    effect = BattleManager.Utility.SpawnAttackEffect(effect);
+
+                                    effect.Invoke();
+
+                                    yield return new WaitWhile(() => effect.IsAnimating);
+
+                                    Utility.UseAbility(characterInfo.Ability, Data.Enemys.ToArray());
+                                }
+                                break;
+                        }
+
+                        if (characterInfo.Ability.EndEvent != null)
+                        {
+                            characterInfo.Ability.EndEvent.Invoke(this);
+
+                            yield return new WaitWhile(() => characterInfo.Ability.EndEvent.IsPlaying);
+                        }
                     }
                     else
                     {
                         if (characterInfo.InteractionAct.Name == "Check")
                         {
+                            CommonManager.instance.messageBox.Write(new MessageInfo()
+                            {
+                                text = $"АТАКА: {characterInfo.EnemyBuffer.Entity.Damage}, ЗАЩИТА: {characterInfo.EnemyBuffer.Entity.Defence}<\\:>\n" +
+                                       $"{characterInfo.EnemyBuffer.Entity.Description}",
+                                closeWindow = true,
+                                wait = true
+                            });
 
+                            yield return new WaitWhile(() => CommonManager.instance.messageBox.IsWriting);
                         }
                         else
                         {
+                            characterInfo.InteractionAct.Event.Invoke(this);
 
+                            yield return new WaitWhile(() => characterInfo.InteractionAct.Event.IsPlaying);
                         }
                     }
                     break;
                 // Если персонаж использует предмет
                 case BattleCharacterAction.Item:
                     {
-                        characterInfo.Item.InvokeEvent();
-
                         if (characterInfo.Item.Event != null)
+                        {
+                            characterInfo.Item.InvokeEvent();
+
                             yield return new WaitWhile(() => characterInfo.Item.Event.IsPlaying);
+                        }
 
                         if (characterInfo.IsConsumed && characterInfo.Item is RPGConsumed consumed)
                         {
@@ -707,20 +818,78 @@ public class BattlePipeline : MonoBehaviour
                                     Utility.ConsumeItem(consumed, characterInfo.CharacterBuffer);
                                     break;
                                 case RPGConsumed.ConsumingDirection.AllEnemys:
-                                    Utility.ConsumeItem(consumed, Data.Enemys.ToArray());
+                                    {
+                                        if (consumed.AttackEffect != null)
+                                        {
+                                            AttackEffect effect = BattleManager.Utility.SpawnAttackEffect(consumed.AttackEffect);
+
+                                            effect.Invoke();
+
+                                            yield return new WaitWhile(() => effect.IsAnimating);
+                                        }
+                                        Utility.ConsumeItem(consumed, Data.Enemys.ToArray());
+                                    }
                                     break;
                                 case RPGConsumed.ConsumingDirection.Enemy:
-                                    Utility.ConsumeItem(consumed, characterInfo.EnemyBuffer);
+                                    {
+                                        if (consumed.AttackEffect != null)
+                                        {
+                                            AttackEffect effect;
+
+                                            if (consumed.AttackEffect.LocaleInCenter)
+                                                effect = BattleManager.Utility.SpawnAttackEffect(consumed.AttackEffect);
+                                            else
+                                            {
+                                                Vector2 attackPos = BattleManager.instance.enemyModels.GetModel(characterInfo.EntityBuffer as BattleEnemyInfo).AttackGlobalPoint;
+
+                                                effect = BattleManager.Utility.SpawnAttackEffect(consumed.AttackEffect, attackPos);
+                                            }
+
+                                            effect.Invoke();
+
+                                            yield return new WaitWhile(() => effect.IsAnimating);
+                                        }
+                                        Utility.ConsumeItem(consumed, characterInfo.EnemyBuffer);
+                                    }
                                     break;
                                 case RPGConsumed.ConsumingDirection.Any:
+                                    if (characterInfo.EntityBuffer is BattleEnemyInfo enemy
+                                        && consumed.AttackEffect != null)
+                                    {
+                                        AttackEffect effect;
+
+                                        if (consumed.AttackEffect.LocaleInCenter)
+                                            effect = BattleManager.Utility.SpawnAttackEffect(consumed.AttackEffect);
+                                        else
+                                        {
+                                            Vector2 attackPos = BattleManager.instance.enemyModels.GetModel(enemy).AttackGlobalPoint;
+
+                                            effect = BattleManager.Utility.SpawnAttackEffect(consumed.AttackEffect, attackPos);
+                                        }
+
+                                        effect.Invoke();
+
+                                        yield return new WaitWhile(() => effect.IsAnimating);
+                                    }
                                     Utility.ConsumeItem(consumed, characterInfo.EntityBuffer);
                                     break;
                                 case RPGConsumed.ConsumingDirection.All:
-                                    Utility.ConsumeItem(consumed, Data.Characters.ToArray());
+                                    {
+                                        Utility.ConsumeItem(consumed, Data.Characters.ToArray());
 
-                                    yield return new WaitForSeconds(.25f);
+                                        yield return new WaitForSeconds(.25f);
 
-                                    Utility.ConsumeItem(consumed, Data.Enemys.ToArray());
+                                        if (consumed.AttackEffect != null)
+                                        {
+                                            AttackEffect effect = BattleManager.Utility.SpawnAttackEffect(consumed.AttackEffect);
+
+                                            effect.Invoke();
+
+                                            yield return new WaitWhile(() => effect.IsAnimating);
+                                        }
+
+                                        Utility.ConsumeItem(consumed, Data.Enemys.ToArray());
+                                    }
                                     break;
                             }
                         }
@@ -728,20 +897,11 @@ public class BattlePipeline : MonoBehaviour
                     break;
                 // Если персонаж обораняется
                 case BattleCharacterAction.Defence:
-                    if (characterInfo.IsDefence)
+                    if (characterInfo.IsFlee)
                     {
-                        BattleManager.Utility.AddConcetration(Data.AdditionConcentrationInDefence);
-                    }
-                    else if (characterInfo.IsFlee)
-                    {
-                        if (Data.BattleInfo.CanFlee)
-                        {
-                            /// TODO:
-                        }
-                        else
-                        {
-                            /// TODO:
-                        }
+                        BattleManager.instance.battleAudio.PlaySound(Data.Flee);
+
+                        /// TODO
                     }
                     break;
                 case BattleCharacterAction.None:
@@ -763,6 +923,64 @@ public class BattlePipeline : MonoBehaviour
 
             if (Data.Enemys.Count == 0)
                 break;
+        }
+    }
+
+    private void NextCharacter()
+    {
+        currentCharacterChoiceIndex++;
+
+        choiceActions.Clear();
+    }
+    private void PreviewCharacter()
+    {
+        choiceActions.Remove(choiceActions.Last());
+    }
+
+    private IEnumerator UpdateEntitysStates()
+    {
+        foreach (var character in Data.Characters)
+        {
+            if (character.States.Count == 0)
+                break;
+
+            foreach (var state in character.States)
+            {
+                if (state.rpg.Event != null)
+                {
+                    state.rpg.Event.Invoke(this);
+
+                    yield return new WaitWhile(() => state.rpg.Event.IsPlaying);
+                }
+            }
+
+            int oldHeal = character.Entity.Heal;
+
+            character.UpdateAllStates();
+
+            CharacterBox box = BattleManager.instance.characterBox.GetBox(character);
+
+            if (character.Entity.Heal != oldHeal)
+            {
+                BattleManager.Utility.SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1.4f), oldHeal - character.Entity.Heal);
+            }
+        }
+
+        foreach (var enemy in Data.Enemys)
+        {
+            if (enemy.States.Count == 0)
+                break;
+
+            int oldHeal = enemy.Entity.Heal;
+
+            enemy.UpdateAllStates();
+
+            EnemyModel model = BattleManager.instance.enemyModels.GetModel(enemy);
+
+            if (enemy.Entity.Heal != oldHeal)
+            {
+                BattleManager.Utility.SpawnDamageText(model.DamageTextGlobalPoint, oldHeal - enemy.Entity.Heal);
+            }
         }
     }
 
@@ -877,5 +1095,10 @@ public class BattlePipeline : MonoBehaviour
         });
 
         yield return new WaitWhile(() => CommonManager.instance.messageBox.IsWriting);
+    }
+
+    private IEnumerator Flee()
+    {
+        yield break;
     }
 }

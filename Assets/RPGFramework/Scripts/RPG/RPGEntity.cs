@@ -60,7 +60,7 @@ public class RPGEntity : ScriptableObject
     /// <returns>Потраченое хп</returns>
     public virtual int GiveDamage(int damage, bool dontHurt = false)
     {
-        int dgmdefdif = damage - Defence;
+        int dgmdefdif = damage - Mathf.RoundToInt(Defence / .5f);
 
         if (damage <= 0)
             return 0;

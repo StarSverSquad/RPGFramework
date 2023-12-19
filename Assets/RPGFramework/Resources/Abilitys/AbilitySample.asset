@@ -20,7 +20,10 @@ MonoBehaviour:
   ManaCost: 15
   ConcentrationCost: 25
   AddHeal: -50
-  AddState: {fileID: 0}
+  AddMana: 0
+  WakeupCharacter: 0
+  AddStates:
+  - {fileID: 11400000, guid: 942091a8ab61978419d89549fa55d72c, type: 2}
   Effect: {fileID: 2429433655878315730, guid: 65fcf45a9d4420542a3cc46fa519c398, type: 3}
-  StartEvent: {fileID: 0}
-  EndEvent: {fileID: 0}
+  StartEvent: {fileID: 11400000, guid: 60a011d3450895a41a4827a93e666adf, type: 2}
+  EndEvent: {fileID: 11400000, guid: 60a011d3450895a41a4827a93e666adf, type: 2}

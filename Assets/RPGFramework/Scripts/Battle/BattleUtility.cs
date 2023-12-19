@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UIElements;
+using static UnityEditor.Progress;
 
 public class BattleUtility : MonoBehaviour
 {
@@ -114,7 +115,7 @@ public class BattleUtility : MonoBehaviour
                 if (character.Heal <= 0)
                     FallCharacter(character);
 
-                if (item.CharacterBecomeAlive && character.IsDead)
+                if (item.WakeupCharacter && character.IsDead)
                 {
                     box.SetDead(false);
 
@@ -141,15 +142,96 @@ public class BattleUtility : MonoBehaviour
                     BattleManager.instance.battleAudio.PlaySound(Data.EnemyDeath);
                 }
             }
+
+            foreach (var state in item.AddStates)
+            {
+                info.AddState(state);
+            }
         }
 
         if (item.AddHeal < 0)
-            BattleManager.instance.battleAudio.PlaySound(Data.Hurt);
-        else if (item.AddHeal > 0 || item.AddMana > 0
-                || item.AddConcentration > 0 || item.CharacterBecomeAlive)
+        {
+            if (entitys[0] is BattleCharacterInfo) 
+                BattleManager.instance.battleAudio.PlaySound(Data.Hurt);
+            else
+                BattleManager.instance.battleAudio.PlaySound(Data.EnemyDamage);
+        }
+
+        else if (item.AddHeal > 0 || item.AddMana > 0 || item.AddConcentration > 0 || item.WakeupCharacter)
             BattleManager.instance.battleAudio.PlaySound(Data.Heal);
 
         GameManager.Instance.inventory.AddToItemCount(item, -1);
+    }
+
+    public void UseAbility(RPGAbility ability, params BattleEntityInfo[] entitys)
+    {
+        foreach (var info in entitys)
+        {
+            if (ability.AddHeal != 0)
+                info.Heal += ability.AddHeal;
+
+            if (info is BattleCharacterInfo character)
+            {
+                CharacterBox box = BattleManager.instance.characterBox.GetBox(character);
+
+                if (ability.AddHeal < 0)
+                    SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 2.6f),
+                                    Mathf.Abs(ability.AddHeal).ToString(), Color.red, Color.white);
+                else if (ability.AddHeal > 0)
+                    SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 2.6f),
+                                    ability.AddHeal.ToString(), Color.green, Color.white);
+
+                if (ability.AddMana > 0)
+                    SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 3f),
+                                    ability.AddHeal.ToString(), Color.cyan, Color.white);
+
+                if (character.Heal <= 0)
+                    FallCharacter(character);
+
+                if (ability.WakeupCharacter && character.IsDead)
+                {
+                    box.SetDead(false);
+
+                    character.IsDead = false;
+
+                    if (info.Heal <= 0)
+                        info.Heal = 1;
+                }
+            }
+            else if (info is BattleEnemyInfo enemy)
+            {
+                EnemyModel model = BattleManager.instance.enemyModels.GetModel(enemy);
+
+                if (ability.AddHeal < 0)
+                    SpawnDamageText((Vector2)model.transform.position + new Vector2(0, 0.5f),
+                                    Mathf.Abs(ability.AddHeal).ToString(), Color.red, Color.white);
+                else if (ability.AddHeal > 0)
+                    SpawnDamageText((Vector2)model.transform.position + new Vector2(0, 0.5f),
+                                    ability.AddHeal.ToString(), Color.green, Color.white);
+
+                if (enemy.Heal <= 0)
+                {
+                    model.Death();
+                    BattleManager.instance.battleAudio.PlaySound(Data.EnemyDeath);
+                }
+            }
+
+            foreach (var state in ability.AddStates)
+            {
+                info.AddState(state);
+            }
+
+            if (ability.AddHeal < 0)
+            {
+                if (entitys[0] is BattleCharacterInfo)
+                    BattleManager.instance.battleAudio.PlaySound(Data.Hurt);
+                else
+                    BattleManager.instance.battleAudio.PlaySound(Data.EnemyDamage);
+            }
+
+            else if (ability.AddHeal > 0 || ability.AddMana > 0 || ability.WakeupCharacter)
+                BattleManager.instance.battleAudio.PlaySound(Data.Heal);
+        }
     }
 
     public void SpawnDamageText(Vector2 position, int damage)
@@ -190,7 +272,17 @@ public class BattleUtility : MonoBehaviour
     {
         GameObject obj = Instantiate(instance.gameObject, position, Quaternion.identity, Data.BattleCanvas.transform);
 
-        obj.transform.position = position;
+        return obj.GetComponent<AttackEffect>();
+    }
+    /// <summary>
+    /// Создаёт объект AttackEffect
+    /// </summary>
+    /// <param name="instance">Создоваеммый экземпляр</param>
+    /// <returns>Новый экземпляр</returns>
+    public AttackEffect SpawnAttackEffect(AttackEffect instance)
+    {
+        GameObject obj = Instantiate(instance.gameObject, (Vector2)Data.BattleCanvas.transform.position + new Vector2(0, 1.5f), 
+            Quaternion.identity, Data.BattleCanvas.transform);
 
         return obj.GetComponent<AttackEffect>();
     }
@@ -207,7 +299,7 @@ public class BattleUtility : MonoBehaviour
         int total = bullet.AdditionDamage + bullet.enemy.Damage;
         int damage = Mathf.RoundToInt((Mathf.RoundToInt(Random.Range(total * 0.75f, total * 1.25f)) - Mathf.FloorToInt(character.Entity.Defence / 2f)) / (character.IsDefence ? 2 : 1));
 
-        character.Damage(damage);
+        int realDamage = character.Damage(damage);
 
         if (bullet.State != null && character.States.All(i => i.rpg != bullet.State))
         {
@@ -235,7 +327,7 @@ public class BattleUtility : MonoBehaviour
             }
         }
         else
-            SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1.4f), damage);
+            SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1.4f), realDamage);
     }
 
     public void FallCharacter(BattleCharacterInfo character)

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static UnityEditor.Progress;
+using UnityEngine;
 
 [Serializable]
 public class BattleEntityInfo
@@ -26,6 +24,8 @@ public class BattleEntityInfo
         {
             Entity.Heal = value;
             OnHealChanged?.Invoke();
+
+            Debug.Log($"{Entity.Name} heal = {Entity.Heal};");
         }
     }
     public int Mana
@@ -134,11 +134,15 @@ public class BattleEntityInfo
             RemoveState(state);
     }
 
-    public virtual void Damage(int damage)
+    public virtual int Damage(int damage)
     {
-        Entity.GiveDamage(damage);
+        int dmg = Entity.GiveDamage(damage);
 
         OnHealChanged?.Invoke();
+
+        Debug.Log($"{Entity.Name} heal = {Entity.Heal};");
+
+        return dmg;
     }
 
     protected void InvokeOnDamageCallback() => OnHealChanged?.Invoke();

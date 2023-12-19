@@ -4767,7 +4767,7 @@ MonoBehaviour:
   DmgText: {fileID: 8448606485995851385, guid: 9a20811517bb5bb43b6c618854a6d20b, type: 3}
   BattleCanvas: {fileID: 1607604420}
   MaxConcentration: 100
-  AdditionConcentrationInDefence: 10
+  AdditionConcentrationOnDefence: 10
   Hover: {fileID: 8300000, guid: 4b6f63b613b616a40b6bb3c7f032f764, type: 3}
   Sellect: {fileID: 8300000, guid: 96f836f1f1f7eb146a9c8c6a4581e3fa, type: 3}
   Cancel: {fileID: 8300000, guid: 96f836f1f1f7eb146a9c8c6a4581e3fa, type: 3}
@@ -4779,6 +4779,7 @@ MonoBehaviour:
   Miss: {fileID: 8300000, guid: ac3311081883e694d977df8918246063, type: 3}
   Lose: {fileID: 8300000, guid: 952e86353b3b52048acf8830d356244d, type: 3}
   Win: {fileID: 8300000, guid: 28888de9dfc502d4e8c0fa8d4bdc0e53, type: 3}
+  Flee: {fileID: 0}
 --- !u!114 &1267411538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8598,14 +8599,17 @@ MonoBehaviour:
   Actions:
   - rid: 5576566250506551296
   - rid: 5576566250506551297
-  - rid: 5576566250506551298
-  - rid: 5576566250506551299
+  - rid: 6865747975723810816
   Meta:
     edges:
     - inputPortName: Input
       inputNodeGUID: 4452d77a34b464c46917574cc8080ee2
       outputPortName: Output
       outputNodeGUID: 9eedcd16ad2980f4cb51584b9069a4b9
+    - inputPortName: Input
+      inputNodeGUID: af228e1501bc46a42b348a227c4fd3a3
+      outputPortName: Output
+      outputNodeGUID: 4452d77a34b464c46917574cc8080ee2
     nodes:
     - guid: 9eedcd16ad2980f4cb51584b9069a4b9
       actionIndex: 0
@@ -8613,12 +8617,9 @@ MonoBehaviour:
     - guid: 4452d77a34b464c46917574cc8080ee2
       actionIndex: 1
       position: {x: 471, y: 166}
-    - guid: 3f41659be6ad4f342b9dace40b676f6d
+    - guid: af228e1501bc46a42b348a227c4fd3a3
       actionIndex: 2
-      position: {x: 825, y: 384}
-    - guid: 5e7cbfec341763e46b9522bddc1c2c65
-      actionIndex: 3
-      position: {x: 1054, y: 250}
+      position: {x: 881, y: 278}
   references:
     version: 2
     RefIds:
@@ -8630,36 +8631,19 @@ MonoBehaviour:
     - rid: 5576566250506551297
       type: {class: ManageBGMAction, ns: , asm: Assembly-CSharp}
       data:
-        NextActions: []
+        NextActions:
+        - rid: 6865747975723810816
         Operation: 0
         IngoreIfThisClip: 1
         WaitFade: 0
         UseFade: 0
         FadeTime: 0
         Volume: 1
-        clip: {fileID: 0}
-    - rid: 5576566250506551298
-      type: {class: ManageVarAction, ns: , asm: Assembly-CSharp}
+        clip: {fileID: 8300000, guid: 57f0646900157f34586735df4be9e7a4, type: 3}
+    - rid: 6865747975723810816
+      type: {class: EndAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions: []
-        Var: 3
-        Operation: 1
-        VarName: 
-        BoolBuffer: 0
-        IntBuffer: 0
-        StringBuffer: 
-        FloatBuffer: 0
-    - rid: 5576566250506551299
-      type: {class: ChoiceAction, ns: , asm: Assembly-CSharp}
-      data:
-        NextActions: []
-        Choices:
-        - 
-        - 
-        - 
-        - 
-        Position: 2
-        CustomPosition: {x: 0, y: 0}
 --- !u!1 &2113374133
 GameObject:
   m_ObjectHideFlags: 0
@@ -9443,6 +9427,14 @@ PrefabInstance:
       propertyPath: CurrentLocation
       value: 
       objectReference: {fileID: 11400000, guid: 87d2506dc891aaf4cbff0ee29cf76a08, type: 2}
+    - target: {fileID: 3388343363546848480, guid: 3eec1ad11c70ab14ab1f0971c21a77d8, type: 3}
+      propertyPath: CharacterList.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 3ef815053fabb2d41ba67500753099e6, type: 2}
+    - target: {fileID: 3388343363546848480, guid: 3eec1ad11c70ab14ab1f0971c21a77d8, type: 3}
+      propertyPath: CharacterList.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 790d475a3cca9dc40ba693d252f828ec, type: 2}
     - target: {fileID: 5619716339132157303, guid: 3eec1ad11c70ab14ab1f0971c21a77d8, type: 3}
       propertyPath: m_Name
       value: GameController

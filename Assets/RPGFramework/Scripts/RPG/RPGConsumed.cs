@@ -19,7 +19,9 @@ public class RPGConsumed : RPGCollectable
     public int AddMana;
     public int AddConcentration;
 
-    public bool CharacterBecomeAlive = false;
+    public bool WakeupCharacter = false;
+
+    public List<RPGEntityState> AddStates = new();
 
     public bool ForAlive = true;
     public bool ForDeath = true;

@@ -7,6 +7,8 @@
     public bool IsTarget;
     public bool IsDead;
 
+    public int ReservedConcentration;
+
     public BattleEnemyInfo EnemyBuffer;
     public BattleCharacterInfo CharacterBuffer;
     public BattleEntityInfo EntityBuffer;
@@ -17,7 +19,6 @@
 
     public RPGEnemy.EnemyAct InteractionAct;
 
-    public bool AbilityToAll;
     public RPGAbility Ability;
 
     #endregion
@@ -49,21 +50,22 @@
         IsTarget = false;
         IsAbility = false;
         IsConsumed = false;
-        AbilityToAll = false;
         IsDefence = false;
        
         Ability = null;
-        InteractionAct = new RPGEnemy.EnemyAct();
+        InteractionAct = RPGEnemy.EnemyAct.NullAct;
 
         Item = null;
 
         EnemyBuffer = null;
         CharacterBuffer = null;
         EnemyBuffer = null;
+
+        ReservedConcentration = 0;
     }
 }
 
 public enum BattleCharacterAction
 {
-    None, Fight, Act, Spell, Item, Defence
+    None, Fight, Act, Item, Defence
 }

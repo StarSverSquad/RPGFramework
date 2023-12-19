@@ -185,7 +185,7 @@ public class BattleChoiceManager : MonoBehaviour
     {
         List<GenericChoiceUI.ElementInfo> choices = new List<GenericChoiceUI.ElementInfo>();
 
-        BattleCharacterInfo current = BattleManager.instance.pipeline.CurrentChoiceCharacter;
+        BattleCharacterInfo current = BattleManager.instance.pipeline.CurrentChoicingCharacter;
 
         RPGConsumed consumed = current.Item as RPGConsumed;
         
@@ -216,14 +216,14 @@ public class BattleChoiceManager : MonoBehaviour
     {
         List<GenericChoiceUI.ElementInfo> choices = new List<GenericChoiceUI.ElementInfo>();
 
-        foreach (var item in Pipeline.CurrentChoiceCharacter.Character.Abilities)
+        foreach (var item in Pipeline.CurrentChoicingCharacter.Character.Abilities)
         {
             choices.Add(new GenericChoiceUI.ElementInfo()
             {
                 name = item.Name,
                 description = item.Destription + "\n" + (item.ManaCost > 0 ? $"[<color=#0081FF>Мана: {item.ManaCost}</color>] " : "") + (item.ConcentrationCost > 0 ? $"[<color=#06C100>Конц.: {item.ConcentrationCost}</color>]" : ""),
                 value = item,
-                locked = Pipeline.CurrentChoiceCharacter.Character.Mana < item.ManaCost || Data.Concentration < item.ConcentrationCost
+                locked = Pipeline.CurrentChoicingCharacter.Character.Mana < item.ManaCost || Data.Concentration < item.ConcentrationCost
             });
         }
 
@@ -245,7 +245,7 @@ public class BattleChoiceManager : MonoBehaviour
             {
                 name = "Способность",
                 value = 1,
-                locked = Pipeline.CurrentChoiceCharacter.Character.Abilities.Count == 0
+                locked = Pipeline.CurrentChoicingCharacter.Character.Abilities.Count == 0
             }
         };
 
@@ -266,7 +266,8 @@ public class BattleChoiceManager : MonoBehaviour
             new GenericChoiceUI.ElementInfo()
             {
                 name = "Бегство",
-                value = 1
+                value = 1,
+                locked = !Data.BattleInfo.CanFlee
             }
         };
 
@@ -327,12 +328,11 @@ public class BattleChoiceManager : MonoBehaviour
             }
         };
 
-        BattleCharacterInfo currentCharacter = BattleManager.instance.pipeline.CurrentChoiceCharacter;
-
         foreach (var enemy in Data.Enemys)
         {
             foreach (var act in enemy.Enemy.Acts)
             {
+
                 GenericChoiceUI.ElementInfo elementInfo = new GenericChoiceUI.ElementInfo()
                 {
                     name = act.Name,
@@ -341,12 +341,10 @@ public class BattleChoiceManager : MonoBehaviour
                     locked = false
                 };
 
-                
-
                 foreach (var character in Data.Characters)
                 {
                     if (character.EnemyBuffer == enemy 
-                        && character.InteractionAct.Name == act.Name)
+                        && character.InteractionAct.Name == act.Name && act.OnlyOne)
                     {
                         elementInfo.locked = true;
                         break;

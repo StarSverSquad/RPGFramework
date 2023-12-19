@@ -27,7 +27,7 @@ public class BattleData : MonoBehaviour, IDisposable
     [Header("Настройки")]
     public int MaxConcentration;
 
-    public int AdditionConcentrationInDefence = 10;
+    public int AdditionConcentrationOnDefence = 10;
 
     [Header("Звуки")]
     public AudioClip Hover;
@@ -41,6 +41,7 @@ public class BattleData : MonoBehaviour, IDisposable
     public AudioClip Miss;
     public AudioClip Lose;
     public AudioClip Win;
+    public AudioClip Flee;
 
     public void Dispose()
     {

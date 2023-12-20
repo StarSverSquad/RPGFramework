@@ -99,6 +99,9 @@ public class EventGraphView : GraphView
             case InvokeCustomAction a:
                 node = new InvokeCustomNode(a);
                 break;
+            case AddRemoveCharacterAction a:
+                node = new AddRemoveCharacterNode(a);
+                break;
             default:
                 EditorUtility.DisplayDialog("Ошибка", $"Нода под событие {action.Name} не существует", "Ok");
                 return;
@@ -148,14 +151,15 @@ public class EventGraphView : GraphView
         evt.menu.AppendAction("Общие События/Условие", i => CreateNode(new ConditionAction(), mousePosition));
         evt.menu.AppendAction("Общие События/Управление переменной", i => CreateNode(new ManageVarAction(), mousePosition));
         evt.menu.AppendAction("Общие События/Ждать", i => CreateNode(new WaitAction(), mousePosition));
-        evt.menu.AppendAction("Общие События/Конец", i => CreateNode(new EndAction(), mousePosition));
+        evt.menu.AppendAction("Общие События/Изменить состав команды", i => CreateNode(new AddRemoveCharacterAction(), mousePosition));
 
         evt.menu.AppendAction("События исследования/Управление BGM", i => CreateNode(new ManageBGMAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Управление BGS", i => CreateNode(new ManageBGSAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Запуск SE", i => CreateNode(new PlaySEAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Запуск ME", i => CreateNode(new PlayMEAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Запуск самопис. события", i => CreateNode(new InvokeCustomAction(), mousePosition));
-
+       
+        evt.menu.AppendAction("Конец", i => CreateNode(new EndAction(), mousePosition));
         evt.menu.AppendAction("Отладочное событие", i => CreateNode(new DebugAction(), mousePosition));
     }
 

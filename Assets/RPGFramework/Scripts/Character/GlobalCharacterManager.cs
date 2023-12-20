@@ -9,7 +9,6 @@ public class GlobalCharacterManager : MonoBehaviour, IManagerInitialize
 {
     public event Action OnCharaterListChanged;
 
-    [SerializeField]
     private List<RPGCharacter> CharacterList = new List<RPGCharacter>();
 
     public RPGCharacter[] characters => CharacterList.ToArray();
@@ -38,7 +37,9 @@ public class GlobalCharacterManager : MonoBehaviour, IManagerInitialize
 
     public void Initialize()
     {
-        foreach (var item in CharacterList)
-            item.InitializeEntity();
+        //CharacterList = GameManager.Instance.CommonConfig.playableCharacters;
+
+        //foreach (var item in CharacterList)
+        //    item.InitializeEntity();
     }
 }

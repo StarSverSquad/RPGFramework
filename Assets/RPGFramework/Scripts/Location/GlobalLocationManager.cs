@@ -64,7 +64,7 @@ public class GlobalLocationManager : MonoBehaviour
 
             if (obj.SpawnPoints.Count() == 0)
             {
-                Debug.LogError("У локации не задоны точки спавна!");
+                Debug.LogError("У локации нет точки спавна!");
 
                 yield break;
             }

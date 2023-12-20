@@ -33,6 +33,8 @@ public class LocalCharacterManager : MonoBehaviour
 
     public void UpdateModels()
     {
+        /// REMADE
+
         foreach (var item in models)
         {
             Destroy(item.gameObject);

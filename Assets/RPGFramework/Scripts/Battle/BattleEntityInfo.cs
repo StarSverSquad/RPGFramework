@@ -24,8 +24,6 @@ public class BattleEntityInfo
         {
             Entity.Heal = value;
             OnHealChanged?.Invoke();
-
-            Debug.Log($"{Entity.Name} heal = {Entity.Heal};");
         }
     }
     public int Mana

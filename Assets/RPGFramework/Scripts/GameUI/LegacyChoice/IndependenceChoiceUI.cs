@@ -5,7 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-public class GenericChoiceUI : MonoBehaviour
+public class IndependenceChoiceUI : MonoBehaviour
 {
     public enum Aling
     {
@@ -20,7 +20,7 @@ public class GenericChoiceUI : MonoBehaviour
         public string name;
         public string description;
 
-        public GenericChoiceUIElement element;
+        public IndependenceChoiceUIElement element;
 
         public string counterText;
 
@@ -37,7 +37,7 @@ public class GenericChoiceUI : MonoBehaviour
 
     [Header("Префабы")]
     [SerializeField]
-    protected GenericChoiceUIElement elementPrefab;
+    protected IndependenceChoiceUIElement elementPrefab;
     [SerializeField]
     protected TextMeshProUGUI titlePrefab;
 
@@ -102,7 +102,7 @@ public class GenericChoiceUI : MonoBehaviour
             GameObject obj = Instantiate(elementPrefab.gameObject, content);
 
             RectTransform elRect = obj.GetComponent<RectTransform>();
-            GenericChoiceUIElement objElement = obj.GetComponent<GenericChoiceUIElement>();
+            IndependenceChoiceUIElement objElement = obj.GetComponent<IndependenceChoiceUIElement>();
 
             objElement.Initialize(cur.name, cur.icon, cur.counterText);
 

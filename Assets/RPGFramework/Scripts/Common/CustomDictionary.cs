@@ -1,75 +1,68 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [Serializable]
 public class CustomDictionary<T> : IEnumerable<T>
 {
-    public List<string> keys;
-    public List<T> values;
+    [Serializable]
+    public class DictionaryItem
+    {
+        public string Key;
+        public T Value;
+
+        public DictionaryItem()
+        {
+            Key = string.Empty;
+            Value = default;
+        }
+        public DictionaryItem(string key, T value)
+        {
+            this.Key = key;
+            Value = value;
+        }
+    }
+
+    public List<DictionaryItem> data;
 
     public CustomDictionary()
     {
-        keys = new List<string>();
-        values = new List<T>();
+        data = new List<DictionaryItem>();
     }
 
     public T this[string key]
     {
-        get
-        {
-            int index = keys.IndexOf(key);
+        get => data.Where(i => i.Key == key).FirstOrDefault().Value;
 
-            return values[index];
-        }
-
-        set
-        {
-            int index = keys.IndexOf(key);
-
-            values[index] = value;
-        }
+        set => data.Where(i => i.Key == key).FirstOrDefault().Value = value;
     } 
 
     public void Add(string key, T value)
     {
-        if (!keys.Contains(key))
-        {
-            keys.Add(key);
-            values.Add(value);
-        }
+        if (!HaveKey(key))
+            data.Add(new DictionaryItem(key, value));
         else
             Debug.LogError($"Ключ \"{key}\" уже существует");
     }
 
     public void Remove(string key)
     {
-        if (keys.Contains(key))
-        {
-            int index = keys.IndexOf(key);
-
-            keys.RemoveAt(index);
-            values.RemoveAt(index);
-        }
+        if (HaveKey(key))
+            data.Remove(data.Where(i => i.Key == key).FirstOrDefault());
         else
             Debug.LogError($"Ключ \"{key}\" не существует");
     }
 
     public bool HaveKey(string key)
     {
-        foreach (var item in keys)
-        {
-            if (item == key)
-                return true;
-        }
-        
-        return false;
+        return data.Where(i => i.Key == key).Count() > 0;
     }
 
     public IEnumerator<T> GetEnumerator()
     {
-        return values.GetEnumerator();
+        return data.Select(i => i.Value).GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()

@@ -23,7 +23,7 @@ public class BattleChoiceManager : MonoBehaviour
     public bool IsCanceled => battleChoice.IsCanceled;
     public bool IsPrimaryCanceled => primaryChoice.IsCanceled;
 
-    public GenericChoiceUI.ElementInfo CurrentItem => battleChoice.CurrentItem;
+    public IndependenceChoiceUI.ElementInfo CurrentItem => battleChoice.CurrentItem;
 
     public int PrimaryCurrentIndex => primaryChoice.Choice;
 
@@ -129,13 +129,13 @@ public class BattleChoiceManager : MonoBehaviour
 
     public void InvokeChoiceEntity()
     {
-        battleChoice.AppendTittle("Персонаж", GenericChoiceUI.Aling.center);
+        battleChoice.AppendTittle("Персонаж", IndependenceChoiceUI.Aling.center);
 
-        List<GenericChoiceUI.ElementInfo> choices = new List<GenericChoiceUI.ElementInfo>();
+        List<IndependenceChoiceUI.ElementInfo> choices = new List<IndependenceChoiceUI.ElementInfo>();
 
         foreach (var item in Data.Characters)
         {
-            choices.Add(new GenericChoiceUI.ElementInfo()
+            choices.Add(new IndependenceChoiceUI.ElementInfo()
             {
                 name = item.Entity.Name,
                 value = item
@@ -145,13 +145,13 @@ public class BattleChoiceManager : MonoBehaviour
         battleChoice.AppendElements(choices.ToArray());
 
 
-        battleChoice.AppendTittle("Противник", GenericChoiceUI.Aling.center);
+        battleChoice.AppendTittle("Противник", IndependenceChoiceUI.Aling.center);
 
-        List<GenericChoiceUI.ElementInfo> choices0 = new List<GenericChoiceUI.ElementInfo>();
+        List<IndependenceChoiceUI.ElementInfo> choices0 = new List<IndependenceChoiceUI.ElementInfo>();
 
         foreach (var item in Data.Enemys)
         {
-            choices0.Add(new GenericChoiceUI.ElementInfo()
+            choices0.Add(new IndependenceChoiceUI.ElementInfo()
             {
                 name = item.Entity.Name,
                 value = item
@@ -165,11 +165,11 @@ public class BattleChoiceManager : MonoBehaviour
 
     public void InvokeChoiceEnemy()
     {
-        List<GenericChoiceUI.ElementInfo> choiceElements = new List<GenericChoiceUI.ElementInfo>();
+        List<IndependenceChoiceUI.ElementInfo> choiceElements = new List<IndependenceChoiceUI.ElementInfo>();
 
         foreach (var enemy in Data.Enemys)
         {
-            choiceElements.Add(new GenericChoiceUI.ElementInfo()
+            choiceElements.Add(new IndependenceChoiceUI.ElementInfo()
             {
                 name = enemy.Entity.Name,
                 value = enemy
@@ -183,7 +183,7 @@ public class BattleChoiceManager : MonoBehaviour
 
     public void InvokeChoiceTeammate()
     {
-        List<GenericChoiceUI.ElementInfo> choices = new List<GenericChoiceUI.ElementInfo>();
+        List<IndependenceChoiceUI.ElementInfo> choices = new List<IndependenceChoiceUI.ElementInfo>();
 
         BattleCharacterInfo current = BattleManager.instance.pipeline.CurrentChoicingCharacter;
 
@@ -191,7 +191,7 @@ public class BattleChoiceManager : MonoBehaviour
         
         foreach (var item in Data.Characters)
         {
-            GenericChoiceUI.ElementInfo info = new GenericChoiceUI.ElementInfo()
+            IndependenceChoiceUI.ElementInfo info = new IndependenceChoiceUI.ElementInfo()
             {
                 name = item.Entity.Name,
                 value = item,
@@ -214,11 +214,11 @@ public class BattleChoiceManager : MonoBehaviour
 
     public void InvokeChoiceAbility()
     {
-        List<GenericChoiceUI.ElementInfo> choices = new List<GenericChoiceUI.ElementInfo>();
+        List<IndependenceChoiceUI.ElementInfo> choices = new List<IndependenceChoiceUI.ElementInfo>();
 
         foreach (var item in Pipeline.CurrentChoicingCharacter.Character.Abilities)
         {
-            choices.Add(new GenericChoiceUI.ElementInfo()
+            choices.Add(new IndependenceChoiceUI.ElementInfo()
             {
                 name = item.Name,
                 description = item.Destription + "\n" + (item.ManaCost > 0 ? $"[<color=#0081FF>Мана: {item.ManaCost}</color>] " : "") + (item.ConcentrationCost > 0 ? $"[<color=#06C100>Конц.: {item.ConcentrationCost}</color>]" : ""),
@@ -234,14 +234,14 @@ public class BattleChoiceManager : MonoBehaviour
 
     public void InvokeChoiceAct()
     {
-        List<GenericChoiceUI.ElementInfo> choices = new List<GenericChoiceUI.ElementInfo>()
+        List<IndependenceChoiceUI.ElementInfo> choices = new List<IndependenceChoiceUI.ElementInfo>()
         {
-            new GenericChoiceUI.ElementInfo()
+            new IndependenceChoiceUI.ElementInfo()
             {
                 name = "Взаимодействие",
                 value = 0
             },
-            new GenericChoiceUI.ElementInfo()
+            new IndependenceChoiceUI.ElementInfo()
             {
                 name = "Способность",
                 value = 1,
@@ -256,14 +256,14 @@ public class BattleChoiceManager : MonoBehaviour
 
     public void InvokeChoiceDefence()
     {
-        List<GenericChoiceUI.ElementInfo> choices = new List<GenericChoiceUI.ElementInfo>()
+        List<IndependenceChoiceUI.ElementInfo> choices = new List<IndependenceChoiceUI.ElementInfo>()
         {
-            new GenericChoiceUI.ElementInfo()
+            new IndependenceChoiceUI.ElementInfo()
             {
                 name = "Защита",
                 value = 0
             },
-            new GenericChoiceUI.ElementInfo()
+            new IndependenceChoiceUI.ElementInfo()
             {
                 name = "Бегство",
                 value = 1,
@@ -278,7 +278,7 @@ public class BattleChoiceManager : MonoBehaviour
 
     public void InvokeChoiceItem()
     {
-        List<GenericChoiceUI.ElementInfo> choices = new List<GenericChoiceUI.ElementInfo>();
+        List<IndependenceChoiceUI.ElementInfo> choices = new List<IndependenceChoiceUI.ElementInfo>();
 
         foreach (var slot in GameManager.Instance.inventory.Slots)
         {
@@ -296,7 +296,7 @@ public class BattleChoiceManager : MonoBehaviour
                     continue;
             }
 
-            GenericChoiceUI.ElementInfo element = new GenericChoiceUI.ElementInfo()
+            IndependenceChoiceUI.ElementInfo element = new IndependenceChoiceUI.ElementInfo()
             {
                 name = slot.Item.Name,
                 description = slot.Item.Description,
@@ -315,9 +315,9 @@ public class BattleChoiceManager : MonoBehaviour
 
     public void InvokeChoiceInteraction()
     {
-        List<GenericChoiceUI.ElementInfo> choiceElements = new List<GenericChoiceUI.ElementInfo>
+        List<IndependenceChoiceUI.ElementInfo> choiceElements = new List<IndependenceChoiceUI.ElementInfo>
         {
-            new GenericChoiceUI.ElementInfo()
+            new IndependenceChoiceUI.ElementInfo()
             {
                 name = "Проверить",
                 value = new RPGEnemy.EnemyAct()
@@ -333,7 +333,7 @@ public class BattleChoiceManager : MonoBehaviour
             foreach (var act in enemy.Enemy.Acts)
             {
 
-                GenericChoiceUI.ElementInfo elementInfo = new GenericChoiceUI.ElementInfo()
+                IndependenceChoiceUI.ElementInfo elementInfo = new IndependenceChoiceUI.ElementInfo()
                 {
                     name = act.Name,
                     description = act.Description,
@@ -365,7 +365,7 @@ public class BattleChoiceManager : MonoBehaviour
 
     public void CleanUp() => battleChoice.CleanUp();
 
-    private void ShowDescriptionFor(GenericChoiceUI.ElementInfo element)
+    private void ShowDescriptionFor(IndependenceChoiceUI.ElementInfo element)
     {
         BattleManager.instance.description.SetActive(true);
         BattleManager.instance.description.SetText(element.description);

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class GenericChoiceUIElement : MonoBehaviour
+public class IndependenceChoiceUIElement : MonoBehaviour
 {
     [SerializeField]
     private TextMeshProUGUI mainText;

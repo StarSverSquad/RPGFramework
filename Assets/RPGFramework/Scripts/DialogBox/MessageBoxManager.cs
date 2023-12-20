@@ -126,12 +126,12 @@ public class MessageBoxManager : TextWriterBase
 
     public override bool ContinueCanExecute()
     {
-        return Input.GetKeyDown(KeyCode.Z);
+        return Input.GetKeyDown(GameManager.Instance.CommonConfig.Accept);
     }
 
     public override bool SkipCanExecute()
     {
-        return Input.GetKeyDown(KeyCode.X);
+        return Input.GetKeyDown(GameManager.Instance.CommonConfig.Cancel);
     }
 
     public override void OnEveryLetter(char letter)

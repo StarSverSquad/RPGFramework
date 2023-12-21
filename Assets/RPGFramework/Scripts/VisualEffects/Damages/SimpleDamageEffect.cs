@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SimpleDeathEffect : DeathEffect
+public class SimpleDamageEffect : VisualDamageEffectBase
 {
     private Image[] images;
 
@@ -20,16 +19,15 @@ public class SimpleDeathEffect : DeathEffect
             image.color = Color.white;
     }
 
-    protected override IEnumerator DeathCoroutine()
+    protected override IEnumerator DamageCoroutine()
     {
-        Color from = new Color(0.75f, 0.1f, 0.1f, 1);
-        Color to = new Color(0.5f, 0.5f, 0.5f, 0);
+        Color from = Color.red;
 
-        Color dif = to - from;
+        Color dif = Color.white - from;
 
-        Vector4 fromvec = new Vector4(0.75f, 0.1f, 0.1f, 1);
-        Vector4 tovec = new Vector4(0.5f, 0.5f, 0.5f, 0);
-        Vector4 difvec = new Vector4(dif.r, dif.g, dif.b, dif.a);
+        Vector3 fromvec = new Vector3(1, 0, 0);
+        Vector3 tovec = new Vector3(1, 1, 1);
+        Vector3 difvec = new Vector3(dif.r, dif.g, dif.b);
 
         float time = difvec.sqrMagnitude / Speed;
 
@@ -40,10 +38,10 @@ public class SimpleDeathEffect : DeathEffect
         {
             yield return new WaitForFixedUpdate();
 
-            fromvec = Vector4.MoveTowards(fromvec, tovec, Speed * Time.fixedDeltaTime);
+            fromvec = Vector3.MoveTowards(fromvec, tovec, Speed * Time.fixedDeltaTime);
 
             foreach (var item in images)
-                item.color = new Color(fromvec.x, fromvec.y, fromvec.z, fromvec.w);
+                item.color = new Color(fromvec.x, fromvec.y, fromvec.z);
 
             time -= Time.fixedDeltaTime;
         }

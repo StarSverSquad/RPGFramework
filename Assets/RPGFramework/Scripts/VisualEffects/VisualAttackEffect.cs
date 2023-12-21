@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AttackEffect : MonoBehaviour
+public class VisualAttackEffect : MonoBehaviour
 {
     [SerializeField]
     private Image spriteRenderer;

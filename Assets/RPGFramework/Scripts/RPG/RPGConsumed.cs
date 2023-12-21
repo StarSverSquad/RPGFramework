@@ -13,21 +13,16 @@ public class RPGConsumed : RPGCollectable
 
     public ConsumingDirection Direction;
 
-    public AttackEffect AttackEffect;
-
-    public bool AddInPercents = false;
-
-    public int AddHeal;
-    public int AddMana;
-
-    public int AddConcentration;
+    public VisualAttackEffect VisualEffect;
 
     public bool WakeupCharacter = false;
-
-    public List<RPGEntityState> AddStates = new();
 
     public bool ForAlive = true;
     public bool ForDeath = true;
 
     public bool WriteMessage = true;
+
+    [HideInInspector]
+    [SerializeReference]
+    public List<EffectBase> Effects = new List<EffectBase>();
 }

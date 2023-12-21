@@ -22,22 +22,14 @@ public class RPGAbility : ScriptableObject
 
     public int Damage;
 
-    public bool AddInPercents = false;
-
-    public int AddHeal;
-    public int AddMana;
-
     public bool WakeupCharacter;
 
-    public List<RPGEntityState> AddStates = new();
+    public GraphEvent StartEvent;
+    public GraphEvent EndEvent;
 
-    public AttackEffect Effect;
+    public VisualAttackEffect VisualEffect;
 
-    public GraphEvent StartEvent = null;
-    public GraphEvent EndEvent = null;
-
-    public void Invoke(RPGEntity entity)
-    {
-        entity.Heal += AddHeal;
-    }
+    [HideInInspector]
+    [SerializeReference]
+    public List<EffectBase> Effects = new List<EffectBase>();
 }

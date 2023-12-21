@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public abstract class DeathEffect : MonoBehaviour
+public abstract class VisualDeathEffectBase : MonoBehaviour
 {
     public bool IsAnimating => deathCoroutine != null;
 

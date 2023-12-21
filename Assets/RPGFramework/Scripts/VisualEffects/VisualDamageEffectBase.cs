@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public abstract class DamageEffect : MonoBehaviour
+public abstract class VisualDamageEffectBase : MonoBehaviour
 {
     public bool IsAnimating => damageCoroutine != null;
 

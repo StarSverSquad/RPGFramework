@@ -631,7 +631,7 @@ public class BattlePipeline : MonoBehaviour
 
                         yield return new WaitWhile(() => BattleManager.instance.attackQTE.QTE.IsWorking);
 
-                        AttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
+                        VisualAttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
 
                         if (effect.LocaleInCenter)
                             effect = BattleManager.Utility.SpawnAttackEffect(effect);
@@ -668,7 +668,7 @@ public class BattlePipeline : MonoBehaviour
                             characterInfo.Ability.StartEvent.Invoke(this);
 
                             yield return new WaitWhile(() => characterInfo.Ability.StartEvent.IsPlaying);
-                        } 
+                        }
 
                         switch (characterInfo.Ability.Direction)
                         {
@@ -680,7 +680,7 @@ public class BattlePipeline : MonoBehaviour
                                 break;
                             case RPGAbility.AbilityDirection.AllEnemys:
                                 {
-                                    AttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
+                                    VisualAttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
 
                                     effect = BattleManager.Utility.SpawnAttackEffect(effect);
 
@@ -697,7 +697,7 @@ public class BattlePipeline : MonoBehaviour
                                 break;
                             case RPGAbility.AbilityDirection.Enemy:
                                 {
-                                    AttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
+                                    VisualAttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
 
                                     if (effect.LocaleInCenter)
                                         effect = BattleManager.Utility.SpawnAttackEffect(effect);
@@ -722,7 +722,7 @@ public class BattlePipeline : MonoBehaviour
                             case RPGAbility.AbilityDirection.Any:
                                 if (characterInfo.EntityBuffer is BattleEnemyInfo enemy)
                                 {
-                                    AttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
+                                    VisualAttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
 
                                     if (effect.LocaleInCenter)
                                         effect = BattleManager.Utility.SpawnAttackEffect(effect);
@@ -750,7 +750,7 @@ public class BattlePipeline : MonoBehaviour
 
                                     yield return new WaitForSeconds(0.25f);
 
-                                    AttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
+                                    VisualAttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
 
                                     effect = BattleManager.Utility.SpawnAttackEffect(effect);
 
@@ -832,9 +832,9 @@ public class BattlePipeline : MonoBehaviour
                                     break;
                                 case RPGConsumed.ConsumingDirection.AllEnemys:
                                     {
-                                        if (consumed.AttackEffect != null)
+                                        if (consumed.VisualEffect != null)
                                         {
-                                            AttackEffect effect = BattleManager.Utility.SpawnAttackEffect(consumed.AttackEffect);
+                                            VisualAttackEffect effect = BattleManager.Utility.SpawnAttackEffect(consumed.VisualEffect);
 
                                             effect.Invoke();
 
@@ -849,17 +849,17 @@ public class BattlePipeline : MonoBehaviour
                                     break;
                                 case RPGConsumed.ConsumingDirection.Enemy:
                                     {
-                                        if (consumed.AttackEffect != null)
+                                        if (consumed.VisualEffect != null)
                                         {
-                                            AttackEffect effect;
+                                            VisualAttackEffect effect;
 
-                                            if (consumed.AttackEffect.LocaleInCenter)
-                                                effect = BattleManager.Utility.SpawnAttackEffect(consumed.AttackEffect);
+                                            if (consumed.VisualEffect.LocaleInCenter)
+                                                effect = BattleManager.Utility.SpawnAttackEffect(consumed.VisualEffect);
                                             else
                                             {
                                                 Vector2 attackPos = BattleManager.instance.enemyModels.GetModel(characterInfo.EntityBuffer as BattleEnemyInfo).AttackGlobalPoint;
 
-                                                effect = BattleManager.Utility.SpawnAttackEffect(consumed.AttackEffect, attackPos);
+                                                effect = BattleManager.Utility.SpawnAttackEffect(consumed.VisualEffect, attackPos);
                                             }
 
                                             effect.Invoke();
@@ -875,17 +875,17 @@ public class BattlePipeline : MonoBehaviour
                                     break;
                                 case RPGConsumed.ConsumingDirection.Any:
                                     if (characterInfo.EntityBuffer is BattleEnemyInfo enemy
-                                        && consumed.AttackEffect != null)
+                                        && consumed.VisualEffect != null)
                                     {
-                                        AttackEffect effect;
+                                        VisualAttackEffect effect;
 
-                                        if (consumed.AttackEffect.LocaleInCenter)
-                                            effect = BattleManager.Utility.SpawnAttackEffect(consumed.AttackEffect);
+                                        if (consumed.VisualEffect.LocaleInCenter)
+                                            effect = BattleManager.Utility.SpawnAttackEffect(consumed.VisualEffect);
                                         else
                                         {
                                             Vector2 attackPos = BattleManager.instance.enemyModels.GetModel(enemy).AttackGlobalPoint;
 
-                                            effect = BattleManager.Utility.SpawnAttackEffect(consumed.AttackEffect, attackPos);
+                                            effect = BattleManager.Utility.SpawnAttackEffect(consumed.VisualEffect, attackPos);
                                         }
 
                                         effect.Invoke();
@@ -904,9 +904,9 @@ public class BattlePipeline : MonoBehaviour
 
                                         yield return new WaitForSeconds(.25f);
 
-                                        if (consumed.AttackEffect != null)
+                                        if (consumed.VisualEffect != null)
                                         {
-                                            AttackEffect effect = BattleManager.Utility.SpawnAttackEffect(consumed.AttackEffect);
+                                            VisualAttackEffect effect = BattleManager.Utility.SpawnAttackEffect(consumed.VisualEffect);
 
                                             effect.Invoke();
 

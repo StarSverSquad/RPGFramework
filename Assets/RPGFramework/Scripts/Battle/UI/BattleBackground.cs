@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class BattleBackgroundManager : MonoBehaviour
+public class BattleBackground : MonoBehaviour
 {
     public GameObject BackGround;
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,13 +21,27 @@ public class RPGEntity : ScriptableObject
     private int heal;
     public int Heal
     {
-        get => heal; set => heal = Mathf.Clamp(value, 0, MaxHeal);
+        get => heal; 
+
+        set 
+        {
+            heal = Mathf.Clamp(value, 0, MaxHeal);
+
+            OnHealChanged?.Invoke();
+        }
     }
 
     private int mana;
     public int Mana
     {
-        get => mana; set => mana = Mathf.Clamp(value, 0, MaxMana);
+        get => mana;
+
+        set
+        {
+            mana = Mathf.Clamp(value, 0, MaxMana);
+
+            OnManaChanged?.Invoke();
+        }
     }
 
     public int MaxHeal { get; set; }
@@ -35,6 +50,9 @@ public class RPGEntity : ScriptableObject
     public int Damage { get; set; }
     public int Agility { get; set; }
     public int Defence { get; set; }
+
+    public event Action OnHealChanged;
+    public event Action OnManaChanged;
 
     public virtual void InitializeEntity()
     {

@@ -21,10 +21,19 @@ MonoBehaviour:
   Event: {fileID: 0}
   Direction: 1
   AttackEffect: {fileID: 0}
-  AddHeal: 30
-  AddMana: 0
   AddConcentration: 0
-  CharacterBecomeAlive: 0
+  WakeupCharacter: 0
+  AddStates: []
   ForAlive: 1
   ForDeath: 0
   WriteMessage: 1
+  Effects:
+  - rid: 6865748019961135112
+  references:
+    version: 2
+    RefIds:
+    - rid: 6865748019961135112
+      type: {class: RPGChangeStateEffect, ns: , asm: Assembly-CSharp}
+      data:
+        IsAddState: 1
+        State: {fileID: 0}

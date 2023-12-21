@@ -52,7 +52,7 @@ public class BattlePlayerInteraction : MonoBehaviour
 
             foreach (var item in BattleManager.Data.Characters.Where(i => i.IsTarget))
             {
-                BattleManager.Utility.DamageCharacter(item, bullet);
+                BattleManager.Utility.DamageCharacterByBullet(item, bullet);
             }
         }
     }

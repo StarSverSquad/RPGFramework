@@ -14,7 +14,7 @@ public class BattleManager : ContentManagerBase
     public BattleData data;
     public BattleFieldManager battleField;
     public CharacterPreviewManager characterPreview;
-    public BattleBackgroundManager background;
+    public BattleBackground background;
     public BattleAudioManager battleAudio;
     public BattlePlayerManager player;
     public AttackQTEManager attackQTE;

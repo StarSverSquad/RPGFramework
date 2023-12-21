@@ -5,5 +5,5 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Weapon", menuName = "RPG/Weapon")]
 public class RPGWeapon : RPGWerable
 {
-    public AttackEffect Effect;
+    public VisualAttackEffect Effect;
 }

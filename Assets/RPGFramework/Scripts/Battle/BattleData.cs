@@ -16,7 +16,7 @@ public class BattleData : MonoBehaviour, IDisposable
     public List<BattleCharacterInfo> Characters = new List<BattleCharacterInfo>();
 
     [Header("Ссылки")]
-    public AttackEffect DefaultEffect;
+    public VisualAttackEffect DefaultEffect;
 
     public DamageText DmgText;
 

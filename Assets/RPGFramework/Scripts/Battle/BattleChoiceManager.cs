@@ -320,10 +320,10 @@ public class BattleChoiceManager : MonoBehaviour
             new IndependenceChoiceUI.ElementInfo()
             {
                 name = "Проверить",
+                description = "Проверить текущего врага",
                 value = new RPGEnemy.EnemyAct()
                 {
-                    Name = "Check",
-                    Description = "Проверить выбранного врага"
+                    Name = "Check"
                 }
             }
         };

@@ -6,9 +6,6 @@ using UnityEngine;
 [Serializable]
 public class BattleEntityInfo
 {
-    public delegate void StateUpdatedAction(EntityState state, int changedHeal, int changedMana);
-    public delegate void AllStatesUpdatedAction(int totalHeal, int totalMana);
-
     public class EntityState
     {
         public RPGEntityState rpg;

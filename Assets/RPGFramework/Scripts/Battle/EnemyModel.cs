@@ -6,9 +6,9 @@ using UnityEngine;
 public class EnemyModel : MonoBehaviour 
 {
     [SerializeField]
-    private DeathEffect deathEffect;
+    private VisualDeathEffectBase deathEffect;
     [SerializeField]
-    private DamageEffect damageEffect;
+    private VisualDamageEffectBase damageEffect;
 
     [SerializeField]
     private GameObject modelContainer;

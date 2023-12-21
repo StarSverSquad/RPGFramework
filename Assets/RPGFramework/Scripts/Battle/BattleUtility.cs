@@ -87,172 +87,172 @@ public class BattleUtility : MonoBehaviour
 
     public void ConsumeItem(RPGConsumed item, params BattleEntityInfo[] entitys)
     {
-        foreach (var info in entitys)
-        {
-            if (item.AddHeal != 0)
-            {
-                if (item.AddInPercents)
-                    info.Heal += info.Entity.MaxHeal * (item.AddHeal / 100);
-                else
-                    info.Heal += item.AddHeal;
-            }
+        //foreach (var info in entitys)
+        //{
+        //    if (item.AddHeal != 0)
+        //    {
+        //        if (item.AddInPercents)
+        //            info.Heal += info.Entity.MaxHeal * (item.AddHeal / 100);
+        //        else
+        //            info.Heal += item.AddHeal;
+        //    }
 
-            if (item.AddMana != 0)
-            {
-                if (item.AddInPercents)
-                    info.Mana += info.Entity.MaxMana * (item.AddMana / 100);
-                else
-                    info.Mana += item.AddHeal;
-            }
+        //    if (item.AddMana != 0)
+        //    {
+        //        if (item.AddInPercents)
+        //            info.Mana += info.Entity.MaxMana * (item.AddMana / 100);
+        //        else
+        //            info.Mana += item.AddHeal;
+        //    }
 
-            if (info is BattleCharacterInfo character)
-            {
-                CharacterBox box = BattleManager.instance.characterBox.GetBox(character);
+        //    if (info is BattleCharacterInfo character)
+        //    {
+        //        CharacterBox box = BattleManager.instance.characterBox.GetBox(character);
 
-                if (item.AddConcentration != 0)
-                    AddConcetration(item.AddConcentration);
+        //        if (item.AddConcentration != 0)
+        //            AddConcetration(item.AddConcentration);
 
-                if (item.AddHeal < 0)
-                    SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 2.6f),
-                                    Mathf.Abs(item.AddHeal).ToString(), Color.red, Color.white);
-                else if (item.AddHeal > 0)
-                    SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 2.6f),
-                                    item.AddHeal.ToString(), Color.green, Color.white);
+        //        if (item.AddHeal < 0)
+        //            SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 2.6f),
+        //                            Mathf.Abs(item.AddHeal).ToString(), Color.red, Color.white);
+        //        else if (item.AddHeal > 0)
+        //            SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 2.6f),
+        //                            item.AddHeal.ToString(), Color.green, Color.white);
 
-                if (item.AddMana > 0)
-                    SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 3f),
-                                    item.AddHeal.ToString(), Color.cyan, Color.white);
+        //        if (item.AddMana > 0)
+        //            SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 3f),
+        //                            item.AddHeal.ToString(), Color.cyan, Color.white);
 
-                if (character.Heal <= 0)
-                    FallCharacter(character);
+        //        if (character.Heal <= 0)
+        //            FallCharacter(character);
 
-                if (item.WakeupCharacter && character.IsDead)
-                {
-                    box.SetDead(false);
+        //        if (item.WakeupCharacter && character.IsDead)
+        //        {
+        //            box.SetDead(false);
 
-                    character.IsDead = false;
+        //            character.IsDead = false;
 
-                    if (info.Heal <= 0)
-                        info.Heal = 1;
-                }
-            }
-            else if (info is BattleEnemyInfo enemy)
-            {
-                EnemyModel model = BattleManager.instance.enemyModels.GetModel(enemy);
+        //            if (info.Heal <= 0)
+        //                info.Heal = 1;
+        //        }
+        //    }
+        //    else if (info is BattleEnemyInfo enemy)
+        //    {
+        //        EnemyModel model = BattleManager.instance.enemyModels.GetModel(enemy);
 
-                if (item.AddHeal < 0)
-                    SpawnDamageText((Vector2)model.transform.position + new Vector2(0, 0.5f),
-                                    Mathf.Abs(item.AddHeal).ToString(), Color.red, Color.white);
-                else if (item.AddHeal > 0)
-                    SpawnDamageText((Vector2)model.transform.position + new Vector2(0, 0.5f),
-                                    item.AddHeal.ToString(), Color.green, Color.white);
+        //        if (item.AddHeal < 0)
+        //            SpawnDamageText((Vector2)model.transform.position + new Vector2(0, 0.5f),
+        //                            Mathf.Abs(item.AddHeal).ToString(), Color.red, Color.white);
+        //        else if (item.AddHeal > 0)
+        //            SpawnDamageText((Vector2)model.transform.position + new Vector2(0, 0.5f),
+        //                            item.AddHeal.ToString(), Color.green, Color.white);
 
-                if (enemy.Heal <= 0)
-                {
-                    model.Death();
-                    BattleManager.instance.battleAudio.PlaySound(Data.EnemyDeath);
-                }
-            }
+        //        if (enemy.Heal <= 0)
+        //        {
+        //            model.Death();
+        //            BattleManager.instance.battleAudio.PlaySound(Data.EnemyDeath);
+        //        }
+        //    }
 
-            foreach (var state in item.AddStates)
-            {
-                info.AddState(state);
-            }
-        }
+        //    foreach (var state in item.AddStates)
+        //    {
+        //        info.AddState(state);
+        //    }
+        //}
 
-        if (item.AddHeal < 0)
-        {
-            if (entitys[0] is BattleCharacterInfo) 
-                BattleManager.instance.battleAudio.PlaySound(Data.Hurt);
-            else
-                BattleManager.instance.battleAudio.PlaySound(Data.EnemyDamage);
-        }
+        //if (item.AddHeal < 0)
+        //{
+        //    if (entitys[0] is BattleCharacterInfo) 
+        //        BattleManager.instance.battleAudio.PlaySound(Data.Hurt);
+        //    else
+        //        BattleManager.instance.battleAudio.PlaySound(Data.EnemyDamage);
+        //}
 
-        else if (item.AddHeal > 0 || item.AddMana > 0 || item.AddConcentration > 0 || item.WakeupCharacter)
-            BattleManager.instance.battleAudio.PlaySound(Data.Heal);
+        //else if (item.AddHeal > 0 || item.AddMana > 0 || item.AddConcentration > 0 || item.WakeupCharacter)
+        //    BattleManager.instance.battleAudio.PlaySound(Data.Heal);
 
-        GameManager.Instance.inventory.AddToItemCount(item, -1);
+        //GameManager.Instance.inventory.AddToItemCount(item, -1);
     }
 
     public void UseAbility(RPGAbility ability, BattleCharacterInfo who, params BattleEntityInfo[] entitys)
     {
-        foreach (var info in entitys)
-        {
-            if (ability.AddHeal != 0)
-            {
-                if (ability.AddInPercents)
-                    info.Heal += info.Entity.MaxHeal * (ability.AddHeal / 100);
-                else
-                    info.Heal += ability.AddHeal;
-            }
+        //foreach (var info in entitys)
+        //{
+        //    if (ability.AddHeal != 0)
+        //    {
+        //        if (ability.AddInPercents)
+        //            info.Heal += info.Entity.MaxHeal * (ability.AddHeal / 100);
+        //        else
+        //            info.Heal += ability.AddHeal;
+        //    }
                 
 
-            if (info is BattleCharacterInfo character)
-            {
-                CharacterBox box = BattleManager.instance.characterBox.GetBox(character);
+        //    if (info is BattleCharacterInfo character)
+        //    {
+        //        CharacterBox box = BattleManager.instance.characterBox.GetBox(character);
 
-                if (ability.AddHeal < 0)
-                    SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 2.6f),
-                                    Mathf.Abs(ability.AddHeal).ToString(), Color.red, Color.white);
-                else if (ability.AddHeal > 0)
-                    SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 2.6f),
-                                    ability.AddHeal.ToString(), Color.green, Color.white);
+        //        if (ability.AddHeal < 0)
+        //            SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 2.6f),
+        //                            Mathf.Abs(ability.AddHeal).ToString(), Color.red, Color.white);
+        //        else if (ability.AddHeal > 0)
+        //            SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 2.6f),
+        //                            ability.AddHeal.ToString(), Color.green, Color.white);
 
-                if (ability.AddMana > 0)
-                    SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 3f),
-                                    ability.AddHeal.ToString(), Color.cyan, Color.white);
+        //        if (ability.AddMana > 0)
+        //            SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 3f),
+        //                            ability.AddHeal.ToString(), Color.cyan, Color.white);
 
-                if (character.Heal <= 0)
-                    FallCharacter(character);
+        //        if (character.Heal <= 0)
+        //            FallCharacter(character);
 
-                if (ability.WakeupCharacter && character.IsDead)
-                {
-                    box.SetDead(false);
+        //        if (ability.WakeupCharacter && character.IsDead)
+        //        {
+        //            box.SetDead(false);
 
-                    character.IsDead = false;
+        //            character.IsDead = false;
 
-                    if (info.Heal <= 0)
-                        info.Heal = 1;
-                }
-            }
-            else if (info is BattleEnemyInfo enemy)
-            {
-                EnemyModel model = BattleManager.instance.enemyModels.GetModel(enemy);
+        //            if (info.Heal <= 0)
+        //                info.Heal = 1;
+        //        }
+        //    }
+        //    else if (info is BattleEnemyInfo enemy)
+        //    {
+        //        EnemyModel model = BattleManager.instance.enemyModels.GetModel(enemy);
 
-                //if (ability.Damage > 0)
-                //    SpawnDamageText(model.DamageTextGlobalPoint,
-                //                    Mathf.Abs(ability.AddHeal).ToString(), Color.red, Color.white);
+        //        //if (ability.Damage > 0)
+        //        //    SpawnDamageText(model.DamageTextGlobalPoint,
+        //        //                    Mathf.Abs(ability.AddHeal).ToString(), Color.red, Color.white);
 
-                if (ability.AddHeal < 0)
-                    SpawnDamageText((Vector2)model.transform.position + new Vector2(0, 0.5f),
-                                    Mathf.Abs(ability.AddHeal).ToString(), Color.red, Color.white);
-                else if (ability.AddHeal > 0)
-                    SpawnDamageText((Vector2)model.transform.position + new Vector2(0, 0.5f),
-                                    ability.AddHeal.ToString(), Color.green, Color.white);
+        //        if (ability.AddHeal < 0)
+        //            SpawnDamageText((Vector2)model.transform.position + new Vector2(0, 0.5f),
+        //                            Mathf.Abs(ability.AddHeal).ToString(), Color.red, Color.white);
+        //        else if (ability.AddHeal > 0)
+        //            SpawnDamageText((Vector2)model.transform.position + new Vector2(0, 0.5f),
+        //                            ability.AddHeal.ToString(), Color.green, Color.white);
 
-                if (enemy.Heal <= 0)
-                {
-                    model.Death();
-                    BattleManager.instance.battleAudio.PlaySound(Data.EnemyDeath);
-                }
-            }
+        //        if (enemy.Heal <= 0)
+        //        {
+        //            model.Death();
+        //            BattleManager.instance.battleAudio.PlaySound(Data.EnemyDeath);
+        //        }
+        //    }
 
-            foreach (var state in ability.AddStates)
-            {
-                info.AddState(state);
-            }
+        //    foreach (var state in ability.AddStates)
+        //    {
+        //        info.AddState(state);
+        //    }
 
-            if (ability.AddHeal < 0)
-            {
-                if (entitys[0] is BattleCharacterInfo)
-                    BattleManager.instance.battleAudio.PlaySound(Data.Hurt);
-                else
-                    BattleManager.instance.battleAudio.PlaySound(Data.EnemyDamage);
-            }
+        //    if (ability.AddHeal < 0)
+        //    {
+        //        if (entitys[0] is BattleCharacterInfo)
+        //            BattleManager.instance.battleAudio.PlaySound(Data.Hurt);
+        //        else
+        //            BattleManager.instance.battleAudio.PlaySound(Data.EnemyDamage);
+        //    }
 
-            else if (ability.AddHeal > 0 || ability.AddMana > 0 || ability.WakeupCharacter)
-                BattleManager.instance.battleAudio.PlaySound(Data.Heal);
-        }
+        //    else if (ability.AddHeal > 0 || ability.AddMana > 0 || ability.WakeupCharacter)
+        //        BattleManager.instance.battleAudio.PlaySound(Data.Heal);
+        //}
     }
 
     public void SpawnDamageText(Vector2 position, int damage)
@@ -289,23 +289,23 @@ public class BattleUtility : MonoBehaviour
     /// <param name="instance">Создоваеммый экземпляр</param>
     /// <param name="position">Позиция</param>
     /// <returns>Новый экземпляр</returns>
-    public AttackEffect SpawnAttackEffect(AttackEffect instance, Vector2 position)
+    public VisualAttackEffect SpawnAttackEffect(VisualAttackEffect instance, Vector2 position)
     {
         GameObject obj = Instantiate(instance.gameObject, position, Quaternion.identity, Data.BattleCanvas.transform);
 
-        return obj.GetComponent<AttackEffect>();
+        return obj.GetComponent<VisualAttackEffect>();
     }
     /// <summary>
     /// Создаёт объект AttackEffect
     /// </summary>
     /// <param name="instance">Создоваеммый экземпляр</param>
     /// <returns>Новый экземпляр</returns>
-    public AttackEffect SpawnAttackEffect(AttackEffect instance)
+    public VisualAttackEffect SpawnAttackEffect(VisualAttackEffect instance)
     {
         GameObject obj = Instantiate(instance.gameObject, (Vector2)Data.BattleCanvas.transform.position + new Vector2(0, 1.5f), 
             Quaternion.identity, Data.BattleCanvas.transform);
 
-        return obj.GetComponent<AttackEffect>();
+        return obj.GetComponent<VisualAttackEffect>();
     }
 
     /// <summary>
@@ -313,7 +313,7 @@ public class BattleUtility : MonoBehaviour
     /// </summary>
     /// <param name="character">Персонаж</param>
     /// <param name="bullet">Пуля</param>
-    public void DamageCharacter(BattleCharacterInfo character, PatternBullet bullet)
+    public void DamageCharacterByBullet(BattleCharacterInfo character, PatternBullet bullet)
     {
         CharacterBox box = BattleManager.instance.characterBox.GetBox(character);
 

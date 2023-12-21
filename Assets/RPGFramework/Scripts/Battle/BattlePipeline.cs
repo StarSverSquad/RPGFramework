@@ -20,12 +20,14 @@ public class BattlePipeline : MonoBehaviour
     public BattleChoiceManager Choice => BattleManager.instance.choice;
     public BattleUtility Utility => BattleManager.instance.utility;
 
+    private BattleUsingService usingService;
+
     public bool MainIsWorking => main != null;
 
     public bool IsPlayerTurn { get; private set; } = false;
     public bool IsEnemyTurn { get; private set; } = false;
 
-    // Стек для выборов
+    // Список выборов
     private List<ChoiceAction> choiceActions = new List<ChoiceAction>();
     public ChoiceAction CurrentChoiceAction => choiceActions.Last();
 
@@ -61,6 +63,8 @@ public class BattlePipeline : MonoBehaviour
     private IEnumerator MainPipeline()
     {
         /// SETUP PART +
+
+        usingService = new BattleUsingService(BattleManager.instance, GameManager.Instance);
 
         // Добавление персонажей в битву
         foreach (var item in GameManager.Instance.characterManager.characters)
@@ -825,100 +829,24 @@ public class BattlePipeline : MonoBehaviour
                             switch (consumed.Direction)
                             {
                                 case RPGConsumed.ConsumingDirection.AllTeam:
-                                    Utility.ConsumeItem(consumed, Data.Characters.ToArray());
+                                    yield return StartCoroutine(usingService.UseItem(consumed, characterInfo, Data.Characters.ToArray()));
                                     break;
                                 case RPGConsumed.ConsumingDirection.Teammate:
-                                    Utility.ConsumeItem(consumed, characterInfo.CharacterBuffer);
+                                    yield return StartCoroutine(usingService.UseItem(consumed, characterInfo, characterInfo.CharacterBuffer));
                                     break;
                                 case RPGConsumed.ConsumingDirection.AllEnemys:
-                                    {
-                                        if (consumed.VisualEffect != null)
-                                        {
-                                            VisualAttackEffect effect = BattleManager.Utility.SpawnAttackEffect(consumed.VisualEffect);
-
-                                            effect.Invoke();
-
-                                            yield return new WaitWhile(() => effect.IsAnimating);
-
-                                            yield return new WaitForSeconds(0.5f);
-
-                                            Destroy(effect.gameObject);
-                                        }
-                                        Utility.ConsumeItem(consumed, Data.Enemys.ToArray());
-                                    }
+                                    yield return StartCoroutine(usingService.UseItem(consumed, characterInfo, Data.Enemys.ToArray()));
                                     break;
                                 case RPGConsumed.ConsumingDirection.Enemy:
-                                    {
-                                        if (consumed.VisualEffect != null)
-                                        {
-                                            VisualAttackEffect effect;
-
-                                            if (consumed.VisualEffect.LocaleInCenter)
-                                                effect = BattleManager.Utility.SpawnAttackEffect(consumed.VisualEffect);
-                                            else
-                                            {
-                                                Vector2 attackPos = BattleManager.instance.enemyModels.GetModel(characterInfo.EntityBuffer as BattleEnemyInfo).AttackGlobalPoint;
-
-                                                effect = BattleManager.Utility.SpawnAttackEffect(consumed.VisualEffect, attackPos);
-                                            }
-
-                                            effect.Invoke();
-
-                                            yield return new WaitWhile(() => effect.IsAnimating);
-
-                                            yield return new WaitForSeconds(0.5f);
-
-                                            Destroy(effect.gameObject);
-                                        }
-                                        Utility.ConsumeItem(consumed, characterInfo.EnemyBuffer);
-                                    }
+                                    yield return StartCoroutine(usingService.UseItem(consumed, characterInfo, characterInfo.EnemyBuffer));
                                     break;
                                 case RPGConsumed.ConsumingDirection.Any:
-                                    if (characterInfo.EntityBuffer is BattleEnemyInfo enemy
-                                        && consumed.VisualEffect != null)
-                                    {
-                                        VisualAttackEffect effect;
-
-                                        if (consumed.VisualEffect.LocaleInCenter)
-                                            effect = BattleManager.Utility.SpawnAttackEffect(consumed.VisualEffect);
-                                        else
-                                        {
-                                            Vector2 attackPos = BattleManager.instance.enemyModels.GetModel(enemy).AttackGlobalPoint;
-
-                                            effect = BattleManager.Utility.SpawnAttackEffect(consumed.VisualEffect, attackPos);
-                                        }
-
-                                        effect.Invoke();
-
-                                        yield return new WaitWhile(() => effect.IsAnimating);
-
-                                        yield return new WaitForSeconds(0.5f);
-
-                                        Destroy(effect.gameObject);
-                                    }
-                                    Utility.ConsumeItem(consumed, characterInfo.EntityBuffer);
+                                    yield return StartCoroutine(usingService.UseItem(consumed, characterInfo, characterInfo.EntityBuffer));
                                     break;
                                 case RPGConsumed.ConsumingDirection.All:
-                                    {
-                                        Utility.ConsumeItem(consumed, Data.Characters.ToArray());
+                                    yield return StartCoroutine(usingService.UseItem(consumed, characterInfo, Data.Characters.ToArray()));
 
-                                        yield return new WaitForSeconds(.25f);
-
-                                        if (consumed.VisualEffect != null)
-                                        {
-                                            VisualAttackEffect effect = BattleManager.Utility.SpawnAttackEffect(consumed.VisualEffect);
-
-                                            effect.Invoke();
-
-                                            yield return new WaitWhile(() => effect.IsAnimating);
-
-                                            yield return new WaitForSeconds(0.5f);
-
-                                            Destroy(effect.gameObject);
-                                        }
-
-                                        Utility.ConsumeItem(consumed, Data.Enemys.ToArray());
-                                    }
+                                    yield return StartCoroutine(usingService.UseItem(consumed, characterInfo, Data.Enemys.ToArray()));
                                     break;
                             }
                         }

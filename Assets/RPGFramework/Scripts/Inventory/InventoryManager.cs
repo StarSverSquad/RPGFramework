@@ -109,7 +109,7 @@ public class InventoryManager : MonoBehaviour
 
         if (slot == null && value <= 0)
         {
-            Debug.LogWarning("Предмет не найден в инвенторе");
+            Debug.LogWarning("Предмет не найден в инвентаре");
             return;
         }           
 

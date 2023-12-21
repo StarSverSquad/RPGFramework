@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml;
 using UnityEngine;
 
 [Serializable]
@@ -42,6 +43,8 @@ public class BattleEntityInfo
     }
 
     public event Action StatesChanged;
+    public event Action OnStatesUpdated;
+    public event Action<RPGEntityState> OnStateUpdated;
     public event Action OnHealChanged;
     public event Action OnManaChanged;
 
@@ -110,7 +113,9 @@ public class BattleEntityInfo
                 i--;
                 oldcount = States.Count;
             }
-        }   
+        }
+
+        OnStatesUpdated?.Invoke();
     }
 
     public virtual void UpdateState(RPGEntityState state)
@@ -120,13 +125,15 @@ public class BattleEntityInfo
         if (st == null)
             return;
 
-        Heal += state.AddHeal;
+        Heal = Mathf.Clamp(Heal + state.AddHeal, 1, Entity.MaxHeal);
         Mana += state.AddMana;
 
         st.turnsCount++;
 
         if (st.turnsCount >= state.TurnCount)
             RemoveState(state);
+
+        OnStateUpdated?.Invoke(state);
     }
 
     public virtual int Damage(int damage)

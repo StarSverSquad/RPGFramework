@@ -189,19 +189,23 @@ public class BattleChoiceManager : MonoBehaviour
 
         RPGConsumed consumed = current.Item as RPGConsumed;
         
-        foreach (var item in Data.Characters)
+        foreach (var character in Data.Characters)
         {
             IndependenceChoiceUI.ElementInfo info = new IndependenceChoiceUI.ElementInfo()
             {
-                name = item.Entity.Name,
-                value = item,
+                name = character.Entity.Name,
+                value = character,
                 locked = false
             };
 
             if (current.BattleAction == BattleCharacterAction.Item)
             {
-                info.locked = !current.IsConsumed
-                           && (item.IsDead != consumed.ForDeath || item.IsDead == consumed.ForAlive);
+                info.locked = !current.IsConsumed &&
+                    (character.IsDead && !consumed.ForDeath) || (!character.IsDead == !consumed.ForAlive);
+            }
+            else if (current.BattleAction == BattleCharacterAction.Act)
+            {
+                info.locked = character.IsDead;
             }
 
             choices.Add(info);
@@ -286,9 +290,9 @@ public class BattleChoiceManager : MonoBehaviour
                 slot.Item.Usage == RPGCollectable.Usability.Explorer)
                 continue;
 
+            int alreadyUsing = 0;
             if (slot.Item is RPGConsumed)
             {
-                int alreadyUsing = 0;
                 foreach (var item in Data.Characters)
                     alreadyUsing += item.Item == slot.Item ? 1 : 0;
 
@@ -301,7 +305,7 @@ public class BattleChoiceManager : MonoBehaviour
                 name = slot.Item.Name,
                 description = slot.Item.Description,
                 icon = slot.Item.Icon,
-                counterText = slot.Count == 1 ? "" : $"{slot.Count}x",
+                counterText = slot.Count - alreadyUsing == 1 ? "" : $"{slot.Count - alreadyUsing}x",
                 value = slot.Item
             };
 

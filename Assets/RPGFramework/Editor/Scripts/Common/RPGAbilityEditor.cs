@@ -37,7 +37,7 @@ public class RPGAbilityEditor : Editor
 
         EditorGUILayout.BeginVertical(GUI.skin.box);
 
-        GUILayout.Label("Добовление эффекта");
+        GUILayout.Label("Добавление эффекта");
 
         selected = EditorGUILayout.Popup(selected, names.ToArray());
 

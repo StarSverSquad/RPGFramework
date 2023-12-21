@@ -9,6 +9,13 @@ public class ExplorerEventHandler : MonoBehaviour
 
     public bool EventRuning => CurrentEvent != null;
 
+    public void InvokeEvent(GraphEvent e)
+    {
+        e.Invoke(this);
+
+        HandleEvent(e);
+    }
+
     public void HandleEvent(GraphEvent e)
     {
         if (!EventRuning)

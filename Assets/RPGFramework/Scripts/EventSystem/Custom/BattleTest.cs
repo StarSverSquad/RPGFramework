@@ -11,9 +11,9 @@ public class BattleTest : CustomActionBase
 
     protected override IEnumerator ActionCoroutine()
     {
-        GameManager.Instance.inventory.AddToItemCount(testItem, 2);
-        GameManager.Instance.inventory.AddToItemCount(testItem1, 1);
-        GameManager.Instance.inventory.AddToItemCount(testItem2, 15);
+        GameManager.Instance.inventory.AddToItemCount(testItem, 99);
+        GameManager.Instance.inventory.AddToItemCount(testItem1, 99);
+        GameManager.Instance.inventory.AddToItemCount(testItem2, 99);
 
         BattleManager.StartBattle(Battle);
 

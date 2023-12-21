@@ -41,6 +41,14 @@
     {
         IsDead = false;
         CleanUp();
+
+        OnStatesUpdated += BattleCharacterInfo_OnStatesUpdated;
+    }
+
+    private void BattleCharacterInfo_OnStatesUpdated()
+    {
+        if (IsDead && States.Count > 0)
+            RemoveAllStates();
     }
 
     public void CleanUp()

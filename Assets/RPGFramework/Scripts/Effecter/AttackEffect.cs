@@ -41,7 +41,7 @@ public class AttackEffect : MonoBehaviour
 
         audioSource.Play();
 
-        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForSeconds(0.01f);
 
         yield return new WaitWhile(() => !animator.GetCurrentAnimatorStateInfo(0).IsName(animatorIdleStateName));
 

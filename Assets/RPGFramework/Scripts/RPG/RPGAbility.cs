@@ -20,6 +20,10 @@ public class RPGAbility : ScriptableObject
     public int ManaCost;
     public int ConcentrationCost;
 
+    public int Damage;
+
+    public bool AddInPercents = false;
+
     public int AddHeal;
     public int AddMana;
 

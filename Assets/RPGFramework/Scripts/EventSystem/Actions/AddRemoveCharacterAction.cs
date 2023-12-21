@@ -4,13 +4,18 @@ using UnityEngine;
 public class AddRemoveCharacterAction : GraphActionBase
 {
     public bool isAdd;
+    public bool updateModels;
 
     public RPGCharacter character;
+
+    public DynamicExplorerObject existentObject;
 
     public AddRemoveCharacterAction() : base("AddRemoveCharacter")
     {
         character = null;
+        existentObject = null;
         isAdd = true;
+        updateModels = true;
     }
 
     public override IEnumerator ActionCoroutine()
@@ -19,6 +24,16 @@ public class AddRemoveCharacterAction : GraphActionBase
             GameManager.Instance.characterManager.AddCharacter(character);
         else
             GameManager.Instance.characterManager.RemoveCharacter(character);
+
+        if (updateModels)
+            ExplorerManager.instance.characterManager.UpdateModels();
+        else if (existentObject != null)
+        {
+            if (isAdd)
+                ExplorerManager.instance.characterManager.AddModel(existentObject);
+            else
+                ExplorerManager.instance.characterManager.RemoveModel(existentObject);
+        }
 
         yield break;
     }

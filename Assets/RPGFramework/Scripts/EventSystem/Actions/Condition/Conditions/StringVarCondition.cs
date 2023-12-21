@@ -25,4 +25,9 @@ public class StringVarCondition : ConditionBase
 
         return GameManager.Instance.gameData.StringValues[Var] == Value;
     }
+
+    public override string GetLabel()
+    {
+        return "По строковой переменной";
+    }
 }

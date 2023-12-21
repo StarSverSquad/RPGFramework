@@ -27,4 +27,9 @@ public class MoneyCondition : ConditionBase
             _ => false,
         };
     }
+
+    public override string GetLabel()
+    {
+        return "По деньгам";
+    }
 }

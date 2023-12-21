@@ -86,7 +86,7 @@ public class ChoiceBoxManager : ChoiceBase<string>
 
         foreach (string item in choices)
         {
-            GameObject ci = Instantiate(choiceItemPrefab, mask.position, Quaternion.identity, content);
+            GameObject ci = Instantiate(choiceItemPrefab, content.position, Quaternion.identity, content);
 
             RectTransform itemtrans = ci.GetComponent<RectTransform>();
 
@@ -102,6 +102,7 @@ public class ChoiceBoxManager : ChoiceBase<string>
         }
 
         content.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, offsetx);
+        choiceBox.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, offsetx);
 
         OnSellectChanged();
 

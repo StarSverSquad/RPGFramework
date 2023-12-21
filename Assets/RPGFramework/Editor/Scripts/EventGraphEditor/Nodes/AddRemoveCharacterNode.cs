@@ -16,17 +16,31 @@ public class AddRemoveCharacterNode : ActionNodeBase
     {
         AddRemoveCharacterAction act = action as AddRemoveCharacterAction;
 
-        Toggle toggle = new Toggle("Добавить?");
+        Toggle isAddToggle = new Toggle("Добавить?");
 
-        toggle.SetValueWithoutNotify(act.isAdd);
-        toggle.RegisterValueChangedCallback(isAdd =>
+        isAddToggle.SetValueWithoutNotify(act.isAdd);
+        isAddToggle.RegisterValueChangedCallback(data =>
         {
-            act.isAdd = isAdd.newValue;
+            act.isAdd = data.newValue;
 
             MakeDirty();
         });
 
-        extensionContainer.Add(toggle);
+        extensionContainer.Add(isAddToggle);
+
+        Toggle updateModelsToggle = new Toggle("Обнавить модели?");
+
+        updateModelsToggle.SetValueWithoutNotify(act.updateModels);
+        updateModelsToggle.RegisterValueChangedCallback(data =>
+        {
+            act.updateModels = data.newValue;
+
+            MakeDirty();
+
+            UpdateUI();
+        });
+
+        extensionContainer.Add(updateModelsToggle);
 
         ObjectField characterField = new ObjectField("Персонаж")
         {
@@ -35,13 +49,32 @@ public class AddRemoveCharacterNode : ActionNodeBase
         };
 
         characterField.SetValueWithoutNotify(act.character);
-        characterField.RegisterValueChangedCallback(character =>
+        characterField.RegisterValueChangedCallback(data =>
         {
-            act.character = character.newValue as RPGCharacter;
+            act.character = data.newValue as RPGCharacter;
 
             MakeDirty();
         });
 
         extensionContainer.Add(characterField);
+
+        if (!act.updateModels)
+        {
+            ObjectField exitentObjectField = new ObjectField("Существующая модель")
+            {
+                objectType = typeof(DynamicExplorerObject),
+                allowSceneObjects = true
+            };
+
+            exitentObjectField.SetValueWithoutNotify(act.existentObject);
+            exitentObjectField.RegisterValueChangedCallback(data =>
+            {
+                act.existentObject = data.newValue as DynamicExplorerObject;
+
+                MakeDirty();
+            });
+
+            extensionContainer.Add(exitentObjectField);
+        }
     }
 }

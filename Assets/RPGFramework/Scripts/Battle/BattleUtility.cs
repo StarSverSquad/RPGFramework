@@ -90,9 +90,20 @@ public class BattleUtility : MonoBehaviour
         foreach (var info in entitys)
         {
             if (item.AddHeal != 0)
-                info.Heal += item.AddHeal;
+            {
+                if (item.AddInPercents)
+                    info.Heal += info.Entity.MaxHeal * (item.AddHeal / 100);
+                else
+                    info.Heal += item.AddHeal;
+            }
+
             if (item.AddMana != 0)
-                info.Mana += item.AddMana;
+            {
+                if (item.AddInPercents)
+                    info.Mana += info.Entity.MaxMana * (item.AddMana / 100);
+                else
+                    info.Mana += item.AddHeal;
+            }
 
             if (info is BattleCharacterInfo character)
             {
@@ -163,12 +174,18 @@ public class BattleUtility : MonoBehaviour
         GameManager.Instance.inventory.AddToItemCount(item, -1);
     }
 
-    public void UseAbility(RPGAbility ability, params BattleEntityInfo[] entitys)
+    public void UseAbility(RPGAbility ability, BattleCharacterInfo who, params BattleEntityInfo[] entitys)
     {
         foreach (var info in entitys)
         {
             if (ability.AddHeal != 0)
-                info.Heal += ability.AddHeal;
+            {
+                if (ability.AddInPercents)
+                    info.Heal += info.Entity.MaxHeal * (ability.AddHeal / 100);
+                else
+                    info.Heal += ability.AddHeal;
+            }
+                
 
             if (info is BattleCharacterInfo character)
             {
@@ -201,6 +218,10 @@ public class BattleUtility : MonoBehaviour
             else if (info is BattleEnemyInfo enemy)
             {
                 EnemyModel model = BattleManager.instance.enemyModels.GetModel(enemy);
+
+                //if (ability.Damage > 0)
+                //    SpawnDamageText(model.DamageTextGlobalPoint,
+                //                    Mathf.Abs(ability.AddHeal).ToString(), Color.red, Color.white);
 
                 if (ability.AddHeal < 0)
                     SpawnDamageText((Vector2)model.transform.position + new Vector2(0, 0.5f),
@@ -327,7 +348,13 @@ public class BattleUtility : MonoBehaviour
             }
         }
         else
-            SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1.4f), realDamage);
+        {
+            if (realDamage > 0)
+                SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1.4f), realDamage);
+            else
+                SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1.4f), "ПРОМАХ");
+        }
+            
     }
 
     public void FallCharacter(BattleCharacterInfo character)

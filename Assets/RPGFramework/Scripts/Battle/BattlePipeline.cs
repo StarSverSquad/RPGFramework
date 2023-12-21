@@ -646,9 +646,8 @@ public class BattlePipeline : MonoBehaviour
 
                         yield return new WaitWhile(() => effect.IsAnimating);
 
-                        //yield return new WaitForSeconds(1f);
+                        yield return new WaitForSeconds(0.5f);
 
-                        // Удаление объекта эффекта удара
                         Destroy(effect.gameObject);
 
                         // Убрать QTE
@@ -674,10 +673,10 @@ public class BattlePipeline : MonoBehaviour
                         switch (characterInfo.Ability.Direction)
                         {
                             case RPGAbility.AbilityDirection.AllTeam:
-                                Utility.UseAbility(characterInfo.Ability, Data.Characters.ToArray());
+                                Utility.UseAbility(characterInfo.Ability, characterInfo, Data.Characters.ToArray());
                                 break;
                             case RPGAbility.AbilityDirection.Teammate:
-                                Utility.UseAbility(characterInfo.Ability, characterInfo.CharacterBuffer);
+                                Utility.UseAbility(characterInfo.Ability, characterInfo, characterInfo.CharacterBuffer);
                                 break;
                             case RPGAbility.AbilityDirection.AllEnemys:
                                 {
@@ -689,7 +688,11 @@ public class BattlePipeline : MonoBehaviour
 
                                     yield return new WaitWhile(() => effect.IsAnimating);
 
-                                    Utility.UseAbility(characterInfo.Ability, Data.Enemys.ToArray());
+                                    yield return new WaitForSeconds(0.5f);
+
+                                    Destroy(effect.gameObject);
+
+                                    Utility.UseAbility(characterInfo.Ability, characterInfo, Data.Enemys.ToArray());
                                 }
                                 break;
                             case RPGAbility.AbilityDirection.Enemy:
@@ -709,7 +712,11 @@ public class BattlePipeline : MonoBehaviour
 
                                     yield return new WaitWhile(() => effect.IsAnimating);
 
-                                    Utility.UseAbility(characterInfo.Ability, characterInfo.EnemyBuffer);
+                                    yield return new WaitForSeconds(0.5f);
+
+                                    Destroy(effect.gameObject);
+
+                                    Utility.UseAbility(characterInfo.Ability, characterInfo, characterInfo.EnemyBuffer);
                                 }
                                 break;
                             case RPGAbility.AbilityDirection.Any:
@@ -730,12 +737,16 @@ public class BattlePipeline : MonoBehaviour
 
                                     yield return new WaitWhile(() => effect.IsAnimating);
 
-                                    Utility.UseAbility(characterInfo.Ability, characterInfo.EntityBuffer);
+                                    yield return new WaitForSeconds(0.5f);
+
+                                    Destroy(effect.gameObject);
+
+                                    Utility.UseAbility(characterInfo.Ability, characterInfo, characterInfo.EntityBuffer);
                                 }
                                 break;
                             case RPGAbility.AbilityDirection.All:
                                 {
-                                    Utility.UseAbility(characterInfo.Ability, Data.Characters.ToArray());
+                                    Utility.UseAbility(characterInfo.Ability, characterInfo, Data.Characters.ToArray());
 
                                     yield return new WaitForSeconds(0.25f);
 
@@ -747,7 +758,11 @@ public class BattlePipeline : MonoBehaviour
 
                                     yield return new WaitWhile(() => effect.IsAnimating);
 
-                                    Utility.UseAbility(characterInfo.Ability, Data.Enemys.ToArray());
+                                    yield return new WaitForSeconds(0.5f);
+
+                                    Destroy(effect.gameObject);
+
+                                    Utility.UseAbility(characterInfo.Ability, characterInfo, Data.Enemys.ToArray());
                                 }
                                 break;
                         }
@@ -824,6 +839,10 @@ public class BattlePipeline : MonoBehaviour
                                             effect.Invoke();
 
                                             yield return new WaitWhile(() => effect.IsAnimating);
+
+                                            yield return new WaitForSeconds(0.5f);
+
+                                            Destroy(effect.gameObject);
                                         }
                                         Utility.ConsumeItem(consumed, Data.Enemys.ToArray());
                                     }
@@ -846,6 +865,10 @@ public class BattlePipeline : MonoBehaviour
                                             effect.Invoke();
 
                                             yield return new WaitWhile(() => effect.IsAnimating);
+
+                                            yield return new WaitForSeconds(0.5f);
+
+                                            Destroy(effect.gameObject);
                                         }
                                         Utility.ConsumeItem(consumed, characterInfo.EnemyBuffer);
                                     }
@@ -868,6 +891,10 @@ public class BattlePipeline : MonoBehaviour
                                         effect.Invoke();
 
                                         yield return new WaitWhile(() => effect.IsAnimating);
+
+                                        yield return new WaitForSeconds(0.5f);
+
+                                        Destroy(effect.gameObject);
                                     }
                                     Utility.ConsumeItem(consumed, characterInfo.EntityBuffer);
                                     break;
@@ -884,6 +911,10 @@ public class BattlePipeline : MonoBehaviour
                                             effect.Invoke();
 
                                             yield return new WaitWhile(() => effect.IsAnimating);
+
+                                            yield return new WaitForSeconds(0.5f);
+
+                                            Destroy(effect.gameObject);
                                         }
 
                                         Utility.ConsumeItem(consumed, Data.Enemys.ToArray());

@@ -1,10 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -102,6 +100,9 @@ public class EventGraphView : GraphView
             case AddRemoveCharacterAction a:
                 node = new AddRemoveCharacterNode(a);
                 break;
+            case SetActiveAction a:
+                node = new SetActiveNode(a);
+                break;
             default:
                 EditorUtility.DisplayDialog("Ошибка", $"Нода под событие {action.Name} не существует", "Ok");
                 return;
@@ -142,6 +143,20 @@ public class EventGraphView : GraphView
 
         Vector2 mousePosition = this.ChangeCoordinatesTo(contentViewContainer, evt.localMousePosition);
 
+        if (evt.target is ActionNodeBase node)
+        {
+            object obj = node.action.Clone() as GraphActionBase;
+
+            GraphActionBase action;
+
+            if (obj is GraphActionBase act)
+                action = act;
+            else
+                action = node.action.GetType().Assembly.CreateInstance(node.action.GetType().Name) as GraphActionBase;
+
+            evt.menu.AppendAction("Создать дубликат", i => CreateNode(action, mousePosition));
+        }
+
         evt.menu.AppendSeparator("Общие события");
         evt.menu.AppendSeparator("События битвы");
         evt.menu.AppendSeparator("События исследования");
@@ -152,6 +167,7 @@ public class EventGraphView : GraphView
         evt.menu.AppendAction("Общие События/Управление переменной", i => CreateNode(new ManageVarAction(), mousePosition));
         evt.menu.AppendAction("Общие События/Ждать", i => CreateNode(new WaitAction(), mousePosition));
         evt.menu.AppendAction("Общие События/Изменить состав команды", i => CreateNode(new AddRemoveCharacterAction(), mousePosition));
+        evt.menu.AppendAction("Общие События/Вкл.\\Выкл. объект", i => CreateNode(new SetActiveAction(), mousePosition));
 
         evt.menu.AppendAction("События исследования/Управление BGM", i => CreateNode(new ManageBGMAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Управление BGS", i => CreateNode(new ManageBGSAction(), mousePosition));

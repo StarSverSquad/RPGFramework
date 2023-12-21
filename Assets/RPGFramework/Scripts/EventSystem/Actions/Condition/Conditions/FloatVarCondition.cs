@@ -37,4 +37,9 @@ public class FloatVarCondition : ConditionBase
             _ => false,
         };
     }
+
+    public override string GetLabel()
+    {
+        return "По дробной переменной";
+    }
 }

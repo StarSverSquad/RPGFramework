@@ -37,4 +37,9 @@ public class IntVarCondition : ConditionBase
             _ => false,
         };
     }
+
+    public override string GetLabel()
+    {
+        return "По целочисленной переменной";
+    }
 }

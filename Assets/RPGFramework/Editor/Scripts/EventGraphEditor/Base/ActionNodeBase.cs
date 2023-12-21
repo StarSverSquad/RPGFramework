@@ -1,13 +1,8 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using static UnityEditor.Progress;
-using UnityEngine.UIElements;
-using static UnityEditor.Rendering.CameraUI;
 
 public abstract class ActionNodeBase : Node
 {
@@ -94,12 +89,18 @@ public abstract class ActionNodeBase : Node
 
     public abstract void UIContructor();
 
+    /// <summary>
+    /// Помечает объект изменённым
+    /// </summary>
     public void MakeDirty()
     {
         view.MakeDirty();
     }
 
-    public void UIUpdate()
+    /// <summary>
+    /// Обновляет содержимое ноды
+    /// </summary>
+    public void UpdateUI()
     {
         extensionContainer.Clear();
         UIContructor();

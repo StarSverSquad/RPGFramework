@@ -15,8 +15,11 @@ public class RPGConsumed : RPGCollectable
 
     public AttackEffect AttackEffect;
 
+    public bool AddInPercents = false;
+
     public int AddHeal;
     public int AddMana;
+
     public int AddConcentration;
 
     public bool WakeupCharacter = false;

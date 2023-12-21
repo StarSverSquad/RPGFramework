@@ -138,8 +138,6 @@ public class BattleEntityInfo
 
         OnHealChanged?.Invoke();
 
-        Debug.Log($"{Entity.Name} heal = {Entity.Heal};");
-
         return dmg;
     }
 

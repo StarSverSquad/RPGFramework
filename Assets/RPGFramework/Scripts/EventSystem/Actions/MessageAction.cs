@@ -22,4 +22,23 @@ public class MessageAction : GraphActionBase
     {
         return "Сообщение";
     }
+
+    public override object Clone()
+    {
+        return new MessageAction()
+        {
+            message = new MessageInfo()
+            {
+                text = message.text,
+                clear = message.clear,
+                closeWindow = message.closeWindow,
+                image = message.image,
+                speed = message.speed,
+                letterSound = message.letterSound,
+                name = message.name,
+                position = message.position,
+                wait = message.wait
+            }
+        };
+    }
 }

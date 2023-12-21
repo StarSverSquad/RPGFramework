@@ -25,4 +25,9 @@ public class BoolVarCondition : ConditionBase
 
         return GameManager.Instance.gameData.BoolValues[Var] == Value;
     }
+
+    public override string GetLabel()
+    {
+        return "По переключателю";
+    }
 }

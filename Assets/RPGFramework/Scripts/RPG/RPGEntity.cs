@@ -17,6 +17,7 @@ public class RPGEntity : ScriptableObject
     public int DefaultDamage;
     public int DefaultDefence;
     public int DefaultAgility;
+    public int DefaultLuck;
 
     private int heal;
     public int Heal
@@ -48,11 +49,21 @@ public class RPGEntity : ScriptableObject
     public int MaxMana { get; set; }
 
     public int Damage { get; set; }
-    public int Agility { get; set; }
     public int Defence { get; set; }
+    public int Agility { get; set; }
+    public int Luck { get; set; }
+
+    
+    private List<RPGEntityStateInstance> stateInstances = new List<RPGEntityStateInstance>();
+    public RPGEntityStateInstance[] StateInstances => stateInstances.ToArray();
 
     public event Action OnHealChanged;
     public event Action OnManaChanged;
+
+    public event Action OnUpdateAllStates;
+    public event Action<RPGEntityState> OnUpdateState;
+    public event Action<RPGEntityState> OnRemoveState;
+    public event Action<RPGEntityState> OnAddState;
 
     public virtual void InitializeEntity()
     {
@@ -66,9 +77,15 @@ public class RPGEntity : ScriptableObject
         Damage = DefaultDamage;
         Defence = DefaultDefence;
         Agility = DefaultAgility;
+        Luck = DefaultLuck;
 
         MaxHeal = DefaultHeal;
         MaxMana = DefaultMana;
+    }
+
+    public virtual void UpdateStates()
+    {
+
     }
 
     /// <summary>

@@ -23,7 +23,7 @@ public class BattleUtility : MonoBehaviour
     {
         CleanupBattle();
 
-        foreach (var item in GameManager.Instance.characterManager.characters)
+        foreach (var item in GameManager.Instance.Character.characters)
             item.UpdateStats();
     }
 

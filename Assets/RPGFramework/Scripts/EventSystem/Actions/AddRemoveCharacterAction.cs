@@ -21,18 +21,18 @@ public class AddRemoveCharacterAction : GraphActionBase
     public override IEnumerator ActionCoroutine()
     {
         if (isAdd)
-            GameManager.Instance.characterManager.AddCharacter(character);
+            GameManager.Instance.Character.AddCharacter(character);
         else
-            GameManager.Instance.characterManager.RemoveCharacter(character);
+            GameManager.Instance.Character.RemoveCharacter(character);
 
         if (updateModels)
-            ExplorerManager.instance.characterManager.UpdateModels();
+            LocalManager.Instance.Character.UpdateModels();
         else if (existentObject != null)
         {
             if (isAdd)
-                ExplorerManager.instance.characterManager.AddModel(existentObject);
+                LocalManager.Instance.Character.AddModel(existentObject);
             else
-                ExplorerManager.instance.characterManager.RemoveModel(existentObject);
+                LocalManager.Instance.Character.RemoveModel(existentObject);
         }
 
         yield break;

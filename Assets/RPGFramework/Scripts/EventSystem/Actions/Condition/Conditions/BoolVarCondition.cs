@@ -16,14 +16,14 @@ public class BoolVarCondition : ConditionBase
 
     public override bool Invoke()
     {
-        if (!GameManager.Instance.gameData.BoolValues.HaveKey(Var))
+        if (!GameManager.Instance.GameData.BoolValues.HaveKey(Var))
         {
             Debug.LogWarning($"BOOL_VAR_CONDITION: Переменная {Var} не найдена");
 
             return false;
         }
 
-        return GameManager.Instance.gameData.BoolValues[Var] == Value;
+        return GameManager.Instance.GameData.BoolValues[Var] == Value;
     }
 
     public override string GetLabel()

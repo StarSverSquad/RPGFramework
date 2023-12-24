@@ -37,10 +37,10 @@ public class RPGCollectable : ScriptableObject
                 case Usability.Any:
                     if (BattleManager.IsBattle)
                         Event.Invoke(BattleManager.instance);
-                    else if (!ExplorerManager.instance.eventHandler.EventRuning)
+                    else if (!ExplorerManager.Instance.eventHandler.EventRuning)
                     {
-                        Event.Invoke(ExplorerManager.instance.eventHandler);
-                        ExplorerManager.instance.eventHandler.HandleEvent(Event);
+                        Event.Invoke(ExplorerManager.Instance.eventHandler);
+                        ExplorerManager.Instance.eventHandler.HandleEvent(Event);
                     }
                         break;
                 case Usability.Battle:
@@ -48,10 +48,10 @@ public class RPGCollectable : ScriptableObject
                         Event.Invoke(BattleManager.instance);
                     break;
                 case Usability.Explorer:
-                    if (!BattleManager.IsBattle && !ExplorerManager.instance.eventHandler.EventRuning)
+                    if (!BattleManager.IsBattle && !ExplorerManager.Instance.eventHandler.EventRuning)
                     {
-                        Event.Invoke(ExplorerManager.instance.eventHandler);
-                        ExplorerManager.instance.eventHandler.HandleEvent(Event);
+                        Event.Invoke(ExplorerManager.Instance.eventHandler);
+                        ExplorerManager.Instance.eventHandler.HandleEvent(Event);
                     }
                     break;
                 case Usability.Noway:

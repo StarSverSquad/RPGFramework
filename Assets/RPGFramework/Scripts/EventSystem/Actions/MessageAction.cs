@@ -13,9 +13,9 @@ public class MessageAction : GraphActionBase
 
     public override IEnumerator ActionCoroutine()
     {
-        CommonManager.instance.messageBox.Write(message);
+        CommonManager.Instance.MessageBox.Write(message);
 
-        yield return new WaitWhile(() => CommonManager.instance.messageBox.IsWriting);
+        yield return new WaitWhile(() => CommonManager.Instance.MessageBox.IsWriting);
     }
 
     public override string GetHeader()

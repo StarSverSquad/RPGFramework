@@ -29,6 +29,9 @@ public class ChoiceBoxManager : ChoiceBase<string>
     private Vector2 Margin;
 
     [SerializeField]
+    private float InBattleOffset;
+
+    [SerializeField]
     private RectTransform choiceBox;
     [SerializeField]
     private RectTransform mask;
@@ -48,7 +51,10 @@ public class ChoiceBoxManager : ChoiceBase<string>
                 choiceBox.anchoredPosition = positions[0];
                 break;
             case Position.Bottom:
-                choiceBox.anchoredPosition = positions[2];
+                if (BattleManager.IsBattle)
+                    choiceBox.anchoredPosition = positions[2] + new Vector2(0, 0);
+                else
+                    choiceBox.anchoredPosition = positions[2];
                 break;
             case Position.Center:
                 choiceBox.anchoredPosition = positions[1];
@@ -145,24 +151,23 @@ public class ChoiceBoxManager : ChoiceBase<string>
 
     public override bool ConfirmCanExecuted()
     {
-        return Input.GetKeyDown(KeyCode.Z);
+        return Input.GetKeyDown(GameManager.Instance.GameConfig.Accept);
     }
 
     public override int SellectionChanging()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(GameManager.Instance.GameConfig.MoveRight))
         {
             rightArrow.Shake();
 
             return 1;
         }           
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKeyDown(GameManager.Instance.GameConfig.MoveLeft))
         {
             leftArrow.Shake();
 
             return -1;
         }
-            
 
         return 0;
     }

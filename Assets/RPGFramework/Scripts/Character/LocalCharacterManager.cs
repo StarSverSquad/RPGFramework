@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class LocalCharacterManager : MonoBehaviour
+public class LocalCharacterManager : MonoBehaviour, IManagerInitialize
 {
-    public RPGCharacter[] Characters => GameManager.Instance.characterManager.characters;
+    public RPGCharacter[] Characters => GameManager.Instance.Character.characters;
 
     public List<DynamicExplorerObject> Models = new List<DynamicExplorerObject>();
     public List<Vector2> Targets = new List<Vector2>();
@@ -21,9 +21,9 @@ public class LocalCharacterManager : MonoBehaviour
     [SerializeField]
     private float moveTime = 1f;
 
-    private void Start()
+    public void Initialize()
     {
-        GameManager.Instance.characterManager.OnCharaterListChanged += CharacterManager_OnCharaterListChanged;
+        GameManager.Instance.Character.OnCharaterListChanged += CharacterManager_OnCharaterListChanged;
 
         ExplorerManager.PlayerMovement.OnMoving += Movement_OnMoving;
         ExplorerManager.PlayerMovement.OnStopMoving += Movement_OnStopMoving;
@@ -35,6 +35,8 @@ public class LocalCharacterManager : MonoBehaviour
     {
         if (Models.Contains(model))
             return;
+
+        model.transform.SetParent(transform);
 
         Models.Add(model);
         Targets.Add(ExplorerManager.GetPlayerPosition());
@@ -67,7 +69,7 @@ public class LocalCharacterManager : MonoBehaviour
         {
             GameObject n = Instantiate(Characters[i].Model.gameObject, 
                 ExplorerManager.GetPlayerPosition3D() + new Vector3(0, 0, 0.05f * i), 
-                Quaternion.identity);
+                Quaternion.identity, transform);
 
             DynamicExplorerObject model = n.GetComponent<DynamicExplorerObject>();
 
@@ -147,17 +149,10 @@ public class LocalCharacterManager : MonoBehaviour
         //UpdateModels();
     }
 
-    //private void OnDrawGizmos()
-    //{
-    //    foreach (var item in Targets)
-    //    {
-    //        Debug.DrawLine(item, item + new Vector2(0.1f, 0.1f), Color.green);
-    //    }
-    //}
 
     private void OnDestroy()
     {
-        GameManager.Instance.characterManager.OnCharaterListChanged -= CharacterManager_OnCharaterListChanged;
+        GameManager.Instance.Character.OnCharaterListChanged -= CharacterManager_OnCharaterListChanged;
 
         ExplorerManager.PlayerMovement.OnMoving -= Movement_OnMoving;
         ExplorerManager.PlayerMovement.OnStopMoving -= Movement_OnStopMoving;

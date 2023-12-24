@@ -25,10 +25,10 @@ public class InvokeEventEffect : EffectBase
             if (@event == null)
                 throw new ApplicationException("Событие не указано!");
 
-            if (ExplorerManager.instance.eventHandler.EventRuning)
+            if (ExplorerManager.Instance.eventHandler.EventRuning)
                 throw new ApplicationException("Не возможно запустить сразу два события!");
 
-            ExplorerManager.instance.eventHandler.InvokeEvent(@event);
+            ExplorerManager.Instance.eventHandler.InvokeEvent(@event);
         }
         catch (ApplicationException err)
         {

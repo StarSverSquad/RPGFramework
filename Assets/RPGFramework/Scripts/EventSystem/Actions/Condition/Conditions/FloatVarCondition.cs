@@ -19,7 +19,7 @@ public class FloatVarCondition : ConditionBase
 
     public override bool Invoke()
     {
-        if (!GameManager.Instance.gameData.FloatValues.HaveKey(Var))
+        if (!GameManager.Instance.GameData.FloatValues.HaveKey(Var))
         {
             Debug.LogWarning($"FLOAT_VAR_CONDITION: Переменная {Var} не найдена");
 
@@ -28,12 +28,12 @@ public class FloatVarCondition : ConditionBase
 
         return Operation switch
         {
-            ConditionOperation.Equals => GameManager.Instance.gameData.FloatValues[Var] == Value,
-            ConditionOperation.NotEquals => GameManager.Instance.gameData.FloatValues[Var] != Value,
-            ConditionOperation.More => GameManager.Instance.gameData.FloatValues[Var] > Value,
-            ConditionOperation.Less => GameManager.Instance.gameData.FloatValues[Var] < Value,
-            ConditionOperation.MoreOrEquals => GameManager.Instance.gameData.FloatValues[Var] >= Value,
-            ConditionOperation.LessOrEquals => GameManager.Instance.gameData.FloatValues[Var] <= Value,
+            ConditionOperation.Equals => GameManager.Instance.GameData.FloatValues[Var] == Value,
+            ConditionOperation.NotEquals => GameManager.Instance.GameData.FloatValues[Var] != Value,
+            ConditionOperation.More => GameManager.Instance.GameData.FloatValues[Var] > Value,
+            ConditionOperation.Less => GameManager.Instance.GameData.FloatValues[Var] < Value,
+            ConditionOperation.MoreOrEquals => GameManager.Instance.GameData.FloatValues[Var] >= Value,
+            ConditionOperation.LessOrEquals => GameManager.Instance.GameData.FloatValues[Var] <= Value,
             _ => false,
         };
     }

@@ -16,7 +16,7 @@ public class PlayerExplorerManager : MonoBehaviour
     /// <param name="pointname">Название точки</param>
     public void TeleportToPoint(string pointname)
     {
-        LocationSpawnPoint point = ExplorerManager.instance.locationManager.Current.SpawnPoints.FirstOrDefault(i => i.Name == pointname);
+        LocationSpawnPoint point = LocalManager.GetCurrentLocation().SpawnPoints.FirstOrDefault(i => i.Name == pointname);
 
         if (point == null)
         {
@@ -27,7 +27,7 @@ public class PlayerExplorerManager : MonoBehaviour
 
         transform.position = point.transform.position;
 
-        ExplorerManager.instance.characterManager.UpdateModels();
+        LocalManager.Instance.Character.UpdateModels();
 
         movement.RotateTo(point.SpawnDirection);
     }

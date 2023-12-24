@@ -13,13 +13,14 @@ public class RPGWerable : RPGCollectable
     public UsedType UsedOn;
 
     [Tooltip("Если пустой, то подойдёт для любого")]
-    public string RequiredClass;
+    public List<string> RequireClasses = new List<string>();
 
     [Header("Свойства")]
     public int Heal;
     public int Mana;
 
     public int Damage;
-    public int Agility;
     public int Defence;
+    public int Agility;
+    public int Luck;
 }

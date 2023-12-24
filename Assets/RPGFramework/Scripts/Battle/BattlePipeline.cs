@@ -67,7 +67,7 @@ public class BattlePipeline : MonoBehaviour
         usingService = new BattleUsingService(BattleManager.instance, GameManager.Instance);
 
         // Добавление персонажей в битву
-        foreach (var item in GameManager.Instance.characterManager.characters)
+        foreach (var item in GameManager.Instance.Character.characters)
         {
             // Добавление только тех кто может учавствовать
             if (item.ParticipateInBattle) 
@@ -782,7 +782,7 @@ public class BattlePipeline : MonoBehaviour
                     {
                         if (characterInfo.InteractionAct.Name == "Check")
                         {
-                            CommonManager.instance.messageBox.Write(new MessageInfo()
+                            CommonManager.Instance.MessageBox.Write(new MessageInfo()
                             {
                                 text = $"АТАКА: {characterInfo.EnemyBuffer.Entity.Damage}, ЗАЩИТА: {characterInfo.EnemyBuffer.Entity.Defence}<\\:>\n" +
                                        $"{characterInfo.EnemyBuffer.Entity.Description}",
@@ -790,7 +790,7 @@ public class BattlePipeline : MonoBehaviour
                                 wait = true
                             });
 
-                            yield return new WaitWhile(() => CommonManager.instance.messageBox.IsWriting);
+                            yield return new WaitWhile(() => CommonManager.Instance.MessageBox.IsWriting);
                         }
                         else
                         {
@@ -814,13 +814,13 @@ public class BattlePipeline : MonoBehaviour
                         {
                             if (consumed.WriteMessage)
                             {
-                                CommonManager.instance.messageBox.Write(new MessageInfo()
+                                CommonManager.Instance.MessageBox.Write(new MessageInfo()
                                 {
                                     text = $"* {characterInfo.Entity.Name} использует {consumed.Name}!",
                                     closeWindow = true,
                                 });
 
-                                yield return new WaitWhile(() => CommonManager.instance.messageBox.IsWriting);
+                                yield return new WaitWhile(() => CommonManager.Instance.MessageBox.IsWriting);
                                 yield return new WaitForSeconds(.25f);
                             }
                             else
@@ -1017,13 +1017,13 @@ public class BattlePipeline : MonoBehaviour
         BattleManager.instance.player.SetActive(false);
         BattleManager.instance.battleField.SetActive(false);
 
-        CommonManager.instance.messageBox.Write(new MessageInfo()
+        CommonManager.Instance.MessageBox.Write(new MessageInfo()
         {
             text = "* Ваша команда проебала!",
             closeWindow = true,
         });
 
-        yield return new WaitWhile(() => CommonManager.instance.messageBox.IsWriting);
+        yield return new WaitWhile(() => CommonManager.Instance.MessageBox.IsWriting);
 
 #if UNITY_EDITOR
         Debug.Break();
@@ -1044,14 +1044,14 @@ public class BattlePipeline : MonoBehaviour
 
         BattleManager.instance.characterBox.SetActive(false);
 
-        CommonManager.instance.messageBox.Write(new MessageInfo()
+        CommonManager.Instance.MessageBox.Write(new MessageInfo()
         {
             text = "* Ваша команда одержала победу<!>",
             closeWindow = true,
             wait = true
         });
 
-        yield return new WaitWhile(() => CommonManager.instance.messageBox.IsWriting);
+        yield return new WaitWhile(() => CommonManager.Instance.MessageBox.IsWriting);
     }
 
     private IEnumerator Flee()

@@ -8,6 +8,6 @@ public class TestCA : CustomActionBase
     {
         ExplorerManager.PlayerMovement.TranslateBySpeed(new Vector2(-2, 0), 3);
 
-        yield return new WaitWhile(() => ExplorerManager.instance.playerManager.movement.IsAutoMoving);
+        yield return new WaitWhile(() => ExplorerManager.Instance.playerManager.movement.IsAutoMoving);
     }
 }

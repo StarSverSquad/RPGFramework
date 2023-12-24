@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleManager : ContentManagerBase
+public class BattleManager : ContentManagerBase, IManagerInitialize
 {
     public static BattleManager instance;
 
@@ -30,14 +30,11 @@ public class BattleManager : ContentManagerBase
 
     public static void StartBattle(RPGBattleInfo info) => Utility.StartBattle(info); 
 
-    private void Awake()
+    public void Initialize()
     {
-        if (instance == null)
-        {
-            instance = this;
+        instance = this;
 
-            InitializeChild();
-        }
+        InitializeChild();
     }
 
     public override void InitializeChild() { }

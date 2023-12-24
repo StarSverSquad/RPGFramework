@@ -19,7 +19,7 @@ public class BattlePlayerManager : MonoBehaviour, IActive
         if (active)
         {
             movement.MoveSpeed = movement.DefaultMoveSpeed;
-            transform.position = BattleManager.Instance.battleField.transform.position;
+            transform.position = (Vector2)Camera.main.transform.position - new Vector2(0, 1f);
         }
     }
 }

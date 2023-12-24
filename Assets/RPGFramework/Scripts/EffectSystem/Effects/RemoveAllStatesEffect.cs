@@ -6,7 +6,7 @@ public class RemoveAllStatesEffect : EffectBase
 {
     public override IEnumerator BattleInvoke(BattleEntityInfo user, BattleEntityInfo target)
     {
-        target.RemoveAllStates();
+        target.Entity.RemoveAllStates();
 
         yield break;
     }

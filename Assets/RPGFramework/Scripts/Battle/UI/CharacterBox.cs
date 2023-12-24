@@ -50,9 +50,9 @@ public class CharacterBox : MonoBehaviour, IDisposable
     {
         character = ch;
 
-        ch.OnManaChanged += UpdateMana;
-        ch.OnHealChanged += UpdateHeal;
-        ch.StatesChanged += UpdateStates;
+        ch.Entity.OnManaChanged += UpdateMana;
+        ch.Entity.OnHealChanged += UpdateHeal;
+        ch.Entity.OnStateChanged += UpdateStates;
 
         UpdateHeal();
         UpdateMana();
@@ -128,18 +128,19 @@ public class CharacterBox : MonoBehaviour, IDisposable
     /// Обноаляет значки состояний персонажа
     /// </summary>
     /// <param name="states">Новые состояния</param>
-    public void UpdateStates(params RPGEntityState[] states)
+    public void UpdateStates(RPGEntityState state)
     {
-        iconList.UpdateIcons(states.Select(i => i.Icon).ToArray());
+        iconList.UpdateIcons(Character.States.Select(i => i.Icon).ToArray());
 
         SetStatesVisibility(iconList.HasIcons);
     }
+
     /// <summary>
     /// Обноаляет значки состояний персонажа
     /// </summary>
     public void UpdateStates()
     {
-        iconList.UpdateIcons(character.States.Select(i => i.rpg.Icon).ToArray());
+        iconList.UpdateIcons(character.States.Select(i => i.Icon).ToArray());
 
         SetStatesVisibility(iconList.HasIcons);
     }
@@ -158,9 +159,9 @@ public class CharacterBox : MonoBehaviour, IDisposable
     {
         if (initialized)
         {
-            character.OnManaChanged -= UpdateMana;
-            character.OnHealChanged -= UpdateHeal;
-            character.StatesChanged -= UpdateStates;
+            character.Entity.OnManaChanged -= UpdateMana;
+            character.Entity.OnHealChanged -= UpdateHeal;
+            character.Entity.OnAllStatesChanged -= UpdateStates;
 
             character = null;
 

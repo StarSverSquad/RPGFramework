@@ -10,23 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe97e40a44dd7654c9407e220512335a, type: 3}
-  m_Name: Nikita
+  m_Name: Dimas
   m_EditorClassIdentifier: 
-  Name: "\u041D\u0438\u043A\u0438\u0442\u043E\u0441"
-  Description: "\u0417\u0434\u0440\u0430\u0432\u0441\u0442\u0432\u0443\u0439 \u044E\u043D\u043E\u0441\u0442\u044C
-    \u0432 \u043E\u0431\u043B\u0430\u043A\u0430\u0445, \u0437\u0434\u0440\u0430\u0432\u0441\u0442\u0432\u0443\u044E
-    \u044E\u043D\u043E\u0441\u0442\u044C \u0432 \u0441\u0430\u043F\u043E\u0433\u0430.\n\u0423\u0445\u043E\u0434\u0438
-    \u043C\u043E\u044F \u0442\u043E\u0441\u043A\u0430, \u0432\u043E\u0442 \u043E\u043D
-    \u044F, \u0432\u0441\u0442\u0440\u0435\u0447\u0430\u0439 \u0432\u043E\u0439\u0441\u043A\u0430!"
-  DefaultHeal: 75
-  DefaultMana: 50
-  DefaultDamage: 25
+  Name: "\u0414\u0438\u043C\u0430\u0441"
+  Description: "\u0420\u0435\u043F\u0435\u0440"
+  DefaultHeal: 50
+  DefaultMana: 100
+  DefaultDamage: 14
   DefaultDefence: 5
   DefaultAgility: 5
   DefaultLuck: 0
-  Class: "\u0418\u043D\u0436\u0435\u043D\u0435\u0440"
-  Icon: {fileID: -574080388, guid: e4547c401ed1aaf45906d594afcf674d, type: 3}
-  Model: {fileID: 421402362892778112, guid: e4cec0d5c56ea974d89a6a97a2130c30, type: 3}
+  Class: "\u0420\u0435\u043F\u0435\u0440"
+  Icon: {fileID: 365996475, guid: e4547c401ed1aaf45906d594afcf674d, type: 3}
+  Model: {fileID: 1350965949823805979, guid: f066e5cc3633b2b4f9debc832f5f9934, type: 3}
   ParticipateInBattle: 1
   CanMoveInBattle: 1
   Level: 1
@@ -74,8 +70,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  Abilities:
-  - {fileID: 11400000, guid: 9a01a1f7d491a094888b2d60c99da81e, type: 2}
+  Abilities: []
   WeaponSlot: {fileID: 0}
   HeadSlot: {fileID: 0}
   BodySlot: {fileID: 0}

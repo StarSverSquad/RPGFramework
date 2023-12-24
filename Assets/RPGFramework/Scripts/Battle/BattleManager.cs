@@ -37,5 +37,8 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
         InitializeChild();
     }
 
-    public override void InitializeChild() { }
+    public override void InitializeChild()
+    {
+        player.SetActive(false);
+    }
 }

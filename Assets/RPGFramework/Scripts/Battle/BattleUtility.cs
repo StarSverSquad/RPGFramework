@@ -59,7 +59,7 @@ public class BattleUtility : MonoBehaviour
     {
         EnemyModel model = BattleManager.Instance.enemyModels.GetModel(enemy);
 
-        int dmg = enemy.Entity.GiveDamage(Mathf.RoundToInt(who.Entity.Damage * damageFactor), true);
+        int dmg = enemy.Entity.GiveDamage(who.Entity, damageFactor, true);
 
         enemy.Heal -= dmg;
 
@@ -213,7 +213,7 @@ public class BattleUtility : MonoBehaviour
     /// <returns>Новый экземпляр</returns>
     public VisualAttackEffect SpawnAttackEffect(VisualAttackEffect instance)
     {
-        GameObject obj = Instantiate(instance.gameObject, (Vector2)Data.BattleCanvas.transform.position + new Vector2(0, 1.5f), 
+        GameObject obj = Instantiate(instance.gameObject, (Vector2)Data.BattleCanvas.transform.position + new Vector2(0, 0.5f), 
             Quaternion.identity, Data.BattleCanvas.transform);
 
         return obj.GetComponent<VisualAttackEffect>();
@@ -228,15 +228,13 @@ public class BattleUtility : MonoBehaviour
     {
         CharacterBox box = BattleManager.Instance.characterBox.GetBox(character);
 
-        int total = bullet.AdditionDamage + bullet.enemy.Damage;
-        int damage = Mathf.RoundToInt((Mathf.RoundToInt(Random.Range(total * 0.75f, total * 1.25f)) - Mathf.FloorToInt(character.Entity.Defence / 2f)) / (character.IsDefence ? 2 : 1));
+        int realDamage = character.Entity.GiveDamage(bullet.enemy, bullet.DamageModifier * (character.IsDefence ? .5f : 1f));
 
-        int realDamage = character.Damage(damage);
-
-        if (bullet.State != null && character.States.All(i => i.rpg != bullet.State))
+        if (bullet.State != null)
         {
-            character.AddState(bullet.State);
-            SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 2.6f), bullet.State.Name);
+            character.Entity.AddState(bullet.State);
+            SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 2f), bullet.State.Name,
+                bullet.State.Color, Color.white);
         }       
 
         if (character.Entity.Heal <= 0)
@@ -261,9 +259,9 @@ public class BattleUtility : MonoBehaviour
         else
         {
             if (realDamage > 0)
-                SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1.4f), realDamage);
+                SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1f), realDamage);
             else
-                SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1.4f), "ПРОМАХ");
+                SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1f), "ПРОМАХ");
         }
             
     }
@@ -280,7 +278,7 @@ public class BattleUtility : MonoBehaviour
         character.IsDead = true;
         character.IsTarget = false;
 
-        character.RemoveAllStates();
+        character.Entity.RemoveAllStates();
 
         character.Entity.Heal = 0;
     }

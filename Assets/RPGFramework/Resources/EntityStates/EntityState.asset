@@ -14,12 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Event: {fileID: 0}
   Name: "\u041E\u0442\u0440\u0430\u0432\u043B\u0435\u043D\u0438\u0435"
-  Color: {r: 0.40076122, g: 0.7264151, b: 0.16789784, a: 0}
+  Color: {r: 0.40076122, g: 0.7264151, b: 0.16789784, a: 1}
   Icon: {fileID: -1067524621, guid: 43a40bfc1d0a404438f3a7f4ccf8b0e6, type: 3}
   SkipTurn: 0
+  OnlyForBattle: 1
   AddHeal: -5
   AddMana: 0
   AddDamage: 0
   AddDefence: 0
   AddAgility: 0
+  AddLuck: 0
   TurnCount: 2

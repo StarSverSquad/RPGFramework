@@ -19,12 +19,20 @@ MonoBehaviour:
   Direction: 3
   ManaCost: 25
   ConcentrationCost: 25
+  ForDeath: 0
+  ForAlive: 0
   Damage: 10
   WakeupCharacter: 0
   StartEvent: {fileID: 0}
   EndEvent: {fileID: 0}
   VisualEffect: {fileID: 2429433655878315730, guid: 65fcf45a9d4420542a3cc46fa519c398, type: 3}
-  Effects: []
+  Effects:
+  - rid: 6865748090356498432
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 6865748090356498432
+      type: {class: ChangeManaHealConstEffect, ns: , asm: Assembly-CSharp}
+      data:
+        Heal: -50
+        Mana: 0

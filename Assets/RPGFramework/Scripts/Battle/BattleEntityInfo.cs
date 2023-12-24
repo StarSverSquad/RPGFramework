@@ -7,145 +7,23 @@ using UnityEngine;
 [Serializable]
 public class BattleEntityInfo
 {
-    public class EntityState
-    {
-        public RPGEntityState rpg;
-        public int turnsCount;
-    }
-
     public RPGEntity Entity { get; set; }
 
     public int Heal
     {
         get => Entity.Heal;
-        set
-        {
-            Entity.Heal = value;
-            OnHealChanged?.Invoke();
-        }
+        set => Entity.Heal = value;
     }
     public int Mana
     {
         get => Entity.Mana;
-        set
-        {
-            Entity.Mana = value;
-            OnManaChanged?.Invoke();
-        }
+        set => Entity.Mana = value;
     }
 
-    public List<EntityState> States { get; set; }
+    public RPGEntityState[] States => Entity.States;
 
     public BattleEntityInfo(RPGEntity entity)
     {
         Entity = entity;
-        States = new List<EntityState>();
     }
-
-    public event Action StatesChanged;
-    public event Action OnStatesUpdated;
-    public event Action<RPGEntityState> OnStateUpdated;
-    public event Action OnHealChanged;
-    public event Action OnManaChanged;
-
-    public void AddState(RPGEntityState state)
-    {
-        EntityState st = States.FirstOrDefault(i => i.rpg == state);
-
-        if (st != null)
-        {
-            st.turnsCount = 0;
-            return;
-        }
-
-        EntityState entityState = new EntityState()
-        {
-            rpg = state,
-            turnsCount = 0
-        };
-
-        Entity.Damage += state.AddDamage;
-        Entity.Defence += state.AddDefence;
-        Entity.Agility += state.AddAgility;
-
-        States.Add(entityState);
-
-        InvokeStatesChangedCallback();
-    }
-
-    public void RemoveState(RPGEntityState state)
-    {
-        EntityState st = States.FirstOrDefault(i => i.rpg == state);
-
-        if (st == null)
-            return;
-
-        Entity.Damage -= state.AddDamage;
-        Entity.Defence -= state.AddDefence;
-        Entity.Agility -= state.AddAgility;
-
-        States.Remove(st);
-
-        InvokeStatesChangedCallback();
-    }
-
-    public void RemoveAllStates()
-    {
-        foreach (var state in States)
-        {
-            Entity.Damage -= state.rpg.AddDamage;
-            Entity.Defence -= state.rpg.AddDefence;
-            Entity.Agility -= state.rpg.AddAgility;
-        }
-        States.Clear();
-
-        StatesChanged?.Invoke();
-    }
-
-    public void UpdateAllStates()
-    {
-        for (int i = 0, oldcount = States.Count; i < States.Count; i++)
-        {
-            UpdateState(States[i].rpg);
-
-            if (oldcount != States.Count)
-            {
-                i--;
-                oldcount = States.Count;
-            }
-        }
-
-        OnStatesUpdated?.Invoke();
-    }
-
-    public virtual void UpdateState(RPGEntityState state)
-    {
-        EntityState st = States.FirstOrDefault(i => i.rpg == state);
-
-        if (st == null)
-            return;
-
-        Heal = Mathf.Clamp(Heal + state.AddHeal, 1, Entity.MaxHeal);
-        Mana += state.AddMana;
-
-        st.turnsCount++;
-
-        if (st.turnsCount >= state.TurnCount)
-            RemoveState(state);
-
-        OnStateUpdated?.Invoke(state);
-    }
-
-    public virtual int Damage(int damage)
-    {
-        int dmg = Entity.GiveDamage(damage);
-
-        OnHealChanged?.Invoke();
-
-        return dmg;
-    }
-
-    protected void InvokeOnDamageCallback() => OnHealChanged?.Invoke();
-    protected void InvokeOnManaChangedCallback() => OnManaChanged?.Invoke();
-    protected void InvokeStatesChangedCallback() => StatesChanged?.Invoke();
 }

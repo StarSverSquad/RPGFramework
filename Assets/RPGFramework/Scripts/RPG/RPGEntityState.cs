@@ -16,6 +16,8 @@ public class RPGEntityState : ScriptableObject
     [Tooltip("Блокирует возможность хода!")]
     public bool SkipTurn;
 
+    public bool OnlyForBattle;
+
     public int AddHeal;
     public int AddMana;
 

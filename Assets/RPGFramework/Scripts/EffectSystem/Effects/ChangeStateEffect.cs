@@ -16,12 +16,12 @@ public class ChangeStateEffect : EffectBase
         if (IsAddState)
         {
             AddInfo("AddState", State);
-            target.AddState(State);
+            target.Entity.AddState(State);
         }
         else
         {
             AddInfo("RemoveState", State);
-            target.RemoveState(State);
+            target.Entity.RemoveState(State);
         }
 
         yield break;

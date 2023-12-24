@@ -1,4 +1,6 @@
-﻿public class BattleCharacterInfo : BattleEntityInfo
+﻿using static UnityEngine.EventSystems.EventTrigger;
+
+public class BattleCharacterInfo : BattleEntityInfo
 {
     public BattleCharacterAction BattleAction { get; set; }
 
@@ -42,13 +44,13 @@
         IsDead = false;
         CleanUp();
 
-        OnStatesUpdated += BattleCharacterInfo_OnStatesUpdated;
+        Character.OnAllStatesChanged += BattleCharacterInfo_OnStatesUpdated;
     }
 
     private void BattleCharacterInfo_OnStatesUpdated()
     {
-        if (IsDead && States.Count > 0)
-            RemoveAllStates();
+        if (IsDead && Character.States.Length > 0)
+            Character.RemoveAllStates();
     }
 
     public void CleanUp()

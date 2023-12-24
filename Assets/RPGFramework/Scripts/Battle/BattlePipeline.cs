@@ -213,7 +213,7 @@ public class BattlePipeline : MonoBehaviour
             BattleCharacterInfo currentCharacter = Data.Characters[currentCharacterChoiceIndex];
 
             // Если персонаж пал или пропускает ход или не может ничего делать в битве, то его надо пропустить
-            if (currentCharacter.IsDead || currentCharacter.States.Any(i => i.rpg.SkipTurn) || !((RPGCharacter)currentCharacter.Entity).CanMoveInBattle)
+            if (currentCharacter.IsDead || currentCharacter.States.Any(i => i.SkipTurn) || !((RPGCharacter)currentCharacter.Entity).CanMoveInBattle)
             {
                 currentCharacter.BattleAction = BattleCharacterAction.None;
                 currentCharacterChoiceIndex++;
@@ -618,7 +618,7 @@ public class BattlePipeline : MonoBehaviour
             RPGCharacter character = characterInfo.Entity as RPGCharacter;
 
             // Если персонаж пал или пропускает ход или не может ничего делать в битве, то его надо пропустить 
-            if (characterInfo.IsDead || characterInfo.States.Any(i => i.rpg.SkipTurn) || !character.CanMoveInBattle)
+            if (characterInfo.IsDead || characterInfo.States.Any(i => i.SkipTurn) || !character.CanMoveInBattle)
                 continue;
 
             yield return new WaitForSeconds(0.5f);
@@ -677,97 +677,24 @@ public class BattlePipeline : MonoBehaviour
                         switch (characterInfo.Ability.Direction)
                         {
                             case RPGAbility.AbilityDirection.AllTeam:
-                                Utility.UseAbility(characterInfo.Ability, characterInfo, Data.Characters.ToArray());
+                                yield return StartCoroutine(usingService.UseAbility(characterInfo.Ability, characterInfo, Data.Characters.ToArray()));
                                 break;
                             case RPGAbility.AbilityDirection.Teammate:
-                                Utility.UseAbility(characterInfo.Ability, characterInfo, characterInfo.CharacterBuffer);
+                                yield return StartCoroutine(usingService.UseAbility(characterInfo.Ability, characterInfo, characterInfo.CharacterBuffer));
                                 break;
                             case RPGAbility.AbilityDirection.AllEnemys:
-                                {
-                                    VisualAttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
-
-                                    effect = BattleManager.Utility.SpawnAttackEffect(effect);
-
-                                    effect.Invoke();
-
-                                    yield return new WaitWhile(() => effect.IsAnimating);
-
-                                    yield return new WaitForSeconds(0.5f);
-
-                                    Destroy(effect.gameObject);
-
-                                    Utility.UseAbility(characterInfo.Ability, characterInfo, Data.Enemys.ToArray());
-                                }
+                                yield return StartCoroutine(usingService.UseAbility(characterInfo.Ability, characterInfo, Data.Enemys.ToArray()));
                                 break;
                             case RPGAbility.AbilityDirection.Enemy:
-                                {
-                                    VisualAttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
-
-                                    if (effect.LocaleInCenter)
-                                        effect = BattleManager.Utility.SpawnAttackEffect(effect);
-                                    else
-                                    {
-                                        Vector2 attackPos = BattleManager.Instance.enemyModels.GetModel(characterInfo.EnemyBuffer).AttackGlobalPoint;
-
-                                        effect = BattleManager.Utility.SpawnAttackEffect(effect, attackPos);
-                                    }
-
-                                    effect.Invoke();
-
-                                    yield return new WaitWhile(() => effect.IsAnimating);
-
-                                    yield return new WaitForSeconds(0.5f);
-
-                                    Destroy(effect.gameObject);
-
-                                    Utility.UseAbility(characterInfo.Ability, characterInfo, characterInfo.EnemyBuffer);
-                                }
+                                yield return StartCoroutine(usingService.UseAbility(characterInfo.Ability, characterInfo, characterInfo.EnemyBuffer));
                                 break;
                             case RPGAbility.AbilityDirection.Any:
-                                if (characterInfo.EntityBuffer is BattleEnemyInfo enemy)
-                                {
-                                    VisualAttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
-
-                                    if (effect.LocaleInCenter)
-                                        effect = BattleManager.Utility.SpawnAttackEffect(effect);
-                                    else
-                                    {
-                                        Vector2 attackPos = BattleManager.Instance.enemyModels.GetModel(enemy).AttackGlobalPoint;
-
-                                        effect = BattleManager.Utility.SpawnAttackEffect(effect, attackPos);
-                                    }
-
-                                    effect.Invoke();
-
-                                    yield return new WaitWhile(() => effect.IsAnimating);
-
-                                    yield return new WaitForSeconds(0.5f);
-
-                                    Destroy(effect.gameObject);
-
-                                    Utility.UseAbility(characterInfo.Ability, characterInfo, characterInfo.EntityBuffer);
-                                }
+                                yield return StartCoroutine(usingService.UseAbility(characterInfo.Ability, characterInfo, characterInfo.EntityBuffer));
                                 break;
                             case RPGAbility.AbilityDirection.All:
-                                {
-                                    Utility.UseAbility(characterInfo.Ability, characterInfo, Data.Characters.ToArray());
+                                yield return StartCoroutine(usingService.UseAbility(characterInfo.Ability, characterInfo, Data.Characters.ToArray()));
 
-                                    yield return new WaitForSeconds(0.25f);
-
-                                    VisualAttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
-
-                                    effect = BattleManager.Utility.SpawnAttackEffect(effect);
-
-                                    effect.Invoke();
-
-                                    yield return new WaitWhile(() => effect.IsAnimating);
-
-                                    yield return new WaitForSeconds(0.5f);
-
-                                    Destroy(effect.gameObject);
-
-                                    Utility.UseAbility(characterInfo.Ability, characterInfo, Data.Enemys.ToArray());
-                                }
+                                yield return StartCoroutine(usingService.UseAbility(characterInfo.Ability, characterInfo, Data.Enemys.ToArray()));
                                 break;
                         }
 
@@ -898,22 +825,22 @@ public class BattlePipeline : MonoBehaviour
     {
         foreach (var character in Data.Characters)
         {
-            if (character.States.Count == 0)
-                break;
+            if (character.States.Length == 0)
+                continue;
 
             foreach (var state in character.States)
             {
-                if (state.rpg.Event != null)
+                if (state.Event != null)
                 {
-                    state.rpg.Event.Invoke(this);
+                    state.Event.Invoke(this);
 
-                    yield return new WaitWhile(() => state.rpg.Event.IsPlaying);
+                    yield return new WaitWhile(() => state.Event.IsPlaying);
                 }
             }
 
             int oldHeal = character.Entity.Heal;
 
-            character.UpdateAllStates();
+            character.Entity.UpdateAllStates();
 
             CharacterBox box = BattleManager.Instance.characterBox.GetBox(character);
 
@@ -925,12 +852,12 @@ public class BattlePipeline : MonoBehaviour
 
         foreach (var enemy in Data.Enemys)
         {
-            if (enemy.States.Count == 0)
-                break;
+            if (enemy.States.Length == 0)
+                continue;
 
             int oldHeal = enemy.Entity.Heal;
 
-            enemy.UpdateAllStates();
+            enemy.Entity.UpdateAllStates();
 
             EnemyModel model = BattleManager.Instance.enemyModels.GetModel(enemy);
 
@@ -954,7 +881,7 @@ public class BattlePipeline : MonoBehaviour
         {
             RPGEnemy enemy = enemyinfo.Entity as RPGEnemy;
 
-            if (enemyinfo.States.Any(i => i.rpg.SkipTurn))
+            if (enemyinfo.States.Any(i => i.SkipTurn))
                 continue;
 
             RPGAttackPattern pattern = enemy.Patterns[UnityEngine.Random.Range(0, enemy.Patterns.Count)];

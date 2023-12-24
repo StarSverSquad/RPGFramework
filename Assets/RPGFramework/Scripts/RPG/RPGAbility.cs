@@ -20,6 +20,9 @@ public class RPGAbility : ScriptableObject
     public int ManaCost;
     public int ConcentrationCost;
 
+    public bool ForDeath;
+    public bool ForAlive;
+
     public int Damage;
 
     public bool WakeupCharacter;

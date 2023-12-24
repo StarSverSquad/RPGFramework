@@ -20,13 +20,12 @@ MonoBehaviour:
   Event: {fileID: 0}
   Direction: 1
   VisualEffect: {fileID: 0}
-  WakeupCharacter: 1
-  ForAlive: 0
-  ForDeath: 1
+  WakeupCharacter: 0
+  ForAlive: 1
+  ForDeath: 0
   WriteMessage: 1
   Effects:
   - rid: 6865748019961135117
-  - rid: 6865748019961135119
   references:
     version: 2
     RefIds:
@@ -35,7 +34,3 @@ MonoBehaviour:
       data:
         Heal: 0.2
         Mana: 0.25
-    - rid: 6865748019961135119
-      type: {class: ChangeConcentrationEffect, ns: , asm: Assembly-CSharp}
-      data:
-        AddConcentration: 100

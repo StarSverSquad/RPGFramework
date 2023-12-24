@@ -1366,8 +1366,8 @@ MonoBehaviour:
   textMargins:
   - 27
   - 367
-  inBattleNameBoxOffset: 75
-  inBattleMessageBoxOffset: 75
+  inBattleNameBoxOffset: 125
+  inBattleMessageBoxOffset: 125
   messageBox: {fileID: 1348319325}
   nameBox: {fileID: 1555858836}
   arrow: {fileID: 706400694}
@@ -1396,7 +1396,7 @@ MonoBehaviour:
   leftArrow: {fileID: 1284551277}
   rightArrow: {fileID: 1617837219}
   Margin: {x: 16, y: 0}
-  InBattleOffset: 75
+  InBattleOffset: 125
   choiceBox: {fileID: 1430932997}
   mask: {fileID: 1070518803}
   content: {fileID: 2123007999}
@@ -3498,7 +3498,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7684282005390497146, guid: e1b34a9f3c5c24c4ab64ffc697ebf58a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -268.9999
+      value: -268.99988
       objectReference: {fileID: 0}
     - target: {fileID: 7684282005390497146, guid: e1b34a9f3c5c24c4ab64ffc697ebf58a, type: 3}
       propertyPath: m_AnchoredPosition.y

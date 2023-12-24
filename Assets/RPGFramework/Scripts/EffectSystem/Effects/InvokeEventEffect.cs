@@ -10,7 +10,7 @@ public class InvokeEventEffect : EffectBase
     {
         if (@event != null)
         {
-            @event.Invoke(BattleManager.instance.pipeline);
+            @event.Invoke(BattleManager.Instance.pipeline);
 
             yield return new WaitWhile(() => @event.IsPlaying);
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Drawing;
 using UnityEngine;
 
 public class BattleFieldManager : MonoBehaviour, IActive
@@ -20,8 +21,14 @@ public class BattleFieldManager : MonoBehaviour, IActive
     public Vector4 Margin;
 
     private Coroutine resizeCoroutine = null;
+    private Coroutine rotateCoroutine = null;
+    private Coroutine transofrmCoroutine = null;
 
     public bool IsResizing => resizeCoroutine != null;
+    public bool IsRotating => rotateCoroutine != null;
+    public bool IsTransforming => transofrmCoroutine != null;
+
+    private Vector2 cameraPosition => (Vector2)Camera.main.transform.position - new Vector2(0, 1f);
 
     public void SetActive(bool active)
     {
@@ -30,9 +37,9 @@ public class BattleFieldManager : MonoBehaviour, IActive
         if (active)
         {
             Resize(new Vector2(3, 3));
-            transform.position = (Vector2)Camera.main.transform.position;
-        }
-            
+            Rotate(0);
+            transform.position = cameraPosition;
+        }   
     }
 
     private void OnBackgroundResized()
@@ -77,19 +84,66 @@ public class BattleFieldManager : MonoBehaviour, IActive
         }
     }
 
-    //private IEnumerator ResizeCoroutine(Vector2 size, float speed)
-    //{
-    //    float resizeTime = Math.Abs((size - background.size).sqrMagnitude) / speed;
+    public void Rotate(float Angle, float speed = 0)
+    {
+        if (IsRotating)
+        {
+            StopCoroutine(rotateCoroutine);
+            rotateCoroutine = null;
+        }
 
-    //    while (resizeTime > 0)
-    //    {
-    //        yield return new WaitForFixedUpdate();
+        if (speed <= 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, Angle);
+        }
+        else
+        {
+            rotateCoroutine = StartCoroutine(Anims.MoveToBySpeed(transform.rotation.eulerAngles.z, Angle, speed, val =>
+            {
+                transform.rotation = Quaternion.Euler(0, 0, val);
+            }, () => rotateCoroutine = null));
+        }
+    }
 
-    //        background.size = Vector2.MoveTowards(background.size, size, speed * Time.fixedDeltaTime);
+    public void Transform(Vector2 position, float speed = 0)
+    {
+        if (IsTransforming)
+        {
+            StopCoroutine(transofrmCoroutine);
+            transofrmCoroutine = null;
+        }
 
-    //        resizeTime -= Time.fixedDeltaTime;
+        if (speed <= 0)
+        {
+            transform.position = cameraPosition + position;
+        }
+        else
+        {
+            transofrmCoroutine = StartCoroutine(Anims.MoveToBySpeed2D(transform.position, cameraPosition + position, speed, val =>
+            {
+                transform.position = val;
+            }, () => transofrmCoroutine = null));
+        }
+    }
 
-    //        OnBackgroundResized();
-    //    }
-    //}
+    public void Move(Vector2 offset, float speed = 0)
+    {
+        if (IsTransforming)
+        {
+            StopCoroutine(transofrmCoroutine);
+            transofrmCoroutine = null;
+        }
+
+        if (speed <= 0)
+        {
+            transform.position += (Vector3)offset;
+        }
+        else
+        {
+            transofrmCoroutine = StartCoroutine(Anims.MoveToBySpeed2D(transform.position, (Vector2)transform.position + offset, speed, val =>
+            {
+                transform.position = val;
+            }, () => transofrmCoroutine = null));
+        }
+    }
 }

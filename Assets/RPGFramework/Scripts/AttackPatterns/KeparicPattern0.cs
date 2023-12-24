@@ -15,8 +15,8 @@ public class KeparicPattern0 : RPGAttackPattern
 
     protected override IEnumerator PatternCoroutine()
     {
-        BattleManager.instance.battleField.Resize(new Vector2(0.5f, 0.5f));
-        BattleManager.instance.battleField.Resize(new Vector2(1.5f, 3), 4f);
+        BattleManager.Instance.battleField.Resize(new Vector2(0.5f, 0.5f));
+        BattleManager.Instance.battleField.Resize(new Vector2(1.5f, 3), 4f);
 
         bool right = true;
 

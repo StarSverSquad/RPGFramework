@@ -16,7 +16,7 @@ public class BattleUtility : MonoBehaviour
         foreach (var item in info.enemySquad.Enemies)
             AddEnemy(item.Enemy, item.ScreenPosition);
 
-        BattleManager.instance.pipeline.InvokeMainPipeline();
+        BattleManager.Instance.pipeline.InvokeMainPipeline();
     }
 
     public void StopBattle()
@@ -35,14 +35,14 @@ public class BattleUtility : MonoBehaviour
         Data.Characters.Clear();
         Data.Enemys.Clear();
 
-        BattleManager.instance.SetActive(false);
+        BattleManager.Instance.SetActive(false);
     }
 
     public void AddEnemy(RPGEnemy enemy, Vector2 position)
     {
         enemy.InitializeEntity();
         Data.Enemys.Add(new BattleEnemyInfo(enemy));
-        BattleManager.instance.enemyModels.AddModel(Data.Enemys.Last(), position);
+        BattleManager.Instance.enemyModels.AddModel(Data.Enemys.Last(), position);
     }
 
     public void RemoveEnemy(BattleEnemyInfo enemy)
@@ -50,14 +50,14 @@ public class BattleUtility : MonoBehaviour
         if (!Data.Enemys.Contains(enemy))
             return;
 
-        BattleManager.instance.enemyModels.DeleteModel(enemy);
+        BattleManager.Instance.enemyModels.DeleteModel(enemy);
 
         Data.Enemys.Remove(enemy);
     }
 
     public void DamageEnemy(BattleCharacterInfo who, BattleEnemyInfo enemy, float damageFactor = 1f)
     {
-        EnemyModel model = BattleManager.instance.enemyModels.GetModel(enemy);
+        EnemyModel model = BattleManager.Instance.enemyModels.GetModel(enemy);
 
         int dmg = enemy.Entity.GiveDamage(Mathf.RoundToInt(who.Entity.Damage * damageFactor), true);
 
@@ -68,19 +68,19 @@ public class BattleUtility : MonoBehaviour
             if (enemy.Heal <= 0)
             {
                 model.Death();
-                BattleManager.instance.battleAudio.PlaySound(Data.EnemyDeath);
+                BattleManager.Instance.battleAudio.PlaySound(Data.EnemyDeath);
             }
             else
             {
                 model.Damage();
-                BattleManager.instance.battleAudio.PlaySound(Data.EnemyDamage);
+                BattleManager.Instance.battleAudio.PlaySound(Data.EnemyDamage);
             }
 
             SpawnDamageText(model.DamageTextGlobalPoint, dmg);
         }
         else
         {
-            BattleManager.instance.battleAudio.PlaySound(Data.Miss);
+            BattleManager.Instance.battleAudio.PlaySound(Data.Miss);
             SpawnDamageText(model.DamageTextGlobalPoint, "ПРОМАХ");
         }
     }
@@ -226,7 +226,7 @@ public class BattleUtility : MonoBehaviour
     /// <param name="bullet">Пуля</param>
     public void DamageCharacterByBullet(BattleCharacterInfo character, PatternBullet bullet)
     {
-        CharacterBox box = BattleManager.instance.characterBox.GetBox(character);
+        CharacterBox box = BattleManager.Instance.characterBox.GetBox(character);
 
         int total = bullet.AdditionDamage + bullet.enemy.Damage;
         int damage = Mathf.RoundToInt((Mathf.RoundToInt(Random.Range(total * 0.75f, total * 1.25f)) - Mathf.FloorToInt(character.Entity.Defence / 2f)) / (character.IsDefence ? 2 : 1));
@@ -243,19 +243,19 @@ public class BattleUtility : MonoBehaviour
         {
             FallCharacter(character);
 
-            if (BattleManager.instance.pipeline.IsEnemyTurn 
+            if (BattleManager.Instance.pipeline.IsEnemyTurn 
                 && Data.Characters.Where(i => i.IsTarget == true).Count() == 0)
             {
                 Data.Characters.Where(i => i.IsDead == false).ToList().ForEach(item =>
                 {
                     item.IsTarget = true;
-                    BattleManager.instance.characterBox.GetBox(item).MarkTarget(true);
+                    BattleManager.Instance.characterBox.GetBox(item).MarkTarget(true);
                 });
             }
 
             if (Data.Characters.Where(i => i.IsDead == false).Count() == 0)
             {
-                BattleManager.instance.pipeline.InvokeLose();
+                BattleManager.Instance.pipeline.InvokeLose();
             }
         }
         else
@@ -270,7 +270,7 @@ public class BattleUtility : MonoBehaviour
 
     public void FallCharacter(BattleCharacterInfo character)
     {
-        CharacterBox box = BattleManager.instance.characterBox.GetBox(character);
+        CharacterBox box = BattleManager.Instance.characterBox.GetBox(character);
 
         SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1.4f), "ПАЛ");
 
@@ -292,6 +292,6 @@ public class BattleUtility : MonoBehaviour
     {
         Data.Concentration = Mathf.Clamp(Data.Concentration + value, 0, Data.MaxConcentration);
 
-        BattleManager.instance.concentrationBar.UpdateValue();
+        BattleManager.Instance.concentrationBar.UpdateValue();
     }
 }

@@ -17,8 +17,8 @@ public class BattlePipeline : MonoBehaviour
     }
 
     public BattleData Data => BattleManager.Data;
-    public BattleChoiceManager Choice => BattleManager.instance.choice;
-    public BattleUtility Utility => BattleManager.instance.utility;
+    public BattleChoiceManager Choice => BattleManager.Instance.choice;
+    public BattleUtility Utility => BattleManager.Instance.utility;
 
     private BattleUsingService usingService;
 
@@ -64,7 +64,7 @@ public class BattlePipeline : MonoBehaviour
     {
         /// SETUP PART +
 
-        usingService = new BattleUsingService(BattleManager.instance, GameManager.Instance);
+        usingService = new BattleUsingService(BattleManager.Instance, GameManager.Instance);
 
         // Добавление персонажей в битву
         foreach (var item in GameManager.Instance.Character.characters)
@@ -88,30 +88,30 @@ public class BattlePipeline : MonoBehaviour
         yield return new WaitWhile(() => GameManager.Instance.loadingScreen.BgIsFade);
 
         // Включение контейнера битвы
-        BattleManager.instance.SetActive(true);
+        BattleManager.Instance.SetActive(true);
 
         // Ждём fixedupdate
         yield return new WaitForFixedUpdate();
 
         // Инициализация character box-ов
-        BattleManager.instance.characterBox.Initialize(Data.Characters.ToArray());
+        BattleManager.Instance.characterBox.Initialize(Data.Characters.ToArray());
         // Перемещение их наврех или вниз
-        BattleManager.instance.characterBox.ChangePosition(!Data.BattleInfo.EnemyStart);
+        BattleManager.Instance.characterBox.ChangePosition(!Data.BattleInfo.EnemyStart);
 
         // Отключение первичного выбора
         Choice.PrimaryChoice.SetActive(false);
         // Отключение окна с описанием
-        BattleManager.instance.description.SetActive(false);
+        BattleManager.Instance.description.SetActive(false);
 
         // Обнавление полоски концентрации
-        BattleManager.instance.concentrationBar.UpdateValue();
+        BattleManager.Instance.concentrationBar.UpdateValue();
 
         // Установка заднего фона
-        BattleManager.instance.background.CreateBackground(Data.BattleInfo.Background);
+        BattleManager.Instance.background.CreateBackground(Data.BattleInfo.Background);
 
         // Включение музыки битвы
         if (Data.BattleInfo.BattleMusic != null)
-            BattleManager.instance.battleAudio.PlayMusic(Data.BattleInfo.BattleMusic, Data.BattleInfo.MusicVolume);
+            BattleManager.Instance.battleAudio.PlayMusic(Data.BattleInfo.BattleMusic, Data.BattleInfo.MusicVolume);
 
         /// SETUP PART -
 
@@ -165,7 +165,7 @@ public class BattlePipeline : MonoBehaviour
         BattleManager.Utility.CleanupBattle();
 
         // Оключение контейнера битвы
-        BattleManager.instance.SetActive(false);
+        BattleManager.Instance.SetActive(false);
 
         // Востоновление музыки
         if (restoreBGM)
@@ -197,7 +197,7 @@ public class BattlePipeline : MonoBehaviour
         currentCharacterChoiceIndex = 0;
 
         // Установление позиции character box-сов
-        BattleManager.instance.characterBox.ChangePosition(true);
+        BattleManager.Instance.characterBox.ChangePosition(true);
         // Активация первичного выбора
         Choice.PrimaryChoice.SetActive(true);
 
@@ -205,7 +205,7 @@ public class BattlePipeline : MonoBehaviour
 
         // Установление иконки действия
         for (int i = 0; i < Data.Characters.Count; i++)
-            BattleManager.instance.characterBox.Boxes[i].ChangeAct(BattleCharacterAction.None);
+            BattleManager.Instance.characterBox.Boxes[i].ChangeAct(BattleCharacterAction.None);
 
         /// ОБЩИЙ ЦИКЛ ВЫБОРА
         while (currentCharacterChoiceIndex < Data.Characters.Count)
@@ -237,9 +237,9 @@ public class BattlePipeline : MonoBehaviour
                 // Для первичного действия
                 case ChoiceAction.Primary:
                     // Вкличение показа персонажа
-                    BattleManager.instance.characterPreview.SetActive(true);
+                    BattleManager.Instance.characterPreview.SetActive(true);
                     // Установка текущего персонажа на показ
-                    BattleManager.instance.characterPreview.SetData(currentCharacter.Entity as RPGCharacter);
+                    BattleManager.Instance.characterPreview.SetData(currentCharacter.Entity as RPGCharacter);
 
                     currentCharacter.CleanUp();
 
@@ -252,7 +252,7 @@ public class BattlePipeline : MonoBehaviour
                     if (Choice.IsPrimaryCanceled)
                     {
                         currentCharacterChoiceIndex = currentCharacterChoiceIndex == 0 ? 0 : currentCharacterChoiceIndex - 1;
-                        BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.None);
+                        BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.None);
                     } 
                     else
                     {
@@ -291,18 +291,18 @@ public class BattlePipeline : MonoBehaviour
                         }
                     }
 
-                    BattleManager.instance.characterPreview.SetActive(false);
+                    BattleManager.Instance.characterPreview.SetActive(false);
 
                     break;
                 // Выбор между взаимодействием и способностью 
                 case ChoiceAction.InterationOrAbility:
                     // Запуск выбора
-                    BattleManager.instance.choice.InvokeChoiceAct();
+                    BattleManager.Instance.choice.InvokeChoiceAct();
 
-                    yield return new WaitWhile(() => BattleManager.instance.choice.IsChoicing);
+                    yield return new WaitWhile(() => BattleManager.Instance.choice.IsChoicing);
 
                     // Если отмена то откат
-                    if (BattleManager.instance.choice.IsCanceled)
+                    if (BattleManager.Instance.choice.IsCanceled)
                         PreviewCharacter();
                     else
                     {
@@ -317,16 +317,16 @@ public class BattlePipeline : MonoBehaviour
                     }
 
                     // Очистка меню выбора
-                    BattleManager.instance.choice.CleanUp();
+                    BattleManager.Instance.choice.CleanUp();
                     break;
                 // Выбор взаимодействия
                 case ChoiceAction.Interaction:
-                    BattleManager.instance.choice.InvokeChoiceInteraction();
+                    BattleManager.Instance.choice.InvokeChoiceInteraction();
 
-                    yield return new WaitWhile(() => BattleManager.instance.choice.IsChoicing);
+                    yield return new WaitWhile(() => BattleManager.Instance.choice.IsChoicing);
 
                     // Если отмена то откат
-                    if (BattleManager.instance.choice.IsCanceled)
+                    if (BattleManager.Instance.choice.IsCanceled)
                     {
                         currentCharacter.InteractionAct = RPGEnemy.EnemyAct.NullAct;
 
@@ -337,7 +337,7 @@ public class BattlePipeline : MonoBehaviour
                         currentCharacter.InteractionAct = (RPGEnemy.EnemyAct)Choice.CurrentItem.value;
                         currentCharacter.IsAbility = false;
 
-                        BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
+                        BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
 
                         NextCharacter();
                     }
@@ -367,7 +367,7 @@ public class BattlePipeline : MonoBehaviour
                             case RPGAbility.AbilityDirection.All:
                             case RPGAbility.AbilityDirection.AllEnemys:
                             case RPGAbility.AbilityDirection.AllTeam:
-                                BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
+                                BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
 
                                 currentCharacter.ReservedConcentration = -currentCharacter.Ability.ConcentrationCost;
                                 Utility.AddConcetration(-currentCharacter.Ability.ConcentrationCost);
@@ -386,17 +386,17 @@ public class BattlePipeline : MonoBehaviour
                         }
                     }
 
-                    BattleManager.instance.choice.CleanUp();
+                    BattleManager.Instance.choice.CleanUp();
                     break;
                 // Выбор сущности (Враг или персонаж)
                 case ChoiceAction.Entity:
                     // Запуск выбора
-                    BattleManager.instance.choice.InvokeChoiceEntity();
+                    BattleManager.Instance.choice.InvokeChoiceEntity();
 
-                    yield return new WaitWhile(() => BattleManager.instance.choice.IsChoicing);
+                    yield return new WaitWhile(() => BattleManager.Instance.choice.IsChoicing);
 
                     // Если отмена то откат
-                    if (BattleManager.instance.choice.IsCanceled)
+                    if (BattleManager.Instance.choice.IsCanceled)
                     {
                         if (currentCharacter.BattleAction == BattleCharacterAction.Item)
                             currentCharacter.Item = null;
@@ -405,13 +405,13 @@ public class BattlePipeline : MonoBehaviour
                     }
                     else
                     {
-                        currentCharacter.EntityBuffer = (BattleEntityInfo)BattleManager.instance.choice.CurrentItem.value;
+                        currentCharacter.EntityBuffer = (BattleEntityInfo)BattleManager.Instance.choice.CurrentItem.value;
 
                         if (currentCharacter.BattleAction == BattleCharacterAction.Act)
                         {
                             if (choiceActions[choiceActions.Count - 2] == ChoiceAction.Ability)
                             {
-                                BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
+                                BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
 
                                 currentCharacter.ReservedConcentration = -currentCharacter.Ability.ConcentrationCost;
                                 Utility.AddConcetration(-currentCharacter.Ability.ConcentrationCost);
@@ -426,14 +426,14 @@ public class BattlePipeline : MonoBehaviour
                         else
                         {
                             // Утанавливаем соотвествующую иконку действия
-                            BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(currentCharacter.BattleAction);
+                            BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(currentCharacter.BattleAction);
 
                             NextCharacter();
                         }
                     }
 
                     // Очистка меню выбора
-                    BattleManager.instance.choice.CleanUp();
+                    BattleManager.Instance.choice.CleanUp();
                     break;
                 // Выбор персонажа
                 case ChoiceAction.Teammate:
@@ -455,13 +455,13 @@ public class BattlePipeline : MonoBehaviour
                         switch (currentCharacter.BattleAction)
                         {
                             case BattleCharacterAction.Act:
-                                BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
+                                BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
 
                                 currentCharacter.ReservedConcentration = -currentCharacter.Ability.ConcentrationCost;
                                 Utility.AddConcetration(-currentCharacter.Ability.ConcentrationCost);
                                 break;
                             case BattleCharacterAction.Item:
-                                BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
+                                BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
                                 break;
                         }
 
@@ -473,12 +473,12 @@ public class BattlePipeline : MonoBehaviour
                 // Выбор врага
                 case ChoiceAction.Enemy:
                     // Запуск выбора
-                    BattleManager.instance.choice.InvokeChoiceEnemy();
+                    BattleManager.Instance.choice.InvokeChoiceEnemy();
 
-                    yield return new WaitWhile(() => BattleManager.instance.choice.IsChoicing);      
+                    yield return new WaitWhile(() => BattleManager.Instance.choice.IsChoicing);      
                     
                     // Если отмена то откат
-                    if (BattleManager.instance.choice.IsCanceled)
+                    if (BattleManager.Instance.choice.IsCanceled)
                     {
                         if (currentCharacter.BattleAction == BattleCharacterAction.Item)
                             currentCharacter.Item = null;
@@ -487,14 +487,14 @@ public class BattlePipeline : MonoBehaviour
                     }
                     else
                     {
-                        currentCharacter.EnemyBuffer = (BattleEnemyInfo)BattleManager.instance.choice.CurrentItem.value;
+                        currentCharacter.EnemyBuffer = (BattleEnemyInfo)BattleManager.Instance.choice.CurrentItem.value;
 
                         // Если это атака
                         if (currentCharacter.BattleAction == BattleCharacterAction.Act)
                         {
                             if (choiceActions[choiceActions.Count - 2] == ChoiceAction.Ability)
                             {
-                                BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
+                                BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
 
                                 currentCharacter.ReservedConcentration = -currentCharacter.Ability.ConcentrationCost;
                                 Utility.AddConcetration(-currentCharacter.Ability.ConcentrationCost);
@@ -509,29 +509,29 @@ public class BattlePipeline : MonoBehaviour
                         else
                         {
                             // Утанавливаем соотвествующую иконку действия
-                            BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(currentCharacter.BattleAction);
+                            BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(currentCharacter.BattleAction);
 
                             NextCharacter();
                         }
                     }
 
                     // Очистка меню выбора
-                    BattleManager.instance.choice.CleanUp();
+                    BattleManager.Instance.choice.CleanUp();
                     break;
                 // Выбор пердмета
                 case ChoiceAction.Item:
                     // Заупуск выбра
-                    BattleManager.instance.choice.InvokeChoiceItem();
+                    BattleManager.Instance.choice.InvokeChoiceItem();
 
-                    yield return new WaitWhile(() => BattleManager.instance.choice.IsChoicing);
+                    yield return new WaitWhile(() => BattleManager.Instance.choice.IsChoicing);
 
                     // Если отмена то откат 
-                    if (BattleManager.instance.choice.IsCanceled)
+                    if (BattleManager.Instance.choice.IsCanceled)
                         PreviewCharacter();
                     else
                     {
                         // Запоминаем предмет
-                        currentCharacter.Item = BattleManager.instance.choice.CurrentItem.value as RPGCollectable;
+                        currentCharacter.Item = BattleManager.Instance.choice.CurrentItem.value as RPGCollectable;
 
                         // Этот предмет является потребляемым?
                         currentCharacter.IsConsumed = currentCharacter.Item is RPGConsumed;
@@ -543,7 +543,7 @@ public class BattlePipeline : MonoBehaviour
                                 case RPGConsumed.ConsumingDirection.AllEnemys:
                                 case RPGConsumed.ConsumingDirection.AllTeam:
                                 case RPGConsumed.ConsumingDirection.All:
-                                    BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
+                                    BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
 
                                     NextCharacter();
                                     break;
@@ -560,30 +560,30 @@ public class BattlePipeline : MonoBehaviour
                         }
                         else
                         {
-                            BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
+                            BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
 
                             NextCharacter();
                         }
                     }
 
                     // Очистка меню выбора
-                    BattleManager.instance.choice.CleanUp();
+                    BattleManager.Instance.choice.CleanUp();
                     break;
                 // Выбор защиты или бегства
                 case ChoiceAction.Defence:
                     // Запуск выбора
-                    BattleManager.instance.choice.InvokeChoiceDefence();
+                    BattleManager.Instance.choice.InvokeChoiceDefence();
 
-                    yield return new WaitWhile(() => BattleManager.instance.choice.IsChoicing);
+                    yield return new WaitWhile(() => BattleManager.Instance.choice.IsChoicing);
 
                     // Если отмена то откат
-                    if (BattleManager.instance.choice.IsCanceled)
+                    if (BattleManager.Instance.choice.IsCanceled)
                         PreviewCharacter();
                     else
                     {
                         // Бество это или защита
-                        currentCharacter.IsFlee = (int)BattleManager.instance.choice.CurrentItem.value == 1;
-                        currentCharacter.IsDefence = (int)BattleManager.instance.choice.CurrentItem.value == 0;
+                        currentCharacter.IsFlee = (int)BattleManager.Instance.choice.CurrentItem.value == 1;
+                        currentCharacter.IsDefence = (int)BattleManager.Instance.choice.CurrentItem.value == 0;
 
                         if (currentCharacter.IsDefence)
                         {
@@ -592,13 +592,13 @@ public class BattlePipeline : MonoBehaviour
                         }
 
                         // Утанавливаем соотвествующую иконку действия
-                        BattleManager.instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Defence);
+                        BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Defence);
 
                         NextCharacter();
                     }
 
                     // Очистка меню выбора
-                    BattleManager.instance.choice.CleanUp();
+                    BattleManager.Instance.choice.CleanUp();
                     break;
             }
 
@@ -608,7 +608,7 @@ public class BattlePipeline : MonoBehaviour
         }
 
         // Изменение позиции character box-сов
-        BattleManager.instance.characterBox.ChangePosition(false);
+        BattleManager.Instance.characterBox.ChangePosition(false);
         // Выключение первичного выбора
         Choice.PrimaryChoice.SetActive(false);
 
@@ -631,9 +631,9 @@ public class BattlePipeline : MonoBehaviour
                 case BattleCharacterAction.Fight:
                     {
                         // Запуск QTE атаки
-                        BattleManager.instance.attackQTE.InvokeQTE((AttackQTEManager.Positions)Data.Characters.IndexOf(characterInfo));
+                        BattleManager.Instance.attackQTE.InvokeQTE((AttackQTEManager.Positions)Data.Characters.IndexOf(characterInfo));
 
-                        yield return new WaitWhile(() => BattleManager.instance.attackQTE.QTE.IsWorking);
+                        yield return new WaitWhile(() => BattleManager.Instance.attackQTE.QTE.IsWorking);
 
                         VisualAttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
 
@@ -641,7 +641,7 @@ public class BattlePipeline : MonoBehaviour
                             effect = BattleManager.Utility.SpawnAttackEffect(effect);
                         else
                         {
-                            Vector2 attackPos = BattleManager.instance.enemyModels.GetModel(characterInfo.EnemyBuffer).AttackGlobalPoint;
+                            Vector2 attackPos = BattleManager.Instance.enemyModels.GetModel(characterInfo.EnemyBuffer).AttackGlobalPoint;
 
                             effect = BattleManager.Utility.SpawnAttackEffect(effect, attackPos);
                         }
@@ -655,10 +655,10 @@ public class BattlePipeline : MonoBehaviour
                         Destroy(effect.gameObject);
 
                         // Убрать QTE
-                        BattleManager.instance.attackQTE.DropQTE();
+                        BattleManager.Instance.attackQTE.DropQTE();
 
                         // Нанесение урона врагу
-                        BattleManager.Utility.DamageEnemy(characterInfo, characterInfo.EnemyBuffer, BattleManager.instance.attackQTE.QTE.DamageFactor);
+                        BattleManager.Utility.DamageEnemy(characterInfo, characterInfo.EnemyBuffer, BattleManager.Instance.attackQTE.QTE.DamageFactor);
                     }
                     break;
                 // Если персонаж действует
@@ -707,7 +707,7 @@ public class BattlePipeline : MonoBehaviour
                                         effect = BattleManager.Utility.SpawnAttackEffect(effect);
                                     else
                                     {
-                                        Vector2 attackPos = BattleManager.instance.enemyModels.GetModel(characterInfo.EnemyBuffer).AttackGlobalPoint;
+                                        Vector2 attackPos = BattleManager.Instance.enemyModels.GetModel(characterInfo.EnemyBuffer).AttackGlobalPoint;
 
                                         effect = BattleManager.Utility.SpawnAttackEffect(effect, attackPos);
                                     }
@@ -732,7 +732,7 @@ public class BattlePipeline : MonoBehaviour
                                         effect = BattleManager.Utility.SpawnAttackEffect(effect);
                                     else
                                     {
-                                        Vector2 attackPos = BattleManager.instance.enemyModels.GetModel(enemy).AttackGlobalPoint;
+                                        Vector2 attackPos = BattleManager.Instance.enemyModels.GetModel(enemy).AttackGlobalPoint;
 
                                         effect = BattleManager.Utility.SpawnAttackEffect(effect, attackPos);
                                     }
@@ -856,7 +856,7 @@ public class BattlePipeline : MonoBehaviour
                 case BattleCharacterAction.Defence:
                     if (characterInfo.IsFlee)
                     {
-                        BattleManager.instance.battleAudio.PlaySound(Data.Flee);
+                        BattleManager.Instance.battleAudio.PlaySound(Data.Flee);
 
                         /// TODO
                     }
@@ -872,7 +872,7 @@ public class BattlePipeline : MonoBehaviour
 
                 for (int i = 0; i < deads.Length; i++)
                 {
-                    yield return new WaitWhile(() => BattleManager.instance.enemyModels.GetModel(deads[i]).IsAnimating);
+                    yield return new WaitWhile(() => BattleManager.Instance.enemyModels.GetModel(deads[i]).IsAnimating);
 
                     BattleManager.Utility.RemoveEnemy(deads[i]);
                 }
@@ -915,7 +915,7 @@ public class BattlePipeline : MonoBehaviour
 
             character.UpdateAllStates();
 
-            CharacterBox box = BattleManager.instance.characterBox.GetBox(character);
+            CharacterBox box = BattleManager.Instance.characterBox.GetBox(character);
 
             if (character.Entity.Heal != oldHeal)
             {
@@ -932,7 +932,7 @@ public class BattlePipeline : MonoBehaviour
 
             enemy.UpdateAllStates();
 
-            EnemyModel model = BattleManager.instance.enemyModels.GetModel(enemy);
+            EnemyModel model = BattleManager.Instance.enemyModels.GetModel(enemy);
 
             if (enemy.Entity.Heal != oldHeal)
             {
@@ -964,7 +964,7 @@ public class BattlePipeline : MonoBehaviour
         }
 
         foreach (var pattern in patterns)
-            BattleManager.instance.pattern.AddPattern(pattern);
+            BattleManager.Instance.pattern.AddPattern(pattern);
 
         int chars = UnityEngine.Random.Range(1, Data.Characters.Where(i => !i.IsDead).Count() + 1);
 
@@ -980,26 +980,26 @@ public class BattlePipeline : MonoBehaviour
 
             characterInfo.IsTarget = true;
 
-            BattleManager.instance.characterBox.GetBox(characterInfo).MarkTarget(true);
+            BattleManager.Instance.characterBox.GetBox(characterInfo).MarkTarget(true);
 
             targets.Add(characterInfo);
         }
 
-        BattleManager.instance.player.SetActive(true);
-        BattleManager.instance.battleField.SetActive(true);
+        BattleManager.Instance.player.SetActive(true);
+        BattleManager.Instance.battleField.SetActive(true);
 
-        BattleManager.instance.pattern.Invoke(patterns.Count <= 1);
+        BattleManager.Instance.pattern.Invoke(patterns.Count <= 1);
 
-        yield return new WaitWhile(() => BattleManager.instance.pattern.IsAttack);
+        yield return new WaitWhile(() => BattleManager.Instance.pattern.IsAttack);
 
         foreach (var item in targets)
         {
             item.IsTarget = false;
-            BattleManager.instance.characterBox.GetBox(item).MarkTarget(false);
+            BattleManager.Instance.characterBox.GetBox(item).MarkTarget(false);
         }
 
-        BattleManager.instance.player.SetActive(false);
-        BattleManager.instance.battleField.SetActive(false);
+        BattleManager.Instance.player.SetActive(false);
+        BattleManager.Instance.battleField.SetActive(false);
 
         IsPlayerTurn = false;
     }
@@ -1009,13 +1009,13 @@ public class BattlePipeline : MonoBehaviour
         if (Data.BattleInfo.CanLose)
             SceneManager.LoadScene("GameOver");
 
-        BattleManager.instance.battleAudio.StopMusic();
-        BattleManager.instance.battleAudio.PlaySound(Data.Lose);
+        BattleManager.Instance.battleAudio.StopMusic();
+        BattleManager.Instance.battleAudio.PlaySound(Data.Lose);
 
-        BattleManager.instance.characterBox.SetActive(false);
+        BattleManager.Instance.characterBox.SetActive(false);
 
-        BattleManager.instance.player.SetActive(false);
-        BattleManager.instance.battleField.SetActive(false);
+        BattleManager.Instance.player.SetActive(false);
+        BattleManager.Instance.battleField.SetActive(false);
 
         CommonManager.Instance.MessageBox.Write(new MessageInfo()
         {
@@ -1039,10 +1039,10 @@ public class BattlePipeline : MonoBehaviour
 
     private IEnumerator Win()
     {
-        BattleManager.instance.battleAudio.StopMusic();
-        BattleManager.instance.battleAudio.PlaySound(Data.Win);
+        BattleManager.Instance.battleAudio.StopMusic();
+        BattleManager.Instance.battleAudio.PlaySound(Data.Win);
 
-        BattleManager.instance.characterBox.SetActive(false);
+        BattleManager.Instance.characterBox.SetActive(false);
 
         CommonManager.Instance.MessageBox.Write(new MessageInfo()
         {

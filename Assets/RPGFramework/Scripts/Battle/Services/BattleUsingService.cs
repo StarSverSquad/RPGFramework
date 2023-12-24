@@ -65,7 +65,7 @@ public class BattleUsingService
 
             if (target is BattleEnemyInfo enemy)
             {
-                EnemyModel model = BattleManager.instance.enemyModels.GetModel(enemy);
+                EnemyModel model = BattleManager.Instance.enemyModels.GetModel(enemy);
 
                 if (healDif < 0)
                     battleManager.utility.SpawnDamageText((Vector2)model.transform.position + new Vector2(0, 0.5f),
@@ -82,7 +82,7 @@ public class BattleUsingService
 
                 if (enemy.Heal <= 0)
                 {
-                    BattleManager.instance.battleAudio.PlaySound(battleManager.data.EnemyDeath);
+                    BattleManager.Instance.battleAudio.PlaySound(battleManager.data.EnemyDeath);
                     model.Death();
                 }
                 else if (healDif < 0)
@@ -93,7 +93,7 @@ public class BattleUsingService
             else if (target is BattleCharacterInfo character)
             {
 
-                CharacterBox box = BattleManager.instance.characterBox.GetBox(character);
+                CharacterBox box = BattleManager.Instance.characterBox.GetBox(character);
 
                 if (healDif < 0)
                     battleManager.utility.SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 2.6f),

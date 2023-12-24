@@ -7,8 +7,8 @@ using UnityEngine;
 public class BattleChoiceManager : MonoBehaviour
 {
     public BattleData Data => BattleManager.Data;
-    public BattleAudioManager BattleAudio => BattleManager.instance.battleAudio;
-    public BattlePipeline Pipeline => BattleManager.instance.pipeline;
+    public BattleAudioManager BattleAudio => BattleManager.Instance.battleAudio;
+    public BattlePipeline Pipeline => BattleManager.Instance.pipeline;
 
     [SerializeField]
     private BattleChoiceUI battleChoice;
@@ -88,7 +88,7 @@ public class BattleChoiceManager : MonoBehaviour
 
     private void Choice_OnEndChoice()
     {
-        BattleManager.instance.description.SetActive(false);
+        BattleManager.Instance.description.SetActive(false);
     }
 
     private void Choice_OnCanceled()
@@ -185,7 +185,7 @@ public class BattleChoiceManager : MonoBehaviour
     {
         List<IndependenceChoiceUI.ElementInfo> choices = new List<IndependenceChoiceUI.ElementInfo>();
 
-        BattleCharacterInfo current = BattleManager.instance.pipeline.CurrentChoicingCharacter;
+        BattleCharacterInfo current = BattleManager.Instance.pipeline.CurrentChoicingCharacter;
 
         RPGConsumed consumed = current.Item as RPGConsumed;
         
@@ -371,7 +371,7 @@ public class BattleChoiceManager : MonoBehaviour
 
     private void ShowDescriptionFor(IndependenceChoiceUI.ElementInfo element)
     {
-        BattleManager.instance.description.SetActive(true);
-        BattleManager.instance.description.SetText(element.description);
+        BattleManager.Instance.description.SetActive(true);
+        BattleManager.Instance.description.SetText(element.description);
     }
 }

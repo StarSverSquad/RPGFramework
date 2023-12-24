@@ -34,6 +34,8 @@ public class BattleChoiceUI : IndependenceChoiceUI
     private void BattleChoiceUI_OnStartChoice()
     {
         scrollCoroutine = StartCoroutine(ScrollCoroutine());
+
+        mask.gameObject.SetActive(true);
     }
 
     private void BattleChoiceUI_OnEndChoice()
@@ -42,6 +44,8 @@ public class BattleChoiceUI : IndependenceChoiceUI
             StopCoroutine(scrollCoroutine);
 
         scrollCoroutine = null;
+
+        mask.gameObject.SetActive(false);
     }
 
     public override void CleanUp()

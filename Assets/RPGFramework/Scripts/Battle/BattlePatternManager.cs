@@ -79,7 +79,11 @@ public class BattlePatternManager : MonoBehaviour
         patternObjects.Clear();
 
         foreach (RPGAttackPattern o in patterns)
+        {
+            o.StopAllCoroutines();
             Destroy(o.gameObject);
+        }
+            
         patterns.Clear();
     }
 

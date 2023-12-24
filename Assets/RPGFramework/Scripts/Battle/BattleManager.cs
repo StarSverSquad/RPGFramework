@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BattleManager : ContentManagerBase, IManagerInitialize
 {
-    public static BattleManager instance;
+    public static BattleManager Instance;
 
     public BattlePipeline pipeline;
     public CharacterBoxManager characterBox;
@@ -23,16 +23,16 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
     public BattleDescription description;
     public BattlePatternManager pattern;
 
-    public static BattleUtility Utility => instance.utility;
-    public static BattleData Data => instance.data;
+    public static BattleUtility Utility => Instance.utility;
+    public static BattleData Data => Instance.data;
 
-    public static bool IsBattle => instance.pipeline.MainIsWorking;
+    public static bool IsBattle => Instance.pipeline.MainIsWorking;
 
     public static void StartBattle(RPGBattleInfo info) => Utility.StartBattle(info); 
 
     public void Initialize()
     {
-        instance = this;
+        Instance = this;
 
         InitializeChild();
     }

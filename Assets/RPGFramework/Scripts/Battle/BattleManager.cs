@@ -22,6 +22,7 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
     public ConcentrationBarManager concentrationBar;
     public BattleDescription description;
     public BattlePatternManager pattern;
+    public BattleVisualTransmitionManager visualTransmition;
 
     public static BattleUtility Utility => Instance.utility;
     public static BattleData Data => Instance.data;

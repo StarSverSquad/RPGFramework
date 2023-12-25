@@ -49,6 +49,11 @@ public class BattleUsingService
             List<RPGEntityState> states = new List<RPGEntityState>();
             int healDif = 0, manaDif = 0;
 
+            if (ability.Damage > 0)
+            {
+                healDif = target.Entity.GiveDamage(ability.Damage + Mathf.RoundToInt(user.Entity.Damage * 0.25f));
+            }
+
             foreach (var effect in ability.Effects)
             {
                 yield return battleManager.pipeline.StartCoroutine(effect.BattleInvoke(user, target));
@@ -65,6 +70,9 @@ public class BattleUsingService
 
             if (target is BattleEnemyInfo enemy)
             {
+                if (!battleManager.data.Enemys.Contains(enemy))
+                    continue;
+
                 EnemyModel model = BattleManager.Instance.enemyModels.GetModel(enemy);
 
                 if (healDif < 0)
@@ -192,6 +200,9 @@ public class BattleUsingService
 
             if (target is BattleEnemyInfo enemy)
             {
+                if (!battleManager.data.Enemys.Contains(enemy))
+                    continue;
+
                 EnemyModel model = BattleManager.Instance.enemyModels.GetModel(enemy);
 
                 if (healDif < 0)

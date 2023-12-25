@@ -19,7 +19,21 @@ public class TestPattern : RPGAttackPattern
 
         while (true)
         {
-            float y = Random.Range(-1.5f, 1.5f);
+            float y = Random.Range(-2.5f, 0.5f);
+
+            CreateObject(SomeBullet.gameObject, new Vector2(-4, y));
+
+            yield return new WaitForSeconds(time);
+        }
+    }
+
+    protected override IEnumerator TinyPatternCoroutine()
+    {
+        float time = Mathf.Abs(PatternTime - TimeOffset) / (BulletsCount + 1);
+
+        while (true)
+        {
+            float y = Random.Range(-2.5f, 0.5f);
 
             CreateObject(SomeBullet.gameObject, new Vector2(-4, y));
 

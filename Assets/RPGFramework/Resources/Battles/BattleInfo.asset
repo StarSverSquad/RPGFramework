@@ -15,7 +15,25 @@ MonoBehaviour:
   enemySquad: {fileID: 11400000, guid: 3c575e88abe7d7541b2cb8eb1cc2e486, type: 2}
   EnemyStart: 0
   CanLose: 1
-  CanFlee: 0
-  BattleMusic: {fileID: 8300000, guid: b3cc12bac971cdd4ab92ab148bf868f7, type: 3}
+  CanFlee: 1
+  ShowStartMessage: 1
+  ShowEndMessage: 1
+  BattleMusic: {fileID: 8300000, guid: 1ad37fe0ef58a7048b97789f0cb7fc68, type: 3}
   MusicVolume: 1
+  StopGlobalMusic: 1
   Background: {fileID: 4620171788711976551, guid: 48dacab542990f8488bf7db3b0198a66, type: 3}
+  BattleEnterEffect: {fileID: 0}
+  BattleExitEffect: {fileID: 0}
+  Events:
+  - rid: 6865748108449939466
+  references:
+    version: 2
+    RefIds:
+    - rid: 6865748108449939466
+      type: {class: RPGBattleEvent, ns: , asm: Assembly-CSharp}
+      data:
+        Period: 8
+        IsCustomEvent: 0
+        CustomAction: {fileID: 0}
+        Event: {fileID: 11400000, guid: 7f5c31a2770b14340a47d68631f41185, type: 2}
+        Turn: 0

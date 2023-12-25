@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -19,40 +18,33 @@ public class BattlePipeline : MonoBehaviour
     public BattleData Data => BattleManager.Data;
     public BattleChoiceManager Choice => BattleManager.Instance.choice;
     public BattleUtility Utility => BattleManager.Instance.utility;
-
-    private BattleUsingService usingService;
+    public BattleVisualTransmitionManager VisualTransmition => BattleManager.Instance.visualTransmition;
 
     public bool MainIsWorking => main != null;
 
     public bool IsPlayerTurn { get; private set; } = false;
     public bool IsEnemyTurn { get; private set; } = false;
 
-    // Список выборов
     private List<ChoiceAction> choiceActions = new List<ChoiceAction>();
     public ChoiceAction CurrentChoiceAction => choiceActions.Last();
 
     public BattleCharacterInfo CurrentChoicingCharacter => Data.Characters[currentCharacterChoiceIndex];
 
-    // Переключатели запоминающие что нужно ли возвращать BGM и BGS
-    private bool restoreBGM = false;
-    private bool restoreBGS = false;
+    public bool IsWin { get; private set; }
+    public bool IsLose { get; private set; }
+    public bool IsFlee { get; private set; }
+
+    public int TurnCounter { get; private set; }
 
     private int currentCharacterChoiceIndex = 0;
 
     private Coroutine main = null;
 
-    public void InvokeLose()
-    {
-        StopCoroutine(main);
-        main = null;
+    private BattleUsingService usingService;
 
-        StartCoroutine(Lose());
-    }
+    private bool loseKey, winKey, fleeKey, breakKey;
 
-    public void InvokeBreak()
-    {
-
-    }
+    private bool AllKeysFalse => !loseKey && !winKey && !fleeKey && !breakKey;
 
     public void InvokeMainPipeline()
     {
@@ -60,129 +52,254 @@ public class BattlePipeline : MonoBehaviour
             main = StartCoroutine(MainPipeline());
     }
 
+    public void InvokeLose()
+    {
+        loseKey = true;
+    }
+
+    public void InvokeWin()
+    {
+        winKey = true;
+    }
+
+    public void InvokeFlee()
+    {
+        fleeKey = true;
+    }
+
+    public void InvokeBreak()
+    {
+        breakKey = true;
+    }
+
     private IEnumerator MainPipeline()
     {
-        /// SETUP PART +
+        loseKey = false; winKey = false; fleeKey = false; breakKey = false;
+
+        IsFlee = false; IsWin = false; IsLose = false;
+
+        TurnCounter = 0;
 
         usingService = new BattleUsingService(BattleManager.Instance, GameManager.Instance);
 
-        // Добавление персонажей в битву
-        foreach (var item in GameManager.Instance.Character.characters)
+        yield return StartCoroutine(BattleEnter());
+
+        foreach (var item in Data.BattleInfo.Events
+            .Where(i => i.Period == RPGBattleEvent.InvokePeriod.OnBattleStart))
         {
-            // Добавление только тех кто может учавствовать
-            if (item.ParticipateInBattle) 
-                Data.Characters.Add(new BattleCharacterInfo(item));
+            item.Event.Invoke(this);
+
+            yield return new WaitWhile(() => item.Event.IsPlaying);
         }
 
-        // Затухание музыки
-        if (restoreBGM = GameManager.Instance.gameAudio.BGMIsPlaying)
-            GameManager.Instance.gameAudio.PauseBGM(0.2f);
+        if (Data.BattleInfo.EnemyStart)
+        {
+            foreach (var item in Data.BattleInfo.Events
+                .Where(i => i.Period == RPGBattleEvent.InvokePeriod.OnEnemyTurn && i.Turn == TurnCounter))
+            {
+                item.Event.Invoke(this);
 
-        // Затухание фотовых звуков
-        if (restoreBGS = GameManager.Instance.gameAudio.BGSIsPlaying)
-            GameManager.Instance.gameAudio.PauseBGS();
+                yield return new WaitWhile(() => item.Event.IsPlaying);
+            }
 
-        // Затимнение
-        GameManager.Instance.loadingScreen.ActivatePart1();
+            foreach (var item in Data.BattleInfo.Events
+                .Where(i => i.Period == RPGBattleEvent.InvokePeriod.EveryEnemyTurn))
+            {
+                item.Event.Invoke(this);
 
-        yield return new WaitWhile(() => GameManager.Instance.loadingScreen.BgIsFade);
+                yield return new WaitWhile(() => item.Event.IsPlaying);
+            }
 
-        // Включение контейнера битвы
-        BattleManager.Instance.SetActive(true);
-
-        // Ждём fixedupdate
-        yield return new WaitForFixedUpdate();
-
-        // Инициализация character box-ов
-        BattleManager.Instance.characterBox.Initialize(Data.Characters.ToArray());
-        // Перемещение их наврех или вниз
-        BattleManager.Instance.characterBox.ChangePosition(!Data.BattleInfo.EnemyStart);
-
-        // Отключение первичного выбора
-        Choice.PrimaryChoice.SetActive(false);
-        // Отключение окна с описанием
-        BattleManager.Instance.description.SetActive(false);
-
-        // Обнавление полоски концентрации
-        BattleManager.Instance.concentrationBar.UpdateValue();
-
-        // Установка заднего фона
-        BattleManager.Instance.background.CreateBackground(Data.BattleInfo.Background);
-
-        // Включение музыки битвы
-        if (Data.BattleInfo.BattleMusic != null)
-            BattleManager.Instance.battleAudio.PlayMusic(Data.BattleInfo.BattleMusic, Data.BattleInfo.MusicVolume);
-
-        /// SETUP PART -
-
-        // Появление экрана
-        GameManager.Instance.loadingScreen.DeactivatePart1();
-
-        yield return new WaitWhile(() => GameManager.Instance.loadingScreen.BgIsFade);
+            yield return StartCoroutine(EnemyTurn());
+            TurnCounter++;
+        }
 
         while (true)
         {
-            /// REFACTOR
+            if (Data.Enemys.Count == 0)
+                InvokeWin();
 
-            if (Data.BattleInfo.EnemyStart)
+            if (Data.Characters.All(i => i.Heal <= 0))
+                InvokeLose();
+
+            if (!AllKeysFalse)
+                break;
+
+            yield return StartCoroutine(UpdateEntitysStates());
+
+            foreach (var item in Data.BattleInfo.Events
+                .Where(i => i.Period == RPGBattleEvent.InvokePeriod.OnPlayerTurn && i.Turn == TurnCounter))
             {
-                yield return StartCoroutine(EnemyTurn());
-                yield return StartCoroutine(UpdateEntitysStates());
-                yield return StartCoroutine(PlayerTurn());
+                item.Event.Invoke(this);
 
-                if (Data.Enemys.Count <= 0)
-                {
-                    yield return StartCoroutine(Win());
-
-                    break;
-                }
+                yield return new WaitWhile(() => item.Event.IsPlaying);
             }
-            else
+
+            foreach (var item in Data.BattleInfo.Events
+                .Where(i => i.Period == RPGBattleEvent.InvokePeriod.EveryPlayerTurn))
             {
-                yield return StartCoroutine(UpdateEntitysStates());
-                yield return StartCoroutine(PlayerTurn());
+                item.Event.Invoke(this);
 
-                if (Data.Enemys.Count <= 0)
-                {
-                    yield return StartCoroutine(Win());
-
-                    break;
-                }
-
-                yield return StartCoroutine(EnemyTurn());
+                yield return new WaitWhile(() => item.Event.IsPlaying);
             }
+
+            if (!AllKeysFalse)
+                break;
+
+            yield return StartCoroutine(PlayerTurn());
+
+            if (Data.Enemys.Count == 0)
+                InvokeWin();
+
+            foreach (var item in Data.BattleInfo.Events
+                .Where(i => i.Period == RPGBattleEvent.InvokePeriod.OnEnemyTurn && i.Turn == TurnCounter))
+            {
+                item.Event.Invoke(this);
+
+                yield return new WaitWhile(() => item.Event.IsPlaying);
+            }
+
+            foreach (var item in Data.BattleInfo.Events
+                .Where(i => i.Period == RPGBattleEvent.InvokePeriod.EveryEnemyTurn))
+            {
+                item.Event.Invoke(this);
+
+                yield return new WaitWhile(() => item.Event.IsPlaying);
+            }
+
+            if (!AllKeysFalse)
+                break;
+
+            yield return StartCoroutine(EnemyTurn());
+
+            TurnCounter++;
         }
 
-        /// END BATTLE
+        if (fleeKey)
+        {
+            foreach (var item in Data.BattleInfo.Events
+                .Where(i => i.Period == RPGBattleEvent.InvokePeriod.OnFlee))
+            {
+                item.Event.Invoke(this);
 
-        // Затимнение
-        GameManager.Instance.loadingScreen.ActivatePart1();
+                yield return new WaitWhile(() => item.Event.IsPlaying);
+            }
 
-        yield return new WaitWhile(() => GameManager.Instance.loadingScreen.BgIsFade);
+            yield return StartCoroutine(Flee());
+        }
 
-        // Очистка данных
-        Data.Dispose();
-        BattleManager.Utility.CleanupBattle();
+        if (winKey)
+        {
+            foreach (var item in Data.BattleInfo.Events
+                .Where(i => i.Period == RPGBattleEvent.InvokePeriod.OnWin))
+            {
+                item.Event.Invoke(this);
 
-        // Оключение контейнера битвы
-        BattleManager.Instance.SetActive(false);
+                yield return new WaitWhile(() => item.Event.IsPlaying);
+            }
 
-        // Востоновление музыки
-        if (restoreBGM)
+            yield return StartCoroutine(Win());
+        }
+
+        if (loseKey)
+        {
+            foreach (var item in Data.BattleInfo.Events
+                .Where(i => i.Period == RPGBattleEvent.InvokePeriod.OnLose))
+            {
+                item.Event.Invoke(this);
+
+                yield return new WaitWhile(() => item.Event.IsPlaying);
+            }
+
+            yield return StartCoroutine(Lose());
+        }
+
+        foreach (var item in Data.BattleInfo.Events
+            .Where(i => i.Period == RPGBattleEvent.InvokePeriod.OnBattleEnd))
+        {
+            item.Event.Invoke(this);
+
+            yield return new WaitWhile(() => item.Event.IsPlaying);
+        }
+
+        yield return StartCoroutine(BattleExit());
+
+        main = null;
+    }
+
+    private IEnumerator BattleEnter()
+    {
+        foreach (var item in GameManager.Instance.Character.characters)
+        {
+            if (item.ParticipateInBattle)
+                Data.Characters.Add(new BattleCharacterInfo(item));
+        }
+
+        if (Data.BattleInfo.StopGlobalMusic)
+            GameManager.Instance.gameAudio.PauseBGM(0.2f);
+
+        if (Data.BattleInfo.StopGlobalMusic)
+            GameManager.Instance.gameAudio.PauseBGS();
+
+        VisualTransmition.InitializeCustomEffect(Data.BattleInfo.BattleEnterEffect);
+
+        yield return StartCoroutine(VisualTransmition.InvokePartOne());
+
+        BattleManager.Instance.SetActive(true);
+
+        yield return new WaitForFixedUpdate();
+
+        BattleManager.Instance.characterBox.Initialize(Data.Characters.ToArray());
+        BattleManager.Instance.characterBox.ChangePosition(false);
+
+        Choice.PrimaryChoice.SetActive(false);
+
+        BattleManager.Instance.description.SetActive(false);
+
+        BattleManager.Instance.concentrationBar.UpdateValue();
+
+        BattleManager.Instance.background.CreateBackground(Data.BattleInfo.Background);
+
+        if (Data.BattleInfo.BattleMusic != null)
+            BattleManager.Instance.battleAudio.PlayMusic(Data.BattleInfo.BattleMusic, Data.BattleInfo.MusicVolume);
+
+        yield return StartCoroutine(VisualTransmition.InvokePartTwo());
+
+        VisualTransmition.DisposeCustomEffect();
+    }
+
+    private IEnumerator BattleExit()
+    {
+        VisualTransmition.InitializeCustomEffect(Data.BattleInfo.BattleExitEffect);
+
+        yield return StartCoroutine(VisualTransmition.InvokePartOne());
+
+        foreach (var item in Data.Characters)
+        {
+            if (item.Heal <= 0)
+                item.Heal = 1;
+
+            item.Entity.RemoveNonBattleStates();
+        }
+
+
+        if (Data.BattleInfo.StopGlobalMusic)
             GameManager.Instance.gameAudio.ResumeBGM();
-        // Востоновление фоновых звуков
-        if (restoreBGS)
+
+        if (Data.BattleInfo.StopGlobalMusic)
             GameManager.Instance.gameAudio.ResumeBGS();
 
-        // Появление экрана
-        GameManager.Instance.loadingScreen.DeactivatePart1();
+        Data.Dispose();
 
-        yield return new WaitWhile(() => GameManager.Instance.loadingScreen.BgIsFade);
+        BattleManager.Instance.SetActive(false);
 
-        // Обнуление
-        main = null;
+        BattleManager.Instance.characterBox.Dispose();
 
-        /// END BATTLE
+        BattleManager.Instance.enemyModels.Dispose();
+
+        yield return StartCoroutine(VisualTransmition.InvokePartTwo());
+
+        VisualTransmition.DisposeCustomEffect();
     }
 
     private IEnumerator PlayerTurn()
@@ -303,7 +420,7 @@ public class BattlePipeline : MonoBehaviour
 
                     // Если отмена то откат
                     if (BattleManager.Instance.choice.IsCanceled)
-                        PreviewCharacter();
+                        PreviewAction();
                     else
                     {
                         if ((int)Choice.CurrentItem.value == 0)
@@ -330,7 +447,9 @@ public class BattlePipeline : MonoBehaviour
                     {
                         currentCharacter.InteractionAct = RPGEnemy.EnemyAct.NullAct;
 
-                        PreviewCharacter();
+                        currentCharacter.EnemyBuffer = null;
+
+                        PreviewAction();
                     }
                     else
                     {
@@ -355,7 +474,7 @@ public class BattlePipeline : MonoBehaviour
                     {
                         currentCharacter.Ability = null;
 
-                        PreviewCharacter();
+                        PreviewAction();
                     }
                     else
                     {
@@ -401,7 +520,7 @@ public class BattlePipeline : MonoBehaviour
                         if (currentCharacter.BattleAction == BattleCharacterAction.Item)
                             currentCharacter.Item = null;
 
-                        PreviewCharacter();
+                        PreviewAction();
                     }
                     else
                     {
@@ -446,7 +565,7 @@ public class BattlePipeline : MonoBehaviour
                         if (currentCharacter.BattleAction == BattleCharacterAction.Item)
                             currentCharacter.Item = null;
 
-                        PreviewCharacter();
+                        PreviewAction();
                     }
                     else
                     {
@@ -483,7 +602,9 @@ public class BattlePipeline : MonoBehaviour
                         if (currentCharacter.BattleAction == BattleCharacterAction.Item)
                             currentCharacter.Item = null;
 
-                        PreviewCharacter();
+                        currentCharacter.EnemyBuffer = null;
+
+                        PreviewAction();
                     }
                     else
                     {
@@ -520,54 +641,57 @@ public class BattlePipeline : MonoBehaviour
                     break;
                 // Выбор пердмета
                 case ChoiceAction.Item:
-                    // Заупуск выбра
-                    BattleManager.Instance.choice.InvokeChoiceItem();
-
-                    yield return new WaitWhile(() => BattleManager.Instance.choice.IsChoicing);
-
-                    // Если отмена то откат 
-                    if (BattleManager.Instance.choice.IsCanceled)
-                        PreviewCharacter();
-                    else
+                    if (GameManager.Instance.inventory.Slots.Length != 0)
                     {
-                        // Запоминаем предмет
-                        currentCharacter.Item = BattleManager.Instance.choice.CurrentItem.value as RPGCollectable;
+                        BattleManager.Instance.choice.InvokeChoiceItem();
 
-                        // Этот предмет является потребляемым?
-                        currentCharacter.IsConsumed = currentCharacter.Item is RPGConsumed;
+                        yield return new WaitWhile(() => BattleManager.Instance.choice.IsChoicing);
 
-                        if (currentCharacter.Item is RPGConsumed consumed)
-                        {
-                            switch (consumed.Direction)
-                            {
-                                case RPGConsumed.ConsumingDirection.AllEnemys:
-                                case RPGConsumed.ConsumingDirection.AllTeam:
-                                case RPGConsumed.ConsumingDirection.All:
-                                    BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
-
-                                    NextCharacter();
-                                    break;
-                                case RPGConsumed.ConsumingDirection.Teammate:
-                                    choiceActions.Add(ChoiceAction.Teammate);
-                                    break;
-                                case RPGConsumed.ConsumingDirection.Enemy:
-                                    choiceActions.Add(ChoiceAction.Enemy);
-                                    break;
-                                case RPGConsumed.ConsumingDirection.Any:
-                                    choiceActions.Add(ChoiceAction.Entity);
-                                    break;
-                            }
-                        }
+                        if (BattleManager.Instance.choice.IsCanceled)
+                            PreviewAction();
                         else
                         {
-                            BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
+                            // Запоминаем предмет
+                            currentCharacter.Item = BattleManager.Instance.choice.CurrentItem.value as RPGCollectable;
 
-                            NextCharacter();
+                            // Этот предмет является потребляемым?
+                            currentCharacter.IsConsumed = currentCharacter.Item is RPGConsumed;
+
+                            if (currentCharacter.Item is RPGConsumed consumed)
+                            {
+                                switch (consumed.Direction)
+                                {
+                                    case RPGConsumed.ConsumingDirection.AllEnemys:
+                                    case RPGConsumed.ConsumingDirection.AllTeam:
+                                    case RPGConsumed.ConsumingDirection.All:
+                                        BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
+
+                                        NextCharacter();
+                                        break;
+                                    case RPGConsumed.ConsumingDirection.Teammate:
+                                        choiceActions.Add(ChoiceAction.Teammate);
+                                        break;
+                                    case RPGConsumed.ConsumingDirection.Enemy:
+                                        choiceActions.Add(ChoiceAction.Enemy);
+                                        break;
+                                    case RPGConsumed.ConsumingDirection.Any:
+                                        choiceActions.Add(ChoiceAction.Entity);
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
+
+                                NextCharacter();
+                            }
                         }
-                    }
 
-                    // Очистка меню выбора
-                    BattleManager.Instance.choice.CleanUp();
+                        BattleManager.Instance.choice.CleanUp();
+                    }
+                    else
+                        PreviewAction();
+
                     break;
                 // Выбор защиты или бегства
                 case ChoiceAction.Defence:
@@ -578,7 +702,7 @@ public class BattlePipeline : MonoBehaviour
 
                     // Если отмена то откат
                     if (BattleManager.Instance.choice.IsCanceled)
-                        PreviewCharacter();
+                        PreviewAction();
                     else
                     {
                         // Бество это или защита
@@ -602,8 +726,6 @@ public class BattlePipeline : MonoBehaviour
                     break;
             }
 
-            IsPlayerTurn = false;
-
             yield return null;
         }
 
@@ -615,6 +737,8 @@ public class BattlePipeline : MonoBehaviour
         /// ЦИКЛ ПОСЛЕДСВИЙ ВЫБОРА
         foreach (var characterInfo in Data.Characters)
         {
+            bool flee = false;
+
             RPGCharacter character = characterInfo.Entity as RPGCharacter;
 
             // Если персонаж пал или пропускает ход или не может ничего делать в битве, то его надо пропустить 
@@ -630,6 +754,14 @@ public class BattlePipeline : MonoBehaviour
                 // Если персонаж атакует
                 case BattleCharacterAction.Fight:
                     {
+                        if (!Data.Enemys.Contains(characterInfo.EnemyBuffer))
+                        {
+                            if (Data.Enemys.Count != 0)
+                                characterInfo.EnemyBuffer = Data.Enemys[0];
+                            else
+                                continue;
+                        }
+
                         // Запуск QTE атаки
                         BattleManager.Instance.attackQTE.InvokeQTE((AttackQTEManager.Positions)Data.Characters.IndexOf(characterInfo));
 
@@ -785,7 +917,43 @@ public class BattlePipeline : MonoBehaviour
                     {
                         BattleManager.Instance.battleAudio.PlaySound(Data.Flee);
 
-                        /// TODO
+                        BattleManager.Instance.battleAudio.PauseMusic();
+
+                        CommonManager.Instance.MessageBox.Write(new MessageInfo()
+                        {
+                            text = $"* {character.Name} пытаеться сбежать<\\:>.<\\:>.<\\:>.",
+                            closeWindow = true,
+                        });
+
+                        yield return new WaitWhile(() => CommonManager.Instance.MessageBox.IsWriting);
+
+                        yield return new WaitForSeconds(.5f);
+
+                        int totalEnemysAgility, totalCharactersAgility;
+
+                        totalCharactersAgility = Data.Characters.Select(i => i.Entity.Agility).Sum();
+                        totalEnemysAgility = Data.Enemys.Select(i => i.Entity.Agility).Sum();
+
+                        int randNum = Random.Range(0, totalCharactersAgility + totalEnemysAgility);
+
+                        if (randNum - totalCharactersAgility < 0)
+                        {
+                            flee = true;
+
+                            InvokeFlee();
+                        }
+                        else
+                        {
+                            BattleManager.Instance.battleAudio.UnPauseMusic();
+
+                            CommonManager.Instance.MessageBox.Write(new MessageInfo()
+                            {
+                                text = $"* Но сбежать не удалось",
+                                closeWindow = true,
+                            });
+
+                            yield return new WaitWhile(() => CommonManager.Instance.MessageBox.IsWriting);
+                        }
                     }
                     break;
                 case BattleCharacterAction.None:
@@ -805,9 +973,11 @@ public class BattlePipeline : MonoBehaviour
                 }
             }
 
-            if (Data.Enemys.Count == 0)
+            if (Data.Enemys.Count == 0 || flee)
                 break;
         }
+
+        IsPlayerTurn = false;
     }
 
     private void NextCharacter()
@@ -816,7 +986,7 @@ public class BattlePipeline : MonoBehaviour
 
         choiceActions.Clear();
     }
-    private void PreviewCharacter()
+    private void PreviewAction()
     {
         choiceActions.Remove(choiceActions.Last());
     }
@@ -917,7 +1087,10 @@ public class BattlePipeline : MonoBehaviour
 
         BattleManager.Instance.pattern.Invoke(patterns.Count <= 1);
 
-        yield return new WaitWhile(() => BattleManager.Instance.pattern.IsAttack);
+        yield return new WaitWhile(() => BattleManager.Instance.pattern.IsAttack && !loseKey && !breakKey);
+
+        if (loseKey || breakKey)
+            BattleManager.Instance.pattern.Break();
 
         foreach (var item in targets)
         {
@@ -928,21 +1101,17 @@ public class BattlePipeline : MonoBehaviour
         BattleManager.Instance.player.SetActive(false);
         BattleManager.Instance.battleField.SetActive(false);
 
-        IsPlayerTurn = false;
+        IsEnemyTurn = false;
     }
 
     private IEnumerator Lose()
     {
-        if (Data.BattleInfo.CanLose)
-            SceneManager.LoadScene("GameOver");
+        IsLose = true;
 
         BattleManager.Instance.battleAudio.StopMusic();
         BattleManager.Instance.battleAudio.PlaySound(Data.Lose);
 
         BattleManager.Instance.characterBox.SetActive(false);
-
-        BattleManager.Instance.player.SetActive(false);
-        BattleManager.Instance.battleField.SetActive(false);
 
         CommonManager.Instance.MessageBox.Write(new MessageInfo()
         {
@@ -952,20 +1121,14 @@ public class BattlePipeline : MonoBehaviour
 
         yield return new WaitWhile(() => CommonManager.Instance.MessageBox.IsWriting);
 
-#if UNITY_EDITOR
-        Debug.Break();
-#endif
-
-        Application.Quit();
-    }
-
-    private IEnumerator Break()
-    {
-        yield return null;
+        if (!Data.BattleInfo.CanLose)
+            SceneManager.LoadScene("GameOver");
     }
 
     private IEnumerator Win()
     {
+        IsWin = true;
+
         BattleManager.Instance.battleAudio.StopMusic();
         BattleManager.Instance.battleAudio.PlaySound(Data.Win);
 
@@ -983,6 +1146,10 @@ public class BattlePipeline : MonoBehaviour
 
     private IEnumerator Flee()
     {
+        BattleManager.Instance.battleAudio.StopMusic();
+
+        IsFlee = true;
+
         yield break;
     }
 }

@@ -404,7 +404,7 @@ public class ConditionNode : ActionNodeBase
                         .Where(i => i.BaseType != null && i.BaseType.Name == "ConditionBase" && i.Name == typeName)
                         .FirstOrDefault();
 
-        ConditionBase condition = action.GetType().Assembly.CreateInstance(item.Name) as ConditionBase;
+        ConditionBase condition = Activator.CreateInstance(item) as ConditionBase;
 
         return condition.GetLabel();
     }

@@ -45,6 +45,10 @@ public class BattleData : MonoBehaviour, IDisposable
 
     public void Dispose()
     {
-        
+        Enemys.Clear();
+        Characters.Clear();
+        BattleInfo = null;
+
+        Concentration = 0;
     }
 }

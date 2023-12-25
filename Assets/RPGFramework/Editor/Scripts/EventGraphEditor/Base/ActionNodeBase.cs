@@ -4,12 +4,16 @@ using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
+/// <summary>
+/// Начальное название ноды должно полностью сответсвовать названию действия ActAction = ActNode
+/// </summary>
 public abstract class ActionNodeBase : Node
 {
     public string GUID;
 
     public GraphActionBase action;
 
+    private List<Port> inputs;
     private List<Port> outputs;
 
     public EventGraphView view;
@@ -18,6 +22,7 @@ public abstract class ActionNodeBase : Node
     {
         this.action = action;
 
+        inputs = new List<Port>();
         outputs = new List<Port>();
 
         tooltip = action.GetInfo();
@@ -41,6 +46,7 @@ public abstract class ActionNodeBase : Node
         port.portColor = new Color32(16, 130, 119, 255);
 
         inputContainer.Add(port);
+        inputs.Add(port);
 
         return port;
     }
@@ -52,6 +58,7 @@ public abstract class ActionNodeBase : Node
         port.portColor = color;
 
         inputContainer.Add(port);
+        inputs.Add(port);
 
         return port;
     }
@@ -104,6 +111,43 @@ public abstract class ActionNodeBase : Node
     {
         extensionContainer.Clear();
         UIContructor();
+    }
+
+    public void UpdatePorts()
+    {
+        foreach (var port in outputs)
+        {
+            foreach (var edge in port.connections)
+            {
+                edge.input.Disconnect(edge);
+
+                edge.parent.Remove(edge);
+            }
+
+            port.DisconnectAll();
+        }
+            
+
+        foreach (var port in inputs)
+        {
+            foreach (var edge in port.connections)
+            {
+                edge.output.Disconnect(edge);
+
+                edge.parent.Remove(edge);
+            }
+
+            port.DisconnectAll();
+        }
+            
+
+        inputContainer.Clear();
+        outputContainer.Clear();
+
+        outputs = new List<Port>();
+        inputs = new List<Port>();
+
+        PortContructor();
     }
 
     public void ApplyPorts()

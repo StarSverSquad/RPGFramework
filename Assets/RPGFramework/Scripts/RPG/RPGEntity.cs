@@ -135,13 +135,23 @@ public class RPGEntity : ScriptableObject
         OnAllStatesChanged?.Invoke();
     }
 
+    public virtual void RemoveNonBattleStates()
+    {
+        RPGEntityState[] states = States.Where(i => i.OnlyForBattle).ToArray();
+
+        foreach (RPGEntityState state in states)
+            RemoveState(state);
+
+        UpdateStats();
+    }
+
     public virtual void UpdateState(RPGEntityState state)
     {
         if (!HasState(state))
             return;
 
-        Heal += state.AddHeal;
-        Mana += state.AddMana;
+        Heal = Mathf.Clamp(Heal + state.AddHeal, 1, MaxHeal);
+        Mana = Mathf.Clamp(Mana + state.AddMana, 1, MaxMana);
 
         RPGEntityStateInstance instance = GetStateInstance(state);
 
@@ -167,16 +177,25 @@ public class RPGEntity : ScriptableObject
 
     #endregion
 
-    /// <summary>
-    /// Наносит урон данному entity
-    /// </summary>
-    /// <param name="dontHurt">Если нужно просто расчитать урон</param>
-    /// <returns>Потраченое хп</returns>
     public virtual int GiveDamage(RPGEntity who, float DamageModifier = 1, bool dontHurt = false)
     {
         int resultDamage = Mathf.RoundToInt(who.Damage * DamageModifier) - Mathf.RoundToInt(Defence / .5f);
 
-        resultDamage = Mathf.RoundToInt(UnityEngine.Random.Range(resultDamage * 0.25f, resultDamage * 1.25f));
+        resultDamage = Mathf.RoundToInt(UnityEngine.Random.Range(resultDamage * 0.75f, resultDamage * 1.25f));
+
+        if (resultDamage <= 0)
+            return 0;
+
+        if (!dontHurt)
+            Heal -= resultDamage;
+
+        return resultDamage;
+    }
+    public virtual int GiveDamage(int damage, bool dontHurt = false)
+    {
+        int resultDamage = Mathf.RoundToInt(damage) - Mathf.RoundToInt(Defence / .5f);
+
+        resultDamage = Mathf.RoundToInt(UnityEngine.Random.Range(resultDamage * 0.75f, resultDamage * 1.25f));
 
         if (resultDamage <= 0)
             return 0;

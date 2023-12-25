@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -55,57 +56,27 @@ public class EventGraphView : GraphView
 
     public void CreateNode(GraphActionBase action, Vector2 position, string guid = null)
     {
+        /// Начальное название ноды должно полностью сответсвовать названию действия ActAction = ActNode
+
         ActionNodeBase node;
-        switch (action)
+
+        Assembly editorAssembly = typeof(ActionNodeBase).Assembly;
+
+
+        string name = action.GetType().Name.Split("Action")[0];
+
+        Type nodeType = editorAssembly.GetTypes()
+            .FirstOrDefault(i => i.BaseType == typeof(ActionNodeBase) && i.Name.StartsWith(name));
+
+        if (nodeType != null)
         {
-            case StartAction a:
-                node = new StartNode(a);
-                break;
-            case EndAction a:
-                node = new EndNode(a);              
-                break;
-            case ConditionAction a:
-                node = new ConditionNode(a);
-                break;
-            case DebugAction a:
-                node = new DebugNode(a);
-                break;
-            case ManageBGMAction a:
-                node = new ManageBGMNode(a);
-                break;
-            case ManageBGSAction a:
-                node = new ManageBGSNode(a);
-                break;
-            case PlaySEAction a:
-                node = new PlaySENode(a);
-                break;
-            case PlayMEAction a:
-                node = new PlayMENode(a);
-                break;
-            case WaitAction a:
-                node = new WaitNode(a);
-                break;
-            case MessageAction a:
-                node = new MessageNode(a);
-                break;
-            case ChoiceAction a:
-                node = new ChoiceNode(a);
-                break;
-            case ManageVarAction a:
-                node = new ManageVarNode(a);
-                break;
-            case InvokeCustomAction a:
-                node = new InvokeCustomNode(a);
-                break;
-            case AddRemoveCharacterAction a:
-                node = new AddRemoveCharacterNode(a);
-                break;
-            case SetActiveAction a:
-                node = new SetActiveNode(a);
-                break;
-            default:
-                EditorUtility.DisplayDialog("Ошибка", $"Нода под событие {action.Name} не существует", "Ok");
-                return;
+            node = (ActionNodeBase)Activator.CreateInstance(nodeType, new object[] { action });
+        }
+        else
+        {
+            EditorUtility.DisplayDialog("Ошибка", $"Ноды для действия {action.GetType().Name} не существует", "Ok");
+
+            return;
         }
 
         node.view = this;
@@ -145,36 +116,40 @@ public class EventGraphView : GraphView
 
         if (evt.target is ActionNodeBase node)
         {
-            object obj = node.action.Clone() as GraphActionBase;
+            if (node is not StartNode)
+            {
+                object obj = node.action.Clone() as GraphActionBase;
 
-            GraphActionBase action;
+                GraphActionBase action;
 
-            if (obj is GraphActionBase act)
-                action = act;
-            else
-                action = node.action.GetType().Assembly.CreateInstance(node.action.GetType().Name) as GraphActionBase;
+                if (obj is GraphActionBase act)
+                    action = act;
+                else
+                    action = node.action.GetType().Assembly.CreateInstance(node.action.GetType().Name) as GraphActionBase;
 
-            evt.menu.AppendAction("Создать дубликат", i => CreateNode(action, mousePosition));
+                evt.menu.AppendAction("Создать дубликат", i => CreateNode(action, mousePosition));
+            }
         }
 
-        evt.menu.AppendSeparator("Общие события");
-        evt.menu.AppendSeparator("События битвы");
-        evt.menu.AppendSeparator("События исследования");
+        evt.menu.AppendAction("Диалог/Сообщение", i => CreateNode(new MessageAction(), mousePosition));
+        evt.menu.AppendAction("Диалог/Выбор", i => CreateNode(new ChoiceAction(), mousePosition));
 
-        evt.menu.AppendAction("Общие События/Сообщение", i => CreateNode(new MessageAction(), mousePosition));
-        evt.menu.AppendAction("Общие События/Выбор", i => CreateNode(new ChoiceAction(), mousePosition));
-        evt.menu.AppendAction("Общие События/Условие", i => CreateNode(new ConditionAction(), mousePosition));
-        evt.menu.AppendAction("Общие События/Управление переменной", i => CreateNode(new ManageVarAction(), mousePosition));
-        evt.menu.AppendAction("Общие События/Ждать", i => CreateNode(new WaitAction(), mousePosition));
-        evt.menu.AppendAction("Общие События/Изменить состав команды", i => CreateNode(new AddRemoveCharacterAction(), mousePosition));
-        evt.menu.AppendAction("Общие События/Вкл.\\Выкл. объект", i => CreateNode(new SetActiveAction(), mousePosition));
+        evt.menu.AppendAction("Ветвление/Условие", i => CreateNode(new ConditionAction(), mousePosition));
+        evt.menu.AppendAction("Ветвление/Управление переменной", i => CreateNode(new ManageVarAction(), mousePosition));
+        
+        evt.menu.AppendAction("Партия/Изменить состав команды", i => CreateNode(new AddRemoveCharacterAction(), mousePosition));
 
         evt.menu.AppendAction("События исследования/Управление BGM", i => CreateNode(new ManageBGMAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Управление BGS", i => CreateNode(new ManageBGSAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Запуск SE", i => CreateNode(new PlaySEAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Запуск ME", i => CreateNode(new PlayMEAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Запуск самопис. события", i => CreateNode(new InvokeCustomAction(), mousePosition));
-       
+
+        evt.menu.AppendAction("События битвы/Битва", i => CreateNode(new InvokeBattleAction(), mousePosition));
+
+        evt.menu.AppendAction("Разное/Ждать", i => CreateNode(new WaitAction(), mousePosition));
+        evt.menu.AppendAction("Разное/Вкл.\\Выкл. объект", i => CreateNode(new SetActiveAction(), mousePosition));
+
         evt.menu.AppendAction("Конец", i => CreateNode(new EndAction(), mousePosition));
         evt.menu.AppendAction("Отладочное событие", i => CreateNode(new DebugAction(), mousePosition));
     }
@@ -215,6 +190,10 @@ public class EventGraphView : GraphView
         {
             ActionNodeBase left = item.output.node as ActionNodeBase;
             ActionNodeBase right = item.input.node as ActionNodeBase;
+
+            if (item.input == null || item.output == null ||
+                left == null || right == null)
+                continue;
 
             GEvent.Meta.edges.Add(new GraphEventMeta.EdgeMeta
             {

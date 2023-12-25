@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class InventoryManager : MonoBehaviour
+public class InventoryManager : MonoBehaviour, IEnumerable<InventorySlot>
 {
     private List<InventorySlot> slots = new List<InventorySlot>();
     public InventorySlot[] Slots => slots.ToArray();
@@ -141,5 +141,15 @@ public class InventoryManager : MonoBehaviour
 
         if (slot.Count <= 0)
             DeleteSlotByItemName(item.name);
+    }
+
+    public IEnumerator GetEnumerator()
+    {
+        return Slots.GetEnumerator();
+    }
+
+    IEnumerator<InventorySlot> IEnumerable<InventorySlot>.GetEnumerator()
+    {
+        return (IEnumerator<InventorySlot>)Slots.GetEnumerator();
     }
 }

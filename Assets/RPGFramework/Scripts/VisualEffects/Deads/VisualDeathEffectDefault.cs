@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SimpleDeathEffect : VisualDeathEffectBase
+public class VisualDeathEffectDefault : VisualDeathEffectBase
 {
     private Image[] images;
 

@@ -266,14 +266,17 @@ public class BattleChoiceManager : MonoBehaviour
             {
                 name = "Защита",
                 value = 0
-            },
-            new IndependenceChoiceUI.ElementInfo()
-            {
-                name = "Бегство",
-                value = 1,
-                locked = !Data.BattleInfo.CanFlee
             }
         };
+
+        if (Data.BattleInfo.CanFlee)
+        {
+            choices.Add(new IndependenceChoiceUI.ElementInfo()
+            {
+                name = "Бегство",
+                value = 1
+            });
+        }
 
         battleChoice.AppendElements(choices.ToArray());
 
@@ -332,32 +335,31 @@ public class BattleChoiceManager : MonoBehaviour
             }
         };
 
-        foreach (var enemy in Data.Enemys)
+        BattleCharacterInfo currentCharacter = BattleManager.Instance.pipeline.CurrentChoicingCharacter;
+
+        foreach (var act in currentCharacter.EnemyBuffer.Enemy.Acts)
         {
-            foreach (var act in enemy.Enemy.Acts)
+
+            IndependenceChoiceUI.ElementInfo elementInfo = new IndependenceChoiceUI.ElementInfo()
             {
+                name = act.Name,
+                description = act.Description,
+                value = act,
+                locked = false
+            };
 
-                IndependenceChoiceUI.ElementInfo elementInfo = new IndependenceChoiceUI.ElementInfo()
+            foreach (var character in Data.Characters)
+            {
+                if (character.EnemyBuffer == currentCharacter.EnemyBuffer
+                    && character.InteractionAct.Name == act.Name && act.OnlyOne)
                 {
-                    name = act.Name,
-                    description = act.Description,
-                    value = act,
-                    locked = false
-                };
-
-                foreach (var character in Data.Characters)
-                {
-                    if (character.EnemyBuffer == enemy 
-                        && character.InteractionAct.Name == act.Name && act.OnlyOne)
-                    {
-                        elementInfo.locked = true;
-                        break;
-                    }
+                    elementInfo.locked = true;
+                    break;
                 }
-                    
-
-                choiceElements.Add(elementInfo);
             }
+
+
+            choiceElements.Add(elementInfo);
         }
 
         battleChoice.AppendElements(choiceElements.ToArray());

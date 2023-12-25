@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SimpleDamageEffect : VisualDamageEffectBase
+public class VisualDamageEffectDefault : VisualDamageEffectBase
 {
     private Image[] images;
 

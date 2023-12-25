@@ -20,21 +20,7 @@ public class BattleUtility : MonoBehaviour
 
     public void StopBattle()
     {
-        CleanupBattle();
-
-        foreach (var item in GameManager.Instance.Character.characters)
-            item.UpdateStats();
-    }
-
-    public void CleanupBattle()
-    {
-        Data.Concentration = 0;
-        Data.BattleInfo = null;
-
-        Data.Characters.Clear();
-        Data.Enemys.Clear();
-
-        BattleManager.Instance.SetActive(false);
+        BattleManager.Instance.pipeline.InvokeBreak();
     }
 
     public void AddEnemy(RPGEnemy enemy, Vector2 position)

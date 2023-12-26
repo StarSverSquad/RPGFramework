@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using System.Linq;
-using static UnityEditor.Progress;
 
 public class BattlePatternManager : MonoBehaviour
 {

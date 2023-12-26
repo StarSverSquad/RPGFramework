@@ -6,7 +6,7 @@ public class GameManager : ContentManagerBase
 
     [Header("Глобальные ссылки")]
     public InventoryManager inventory;
-    public GlobalCharacterManager Character;
+    public GlobalCharacterManager character;
     public GlobalLocationManager locationManager;
     public AudioManager gameAudio;
     public LoadingScreenManager loadingScreen;
@@ -35,6 +35,6 @@ public class GameManager : ContentManagerBase
         GameConfig = Resources.Load<GameConfig>("Config");
         GameData = new GameData(this);
 
-        Character.Initialize();
+        character.Initialize();
     }
 }

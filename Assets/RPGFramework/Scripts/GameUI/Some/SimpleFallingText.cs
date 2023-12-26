@@ -51,17 +51,17 @@ public class SimpleFallingText : MonoBehaviour
 
         float asp = fallingDistance / (fallingDistance + upDistance);
 
-        StartCoroutine(Anims.ColorByTime(gradientOut, gradientIn, fallingTime, value =>
+        StartCoroutine(AnimationPack.ColorByTime(gradientOut, gradientIn, fallingTime, value =>
         {
             text.color = value;
         }));
 
-        yield return StartCoroutine(Anims.MoveToByTime(rt.anchoredPosition.y, rt.anchoredPosition.y + upDistance, (1 - asp) * fallingTime, value =>
+        yield return StartCoroutine(AnimationPack.MoveToByTime(rt.anchoredPosition.y, rt.anchoredPosition.y + upDistance, (1 - asp) * fallingTime, value =>
         {
             rt.anchoredPosition = new Vector2(0, value);
         }));
 
-        yield return StartCoroutine(Anims.MoveToByTime(rt.anchoredPosition.y, rt.anchoredPosition.y - fallingDistance - upDistance, asp * fallingTime, value =>
+        yield return StartCoroutine(AnimationPack.MoveToByTime(rt.anchoredPosition.y, rt.anchoredPosition.y - fallingDistance - upDistance, asp * fallingTime, value =>
         {
             rt.anchoredPosition = new Vector2(0, value);
         }));

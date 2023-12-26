@@ -13,26 +13,193 @@ MonoBehaviour:
   m_Name: Nikita
   m_EditorClassIdentifier: 
   Name: "\u041D\u0438\u043A\u0438\u0442\u043E\u0441"
-  Description: 
+  Description: "\u0417\u0434\u0440\u0430\u0432\u0441\u0442\u0432\u0443\u0439 \u044E\u043D\u043E\u0441\u0442\u044C
+    \u0432 \u043E\u0431\u043B\u0430\u043A\u0430\u0445, \u0437\u0434\u0440\u0430\u0432\u0441\u0442\u0432\u0443\u044E
+    \u044E\u043D\u043E\u0441\u0442\u044C \u0432 \u0441\u0430\u043F\u043E\u0433\u0430.\n\u0423\u0445\u043E\u0434\u0438
+    \u043C\u043E\u044F \u0442\u043E\u0441\u043A\u0430, \u0432\u043E\u0442 \u043E\u043D
+    \u044F, \u0432\u0441\u0442\u0440\u0435\u0447\u0430\u0439 \u0432\u043E\u0439\u0441\u043A\u0430!"
   DefaultHeal: 75
   DefaultMana: 50
   DefaultDamage: 25
   DefaultDefence: 5
   DefaultAgility: 5
-  ClassName: "\u0418\u043D\u0436\u0435\u043D\u0435\u0440"
+  DefaultLuck: 4
+  Class: "\u0418\u043D\u0436\u0435\u043D\u0435\u0440"
   Icon: {fileID: -574080388, guid: e4547c401ed1aaf45906d594afcf674d, type: 3}
   Model: {fileID: 421402362892778112, guid: e4cec0d5c56ea974d89a6a97a2130c30, type: 3}
   ParticipateInBattle: 1
   CanMoveInBattle: 1
   Level: 1
   Expireance: 0
-  ExpireanceBorder: 0
-  ExpireanceBorderFactor: 1.25
-  LvlHealFactor: 1.25
-  LvlManaFactor: 1.25
-  LvlDamageFactor: 1.25
-  LvlDefenceFactor: 1.25
-  LvlAgilityFactor: 1.25
+  ExpireanceBorder: 35
+  ExpireanceBorderFactor:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.6
+      inSlope: -0.0461955
+      outSlope: -0.0461955
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.037961278
+    - serializedVersion: 3
+      time: 50
+      value: 1
+      inSlope: -0.006771621
+      outSlope: -0.006771621
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0731974
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  LvlHealFactor:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 2
+      inSlope: -0.0461955
+      outSlope: -0.0461955
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.037961278
+    - serializedVersion: 3
+      time: 50
+      value: 1
+      inSlope: -0.006771621
+      outSlope: -0.006771621
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0731974
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  LvlManaFactor:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.6
+      inSlope: -0.0461955
+      outSlope: -0.0461955
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.037961278
+    - serializedVersion: 3
+      time: 50
+      value: 1
+      inSlope: -0.006771621
+      outSlope: -0.006771621
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0731974
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  LvlDamageFactor:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.6
+      inSlope: -0.0461955
+      outSlope: -0.0461955
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.037961278
+    - serializedVersion: 3
+      time: 50
+      value: 1
+      inSlope: -0.006771621
+      outSlope: -0.006771621
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0731974
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  LvlDefenceFactor:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.6
+      inSlope: -0.0461955
+      outSlope: -0.0461955
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.037961278
+    - serializedVersion: 3
+      time: 50
+      value: 1
+      inSlope: -0.006771621
+      outSlope: -0.006771621
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0731974
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  LvlAgilityFactor:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.6
+      inSlope: -0.0461955
+      outSlope: -0.0461955
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.037961278
+    - serializedVersion: 3
+      time: 50
+      value: 1
+      inSlope: -0.006771621
+      outSlope: -0.006771621
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0731974
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  LvlLuckFactor:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.6
+      inSlope: -0.0461955
+      outSlope: -0.0461955
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.037961278
+    - serializedVersion: 3
+      time: 50
+      value: 1
+      inSlope: -0.006771621
+      outSlope: -0.006771621
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0731974
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   Abilities:
   - {fileID: 11400000, guid: 9a01a1f7d491a094888b2d60c99da81e, type: 2}
   WeaponSlot: {fileID: 0}

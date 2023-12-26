@@ -43,34 +43,34 @@ public class ManageVarAction : GraphActionBase
         switch (Var)
         {
             case VarType.Bool:
-                if (!GameManager.Instance.gameData.BoolValues.HaveKey(VarName))
-                    GameManager.Instance.gameData.BoolValues.Add(VarName, false);
+                if (!GameManager.Instance.GameData.BoolValues.HaveKey(VarName))
+                    GameManager.Instance.GameData.BoolValues.Add(VarName, false);
 
-                GameManager.Instance.gameData.BoolValues[VarName] = BoolBuffer;
+                GameManager.Instance.GameData.BoolValues[VarName] = BoolBuffer;
                 break;
             case VarType.String:
-                if (!GameManager.Instance.gameData.StringValues.HaveKey(VarName))
-                    GameManager.Instance.gameData.StringValues.Add(VarName, string.Empty);
+                if (!GameManager.Instance.GameData.StringValues.HaveKey(VarName))
+                    GameManager.Instance.GameData.StringValues.Add(VarName, string.Empty);
 
-                GameManager.Instance.gameData.StringValues[VarName] = StringBuffer;
+                GameManager.Instance.GameData.StringValues[VarName] = StringBuffer;
                 break;
             case VarType.Float:
-                if (!GameManager.Instance.gameData.FloatValues.HaveKey(VarName))
-                    GameManager.Instance.gameData.FloatValues.Add(VarName, 0);
+                if (!GameManager.Instance.GameData.FloatValues.HaveKey(VarName))
+                    GameManager.Instance.GameData.FloatValues.Add(VarName, 0);
 
                 if (Operation == OperationType.Set)
-                    GameManager.Instance.gameData.FloatValues[VarName] = FloatBuffer;
+                    GameManager.Instance.GameData.FloatValues[VarName] = FloatBuffer;
                 else
-                    GameManager.Instance.gameData.FloatValues[VarName] += FloatBuffer;
+                    GameManager.Instance.GameData.FloatValues[VarName] += FloatBuffer;
                 break;
             case VarType.Int:
-                if (!GameManager.Instance.gameData.IntValues.HaveKey(VarName))
-                    GameManager.Instance.gameData.IntValues.Add(VarName, 0);
+                if (!GameManager.Instance.GameData.IntValues.HaveKey(VarName))
+                    GameManager.Instance.GameData.IntValues.Add(VarName, 0);
 
                 if (Operation == OperationType.Set)
-                    GameManager.Instance.gameData.IntValues[VarName] = IntBuffer;
+                    GameManager.Instance.GameData.IntValues[VarName] = IntBuffer;
                 else
-                    GameManager.Instance.gameData.IntValues[VarName] += IntBuffer;
+                    GameManager.Instance.GameData.IntValues[VarName] += IntBuffer;
                 break;
         }
 

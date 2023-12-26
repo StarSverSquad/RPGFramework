@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class PatternBullet : MonoBehaviour
 {
-    public int AdditionDamage = 0;
+    public int DamageModifier = 1;
+
     public int AdditionConcentration = 4;
 
     public bool CanHitBorder = true;

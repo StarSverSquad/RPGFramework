@@ -2,21 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CommonManager : ContentManagerBase
+public class CommonManager : ContentManagerBase, IManagerInitialize
 {
-    public static CommonManager instance;
+    public static CommonManager Instance;
 
-    public MessageBoxManager messageBox;
-    public ChoiceBoxManager choiceBox;
+    public MessageBoxManager MessageBox;
+    public ChoiceBoxManager ChoiceBox;
 
-    private void Awake()
+    public void Initialize()
     {
-        if (instance == null)
-        {
-            instance = this;
+        Instance = this;
 
-            InitializeChild();
-        }
+        InitializeChild();
     }
 
     public override void InitializeChild()

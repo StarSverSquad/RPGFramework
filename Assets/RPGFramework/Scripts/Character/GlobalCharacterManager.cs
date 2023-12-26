@@ -1,44 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class GlobalCharacterManager : MonoBehaviour, IManagerInitialize
 {
     public event Action OnCharaterListChanged;
 
-    [SerializeField]
-    private List<RPGCharacter> CharacterList = new List<RPGCharacter>();
+    [SerializeField] // DEBUG
+    private List<RPGCharacter> characters = new List<RPGCharacter>();
+    public RPGCharacter[] Characters => characters.ToArray();
 
-    public RPGCharacter[] characters => CharacterList.ToArray();
+    [SerializeField] // DEBUG
+    private List<RPGCharacter> registredCharacters = new List<RPGCharacter>();
+    public RPGCharacter[] RegistredCharacters => characters.ToArray();
 
-    public void AddCharacter(RPGCharacter character, bool force = false)
+    public void Initialize()
     {
-        if (!force && CharacterList.Contains(character))
+
+    }
+
+    public void AddCharacter(RPGCharacter character, bool initialize = true)
+    {
+        RPGCharacter trueCharacter = GetRegisteredCharacter(character);
+
+        if (characters.Contains(trueCharacter) || trueCharacter == null)
             return;
 
-        CharacterList.Add(character);
+        characters.Add(trueCharacter);
 
-        character.InitializeEntity();
+        trueCharacter.InitializeEntity();
 
         OnCharaterListChanged?.Invoke();
     }
 
     public void RemoveCharacter(RPGCharacter character)
     {
-        if (!CharacterList.Contains(character))
+        RPGCharacter trueCharacter = GetRegisteredCharacter(character);
+
+        if (trueCharacter == null || !characters.Contains(trueCharacter))
             return;
 
-        CharacterList.Remove(character);
+        characters.Remove(trueCharacter);
 
         OnCharaterListChanged?.Invoke();
     }
 
-    public void Initialize()
+    public void RegisterCharacter(RPGCharacter character)
     {
-        foreach (var item in CharacterList)
-            item.InitializeEntity();
+        if (CharacterIsRegisted(character))
+            return;
+
+        registredCharacters.Add(Instantiate(character));
+    }
+
+    public bool CharacterIsRegisted(RPGCharacter character)
+    {
+        return registredCharacters.Any(i => i.Name == character.Name);
+    }
+
+    public RPGCharacter GetRegisteredCharacter(RPGCharacter character)
+    {
+        if (!CharacterIsRegisted(character))
+            RegisterCharacter(character);
+
+        return registredCharacters.FirstOrDefault(i => i.Name == character.Name);
     }
 }

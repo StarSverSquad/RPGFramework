@@ -41,8 +41,11 @@ public abstract class RPGAttackPattern : MonoBehaviour
         // Если есть копонент PatternBullet то устанавливает ему его владельца
         if (pb != null)
             pb.enemy = enemy;
-        
-        return BattleManager.instance.pattern.CreatePatternObject(obj, offset);
+        else
+            pb.enemy = BattleManager.Data.Enemys[0].Enemy;
+
+
+        return BattleManager.Instance.pattern.CreatePatternObject(obj, offset);
     }
 
     /// <summary>

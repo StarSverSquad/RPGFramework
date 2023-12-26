@@ -19,7 +19,7 @@ public class IntVarCondition : ConditionBase
 
     public override bool Invoke()
     {
-        if (!GameManager.Instance.gameData.IntValues.HaveKey(Var))
+        if (!GameManager.Instance.GameData.IntValues.HaveKey(Var))
         {
             Debug.LogWarning($"INT_VAR_CONDITION: Переменная {Var} не найдена");
 
@@ -28,13 +28,18 @@ public class IntVarCondition : ConditionBase
 
         return Operation switch
         {
-            ConditionOperation.Equals => GameManager.Instance.gameData.IntValues[Var] == Value,
-            ConditionOperation.NotEquals => GameManager.Instance.gameData.IntValues[Var] != Value,
-            ConditionOperation.More => GameManager.Instance.gameData.IntValues[Var] > Value,
-            ConditionOperation.Less => GameManager.Instance.gameData.IntValues[Var] < Value,
-            ConditionOperation.MoreOrEquals => GameManager.Instance.gameData.IntValues[Var] >= Value,
-            ConditionOperation.LessOrEquals => GameManager.Instance.gameData.IntValues[Var] <= Value,
+            ConditionOperation.Equals => GameManager.Instance.GameData.IntValues[Var] == Value,
+            ConditionOperation.NotEquals => GameManager.Instance.GameData.IntValues[Var] != Value,
+            ConditionOperation.More => GameManager.Instance.GameData.IntValues[Var] > Value,
+            ConditionOperation.Less => GameManager.Instance.GameData.IntValues[Var] < Value,
+            ConditionOperation.MoreOrEquals => GameManager.Instance.GameData.IntValues[Var] >= Value,
+            ConditionOperation.LessOrEquals => GameManager.Instance.GameData.IntValues[Var] <= Value,
             _ => false,
         };
+    }
+
+    public override string GetLabel()
+    {
+        return "По целочисленной переменной";
     }
 }

@@ -48,11 +48,9 @@ public class BattlePlayerInteraction : MonoBehaviour
             if (!IsHitCooldown)
                 cooldownCorotine = StartCoroutine(CooldownCoroutine());
 
-            /// TODO
-
             foreach (var item in BattleManager.Data.Characters.Where(i => i.IsTarget))
             {
-                BattleManager.Utility.DamageCharacter(item, bullet);
+                BattleManager.Utility.DamageCharacterByBullet(item, bullet);
             }
         }
     }

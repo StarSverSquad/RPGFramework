@@ -5,11 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class LocalCharacterManager : MonoBehaviour
+public class LocalCharacterManager : MonoBehaviour, IManagerInitialize
 {
-    public RPGCharacter[] Characters => GameManager.Instance.characterManager.characters;
+    public RPGCharacter[] Characters => GameManager.Instance.Character.Characters;
 
-    public List<DynamicExplorerObject> models = new List<DynamicExplorerObject>();
+    public List<DynamicExplorerObject> Models = new List<DynamicExplorerObject>();
     public List<Vector2> Targets = new List<Vector2>();
 
     [SerializeField]
@@ -21,9 +21,9 @@ public class LocalCharacterManager : MonoBehaviour
     [SerializeField]
     private float moveTime = 1f;
 
-    private void Start()
+    public void Initialize()
     {
-        GameManager.Instance.characterManager.OnCharaterListChanged += CharacterManager_OnCharaterListChanged;
+        GameManager.Instance.Character.OnCharaterListChanged += CharacterManager_OnCharaterListChanged;
 
         ExplorerManager.PlayerMovement.OnMoving += Movement_OnMoving;
         ExplorerManager.PlayerMovement.OnStopMoving += Movement_OnStopMoving;
@@ -31,14 +31,36 @@ public class LocalCharacterManager : MonoBehaviour
         ExplorerManager.PlayerMovement.OnRotate += PlayerMovement_OnRotate;
     }
 
+    public void AddModel(DynamicExplorerObject model)
+    {
+        if (Models.Contains(model))
+            return;
+
+        model.transform.SetParent(transform);
+
+        Models.Add(model);
+        Targets.Add(ExplorerManager.GetPlayerPosition());
+    }
+
+    public void RemoveModel(DynamicExplorerObject model)
+    {
+        if (!Models.Contains(model))
+            return;
+
+        int index = Models.IndexOf(model);
+
+        Models.Remove(model);
+        Targets.RemoveAt(index);
+    }
+
     public void UpdateModels()
     {
-        foreach (var item in models)
+        foreach (var item in Models)
         {
             Destroy(item.gameObject);
         }
 
-        models.Clear();
+        Models.Clear();
         Targets.Clear();
 
         distance = 0;
@@ -47,53 +69,53 @@ public class LocalCharacterManager : MonoBehaviour
         {
             GameObject n = Instantiate(Characters[i].Model.gameObject, 
                 ExplorerManager.GetPlayerPosition3D() + new Vector3(0, 0, 0.05f * i), 
-                Quaternion.identity);
+                Quaternion.identity, transform);
 
             DynamicExplorerObject model = n.GetComponent<DynamicExplorerObject>();
 
-            models.Add(model);
+            Models.Add(model);
             Targets.Add(ExplorerManager.GetPlayerPosition());
         }
     }
 
     private void Movement_OnStopMoving()
     {
-        if (models.Count == 0)
+        if (Models.Count == 0)
             return;
 
-        for (int i = 0; i < models.Count; i++)
+        for (int i = 0; i < Models.Count; i++)
         {
             if (i == 0)
-                models[i].StopAnimation(ExplorerManager.PlayerMovement.ViewDirection);
+                Models[i].StopAnimation(ExplorerManager.PlayerMovement.ViewDirection);
             else
-                models[i].PauseMove();
+                Models[i].PauseMove();
         }
     }
 
     private void Movement_OnMoving()
     {
-        if (models.Count == 0)
+        if (Models.Count == 0)
             return;
 
         float scalarvelocity = updateSpeed * Time.fixedDeltaTime;
 
         distance += scalarvelocity;
 
-        models[0].transform.position = ExplorerManager.GetPlayerPosition();
+        Models[0].transform.position = ExplorerManager.GetPlayerPosition();
         
         if (distance > updateDistance)
         {
             for (int i = Targets.Count - 1; i >= 0; i--)
             {
                 if (i == 0)
-                    Targets[0] = models[0].transform.position;
+                    Targets[0] = Models[0].transform.position;
                 else
                     Targets[i] = Targets[i - 1];
             }
 
-            for (int i = 1; i < models.Count; i++)
+            for (int i = 1; i < Models.Count; i++)
             {
-                models[i].MoveToByTime(Targets[i - 1], moveTime);
+                Models[i].MoveToByTime(Targets[i - 1], moveTime);
             }
 
             distance = 0;
@@ -102,42 +124,35 @@ public class LocalCharacterManager : MonoBehaviour
 
     private void PlayerMovement_OnStartMoving()
     {
-        if (models.Count == 0)
+        if (Models.Count == 0)
             return;
 
-        models[0].AnimateMove(ExplorerManager.PlayerMovement.ViewDirection);
+        Models[0].AnimateMove(ExplorerManager.PlayerMovement.ViewDirection);
 
-        for (int i = 1; i < models.Count; i++)
+        for (int i = 1; i < Models.Count; i++)
         {
-            if (models[i].MoveInPause)
-                models[i].UnpauseMove();
+            if (Models[i].MoveInPause)
+                Models[i].UnpauseMove();
         }
     }
 
     private void PlayerMovement_OnRotate(CommonDirection obj)
     {
-        if (models.Count == 0)
+        if (Models.Count == 0)
             return;
 
-        models[0].AnimateMove(obj);
+        Models[0].AnimateMove(obj);
     }
 
     private void CharacterManager_OnCharaterListChanged()
     {
-        UpdateModels();
+        //UpdateModels();
     }
 
-    private void OnDrawGizmos()
-    {
-        foreach (var item in Targets)
-        {
-            Debug.DrawLine(item, item + new Vector2(0.1f, 0.1f), Color.green);
-        }
-    }
 
     private void OnDestroy()
     {
-        GameManager.Instance.characterManager.OnCharaterListChanged -= CharacterManager_OnCharaterListChanged;
+        GameManager.Instance.Character.OnCharaterListChanged -= CharacterManager_OnCharaterListChanged;
 
         ExplorerManager.PlayerMovement.OnMoving -= Movement_OnMoving;
         ExplorerManager.PlayerMovement.OnStopMoving -= Movement_OnStopMoving;

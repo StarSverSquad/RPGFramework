@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BattleChoiceUI : GenericChoiceUI
+public class BattleChoiceUI : IndependenceChoiceUI
 {
     [Header("Scroll settings")]
     [SerializeField]

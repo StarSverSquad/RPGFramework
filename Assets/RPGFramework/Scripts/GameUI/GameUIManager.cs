@@ -1,49 +1,54 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 
-public class GameUIManager : MonoBehaviour
+public class GameUIManager : ContentManagerBase
 {
-    public GameUIBase CurrentMenu = null;
+    public TextMeshProUGUI txt;
 
-    public List<GameUIBase> PreviewsMenu = new List<GameUIBase>();
-
-    [SerializeField]
-    private int MaxPreviewMenu = 5;
-
-    public event Action<GameUIBase> OnManuChanged;
-
-    public void ActivateMenu(GameUIBase menu)
+    public override void InitializeChild()
     {
-        if (PreviewsMenu.Count >= MaxPreviewMenu)
-            PreviewsMenu.RemoveAt(MaxPreviewMenu - 1);
-
-        PreviewsMenu.Insert(0, CurrentMenu);
-
-        CurrentMenu.Disactivate();
-
-        CurrentMenu = menu;
-        CurrentMenu.Activate();
-
-        OnManuChanged?.Invoke(menu);
+        
     }
 
-    public void ActivePreview()
+    // “”“ ¬—® ƒŒ∆ÕŒ ¡€“‹ œŒ ƒ–”√ŒÃ”
+
+    private void Start()
     {
-        if (PreviewsMenu.Count == 0)
-            return;
-
-        GameUIBase ui = PreviewsMenu[0];
-
-        PreviewsMenu.RemoveAt(0);
-
-        CurrentMenu.Disactivate();
-
-        CurrentMenu = ui;
-        CurrentMenu.Activate();
-
-        OnManuChanged?.Invoke(ui);
+        
     }
+
+#if UNITY_EDITOR
+    private void FixedUpdate()
+    {
+        txt.text = $"[MONEY : {GameManager.Instance.GameData.Money}]\n{{";
+
+        foreach (InventorySlot slot in GameManager.Instance.inventory)
+        {
+            txt.text += $"{slot.Item.Name} : {slot.Count}}}, {{";
+        }
+
+        txt.text += "}\n{";
+
+        foreach (var character in GameManager.Instance.Character.Characters)
+        {
+            txt.text += $"{character.Name}, HEAL:{character.Heal}, MANA:{character.Mana}" +
+                $", DMG:{character.Damage}, DEF:{character.Defence}" +
+                $", AGI:{character.Agility}, LUCK:{character.Luck}," +
+                $", EXP:{character.Expireance}, EXP BORDER:{character.ExpireanceBorder}, LEVEL:{character.Level}}}\n[";
+
+            foreach (var state in character.States)
+            {
+                txt.text += $"{state.Name},";
+            }
+
+            txt.text += "]}, \n{";
+        }
+
+        txt.text += "}";
+    }
+#endif
 }

@@ -12,8 +12,29 @@ public class RPGEnemySquad : ScriptableObject
         public Vector2 ScreenPosition;
         public RPGEnemy Enemy;
     }
+    [Serializable]
+    public struct SquadDrop
+    {
+        public RPGCollectable item;
+        [Range(0f, 1f)]
+        public float Chance;
+        [Space]
+        public int Count;
+        public int CountRange;
+    }
 
     public string Name;
 
     public List<EnemySlot> Enemies = new List<EnemySlot>();
+
+    [Header("Дроп денег")]
+    public bool MoneyConstDrop;
+    public int Money;
+
+    [Header("Дроп опыта")]
+    public bool ExpConstDrop;
+    public int Expireance;
+
+    [Header("Дроп")]
+    public List<SquadDrop> EnemiesDrop = new List<SquadDrop>();
 }

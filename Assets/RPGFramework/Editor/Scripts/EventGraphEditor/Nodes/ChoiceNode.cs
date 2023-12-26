@@ -53,7 +53,7 @@ public class ChoiceNode : ActionNodeBase
 
             MakeDirty();
 
-            UIUpdate();
+            UpdateUI();
         });
 
         extensionContainer.Add(posField);
@@ -92,7 +92,7 @@ public class ChoiceNode : ActionNodeBase
 
             ca.Choices.Add(string.Empty);
 
-            UIUpdate();
+            UpdateUI();
 
             MakeDirty();
         };
@@ -109,7 +109,7 @@ public class ChoiceNode : ActionNodeBase
 
             ca.Choices.Remove(ca.Choices.Last());
 
-            UIUpdate();
+            UpdateUI();
 
             MakeDirty();
         };

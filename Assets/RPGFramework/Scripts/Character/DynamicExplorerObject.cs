@@ -9,7 +9,6 @@ public class DynamicExplorerObject : MonoBehaviour
     #region NOT UNITY SERIALIZED
 
     private Animator animator;
-    private ExplorerEvent someEvent;
     private SpriteRenderer spriteRenderer;
 
     public CommonDirection DirectionView { get; private set; }
@@ -47,6 +46,9 @@ public class DynamicExplorerObject : MonoBehaviour
     public CommonDirection DefaultDirection = CommonDirection.Down;
 
     [SerializeField]
+    private ExplorerEvent reactedEvent;
+
+    [SerializeField]
     private float animationSpeed;
     public float AnimationSpeed => animationSpeed;
 
@@ -66,14 +68,17 @@ public class DynamicExplorerObject : MonoBehaviour
 
     private void Start()
     {
-        TryGetComponent(out someEvent);
+        if (reactedEvent == null) 
+            TryGetComponent(out reactedEvent);
+
         TryGetComponent(out animator);
+
         spriteRenderer = GetComponent<SpriteRenderer>();
 
-        if (someEvent != null)
+        if (reactedEvent != null)
         {
-            someEvent.Event.OnStart += Event_OnStart;
-            someEvent.Event.OnEnd += Event_OnEnd;
+            reactedEvent.Event.OnStart += Event_OnStart;
+            reactedEvent.Event.OnEnd += Event_OnEnd;
         }
 
         SetDefault();
@@ -81,10 +86,10 @@ public class DynamicExplorerObject : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (someEvent != null)
+        if (reactedEvent != null)
         {
-            someEvent.Event.OnEnd -= Event_OnEnd;
-            someEvent.Event.OnStart -= Event_OnStart;
+            reactedEvent.Event.OnEnd -= Event_OnEnd;
+            reactedEvent.Event.OnStart -= Event_OnStart;
         }
     }
 

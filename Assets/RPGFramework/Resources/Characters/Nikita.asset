@@ -31,46 +31,172 @@ MonoBehaviour:
   CanMoveInBattle: 1
   Level: 1
   Expireance: 0
-  ExpireanceBorder: 50
+  ExpireanceBorder: 35
   ExpireanceBorderFactor:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.6
+      inSlope: -0.0461955
+      outSlope: -0.0461955
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.037961278
+    - serializedVersion: 3
+      time: 50
+      value: 1
+      inSlope: -0.006771621
+      outSlope: -0.006771621
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0731974
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   LvlHealFactor:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 2
+      inSlope: -0.0461955
+      outSlope: -0.0461955
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.037961278
+    - serializedVersion: 3
+      time: 50
+      value: 1
+      inSlope: -0.006771621
+      outSlope: -0.006771621
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0731974
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   LvlManaFactor:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.6
+      inSlope: -0.0461955
+      outSlope: -0.0461955
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.037961278
+    - serializedVersion: 3
+      time: 50
+      value: 1
+      inSlope: -0.006771621
+      outSlope: -0.006771621
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0731974
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   LvlDamageFactor:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.6
+      inSlope: -0.0461955
+      outSlope: -0.0461955
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.037961278
+    - serializedVersion: 3
+      time: 50
+      value: 1
+      inSlope: -0.006771621
+      outSlope: -0.006771621
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0731974
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   LvlDefenceFactor:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.6
+      inSlope: -0.0461955
+      outSlope: -0.0461955
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.037961278
+    - serializedVersion: 3
+      time: 50
+      value: 1
+      inSlope: -0.006771621
+      outSlope: -0.006771621
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0731974
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   LvlAgilityFactor:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.6
+      inSlope: -0.0461955
+      outSlope: -0.0461955
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.037961278
+    - serializedVersion: 3
+      time: 50
+      value: 1
+      inSlope: -0.006771621
+      outSlope: -0.006771621
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0731974
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   LvlLuckFactor:
     serializedVersion: 2
-    m_Curve: []
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.6
+      inSlope: -0.0461955
+      outSlope: -0.0461955
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.037961278
+    - serializedVersion: 3
+      time: 50
+      value: 1
+      inSlope: -0.006771621
+      outSlope: -0.006771621
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0731974
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4

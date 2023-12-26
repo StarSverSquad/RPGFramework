@@ -60,7 +60,13 @@ public class IndependenceChoiceUIElement : MonoBehaviour
         if (focus)
             OnFocus?.Invoke();
         else
-            OnLostFocus?.Invoke();
+        {
+            if (IsLocked)
+                OnLocked?.Invoke();
+            else
+                OnLostFocus?.Invoke();
+        }
+
     }
 
     public void SetLock(bool locked)

@@ -18,6 +18,9 @@ public class RPGEnemySquad : ScriptableObject
         public RPGCollectable item;
         [Range(0f, 1f)]
         public float Chance;
+        [Space]
+        public int Count;
+        public int CountRange;
     }
 
     public string Name;

@@ -229,7 +229,7 @@ public class BattlePipeline : MonoBehaviour
 
     private IEnumerator BattleEnter()
     {
-        foreach (var item in GameManager.Instance.Character.characters)
+        foreach (var item in GameManager.Instance.Character.Characters)
         {
             if (item.ParticipateInBattle)
                 Data.Characters.Add(new BattleCharacterInfo(item));
@@ -266,6 +266,19 @@ public class BattlePipeline : MonoBehaviour
         yield return StartCoroutine(VisualTransmition.InvokePartTwo());
 
         VisualTransmition.DisposeCustomEffect();
+
+        if (Data.BattleInfo.ShowStartMessage)
+        {
+            string rusMultiText = Data.BattleInfo.enemySquad.Enemies.Count > 1 ? "вступают в битву" : "вступает в битву";
+
+            CommonManager.Instance.MessageBox.Write(new MessageInfo()
+            {
+                text = $"* {Data.BattleInfo.enemySquad.Name} {rusMultiText}!",
+                closeWindow = true
+            });
+
+            yield return new WaitWhile(() => CommonManager.Instance.MessageBox.IsWriting);
+        }
     }
 
     private IEnumerator BattleExit()
@@ -1130,18 +1143,106 @@ public class BattlePipeline : MonoBehaviour
         IsWin = true;
 
         BattleManager.Instance.battleAudio.StopMusic();
-        BattleManager.Instance.battleAudio.PlaySound(Data.Win);
+
+        #region ДРОП
+
+        string lvlUpText = string.Empty;
+        string moneyText = string.Empty;
+        string dropText = string.Empty;
+
+        foreach (var character in Data.Characters)
+        {
+            int addExp = Data.BattleInfo.enemySquad.Expireance;
+
+            if (!Data.BattleInfo.enemySquad.ExpConstDrop)
+                addExp = Mathf.RoundToInt(Random.Range(addExp * 0.75f, addExp * 1.25f));
+
+            character.Character.Expireance += addExp;
+
+            if (character.Character.LevelUpCanExecute())
+            {
+                character.Character.LevelUp();
+
+                lvlUpText += $"* {character.Character.Name} становиться сильнее!\n";
+            }
+        }
+
+        if (Data.BattleInfo.enemySquad.Money > 0)
+        {
+            int money = Data.BattleInfo.enemySquad.Money;
+
+            if (Data.BattleInfo.enemySquad.MoneyConstDrop)
+                money = Mathf.RoundToInt(Random.Range(money * 0.65f, money * 1.35f));
+
+            GameManager.Instance.GameData.Money += money;
+
+            moneyText += $"* Вы получили {money} {GameManager.Instance.GameConfig.MoneyName}!\n";
+        }
+
+        bool first = true;
+        foreach (var drop in Data.BattleInfo.enemySquad.EnemiesDrop)
+        {
+            if (Random.Range(0f, 1f) > drop.Chance)
+                continue;
+
+            int count = Mathf.RoundToInt(Random.Range(drop.Count - drop.CountRange, drop.Count + drop.CountRange));
+
+            GameManager.Instance.inventory.AddToItemCount(drop.item, count);
+
+            string countText = count > 0 ? $"{count}x" : "";
+
+            if (first)
+            {
+                dropText += $"* Вы получили {drop.item.Name} {countText}";
+
+                first = false;
+            }
+            else
+                dropText += $", {drop.item.Name} {countText}";
+        }
+
+        if (!first)
+            dropText += "!\n";
+
+        #endregion
+
+        if (Data.BattleInfo.ShowEndMessage)
+        {
+            BattleManager.Instance.battleAudio.PlaySound(Data.Win);
+
+            CommonManager.Instance.MessageBox.Write(new MessageInfo()
+            {
+                text = "* Ваша команда одержала победу<!>",
+                closeWindow = true
+            });
+
+            yield return new WaitWhile(() => CommonManager.Instance.MessageBox.IsWriting);
+
+            if (dropText != string.Empty || moneyText != string.Empty)
+            {
+                CommonManager.Instance.MessageBox.Write(new MessageInfo()
+                {
+                    text = moneyText + dropText,
+                    closeWindow = true
+                });
+
+                yield return new WaitWhile(() => CommonManager.Instance.MessageBox.IsWriting);
+            }
+
+            if (lvlUpText != string.Empty)
+            {
+                CommonManager.Instance.MessageBox.Write(new MessageInfo()
+                {
+                    text = lvlUpText,
+                    closeWindow = true
+                });
+
+                yield return new WaitWhile(() => CommonManager.Instance.MessageBox.IsWriting);
+            }
+        }
 
         BattleManager.Instance.characterBox.SetActive(false);
 
-        CommonManager.Instance.MessageBox.Write(new MessageInfo()
-        {
-            text = "* Ваша команда одержала победу<!>",
-            closeWindow = true,
-            wait = true
-        });
-
-        yield return new WaitWhile(() => CommonManager.Instance.MessageBox.IsWriting);
     }
 
     private IEnumerator Flee()

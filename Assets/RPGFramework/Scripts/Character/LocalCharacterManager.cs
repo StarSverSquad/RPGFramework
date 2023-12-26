@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class LocalCharacterManager : MonoBehaviour, IManagerInitialize
 {
-    public RPGCharacter[] Characters => GameManager.Instance.Character.characters;
+    public RPGCharacter[] Characters => GameManager.Instance.Character.Characters;
 
     public List<DynamicExplorerObject> Models = new List<DynamicExplorerObject>();
     public List<Vector2> Targets = new List<Vector2>();

@@ -20,4 +20,7 @@ public class GameConfig : ScriptableObject
     public CustomDictionary<float> FloatValues = new CustomDictionary<float>();
     public CustomDictionary<bool> BoolValues = new CustomDictionary<bool>();
     public CustomDictionary<string> StringValues = new CustomDictionary<string>();
+
+    [Header("Разное")]
+    public string MoneyName;
 }

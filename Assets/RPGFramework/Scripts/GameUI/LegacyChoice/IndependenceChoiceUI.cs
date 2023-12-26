@@ -240,9 +240,14 @@ public class IndependenceChoiceUI : MonoBehaviour
 
         listIndex = Vector2Int.zero;
 
-        OnStart?.Invoke();
+        if (elementLists.Count == 0)
+            IsCanceled = true;
+        else
+        {
+            OnStart?.Invoke();
 
-        CurrentItem.element.SetFocus(true);
+            CurrentItem.element.SetFocus(true);
+        }
 
         while (!IsChoiced && !IsCanceled)
         {

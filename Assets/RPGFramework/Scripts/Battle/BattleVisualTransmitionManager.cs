@@ -26,7 +26,7 @@ public class BattleVisualTransmitionManager : MonoBehaviour
 
         customEffectObject = Instantiate(effect.gameObject, transform);
 
-        customEffect = customEffect.GetComponent<VisualBattleTransmitionEffectBase>();
+        customEffect = customEffectObject.GetComponent<VisualBattleTransmitionEffectBase>();
     }
 
     public void DisposeCustomEffect()

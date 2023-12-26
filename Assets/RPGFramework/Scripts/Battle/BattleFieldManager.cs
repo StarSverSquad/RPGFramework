@@ -76,7 +76,7 @@ public class BattleFieldManager : MonoBehaviour, IActive
         }
         else
         {
-            resizeCoroutine = StartCoroutine(Anims.MoveToBySpeed2D(background.size, size, speed, val =>
+            resizeCoroutine = StartCoroutine(AnimationPack.MoveToBySpeed2D(background.size, size, speed, val =>
             {
                 background.size = val;
                 OnBackgroundResized();
@@ -98,7 +98,7 @@ public class BattleFieldManager : MonoBehaviour, IActive
         }
         else
         {
-            rotateCoroutine = StartCoroutine(Anims.MoveToBySpeed(transform.rotation.eulerAngles.z, Angle, speed, val =>
+            rotateCoroutine = StartCoroutine(AnimationPack.MoveToBySpeed(transform.rotation.eulerAngles.z, Angle, speed, val =>
             {
                 transform.rotation = Quaternion.Euler(0, 0, val);
             }, () => rotateCoroutine = null));
@@ -119,7 +119,7 @@ public class BattleFieldManager : MonoBehaviour, IActive
         }
         else
         {
-            transofrmCoroutine = StartCoroutine(Anims.MoveToBySpeed2D(transform.position, cameraPosition + position, speed, val =>
+            transofrmCoroutine = StartCoroutine(AnimationPack.MoveToBySpeed2D(transform.position, cameraPosition + position, speed, val =>
             {
                 transform.position = val;
             }, () => transofrmCoroutine = null));
@@ -140,7 +140,7 @@ public class BattleFieldManager : MonoBehaviour, IActive
         }
         else
         {
-            transofrmCoroutine = StartCoroutine(Anims.MoveToBySpeed2D(transform.position, (Vector2)transform.position + offset, speed, val =>
+            transofrmCoroutine = StartCoroutine(AnimationPack.MoveToBySpeed2D(transform.position, (Vector2)transform.position + offset, speed, val =>
             {
                 transform.position = val;
             }, () => transofrmCoroutine = null));

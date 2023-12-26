@@ -13,7 +13,7 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
     public BattleUtility utility;
     public BattleData data;
     public BattleFieldManager battleField;
-    public CharacterPreviewManager characterPreview;
+    public BattleCharacterPreview characterPreview;
     public BattleBackground background;
     public BattleAudioManager battleAudio;
     public BattlePlayerManager player;

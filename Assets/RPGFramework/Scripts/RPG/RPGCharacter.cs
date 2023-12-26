@@ -131,5 +131,9 @@ public class RPGCharacter : RPGEntity
         DefaultDefence = (int)(LvlDefenceFactor.Evaluate(Level) * DefaultDefence);
         DefaultAgility = (int)(LvlAgilityFactor.Evaluate(Level) * DefaultAgility);
         DefaultLuck = (int)(LvlLuckFactor.Evaluate(Level) * DefaultAgility);
+
+        UpdateStats();
+
+        Heal = MaxHeal; Mana = MaxMana;
     }
 }

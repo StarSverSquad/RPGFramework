@@ -24,7 +24,7 @@ public class GameUIManager : ContentManagerBase
 #if UNITY_EDITOR
     private void FixedUpdate()
     {
-        txt.text = "{";
+        txt.text = $"[MONEY : {GameManager.Instance.GameData.Money}]\n{{";
 
         foreach (InventorySlot slot in GameManager.Instance.inventory)
         {
@@ -33,11 +33,12 @@ public class GameUIManager : ContentManagerBase
 
         txt.text += "}\n{";
 
-        foreach (var character in GameManager.Instance.Character.characters)
+        foreach (var character in GameManager.Instance.Character.Characters)
         {
             txt.text += $"{character.Name}, HEAL:{character.Heal}, MANA:{character.Mana}" +
                 $", DMG:{character.Damage}, DEF:{character.Defence}" +
-                $", AGI:{character.Agility}, LUCK:{character.Luck},\n[";
+                $", AGI:{character.Agility}, LUCK:{character.Luck}," +
+                $", EXP:{character.Expireance}, EXP BORDER:{character.ExpireanceBorder}, LEVEL:{character.Level}}}\n[";
 
             foreach (var state in character.States)
             {

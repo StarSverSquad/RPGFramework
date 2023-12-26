@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterPreviewManager : MonoBehaviour, IActive
+public class BattleCharacterPreview : MonoBehaviour, IActive
 {
     [SerializeField]
     private GameObject container;
@@ -18,6 +18,11 @@ public class CharacterPreviewManager : MonoBehaviour, IActive
     private NumeriticBar healBar;
     [SerializeField]
     private NumeriticBar manaBar;
+
+    [SerializeField]
+    private TextMeshProUGUI levelText;
+    [SerializeField]
+    private TextMeshProUGUI stastText;
 
     private void Start()
     {
@@ -34,5 +39,12 @@ public class CharacterPreviewManager : MonoBehaviour, IActive
 
         healBar.SetValue(character.Heal, character.MaxHeal);
         manaBar.SetValue(character.Mana, character.MaxMana);
+
+        levelText.text = $"Уровень {character.Level}";
+
+        stastText.text = $"Урон: {character.Damage}\n" +
+                         $"Защита: {character.Defence}\n" +
+                         $"Ловкость: {character.Agility}\n" +
+                         $"Удача: {character.Luck}";
     }
 }

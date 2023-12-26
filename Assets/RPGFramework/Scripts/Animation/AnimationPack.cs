@@ -1,8 +1,9 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
-public static class Anims
+public static class AnimationPack
 {
     #region One constant
 
@@ -173,22 +174,21 @@ public static class Anims
 
     public static IEnumerator MoveToBySpeedLerp2D(Vector2 from, Vector2 to, float speed, Action<Vector2> OnChangeCallback, Action OnEndCallback = null)
     {
-        Vector2 dif = to - from;
+        float distance = Vector2.Distance(from, to);
+        float time = distance / speed;
 
-        float time = dif.magnitude / speed;
-
-        float curtime = time;
+        float curtime = 0;
         Vector2 curpos = from;
 
-        while (curtime > 0)
+        while (curtime < time)
         {
             yield return new WaitForFixedUpdate();
 
-            curpos = Vector2.Lerp(curpos, to, speed);
+            curtime += Time.fixedDeltaTime;
+            float t = Mathf.Clamp01(curtime / time);
+            curpos = Vector2.Lerp(from, to, t);
 
             OnChangeCallback?.Invoke(curpos);
-
-            curtime -= Time.fixedDeltaTime;
         }
 
         OnEndCallback?.Invoke();
@@ -319,6 +319,27 @@ public static class Anims
             OnChangeCallback?.Invoke(item);
 
             yield return new WaitForSeconds(frametime);
+        }
+
+        OnEndCallback?.Invoke();
+    }
+
+    #endregion
+
+    #region Curve
+
+    public static IEnumerator MoveByCurve(AnimationCurve curve, Action<float> OnChangeCallback, Action OnEndCallback = null)
+    {
+        float time = 0;
+        float maxtime = curve.keys.Max(i => i.time);
+
+        while (time <= maxtime)
+        {
+            OnChangeCallback?.Invoke(curve.Evaluate(time));
+
+            yield return new WaitForFixedUpdate();
+
+            time += Time.fixedDeltaTime;
         }
 
         OnEndCallback?.Invoke();

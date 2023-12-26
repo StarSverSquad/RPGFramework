@@ -298,9 +298,6 @@ public class BattleChoiceManager : MonoBehaviour
             {
                 foreach (var item in Data.Characters)
                     alreadyUsing += item.Item == slot.Item ? 1 : 0;
-
-                if (alreadyUsing >= slot.Count)
-                    continue;
             }
 
             IndependenceChoiceUI.ElementInfo element = new IndependenceChoiceUI.ElementInfo()
@@ -309,7 +306,8 @@ public class BattleChoiceManager : MonoBehaviour
                 description = slot.Item.Description,
                 icon = slot.Item.Icon,
                 counterText = slot.Count - alreadyUsing == 1 ? "" : $"{slot.Count - alreadyUsing}x",
-                value = slot.Item
+                value = slot.Item,
+                locked = alreadyUsing >= slot.Count
             };
 
             choices.Add(element);

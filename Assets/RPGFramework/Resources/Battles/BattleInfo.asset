@@ -22,7 +22,7 @@ MonoBehaviour:
   MusicVolume: 1
   StopGlobalMusic: 1
   Background: {fileID: 4620171788711976551, guid: 48dacab542990f8488bf7db3b0198a66, type: 3}
-  BattleEnterEffect: {fileID: 0}
+  BattleEnterEffect: {fileID: 8048879357101289308, guid: 2c4b29ec3925b274b8eaf00e981094b9, type: 3}
   BattleExitEffect: {fileID: 0}
   Events:
   - rid: 6865748108449939466
@@ -32,8 +32,8 @@ MonoBehaviour:
     - rid: 6865748108449939466
       type: {class: RPGBattleEvent, ns: , asm: Assembly-CSharp}
       data:
-        Period: 8
+        Period: 4
         IsCustomEvent: 0
         CustomAction: {fileID: 0}
         Event: {fileID: 11400000, guid: 7f5c31a2770b14340a47d68631f41185, type: 2}
-        Turn: 0
+        Turn: 2

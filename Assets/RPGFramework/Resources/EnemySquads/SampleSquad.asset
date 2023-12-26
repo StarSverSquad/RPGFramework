@@ -12,18 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db90801ee6a72ee46bdd78b491030146, type: 3}
   m_Name: SampleSquad
   m_EditorClassIdentifier: 
-  Name: "\u0422\u0435\u0441\u0442\u043E\u0432\u044B\u0435 \u0447\u0443\u0431\u0440\u0438\u043A\u0438"
+  Name: "\u0417\u043B\u0430\u044F \u043A\u0435\u043F\u043A\u0430"
   Enemies:
-  - ScreenPosition: {x: -200, y: 100}
-    Enemy: {fileID: 11400000, guid: acf4fc2f7314cb443a088f827572caae, type: 2}
-  - ScreenPosition: {x: 200, y: 100}
-    Enemy: {fileID: 11400000, guid: acf4fc2f7314cb443a088f827572caae, type: 2}
-  - ScreenPosition: {x: 600, y: 100}
+  - ScreenPosition: {x: 0, y: 100}
     Enemy: {fileID: 11400000, guid: acf4fc2f7314cb443a088f827572caae, type: 2}
   MoneyConstDrop: 0
-  Money: 56
+  Money: 27
   ExpConstDrop: 0
-  Expireance: 0
+  Expireance: 15
   EnemiesDrop:
-  - item: {fileID: 0}
-    Chance: 0.214
+  - item: {fileID: 11400000, guid: 7b71d16363bcbf243bf129f89af5c30b, type: 2}
+    Chance: 1
+    Count: 2
+    CountRange: 1

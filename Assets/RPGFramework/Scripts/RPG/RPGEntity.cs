@@ -179,7 +179,7 @@ public class RPGEntity : ScriptableObject
 
     public virtual int GiveDamage(RPGEntity who, float DamageModifier = 1, bool dontHurt = false)
     {
-        int resultDamage = Mathf.RoundToInt(who.Damage * DamageModifier) - Mathf.RoundToInt(Defence / .5f);
+        int resultDamage = Mathf.RoundToInt(who.Damage * DamageModifier) - Mathf.RoundToInt(Defence * .5f);
 
         resultDamage = Mathf.RoundToInt(UnityEngine.Random.Range(resultDamage * 0.75f, resultDamage * 1.25f));
 
@@ -193,7 +193,7 @@ public class RPGEntity : ScriptableObject
     }
     public virtual int GiveDamage(int damage, bool dontHurt = false)
     {
-        int resultDamage = Mathf.RoundToInt(damage) - Mathf.RoundToInt(Defence / .5f);
+        int resultDamage = Mathf.RoundToInt(damage) - Mathf.RoundToInt(Defence * .5f);
 
         resultDamage = Mathf.RoundToInt(UnityEngine.Random.Range(resultDamage * 0.75f, resultDamage * 1.25f));
 

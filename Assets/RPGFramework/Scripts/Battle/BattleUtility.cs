@@ -213,7 +213,7 @@ public class BattleUtility : MonoBehaviour
     {
         CharacterBox box = BattleManager.Instance.characterBox.GetBox(character);
 
-        int realDamage = character.Entity.GiveDamage(bullet.enemy, bullet.DamageModifier * (character.IsDefence ? .5f : 1f));
+        int realDamage = character.Entity.GiveDamage(Mathf.RoundToInt(bullet.enemy.Damage * bullet.DamageModifier * (character.IsDefence ? .5f : 1f)));
 
         if (bullet.State != null)
         {

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemySquad: {fileID: 11400000, guid: 3c575e88abe7d7541b2cb8eb1cc2e486, type: 2}
   EnemyStart: 0
-  CanLose: 1
-  CanFlee: 1
+  CanLose: 0
+  CanFlee: 0
   ShowStartMessage: 1
   ShowEndMessage: 1
   BattleMusic: {fileID: 8300000, guid: 1ad37fe0ef58a7048b97789f0cb7fc68, type: 3}
@@ -32,7 +32,7 @@ MonoBehaviour:
     - rid: 6865748108449939466
       type: {class: RPGBattleEvent, ns: , asm: Assembly-CSharp}
       data:
-        Period: 4
+        Period: 5
         IsCustomEvent: 0
         CustomAction: {fileID: 0}
         Event: {fileID: 11400000, guid: 7f5c31a2770b14340a47d68631f41185, type: 2}

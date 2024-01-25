@@ -229,7 +229,7 @@ public class BattlePipeline : MonoBehaviour
 
     private IEnumerator BattleEnter()
     {
-        foreach (var item in GameManager.Instance.Character.Characters)
+        foreach (var item in GameManager.Instance.character.Characters)
         {
             if (item.ParticipateInBattle)
                 Data.Characters.Add(new BattleCharacterInfo(item));

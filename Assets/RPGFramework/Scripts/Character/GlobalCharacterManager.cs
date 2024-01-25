@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class GlobalCharacterManager : MonoBehaviour, IManagerInitialize
+public class GlobalCharacterManager : MonoBehaviour, IManagerInitialize, IDisposable
 {
     public event Action OnCharaterListChanged;
 
-    [SerializeField] // DEBUG
     private List<RPGCharacter> characters = new List<RPGCharacter>();
     public RPGCharacter[] Characters => characters.ToArray();
 
-    [SerializeField] // DEBUG
     private List<RPGCharacter> registredCharacters = new List<RPGCharacter>();
     public RPGCharacter[] RegistredCharacters => characters.ToArray();
 
@@ -65,5 +63,11 @@ public class GlobalCharacterManager : MonoBehaviour, IManagerInitialize
             RegisterCharacter(character);
 
         return registredCharacters.FirstOrDefault(i => i.Name == character.Name);
+    }
+
+    public void Dispose()
+    {
+        registredCharacters.Clear();
+        characters.Clear();
     }
 }

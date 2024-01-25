@@ -13,6 +13,9 @@ public class GameOverManager : MonoBehaviour
     {
         yield return new WaitForSeconds(5);
 
+        GameManager.Instance.character.Dispose();
+        GameManager.Instance.inventory.Dispose();
+
         GameManager.Instance.locationManager.ChangeLocation(GameManager.Instance.locationManager.CurrentLocation);
     }
 }

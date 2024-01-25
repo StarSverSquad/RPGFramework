@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class InventoryManager : MonoBehaviour, IEnumerable<InventorySlot>
+public class InventoryManager : MonoBehaviour, IEnumerable<InventorySlot>, IDisposable
 {
     private List<InventorySlot> slots = new List<InventorySlot>();
     public InventorySlot[] Slots => slots.ToArray();
@@ -151,5 +151,10 @@ public class InventoryManager : MonoBehaviour, IEnumerable<InventorySlot>
     IEnumerator<InventorySlot> IEnumerable<InventorySlot>.GetEnumerator()
     {
         return (IEnumerator<InventorySlot>)Slots.GetEnumerator();
+    }
+
+    public void Dispose()
+    {
+       slots.Clear();
     }
 }

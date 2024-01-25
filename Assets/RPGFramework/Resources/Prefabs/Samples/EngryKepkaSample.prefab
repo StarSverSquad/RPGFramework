@@ -156,19 +156,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 3653387531009397823}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c422feb3deac98343b72e738ed02766b, type: 3}
+  m_Script: {fileID: 11500000, guid: 004f8f6cda8af944090a57971bd616e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   iconPrefab: {fileID: 4087160555009143035, guid: baafb32d223b9114c9b63ed74cff540b, type: 3}
   content: {fileID: 6109130644778810801}
   icons: []
   Margin: {x: 10, y: 10, z: 10, w: 10}
-  SingleRow: 1
+  SingleRow: 0
   Slide: 0
-  SlideSpeed: 0
-  SlideDelay: 0
+  SlideSpeed: 3
+  SlideDelay: 1
   NotSlideSize: 100
-  ElementsPerRow: 0
+  ElementsPerRow: 8
 --- !u!1 &6372225342885846398
 GameObject:
   m_ObjectHideFlags: 0

@@ -33,7 +33,7 @@ public class GameUIManager : ContentManagerBase
 
         txt.text += "}\n{";
 
-        foreach (var character in GameManager.Instance.Character.Characters)
+        foreach (var character in GameManager.Instance.character.Characters)
         {
             txt.text += $"{character.Name}, HEAL:{character.Heal}, MANA:{character.Mana}" +
                 $", DMG:{character.Damage}, DEF:{character.Defence}" +

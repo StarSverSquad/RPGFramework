@@ -32,7 +32,7 @@ public class ConcentrationBarManager : MonoBehaviour
 
         animator.SetTrigger("BLINK");
 
-        anim = StartCoroutine(Anims.MoveToByTimeLerp(bar.Value, conAspect, AnimationTime, value =>
+        anim = StartCoroutine(AnimationPack.MoveToByTimeLerp(bar.Value, conAspect, AnimationTime, value =>
         {
             bar.SetValue(value);
         }, () => anim = null));

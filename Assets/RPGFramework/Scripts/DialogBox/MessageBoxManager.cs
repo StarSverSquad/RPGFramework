@@ -26,6 +26,11 @@ public class MessageBoxManager : TextWriterBase
     private float[] textMargins = new float[2];
 
     [SerializeField]
+    private float inBattleNameBoxOffset = 0;
+    [SerializeField]
+    private float inBattleMessageBoxOffset = 0;
+
+    [SerializeField]
     private RectTransform messageBox;
     [SerializeField]
     private RectTransform nameBox;
@@ -65,8 +70,16 @@ public class MessageBoxManager : TextWriterBase
         switch (Message.position)
         {
             case DialogBoxPosition.Bottom:
-                messageBox.anchoredPosition = new Vector2(messageBox.anchoredPosition.x, messageBoxYPositions[0]);
-                nameBox.anchoredPosition = new Vector2(nameBox.anchoredPosition.x, nameBoxYPositions[0]);
+                if (BattleManager.IsBattle)
+                {
+                    messageBox.anchoredPosition = new Vector2(messageBox.anchoredPosition.x, messageBoxYPositions[0] + inBattleMessageBoxOffset);
+                    nameBox.anchoredPosition = new Vector2(nameBox.anchoredPosition.x, nameBoxYPositions[0] + inBattleNameBoxOffset);
+                }
+                else
+                {
+                    messageBox.anchoredPosition = new Vector2(messageBox.anchoredPosition.x, messageBoxYPositions[0]);
+                    nameBox.anchoredPosition = new Vector2(nameBox.anchoredPosition.x, nameBoxYPositions[0]);
+                }
                 break;
             case DialogBoxPosition.Center:
                 messageBox.anchoredPosition = new Vector2(messageBox.anchoredPosition.x, messageBoxYPositions[1]);
@@ -126,12 +139,12 @@ public class MessageBoxManager : TextWriterBase
 
     public override bool ContinueCanExecute()
     {
-        return Input.GetKeyDown(KeyCode.Z);
+        return Input.GetKeyDown(GameManager.Instance.GameConfig.Accept);
     }
 
     public override bool SkipCanExecute()
     {
-        return Input.GetKeyDown(KeyCode.X);
+        return Input.GetKeyDown(GameManager.Instance.GameConfig.Cancel);
     }
 
     public override void OnEveryLetter(char letter)

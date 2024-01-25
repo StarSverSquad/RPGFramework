@@ -8,7 +8,7 @@ public class TestDEO : CustomActionBase
 
     protected override IEnumerator ActionCoroutine()
     {
-        CommonManager.instance.messageBox.Write(new MessageInfo
+        CommonManager.Instance.MessageBox.Write(new MessageInfo
         {
             wait = true,
             clear = true,
@@ -19,7 +19,7 @@ public class TestDEO : CustomActionBase
             closeWindow = true,
         });
 
-        yield return new WaitWhile(() => CommonManager.instance.messageBox.IsWriting);
+        yield return new WaitWhile(() => CommonManager.Instance.MessageBox.IsWriting);
 
         deo.TranslateByTime(new Vector2(1.5f, 0), 2);
 
@@ -31,7 +31,7 @@ public class TestDEO : CustomActionBase
 
         yield return new WaitForSeconds(1);
 
-        CommonManager.instance.messageBox.Write(new MessageInfo
+        CommonManager.Instance.MessageBox.Write(new MessageInfo
         {
             wait = true,
             clear = true,
@@ -42,7 +42,7 @@ public class TestDEO : CustomActionBase
             text = "Лан..."
         });
 
-        yield return new WaitWhile(() => CommonManager.instance.messageBox.IsWriting);
+        yield return new WaitWhile(() => CommonManager.Instance.MessageBox.IsWriting);
 
         deo.TranslateByTime(new Vector2(-1.5f, 0), 2);
 
@@ -50,7 +50,7 @@ public class TestDEO : CustomActionBase
 
         deo.PauseMove();
 
-        CommonManager.instance.messageBox.Write(new MessageInfo
+        CommonManager.Instance.MessageBox.Write(new MessageInfo
         {
             wait = true,
             clear = true,
@@ -61,7 +61,7 @@ public class TestDEO : CustomActionBase
             text = "Хотя<!>\nНе..."
         });
 
-        yield return new WaitWhile(() => CommonManager.instance.messageBox.IsWriting);
+        yield return new WaitWhile(() => CommonManager.Instance.MessageBox.IsWriting);
 
         deo.UnpauseMove();
 

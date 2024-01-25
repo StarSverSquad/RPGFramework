@@ -12,20 +12,20 @@ public class CharacterModel : CharacterRenderer
     [SerializeField]
     private bool inited = false;
 
-    private Vector2 target => ExplorerManager.instance.characterManager.Targets[index];
+    private Vector2 target => LocalManager.Instance.Character.Targets[index];
 
-    private float playerSpeed => ExplorerManager.instance.playerManager.movement.Speed;
-    private float accelerate => ExplorerManager.instance.playerManager.movement.IsRun ? 
-                                    ExplorerManager.instance.playerManager.movement.AccelerationFactor : 1;
+    private float playerSpeed => ExplorerManager.Instance.playerManager.movement.Speed;
+    private float accelerate => ExplorerManager.Instance.playerManager.movement.IsRun ? 
+                                    ExplorerManager.Instance.playerManager.movement.AccelerationFactor : 1;
 
     private Vector2 direction = Vector2.zero;
     //private CommonDirection enumDirection;
 
     private void Start()
     {
-        ExplorerManager.instance.playerManager.movement.OnMoving += Movement_OnMoving;
-        ExplorerManager.instance.playerManager.movement.OnStopMoving += Movement_OnStopMoving;
-        ExplorerManager.instance.playerManager.movement.OnRotate += Movement_OnRotate;
+        ExplorerManager.Instance.playerManager.movement.OnMoving += Movement_OnMoving;
+        ExplorerManager.Instance.playerManager.movement.OnStopMoving += Movement_OnStopMoving;
+        ExplorerManager.Instance.playerManager.movement.OnRotate += Movement_OnRotate;
     }
 
     private void Update()
@@ -64,7 +64,7 @@ public class CharacterModel : CharacterRenderer
     {
         if (inited)
         {
-            IsAccelerated = ExplorerManager.instance.playerManager.movement.IsRun;
+            IsAccelerated = ExplorerManager.Instance.playerManager.movement.IsRun;
 
             Vector2 newdirection = (target - (Vector2)transform.position).normalized;
 
@@ -124,8 +124,8 @@ public class CharacterModel : CharacterRenderer
 
     private void OnDestroy()
     {
-        ExplorerManager.instance.playerManager.movement.OnMoving -= Movement_OnMoving;
-        ExplorerManager.instance.playerManager.movement.OnStopMoving -= Movement_OnStopMoving;
-        ExplorerManager.instance.playerManager.movement.OnRotate -= Movement_OnRotate;
+        ExplorerManager.Instance.playerManager.movement.OnMoving -= Movement_OnMoving;
+        ExplorerManager.Instance.playerManager.movement.OnStopMoving -= Movement_OnStopMoving;
+        ExplorerManager.Instance.playerManager.movement.OnRotate -= Movement_OnRotate;
     }
 }

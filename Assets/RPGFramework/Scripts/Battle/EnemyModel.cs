@@ -6,9 +6,9 @@ using UnityEngine;
 public class EnemyModel : MonoBehaviour 
 {
     [SerializeField]
-    private DeathEffect deathEffect;
+    private VisualDeathEffectBase deathEffect;
     [SerializeField]
-    private DamageEffect damageEffect;
+    private VisualDamageEffectBase damageEffect;
 
     [SerializeField]
     private GameObject modelContainer;
@@ -34,39 +34,44 @@ public class EnemyModel : MonoBehaviour
     {
         this.enemy = enemy;
 
-        enemy.StatesChanged += UpdateStats;
+        enemy.Entity.OnStateChanged += UpdateStats;
 
-        UpdateStats();
+        UpdateStats(null);
 
         isInit = true;
     }
 
-    public void UpdateStats()
+    public void UpdateStats(RPGEntityState state)
     {
-        iconList.UpdateIcons(enemy.States.Select(i => i.rpg.Icon).ToArray());
+        iconList.UpdateIcons(enemy.States.Select(i => i.Icon).ToArray());
     }
 
     public void Damage()
     {
-        damageEffect.Invoke();
+        if (damageEffect != null) 
+            damageEffect.Invoke();
     }
 
     public void Death()
     {
-        deathEffect.Invoke();
+        if (deathEffect != null) 
+            deathEffect.Invoke();
     }
 
     public void Cleanup()
     {
-        damageEffect.Cleanup();
-        deathEffect.Cleanup();
+        if (damageEffect != null)
+            damageEffect.Cleanup();
+
+        if (deathEffect != null)
+            deathEffect.Cleanup();
     }
 
     private void OnDestroy()
     {
         if (isInit)
         {
-            enemy.StatesChanged -= UpdateStats;
+            enemy.Entity.OnStateChanged -= UpdateStats;
             isInit = false;
         }
     }

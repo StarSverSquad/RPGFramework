@@ -19,10 +19,8 @@ MonoBehaviour:
   DefaultDamage: 0
   DefaultDefence: 0
   DefaultAgility: 0
+  DefaultLuck: 0
   Patterns:
   - {fileID: 4869993089437226105, guid: df5e4ea55872b2840a69542afd50538e, type: 3}
-  Acts:
-  - Name: Check
-    Description: 
-    Event: {fileID: 11400000, guid: 60a011d3450895a41a4827a93e666adf, type: 2}
+  Acts: []
   EnemyModel: {fileID: 8208525189484323897, guid: 800914027482b2d47973bfcc0b484933, type: 3}

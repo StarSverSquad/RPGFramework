@@ -41,7 +41,7 @@ public class ManageBGSNode : ActionNodeBase
         {
             ma.Operation = (ManageBGSAction.OperationType)i.newValue;
 
-            UIUpdate();
+            UpdateUI();
 
             MakeDirty();
         });
@@ -65,7 +65,7 @@ public class ManageBGSNode : ActionNodeBase
         {
             ma.UseFade = i.newValue;
 
-            UIUpdate();
+            UpdateUI();
 
             MakeDirty();
         });

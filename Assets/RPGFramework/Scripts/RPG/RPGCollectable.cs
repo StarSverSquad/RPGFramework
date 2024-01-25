@@ -36,22 +36,22 @@ public class RPGCollectable : ScriptableObject
             {
                 case Usability.Any:
                     if (BattleManager.IsBattle)
-                        Event.Invoke(BattleManager.instance);
-                    else if (!ExplorerManager.instance.eventHandler.EventRuning)
+                        Event.Invoke(BattleManager.Instance);
+                    else if (!ExplorerManager.Instance.eventHandler.EventRuning)
                     {
-                        Event.Invoke(ExplorerManager.instance.eventHandler);
-                        ExplorerManager.instance.eventHandler.HandleEvent(Event);
+                        Event.Invoke(ExplorerManager.Instance.eventHandler);
+                        ExplorerManager.Instance.eventHandler.HandleEvent(Event);
                     }
                         break;
                 case Usability.Battle:
                     if (BattleManager.IsBattle)
-                        Event.Invoke(BattleManager.instance);
+                        Event.Invoke(BattleManager.Instance);
                     break;
                 case Usability.Explorer:
-                    if (!BattleManager.IsBattle && !ExplorerManager.instance.eventHandler.EventRuning)
+                    if (!BattleManager.IsBattle && !ExplorerManager.Instance.eventHandler.EventRuning)
                     {
-                        Event.Invoke(ExplorerManager.instance.eventHandler);
-                        ExplorerManager.instance.eventHandler.HandleEvent(Event);
+                        Event.Invoke(ExplorerManager.Instance.eventHandler);
+                        ExplorerManager.Instance.eventHandler.HandleEvent(Event);
                     }
                     break;
                 case Usability.Noway:

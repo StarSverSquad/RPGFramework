@@ -33,7 +33,7 @@ public class ExplorerEvent : MonoBehaviour
             transform.position = new Vector3(transform.position.x, transform.position.y, -transform.position.y);
 
         if (CacheResult)
-            hasExecuted = GameManager.Instance.gameData.CachedObjectedEvents.Contains(GUID);
+            hasExecuted = GameManager.Instance.GameData.CachedObjectedEvents.Contains(GUID);
 
         if (Interaction == InteractionType.OnSceneStart)
             InvokeEvent();
@@ -45,12 +45,12 @@ public class ExplorerEvent : MonoBehaviour
     public void InvokeEvent()
     {
         if (!hasExecuted && !Event.IsPlaying
-            && (!ExplorerManager.instance.eventHandler.EventRuning || Parallel))
+            && (!ExplorerManager.Instance.eventHandler.EventRuning || Parallel))
         {
             if (!Parallel)
-                ExplorerManager.instance.eventHandler.HandleEvent(Event);
+                ExplorerManager.Instance.eventHandler.HandleEvent(Event);
 
-            Event.Invoke(ExplorerManager.instance);
+            Event.Invoke(ExplorerManager.Instance);
         }
     }
 
@@ -60,8 +60,8 @@ public class ExplorerEvent : MonoBehaviour
         {
             hasExecuted = true;
 
-            if (CacheResult && !GameManager.Instance.gameData.CachedObjectedEvents.Contains(GUID))
-                GameManager.Instance.gameData.CachedObjectedEvents.Add(GUID);
+            if (CacheResult && !GameManager.Instance.GameData.CachedObjectedEvents.Contains(GUID))
+                GameManager.Instance.GameData.CachedObjectedEvents.Add(GUID);
         }
     }
 

@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleManager : ContentManagerBase
+public class BattleManager : ContentManagerBase, IManagerInitialize
 {
-    public static BattleManager instance;
+    public static BattleManager Instance;
 
     public BattlePipeline pipeline;
     public CharacterBoxManager characterBox;
@@ -13,8 +13,8 @@ public class BattleManager : ContentManagerBase
     public BattleUtility utility;
     public BattleData data;
     public BattleFieldManager battleField;
-    public CharacterPreviewManager characterPreview;
-    public BattleBackgroundManager background;
+    public BattleCharacterPreview characterPreview;
+    public BattleBackground background;
     public BattleAudioManager battleAudio;
     public BattlePlayerManager player;
     public AttackQTEManager attackQTE;
@@ -22,23 +22,24 @@ public class BattleManager : ContentManagerBase
     public ConcentrationBarManager concentrationBar;
     public BattleDescription description;
     public BattlePatternManager pattern;
+    public BattleVisualTransmitionManager visualTransmition;
 
-    public static BattleUtility Utility => instance.utility;
-    public static BattleData Data => instance.data;
+    public static BattleUtility Utility => Instance.utility;
+    public static BattleData Data => Instance.data;
 
-    public static bool IsBattle => instance.pipeline.MainIsWorking;
+    public static bool IsBattle => Instance.pipeline.MainIsWorking;
 
     public static void StartBattle(RPGBattleInfo info) => Utility.StartBattle(info); 
 
-    private void Awake()
+    public void Initialize()
     {
-        if (instance == null)
-        {
-            instance = this;
+        Instance = this;
 
-            InitializeChild();
-        }
+        InitializeChild();
     }
 
-    public override void InitializeChild() { }
+    public override void InitializeChild()
+    {
+        player.SetActive(false);
+    }
 }

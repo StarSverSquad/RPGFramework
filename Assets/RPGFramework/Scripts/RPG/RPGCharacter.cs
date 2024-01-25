@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Character", menuName = "RPG/Character")]
 public class RPGCharacter : RPGEntity
 {
-    [Header("Character options")]
+    [Header("Настройки персонажа")]
     public string Class;
 
     public Sprite Icon;
@@ -16,25 +16,25 @@ public class RPGCharacter : RPGEntity
     public bool ParticipateInBattle = true;
     public bool CanMoveInBattle = true;
 
-    [Header("Level")]
+    [Header("Уровень")]
     public int Level = 1;
     public int Expireance = 0;
     public int ExpireanceBorder = 0;
+    public AnimationCurve ExpireanceBorderFactor;
 
-    public float ExpireanceBorderFactor = 1.25f;
+    [Header("Кривые развития")]
+    public AnimationCurve LvlHealFactor;
+    public AnimationCurve LvlManaFactor;
+    public AnimationCurve LvlDamageFactor;
+    public AnimationCurve LvlDefenceFactor;
+    public AnimationCurve LvlAgilityFactor;
+    public AnimationCurve LvlLuckFactor;
 
-    [Header("LevelUp factors")]
-    public float LvlHealFactor = 1f;
-    public float LvlManaFactor = 1f;
-    public float LvlDamageFactor = 1f;
-    public float LvlDefenceFactor = 1f;
-    public float LvlAgilityFactor = 1f;
-
-    [Header("Abilitys")]
+    [Header("Способности")]
     public List<RPGAbility> Abilities = new List<RPGAbility>();
    
     public const RPGWerable.UsedType WeaponType = RPGWerable.UsedType.Weapon;
-    [Header("Equipment")]
+    [Header("Вещи")]
     public RPGWeapon WeaponSlot = null;
 
     public const RPGWerable.UsedType HeadType = RPGWerable.UsedType.Head;
@@ -48,6 +48,11 @@ public class RPGCharacter : RPGEntity
 
     public const RPGWerable.UsedType TalismanType = RPGWerable.UsedType.Talisman;
     public RPGWerable TalismanSlot = null;
+
+    public override void InitializeEntity()
+    {
+        base.InitializeEntity();
+    }
 
     public override void UpdateStats()
     {
@@ -114,16 +119,21 @@ public class RPGCharacter : RPGEntity
 
     public void LevelUp()
     {
-        Expireance -= ExpireanceBorder;
-
-        ExpireanceBorder = (int)(ExpireanceBorder * ExpireanceBorderFactor);
-
         Level++;
 
-        DefaultHeal = (int)(LvlHealFactor * DefaultHeal);
-        DefaultMana = (int)(LvlManaFactor * DefaultMana);
-        DefaultDamage = (int)(LvlDamageFactor * DefaultDamage);
-        DefaultDefence = (int)(LvlDefenceFactor * DefaultDefence);
-        DefaultAgility = (int)(LvlAgilityFactor * DefaultAgility);
+        Expireance = 0;
+
+        ExpireanceBorder = (int)(ExpireanceBorder * ExpireanceBorderFactor.Evaluate(Level));
+
+        DefaultHeal = (int)(LvlHealFactor.Evaluate(Level) * DefaultHeal);
+        DefaultMana = (int)(LvlManaFactor.Evaluate(Level) * DefaultMana);
+        DefaultDamage = (int)(LvlDamageFactor.Evaluate(Level) * DefaultDamage);
+        DefaultDefence = (int)(LvlDefenceFactor.Evaluate(Level) * DefaultDefence);
+        DefaultAgility = (int)(LvlAgilityFactor.Evaluate(Level) * DefaultAgility);
+        DefaultLuck = (int)(LvlLuckFactor.Evaluate(Level) * DefaultAgility);
+
+        UpdateStats();
+
+        Heal = MaxHeal; Mana = MaxMana;
     }
 }

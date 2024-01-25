@@ -6,4 +6,6 @@ using UnityEngine;
 public abstract class ConditionBase
 {
     public abstract bool Invoke();
+
+    public virtual string GetLabel() => "NAME";
 }

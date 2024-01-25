@@ -35,8 +35,13 @@ public class BattlePatternManager : MonoBehaviour
     {
         transform.position = (Vector2)Camera.main.transform.position;
 
-        foreach (var item in patterns)
-            item.Invoke(tiny);
+        for (int i = 0; i < patterns.Count; i++)
+        {
+            if (i == 0)
+                patterns[i].Invoke();
+            else
+                patterns[i].Invoke(tiny);
+        }
 
         attackCoroutine = StartCoroutine(AttackCoroutine());
     }
@@ -79,7 +84,11 @@ public class BattlePatternManager : MonoBehaviour
         patternObjects.Clear();
 
         foreach (RPGAttackPattern o in patterns)
+        {
+            o.StopAllCoroutines();
             Destroy(o.gameObject);
+        }
+            
         patterns.Clear();
     }
 

@@ -20,7 +20,7 @@ public class ManageVarNode : ActionNodeBase
 
             MakeDirty();
 
-            UIUpdate();
+            UpdateUI();
         });
 
         extensionContainer.Add(varField);

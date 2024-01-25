@@ -30,7 +30,6 @@ RectTransform:
   m_Children:
   - {fileID: 4474477788142058540}
   m_Father: {fileID: 3801465772377897463}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -68,7 +67,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2340828852869135200}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -142,7 +140,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6411411650825601805}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -178,7 +175,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3801465772377897463}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -214,7 +210,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3801465772377897463}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -252,7 +247,6 @@ RectTransform:
   m_Children:
   - {fileID: 6285145188399172722}
   m_Father: {fileID: 3801465772377897463}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -268,19 +262,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 5295138896105105998}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c422feb3deac98343b72e738ed02766b, type: 3}
+  m_Script: {fileID: 11500000, guid: 004f8f6cda8af944090a57971bd616e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   iconPrefab: {fileID: 4087160555009143035, guid: baafb32d223b9114c9b63ed74cff540b, type: 3}
   content: {fileID: 6285145188399172722}
   icons: []
   Margin: {x: 10, y: 10, z: 10, w: 10}
-  SingleRow: 1
+  SingleRow: 0
   Slide: 0
   SlideSpeed: 0
   SlideDelay: 0
   NotSlideSize: 100
-  ElementsPerRow: 0
+  ElementsPerRow: 6
 --- !u!1 &8208525189484323897
 GameObject:
   m_ObjectHideFlags: 0
@@ -317,7 +311,6 @@ RectTransform:
   - {fileID: 329341062275789837}
   - {fileID: 5292311427276464471}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

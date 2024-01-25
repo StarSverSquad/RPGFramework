@@ -21,13 +21,13 @@ public class ChoiceAction : GraphActionBase
 
     public override IEnumerator ActionCoroutine()
     {
-        CommonManager.instance.choiceBox.ChangePosition(Position, CustomPosition);
+        CommonManager.Instance.ChoiceBox.ChangePosition(Position, CustomPosition);
 
-        CommonManager.instance.choiceBox.Choice(Choices.ToArray());
+        CommonManager.Instance.ChoiceBox.Choice(Choices.ToArray());
 
-        yield return new WaitWhile(() => CommonManager.instance.choiceBox.IsChoicing);
+        yield return new WaitWhile(() => CommonManager.Instance.ChoiceBox.IsChoicing);
 
-        nextIndex = CommonManager.instance.choiceBox.Index;
+        nextIndex = CommonManager.Instance.ChoiceBox.Index;
     }
 
     public override string GetHeader()

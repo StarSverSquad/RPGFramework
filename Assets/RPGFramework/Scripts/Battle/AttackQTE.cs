@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -40,8 +41,7 @@ public class AttackQTE : MonoBehaviour
     private bool isSkip = false;
     public bool IsSkip => isSkip;
 
-    [Header("Options")]
-    public float sliderTime;
+    public AnimationCurve sliderCurve;
 
     [Header("Borders")]
     [Range(0f, 1f)]
@@ -90,14 +90,12 @@ public class AttackQTE : MonoBehaviour
         bool slide = true;
 
         float load = 0;
-        float loadspeed = 1 / sliderTime;
 
-        Coroutine slidecor = StartCoroutine(Anims.MoveToByTime(sliderStartPoint.anchoredPosition.x, sliderEndPoint.anchoredPosition.x, sliderTime, val =>
+        Coroutine slideCoroutine = StartCoroutine(AnimationPack.MoveByCurve(sliderCurve, value =>
         {
-            slider.anchoredPosition = new Vector2(val, slider.anchoredPosition.y);
+            slider.anchoredPosition = new Vector2(sliderStartPoint.anchoredPosition.x + (sliderEndPoint.anchoredPosition.x - sliderStartPoint.anchoredPosition.x) * value, slider.anchoredPosition.y);
 
-            load += loadspeed * Time.fixedDeltaTime;
-
+            load = value;
         }, () => slide = false));
 
         bool click = false;
@@ -108,10 +106,9 @@ public class AttackQTE : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Z))
             {
-                StopCoroutine(slidecor);
+                StopCoroutine(slideCoroutine);
                 click = true;
             }
-                
         }
 
         if (!click)

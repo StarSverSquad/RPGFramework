@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -14,6 +15,8 @@ public class ConditionNode : ActionNodeBase
     {
         IntVar, FloatVar, BoolVar, StringVar, Money
     }
+
+    private int lastConditionListIndex = 0;
 
     public ConditionNode(ConditionAction action) : base(action)
     {
@@ -47,18 +50,21 @@ public class ConditionNode : ActionNodeBase
     {
         ConditionAction ca = action as ConditionAction;
 
-        List<string> contypes = ca.GetType().Assembly.GetTypes().
-                                    Where(i => i.BaseType != null && i.BaseType.Name == "ConditionBase").
-                                    Select(i => i.Name).ToList();
+        List<string> contypes = ca.GetType().Assembly.GetTypes()
+            .Where(i => i.BaseType != null && i.BaseType.Name == "ConditionBase")
+            .Select(i => i.Name)
+            .ToList();
 
-        PopupField<string> typePopup = new PopupField<string>(contypes, 0);
+        PopupField<string> typePopup = new PopupField<string>(contypes, lastConditionListIndex, LabelFormater, LabelFormater);
 
 
         Button addButton = new Button(() =>
         {
             ca.Conditions.Add(ca.GetType().Assembly.CreateInstance(typePopup.value) as ConditionBase);
 
-            UIUpdate();
+            lastConditionListIndex = typePopup.index;
+
+            UpdateUI();
 
             MakeDirty();
         })
@@ -76,6 +82,16 @@ public class ConditionNode : ActionNodeBase
             conditionBlock.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Column);
             conditionBlock.style.backgroundColor = (Color)new Color32(69, 69, 69, 255);
             conditionBlock.style.marginBottom = 5;
+
+            VisualElement labelHorizontal = new VisualElement();
+            labelHorizontal.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+            labelHorizontal.style.justifyContent = new StyleEnum<Justify>(Justify.Center);
+
+            Label label = new Label(item.GetLabel());
+
+            labelHorizontal.Add(label);
+
+            conditionBlock.Add(labelHorizontal);
 
             switch (item)
             {
@@ -323,8 +339,41 @@ public class ConditionNode : ActionNodeBase
                         conditionBlock.Add(horizontal1);
                     }
                     break;
+                case CharacterInPartyCondition cip:
+                    {
+                        VisualElement horizontal1 = new VisualElement();
+                        horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                        horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                        Label label1 = new Label("Персонаж");
+                        label1.style.marginLeft = 1;
+
+                        horizontal1.Add(label1);
+
+                        Label lbl = new Label("==");
+
+                        horizontal1.Add(lbl);
+
+                        ObjectField charField = new ObjectField()
+                        {
+                            allowSceneObjects = false,
+                            objectType = typeof(RPGCharacter)
+                        };
+                        charField.SetValueWithoutNotify(cip.Value);
+                        charField.RegisterValueChangedCallback(i =>
+                        {
+                            cip.Value = i.newValue as RPGCharacter;
+
+                            MakeDirty();
+                        });
+
+                        horizontal1.Add(charField);
+
+                        conditionBlock.Add(horizontal1);
+                    }
+                    break;
                 default:
-                    Debug.LogWarning($"Для типа {item.GetType().Name} нет интерфейса");
+                    Debug.LogWarning($"Для типа {item.GetType().Name} нет UI");
                     break;
             }
 
@@ -337,7 +386,7 @@ public class ConditionNode : ActionNodeBase
             {
                 ca.Conditions.Remove(ca.Conditions.Last());
 
-                UIUpdate();
+                UpdateUI();
 
                 MakeDirty();
             })
@@ -347,5 +396,16 @@ public class ConditionNode : ActionNodeBase
 
             extensionContainer.Add(removeButton);
         }
+    }
+
+    private string LabelFormater(string typeName)
+    {
+        Type item = action.GetType().Assembly.GetTypes()
+                        .Where(i => i.BaseType != null && i.BaseType.Name == "ConditionBase" && i.Name == typeName)
+                        .FirstOrDefault();
+
+        ConditionBase condition = Activator.CreateInstance(item) as ConditionBase;
+
+        return condition.GetLabel();
     }
 }

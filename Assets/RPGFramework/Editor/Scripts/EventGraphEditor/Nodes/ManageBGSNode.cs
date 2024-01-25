@@ -41,7 +41,7 @@ public class ManageBGMNode : ActionNodeBase
         {
             ma.Operation = (ManageBGMAction.OperationType)i.newValue;
 
-            UIUpdate();
+            UpdateUI();
 
             MakeDirty();
         });
@@ -65,7 +65,7 @@ public class ManageBGMNode : ActionNodeBase
         {
             ma.UseFade = i.newValue;
 
-            UIUpdate();
+            UpdateUI();
 
             MakeDirty();
         });

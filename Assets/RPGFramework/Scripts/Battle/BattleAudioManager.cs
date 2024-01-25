@@ -18,8 +18,13 @@ public class BattleAudioManager : MonoBehaviour
     {
         MusicVolume = volume;
         musicSource.clip = clip;
+
         musicSource.Play();
     }
+
+    public void PauseMusic() => musicSource.Pause();
+
+    public void UnPauseMusic() => musicSource.UnPause();
 
     public void StopMusic(float fadeTime = 0)
     {

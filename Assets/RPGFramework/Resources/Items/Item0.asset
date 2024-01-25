@@ -13,17 +13,24 @@ MonoBehaviour:
   m_Name: Item0
   m_EditorClassIdentifier: 
   Name: item 0
-  Description: Restore all team
+  Description: Test some shit
   Rare: 2
-  Usage: 0
-  Icon: {fileID: 0}
+  Usage: 2
+  Icon: {fileID: -1067524621, guid: 43a40bfc1d0a404438f3a7f4ccf8b0e6, type: 3}
   Event: {fileID: 0}
-  Direction: 4
-  AttackEffect: {fileID: 0}
-  AddHeal: 25
-  AddMana: 25
-  AddConcentration: 0
-  CharacterBecomeAlive: 1
+  Direction: 3
+  VisualEffect: {fileID: 0}
+  WakeupCharacter: 0
   ForAlive: 1
-  ForDeath: 1
+  ForDeath: 0
   WriteMessage: 0
+  Effects:
+  - rid: 6865748019961135118
+  references:
+    version: 2
+    RefIds:
+    - rid: 6865748019961135118
+      type: {class: ChangeStateEffect, ns: , asm: Assembly-CSharp}
+      data:
+        IsAddState: 1
+        State: {fileID: 11400000, guid: 942091a8ab61978419d89549fa55d72c, type: 2}

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public abstract class GraphActionBase : GameActionBase
+public abstract class GraphActionBase : GameActionBase, ICloneable
 {
     [SerializeReference]
     public List<GraphActionBase> NextActions;
@@ -34,4 +34,6 @@ public abstract class GraphActionBase : GameActionBase
 
         nextIndex = 0;
     }
+
+    public virtual object Clone() => new();
 }

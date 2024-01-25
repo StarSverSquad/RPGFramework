@@ -20,20 +20,19 @@ public class RPGAbility : ScriptableObject
     public int ManaCost;
     public int ConcentrationCost;
 
-    public int AddHeal;
-    public int AddMana;
+    public bool ForDeath;
+    public bool ForAlive;
+
+    public int Damage;
 
     public bool WakeupCharacter;
 
-    public List<RPGEntityState> AddStates = new();
+    public GraphEvent StartEvent;
+    public GraphEvent EndEvent;
 
-    public AttackEffect Effect;
+    public VisualAttackEffect VisualEffect;
 
-    public GraphEvent StartEvent = null;
-    public GraphEvent EndEvent = null;
-
-    public void Invoke(RPGEntity entity)
-    {
-        entity.Heal += AddHeal;
-    }
+    [HideInInspector]
+    [SerializeReference]
+    public List<EffectBase> Effects = new List<EffectBase>();
 }

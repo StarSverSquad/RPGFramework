@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO.Pipes;
+using System.Linq;
 using UnityEngine;
 
 [Serializable]
@@ -8,14 +10,14 @@ public class SaveSlot
 {
     public int Id;
 
-    public int Money;
+    public string LocationName;
 
     public CustomDictionary<int> IntValues;
     public CustomDictionary<float> FloatValues;
     public CustomDictionary<bool> BoolValues;
     public CustomDictionary<string> StringValues;
 
-    public List<CharacterSaveInfo> Characters;
+    public List<CharacterSaveInfo> SavedCharacters;
 
     public SaveSlot()
     {
@@ -23,7 +25,7 @@ public class SaveSlot
         FloatValues = new CustomDictionary<float>();
         BoolValues = new CustomDictionary<bool>();
         StringValues = new CustomDictionary<string>();
-
-        Characters = new List<CharacterSaveInfo>();
+        SavedCharacters = new List<CharacterSaveInfo>();
     }
+
 }

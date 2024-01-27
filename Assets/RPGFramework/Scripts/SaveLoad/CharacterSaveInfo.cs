@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.VersionControl.Asset;
 
 [Serializable]
 public class CharacterSaveInfo
@@ -10,29 +11,30 @@ public class CharacterSaveInfo
 
     public int Heal;
     public int Mana;
+    public int Level;
+    public int Expirience;
+    public int ExpirienceBorder;
+    public bool InParty;
+    public int PositionInParty;
 
     public int DefaultHeal;
     public int DefaultMana;
-
     public int DefaultDamage;
-    public int DefaultDefance;
+    public int DefaultDefence;
     public int DefaultAgility;
 
-    public int Level;
-    public int Expireance;
-    public int ExpireanceBorder;
-
-    public List<string> Abilitys;
+    public List<string> Abilities;
+    public List<string> States;
 
     public string WeaponName;
     public string HeadName;
     public string BodyName;
-    public string GlovesName;
-    public string BoodsName;
+    public string ShieldName;
     public string TalismanName;
 
     public CharacterSaveInfo()
     {
-        Abilitys = new List<string>();
+        Abilities = new List<string>();
+        States = new List<string>();
     }
 }

@@ -18,7 +18,9 @@ public class PlayerExplorerInteraction : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (ExplorerManager.Instance.playerManager.movement.CanWalk && !ExplorerManager.Instance.eventHandler.EventRuning)
+        if (ExplorerManager.Instance.playerManager.movement.CanWalk 
+            && !ExplorerManager.Instance.eventHandler.EventRuning
+            && !LocalManager.Instance.GameUI.IsOn)
         {
             if (Input.GetKey(KeyCode.RightArrow))
             {
@@ -50,7 +52,8 @@ public class PlayerExplorerInteraction : MonoBehaviour
 
         if (@event != null)
         {
-            if (Input.GetKeyDown(KeyCode.Z) && @event.Interaction == ExplorerEvent.InteractionType.OnClick)
+            if (Input.GetKeyDown(KeyCode.Z) && @event.Interaction == ExplorerEvent.InteractionType.OnClick
+                && !LocalManager.Instance.GameUI.IsOn)
             {
                 @event.InvokeEvent();
             }
@@ -64,8 +67,21 @@ public class PlayerExplorerInteraction : MonoBehaviour
 
         if (@event != null)
         {
-            if ((Input.GetKeyDown(KeyCode.Z) && @event.Interaction == ExplorerEvent.InteractionType.OnClick) 
-                || @event.Interaction == ExplorerEvent.InteractionType.OnStep)
+            if (@event.Interaction == ExplorerEvent.InteractionType.OnStep)
+            {
+                @event.InvokeEvent();
+            }
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        ExplorerEvent @event = collision.gameObject.GetComponent<ExplorerEvent>();
+
+        if (@event != null)
+        {
+            if (Input.GetKeyDown(KeyCode.Z) && @event.Interaction == ExplorerEvent.InteractionType.OnClick
+                && !LocalManager.Instance.GameUI.IsOn)
             {
                 @event.InvokeEvent();
             }

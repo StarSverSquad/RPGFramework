@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.IO.Pipes;
 using System.Linq;
 using UnityEngine;
@@ -16,6 +17,8 @@ public class SaveSlot
     public CustomDictionary<float> FloatValues;
     public CustomDictionary<bool> BoolValues;
     public CustomDictionary<string> StringValues;
+    public CustomDictionary<int> InventoryItems;
+    public Vector2 PlayerPosition;
 
     public List<CharacterSaveInfo> SavedCharacters;
 
@@ -26,6 +29,7 @@ public class SaveSlot
         BoolValues = new CustomDictionary<bool>();
         StringValues = new CustomDictionary<string>();
         SavedCharacters = new List<CharacterSaveInfo>();
+        InventoryItems = new CustomDictionary<int>();
     }
 
 }

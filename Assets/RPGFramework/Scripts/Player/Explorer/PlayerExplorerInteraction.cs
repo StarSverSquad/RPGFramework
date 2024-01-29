@@ -20,7 +20,7 @@ public class PlayerExplorerInteraction : MonoBehaviour
     {
         if (ExplorerManager.Instance.playerManager.movement.CanWalk 
             && !ExplorerManager.Instance.eventHandler.EventRuning
-            && !LocalManager.Instance.GameUI.IsOn)
+            && !LocalManager.Instance.GameUI.IsOpen)
         {
             if (Input.GetKey(KeyCode.RightArrow))
             {
@@ -53,7 +53,7 @@ public class PlayerExplorerInteraction : MonoBehaviour
         if (@event != null)
         {
             if (Input.GetKeyDown(KeyCode.Z) && @event.Interaction == ExplorerEvent.InteractionType.OnClick
-                && !LocalManager.Instance.GameUI.IsOn)
+                && !LocalManager.Instance.GameUI.IsOpen)
             {
                 @event.InvokeEvent();
             }
@@ -81,7 +81,7 @@ public class PlayerExplorerInteraction : MonoBehaviour
         if (@event != null)
         {
             if (Input.GetKeyDown(KeyCode.Z) && @event.Interaction == ExplorerEvent.InteractionType.OnClick
-                && !LocalManager.Instance.GameUI.IsOn)
+                && !LocalManager.Instance.GameUI.IsOpen)
             {
                 @event.InvokeEvent();
             }

@@ -9,6 +9,7 @@ using UnityEngine.Events;
 
 public class UISectionBase : MonoBehaviour, IManagerInitialize
 {
+
     public UnityEvent OnFocus;
     public UnityEvent OnLostFocus;
     [Space]
@@ -32,6 +33,8 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
     {
         CurrentElement = DefaultElement;
 
+        CurrentElement.Focus();
+
         OnEnter.Invoke();
     }
     public virtual void InitializeChild(UISectionBase child)
@@ -40,14 +43,17 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
 
         child.parent = this;
 
-        child.Initialize();
-
         Unfocus();
+
+        child.Initialize();
 
         child.Focus();
     }
     public virtual void Deinitialize()
     {
+        if (CurrentElement != null)
+            CurrentElement.Unfocus();
+
         if (child != null)
         {
             child.Deinitialize();
@@ -58,15 +64,17 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
             Unfocus();
 
         if (parent != null)
+        {
             parent.child = null;
+            parent.Focus();
+            parent = null;
+        }         
 
         OnExit.Invoke();
     }
 
     public virtual void Focus()
     {
-
-        Debug.Log("focus!");
         if (!IsHaveFocus)
             focusCoroutine = StartCoroutine(SectionCoroutine());
 
@@ -75,13 +83,31 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
     public virtual void Unfocus()
     {
         if (IsHaveFocus)
+        {
             StopCoroutine(focusCoroutine);
+
+            focusCoroutine = null;
+        }          
 
         OnLostFocus.Invoke();
     }
 
+    public virtual void ChangeElementFocus(UIElementBase element)
+    {
+        CurrentElement.Unfocus();
+
+        CurrentElement = element;
+
+        CurrentElement.Focus();
+    }
+
     public virtual bool CancelCanExecute() => Input.GetKeyDown(GameManager.Instance.GameConfig.Cancel);
     public virtual bool AcceptCanExecute() => Input.GetKeyDown(GameManager.Instance.GameConfig.Accept);
+
+    public virtual bool TransmitionUp() => Input.GetKeyDown(GameManager.Instance.GameConfig.MoveUp);
+    public virtual bool TransmitionDown() => Input.GetKeyDown(GameManager.Instance.GameConfig.MoveDown);
+    public virtual bool TransmitionLeft() => Input.GetKeyDown(GameManager.Instance.GameConfig.MoveLeft);
+    public virtual bool TransmitionRight() => Input.GetKeyDown(GameManager.Instance.GameConfig.MoveRight);
 
     protected virtual IEnumerator SectionCoroutine()
     {
@@ -89,14 +115,42 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
         {
             if (CancelCanExecute())
             {
-                Debug.Log("ss");
+                yield return null;
+
                 OnCancel.Invoke();
             }
 
             if (AcceptCanExecute())
             {
+                yield return null;
+
                 OnAccept.Invoke();
                 CurrentElement.OnAction.Invoke();
+            }
+
+            if (TransmitionUp() && CurrentElement.UpTransmition != null)
+            {
+                yield return null;
+
+                ChangeElementFocus(CurrentElement.UpTransmition);
+            }
+            else if (TransmitionDown() && CurrentElement.DownTransmition != null)
+            {
+                yield return null;
+
+                ChangeElementFocus(CurrentElement.DownTransmition);
+            }
+            else if(TransmitionLeft() && CurrentElement.LeftTransmition != null)
+            {
+                yield return null;
+
+                ChangeElementFocus(CurrentElement.LeftTransmition);
+            }
+            else if(TransmitionRight() && CurrentElement.RightTransmition != null)
+            {
+                yield return null;
+
+                ChangeElementFocus(CurrentElement.RightTransmition);
             }
 
             yield return null;

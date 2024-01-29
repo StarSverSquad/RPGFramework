@@ -8,18 +8,23 @@ using UnityEngine;
 public class UIManagerBase : ContentManagerBase, IManagerInitialize
 {
     [SerializeField]
-    private UIPageBase currentPage;
+    private UIPageBase currentPage = null;
     public UIPageBase CurrentPage => currentPage;
 
-    public bool IsOn => currentPage != null;
+    public bool IsOpen => currentPage != null;
 
     public virtual void Initialize()
     {
-        
+        InitializeChild();
+
+        Close();
     }
     public override void InitializeChild()
     {
-        
+        foreach (UIPageBase page in GetComponentsInChildren<UIPageBase>())
+        {
+            page.Deinitialize();
+        }
     }
 
     public void SetPage(UIPageBase page)
@@ -27,10 +32,7 @@ public class UIManagerBase : ContentManagerBase, IManagerInitialize
         SetActive(true);
 
         if (currentPage != null)
-        {
             currentPage.Deinitialize();
-            currentPage.OnClosePage.Invoke();
-        }
 
         currentPage = page;
         currentPage.Initialize();
@@ -38,11 +40,12 @@ public class UIManagerBase : ContentManagerBase, IManagerInitialize
 
     public void Close()
     {
-        Debug.Log("ss");
+        if (currentPage != null)
+        {
+            currentPage.Deinitialize();
 
-        currentPage.Deinitialize();
-        
-        currentPage = null;
+            currentPage = null;
+        }
 
         SetActive(false);
     }

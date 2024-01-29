@@ -13,12 +13,6 @@ public class UIPageBase : MonoBehaviour, IManagerInitialize
 
     public GameObject Content;
 
-    private void Start()
-    {
-        // Временно
-        Deinitialize();
-    }
-
     public void Initialize()
     {
         Content.SetActive(true);

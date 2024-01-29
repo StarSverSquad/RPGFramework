@@ -6,8 +6,8 @@ public class GameUIManager : UIManagerBase
 {
     public UIPageBase TestPage;
 
-    public override void Initialize()
+    private void Update()
     {
-        SetPage(TestPage);
+
     }
 }

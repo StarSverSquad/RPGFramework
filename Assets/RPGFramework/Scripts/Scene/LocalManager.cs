@@ -33,8 +33,6 @@ public class LocalManager : ContentManagerBase
 
     public override void InitializeChild()
     {
-        GameUI.Initialize();
-
         explorer.Initialize();
 
         Location.Initialize();
@@ -42,6 +40,8 @@ public class LocalManager : ContentManagerBase
 
         common.Initialize();
         battle.Initialize();
+
+        GameUI.Initialize();
     }
 
     public static LocationObject GetCurrentLocation()

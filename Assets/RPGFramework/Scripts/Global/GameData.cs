@@ -16,6 +16,7 @@ public class GameData
     public RPGCharacter[] Characters;
     public RPGEntityState[] States;
     public RPGCollectable[] Collectables;
+    public RPGAbility[] Abilities;
 
     public int Money = 0;
 
@@ -31,5 +32,6 @@ public class GameData
         Characters = Resources.LoadAll<RPGCharacter>("Characters");
         States = Resources.LoadAll<RPGEntityState>("EntityStates");
         Collectables = Resources.LoadAll<RPGCollectable>("Items");
+        Abilities = Resources.LoadAll<RPGAbility>("Abilities");
     }
 }

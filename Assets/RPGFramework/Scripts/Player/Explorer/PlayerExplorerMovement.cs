@@ -44,7 +44,8 @@ public class PlayerExplorerMovement : MonoBehaviour
 
         CommonDirection newViewDirection = CommonDirection.None;
 
-        if (CanWalk && !ExplorerManager.Instance.eventHandler.EventRuning)
+        if (CanWalk && !ExplorerManager.Instance.eventHandler.EventRuning
+            && !LocalManager.Instance.GameUI.IsOpen)
         {
 
             if (Input.GetKey(GameManager.Instance.GameConfig.MoveRight))

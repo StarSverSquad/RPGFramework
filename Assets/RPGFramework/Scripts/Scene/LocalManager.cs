@@ -13,6 +13,7 @@ public class LocalManager : ContentManagerBase
     public MainCameraManager Camera;
     public LocalCharacterManager Character;
     public LocalLocationManager Location;
+    public GameUIManager GameUI;
 
     [Space]
     [Header("Ссылки для инициализации")]
@@ -32,6 +33,8 @@ public class LocalManager : ContentManagerBase
 
     public override void InitializeChild()
     {
+        GameUI.Initialize();
+
         explorer.Initialize();
 
         Location.Initialize();

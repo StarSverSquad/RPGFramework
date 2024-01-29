@@ -117,6 +117,9 @@ public class SaveLoadManager : MonoBehaviour
             Glek.DefaultDefence = SavedCharacter.DefaultDefence;
             Glek.DefaultAgility = SavedCharacter.DefaultAgility;
             Glek.WeaponSlot.Name = SavedCharacter.WeaponName;
+
+            Glek.WeaponSlot = (RPGWeapon)GameManager.Instance.GameData.Collectables.First(i => i.Name == SavedCharacter.WeaponName);
+
             //Glek.HeadName = SavedCharacter.HeadSlot?.Name;
             //Glek.BodyName = SavedCharacter.BodySlot?.Name;
             //Glek.ShieldName = SavedCharacter.ShieldSlot?.Name;

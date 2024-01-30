@@ -17,8 +17,11 @@ public class SaveSlot
     public CustomDictionary<float> FloatValues;
     public CustomDictionary<bool> BoolValues;
     public CustomDictionary<string> StringValues;
+
     public CustomDictionary<int> InventoryItems;
+
     public Vector2 PlayerPosition;
+    public CommonDirection PlayerDirection;
 
     public List<CharacterSaveInfo> SavedCharacters;
 
@@ -31,5 +34,4 @@ public class SaveSlot
         SavedCharacters = new List<CharacterSaveInfo>();
         InventoryItems = new CustomDictionary<int>();
     }
-
 }

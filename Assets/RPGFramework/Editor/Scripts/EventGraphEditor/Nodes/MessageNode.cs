@@ -121,6 +121,20 @@ public class MessageNode : ActionNodeBase
             MakeDirty();
         });
 
+        ObjectField textEffectField = new ObjectField("Эффект текста")
+        {
+            allowSceneObjects = true,
+            objectType = typeof(TextVisualEffectBase)
+        };
+
+        textEffectField.SetValueWithoutNotify(dialog.message.textEffect);
+        textEffectField.RegisterValueChangedCallback(effect =>
+        {
+            dialog.message.textEffect = effect.newValue as TextVisualEffectBase;
+
+            MakeDirty();
+        });
+
         extensionContainer.Add(txtLabel);
         extensionContainer.Add(textField);
         extensionContainer.Add(nameField);
@@ -131,5 +145,6 @@ public class MessageNode : ActionNodeBase
         extensionContainer.Add(spriteField);
         extensionContainer.Add(clipField);
         extensionContainer.Add(positionField);
+        extensionContainer.Add(textEffectField);
     }
 }

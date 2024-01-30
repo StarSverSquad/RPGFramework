@@ -14,6 +14,7 @@ public class LocalManager : ContentManagerBase
     public LocalCharacterManager Character;
     public LocalLocationManager Location;
     public GameUIManager GameUI;
+    public SunManager Sun;
 
     [Space]
     [Header("Ссылки для инициализации")]

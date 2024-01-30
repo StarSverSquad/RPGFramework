@@ -16,6 +16,7 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
     public UnityEvent OnEnter;
     public UnityEvent OnExit;
     [Space]
+    public UnityEvent OnChange;
     public UnityEvent OnCancel;
     public UnityEvent OnAccept;
     [Space]
@@ -25,15 +26,22 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
     public UIElementBase DefaultElement;
     public UIElementBase CurrentElement;
 
-
     private Coroutine focusCoroutine = null;
     public bool IsHaveFocus => focusCoroutine != null;
 
+    protected bool isInitialized = false;
+    public bool IsInitialized => isInitialized;
+
     public virtual void Initialize()
     {
+        if (isInitialized)
+            return;
+
         CurrentElement = DefaultElement;
 
         CurrentElement.Focus();
+
+        isInitialized = true;
 
         OnEnter.Invoke();
     }
@@ -51,6 +59,9 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
     }
     public virtual void Deinitialize()
     {
+        if (!isInitialized)
+            return;
+
         if (CurrentElement != null)
             CurrentElement.Unfocus();
 
@@ -68,7 +79,9 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
             parent.child = null;
             parent.Focus();
             parent = null;
-        }         
+        }
+
+        isInitialized = false;
 
         OnExit.Invoke();
     }
@@ -120,37 +133,49 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
                 OnCancel.Invoke();
             }
 
-            if (AcceptCanExecute())
+            if (CurrentElement != null)
             {
-                yield return null;
+                if (AcceptCanExecute())
+                {
+                    yield return null;
 
-                OnAccept.Invoke();
-                CurrentElement.OnAction.Invoke();
-            }
+                    OnAccept.Invoke();
 
-            if (TransmitionUp() && CurrentElement.UpTransmition != null)
-            {
-                yield return null;
+                    CurrentElement.OnAction.Invoke();
+                }
 
-                ChangeElementFocus(CurrentElement.UpTransmition);
-            }
-            else if (TransmitionDown() && CurrentElement.DownTransmition != null)
-            {
-                yield return null;
+                if (TransmitionUp() && CurrentElement.UpTransmition != null)
+                {
+                    yield return null;
 
-                ChangeElementFocus(CurrentElement.DownTransmition);
-            }
-            else if(TransmitionLeft() && CurrentElement.LeftTransmition != null)
-            {
-                yield return null;
+                    ChangeElementFocus(CurrentElement.UpTransmition);
 
-                ChangeElementFocus(CurrentElement.LeftTransmition);
-            }
-            else if(TransmitionRight() && CurrentElement.RightTransmition != null)
-            {
-                yield return null;
+                    OnChange.Invoke();
+                }
+                else if (TransmitionDown() && CurrentElement.DownTransmition != null)
+                {
+                    yield return null;
 
-                ChangeElementFocus(CurrentElement.RightTransmition);
+                    ChangeElementFocus(CurrentElement.DownTransmition);
+
+                    OnChange.Invoke();
+                }
+                else if (TransmitionLeft() && CurrentElement.LeftTransmition != null)
+                {
+                    yield return null;
+
+                    ChangeElementFocus(CurrentElement.LeftTransmition);
+
+                    OnChange.Invoke();
+                }
+                else if (TransmitionRight() && CurrentElement.RightTransmition != null)
+                {
+                    yield return null;
+
+                    ChangeElementFocus(CurrentElement.RightTransmition);
+
+                    OnChange.Invoke();
+                }
             }
 
             yield return null;

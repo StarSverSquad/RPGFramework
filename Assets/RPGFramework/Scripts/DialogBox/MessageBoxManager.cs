@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -159,6 +160,11 @@ public class MessageBoxManager : TextWriterBase
     {
         letterEffect.clip = Message.letterSound;
 
+        if (Message.textEffect != null)
+        {
+            Message.textEffect.StartEffect(textMeshPro);
+        }
+
         SetupDialog();
     }
 
@@ -179,6 +185,11 @@ public class MessageBoxManager : TextWriterBase
     public override void OnEndWait()
     {
         arrow.SetActive(false);
+
+        if (Message.textEffect != null)
+        {
+            Message.textEffect.StopEffect();
+        }
     }
 }
 
@@ -194,6 +205,8 @@ public class MessageInfo : WriterMessage
     public Sprite image;
 
     public MessageBoxManager.DialogBoxPosition position;
+
+    public TextVisualEffectBase textEffect;
 
     public MessageInfo() : base()
     {

@@ -799,6 +799,7 @@ GameObject:
   - component: {fileID: 1506467258918832225}
   - component: {fileID: 4246946872983306619}
   - component: {fileID: 6071720232034816392}
+  - component: {fileID: 5048356505336248193}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -841,6 +842,7 @@ MonoBehaviour:
   gameAudio: {fileID: 3070494362159572897}
   loadingScreen: {fileID: 7824229713666495633}
   sceneLoader: {fileID: 6071720232034816392}
+  saveLoad: {fileID: 5048356505336248193}
 --- !u!114 &4728295912423736072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -865,8 +867,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65b4b3df837895748b875e07033b1d4c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurrentLocation: {fileID: 11400000, guid: 87d2506dc891aaf4cbff0ee29cf76a08, type: 2}
-  isChanging: 0
+  CurrentLocation: {fileID: 0}
 --- !u!114 &4246946872983306619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -892,6 +893,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLoading: 0
+--- !u!114 &5048356505336248193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5511591142689386751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 735ae11fe69fbaf49a0131ba03c446a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5611195430967409547
 GameObject:
   m_ObjectHideFlags: 0

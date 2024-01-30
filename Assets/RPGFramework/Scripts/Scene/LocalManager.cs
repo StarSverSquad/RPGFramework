@@ -13,6 +13,8 @@ public class LocalManager : ContentManagerBase
     public MainCameraManager Camera;
     public LocalCharacterManager Character;
     public LocalLocationManager Location;
+    public GameUIManager GameUI;
+    public SunManager Sun;
 
     [Space]
     [Header("Ссылки для инициализации")]
@@ -39,6 +41,8 @@ public class LocalManager : ContentManagerBase
 
         common.Initialize();
         battle.Initialize();
+
+        GameUI.Initialize();
     }
 
     public static LocationObject GetCurrentLocation()

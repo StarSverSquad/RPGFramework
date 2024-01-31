@@ -91,6 +91,9 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
         if (!IsHaveFocus)
             focusCoroutine = StartCoroutine(SectionCoroutine());
 
+        if (CurrentElement != null)
+            CurrentElement.Focus();
+
         OnFocus.Invoke();
     }
     public virtual void Unfocus()

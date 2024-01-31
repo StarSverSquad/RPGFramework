@@ -702,35 +702,27 @@ MonoBehaviour:
   Actions:
   - rid: 6948231382128132096
   - rid: 6948231382128132099
-  - rid: 6948231382128132097
-  - rid: 6948231382128132098
+  - rid: 6948231411724451840
   Meta:
     edges:
     - inputPortName: Input
-      inputNodeGUID: 956fad2b0beeb0b4f85bbe073b31e0cb
+      inputNodeGUID: ad33c83116638564980cd1b57e3ab0f6
       outputPortName: Output
       outputNodeGUID: c696c74613b87334b8e3e36c18d89385
     - inputPortName: Input
-      inputNodeGUID: 5312b0c1e5858cb4eb22ecfa85047048
-      outputPortName: Output
-      outputNodeGUID: 956fad2b0beeb0b4f85bbe073b31e0cb
-    - inputPortName: Input
       inputNodeGUID: 027c1427e54ed6b46b59b1cad2cfc958
       outputPortName: Output
-      outputNodeGUID: 5312b0c1e5858cb4eb22ecfa85047048
+      outputNodeGUID: ad33c83116638564980cd1b57e3ab0f6
     nodes:
     - guid: c696c74613b87334b8e3e36c18d89385
       actionIndex: 0
       position: {x: 250.4, y: 250.4}
     - guid: 027c1427e54ed6b46b59b1cad2cfc958
       actionIndex: 1
-      position: {x: 1470.4, y: 182.4}
-    - guid: 956fad2b0beeb0b4f85bbe073b31e0cb
+      position: {x: 776.8, y: 244.8}
+    - guid: ad33c83116638564980cd1b57e3ab0f6
       actionIndex: 2
-      position: {x: 401.6, y: 115.2}
-    - guid: 5312b0c1e5858cb4eb22ecfa85047048
-      actionIndex: 3
-      position: {x: 832, y: 105.6}
+      position: {x: 435.2, y: 168.8}
   references:
     version: 2
     RefIds:
@@ -738,47 +730,23 @@ MonoBehaviour:
       type: {class: StartAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions:
-        - rid: 6948231382128132097
-    - rid: 6948231382128132097
-      type: {class: MessageAction, ns: , asm: Assembly-CSharp}
-      data:
-        NextActions:
-        - rid: 6948231382128132098
-        message:
-          text: "\u041E\u0442 \u043A\u0443\u0434\u0430 \u0441\u0434\u0435\u0441\u044C
-            \u0434\u044B\u0440\u0430?"
-          speed: 10
-          clear: 1
-          wait: 1
-          name: "\u0414\u0438\u043C\u0435\u0439\u043D"
-          closeWindow: 0
-          letterSound: {fileID: 8300000, guid: 8aeb7244e86738c46ab6b47fb69d9681, type: 3}
-          image: {fileID: 365996475, guid: e4547c401ed1aaf45906d594afcf674d, type: 3}
-          position: 0
-          textEffect: {fileID: 2128485463}
-    - rid: 6948231382128132098
-      type: {class: MessageAction, ns: , asm: Assembly-CSharp}
-      data:
-        NextActions:
-        - rid: 6948231382128132099
-        message:
-          text: "* \u0412\u0447\u0435\u0440\u0430<\\:>, \u0414\u0438\u043C\u0435\u0439\u043D
-            \u0431\u0443\u0434\u0443\u0447\u0438 \u0431\u0443\u0445\u0438\u043C \u0437\u0430\u0431\u0440\u043E\u0441\u0438\u043B
-            \u0432 \u0441\u0432\u043E\u0439 \u0434\u043E\u043C \u043F\u0438\u0442\u0430\u0440\u0434\u0443
-            <color=#FF0000>\u041A\u0430\u0440\u0441\u0430\u0440-1</color>"
-          speed: 0
-          clear: 1
-          wait: 1
-          name: 
-          closeWindow: 1
-          letterSound: {fileID: 8300000, guid: 58915a699473ca0458f3f28f8e9e502b, type: 3}
-          image: {fileID: 0}
-          position: 0
-          textEffect: {fileID: 0}
+        - rid: 6948231411724451840
     - rid: 6948231382128132099
       type: {class: EndAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions: []
+    - rid: 6948231411724451840
+      type: {class: ManageBGMAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 6948231382128132099
+        Operation: 0
+        IngoreIfThisClip: 1
+        WaitFade: 0
+        UseFade: 0
+        FadeTime: 0
+        Volume: 1
+        clip: {fileID: 8300000, guid: 739b9946986c6d743a38313afa0665c4, type: 3}
 --- !u!1 &306409375
 GameObject:
   m_ObjectHideFlags: 0
@@ -2568,6 +2536,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705999510}
   m_CullTransparentMesh: 1
+--- !u!1 &716118265
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 716118266}
+  - component: {fileID: 716118268}
+  m_Layer: 6
+  m_Name: BGM
+  m_TagString: Untagged
+  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &716118266
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 716118265}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.78, y: 4.43, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2362957116482679255}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &716118268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 716118265}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f92c8edad02c4274bba17723d560f98b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Interaction: 0
+  DynamicOrderChange: 0
+  hasExecuted: 0
+  OnlyOne: 0
+  CacheResult: 0
+  Parallel: 0
+  Event: {fileID: 296458976}
 --- !u!1 &842222836
 GameObject:
   m_ObjectHideFlags: 0
@@ -6178,6 +6197,109 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1983004747}
   m_CullTransparentMesh: 1
+--- !u!114 &2016588066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a07e43a344a4a5f438c0481d93a21355, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Actions:
+  - rid: 6948231411724451842
+  - rid: 6948231411724451843
+  - rid: 6948231411724451844
+  - rid: 6948231411724451841
+  - rid: 6948231411724451845
+  Meta:
+    edges:
+    - inputPortName: Input
+      inputNodeGUID: 3ad8a8ec15c08c243b7cf5c9722ed3d2
+      outputPortName: Output
+      outputNodeGUID: 6e6e5f49f602c094893bdab59c53b7e5
+    - inputPortName: Input
+      inputNodeGUID: 6e6e5f49f602c094893bdab59c53b7e5
+      outputPortName: Output
+      outputNodeGUID: fd955acdd5de81041b8a854d5e2b58b5
+    - inputPortName: Input
+      inputNodeGUID: 6bd070e24b60c934f99445cab4da998b
+      outputPortName: Output
+      outputNodeGUID: 4615b92567067304a95ac9412f3255e4
+    - inputPortName: Input
+      inputNodeGUID: fd955acdd5de81041b8a854d5e2b58b5
+      outputPortName: Output
+      outputNodeGUID: 6bd070e24b60c934f99445cab4da998b
+    nodes:
+    - guid: 6e6e5f49f602c094893bdab59c53b7e5
+      actionIndex: 0
+      position: {x: 770.4, y: 368.8}
+    - guid: 3ad8a8ec15c08c243b7cf5c9722ed3d2
+      actionIndex: 1
+      position: {x: 1264.8, y: 315.2}
+    - guid: fd955acdd5de81041b8a854d5e2b58b5
+      actionIndex: 2
+      position: {x: 351.2, y: 350.4}
+    - guid: 4615b92567067304a95ac9412f3255e4
+      actionIndex: 3
+      position: {x: -124.8, y: 320}
+    - guid: 6bd070e24b60c934f99445cab4da998b
+      actionIndex: 4
+      position: {x: 5.6, y: 344.8}
+  references:
+    version: 2
+    RefIds:
+    - rid: 6948231411724451841
+      type: {class: StartAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 6948231411724451845
+    - rid: 6948231411724451842
+      type: {class: MessageAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 6948231411724451843
+        message:
+          text: " \u0437\u0434\u0435\u0441\u044C \u0434\u044B\u0440\u0430!"
+          speed: 14
+          clear: 0
+          wait: 1
+          name: "\u041D\u0438\u043A\u0438\u0442\u043E\u0441"
+          closeWindow: 1
+          letterSound: {fileID: 8300000, guid: 8aeb7244e86738c46ab6b47fb69d9681, type: 3}
+          image: {fileID: -574080388, guid: e4547c401ed1aaf45906d594afcf674d, type: 3}
+          position: 0
+          textEffect: {fileID: 2128485463}
+    - rid: 6948231411724451843
+      type: {class: EndAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions: []
+    - rid: 6948231411724451844
+      type: {class: MessageAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 6948231411724451842
+        message:
+          text: "\u041E\u043A\u0443\u0434\u0430<\\:>"
+          speed: 42
+          clear: 1
+          wait: 0
+          name: "\u041D\u0438\u043A\u0438\u0442\u043E\u0441"
+          closeWindow: 0
+          letterSound: {fileID: 0}
+          image: {fileID: -574080388, guid: e4547c401ed1aaf45906d594afcf674d, type: 3}
+          position: 0
+          textEffect: {fileID: 0}
+    - rid: 6948231411724451845
+      type: {class: PlaySEAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 6948231411724451844
+        clip: {fileID: 8300000, guid: 17a33087035c64b4e87f5bc52b444398, type: 3}
+        volume: 1
 --- !u!1 &2079082630
 GameObject:
   m_ObjectHideFlags: 0
@@ -6587,13 +6709,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2128485460}
-  - component: {fileID: 2128485462}
   - component: {fileID: 2128485461}
   - component: {fileID: 2128485463}
+  - component: {fileID: 2128485464}
   m_Layer: 6
   m_Name: Karsar-1
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -6657,7 +6779,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.42351615, y: 0.427634}
   m_EdgeRadius: 0
---- !u!114 &2128485462
+--- !u!114 &2128485463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2128485459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a19ab47b8417a5e41895aae8e5d130dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2128485464
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6675,19 +6809,7 @@ MonoBehaviour:
   OnlyOne: 0
   CacheResult: 0
   Parallel: 0
-  Event: {fileID: 296458976}
---- !u!114 &2128485463
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2128485459}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a19ab47b8417a5e41895aae8e5d130dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  Event: {fileID: 2016588066}
 --- !u!1 &2133337442
 GameObject:
   m_ObjectHideFlags: 0
@@ -9980,6 +10102,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2128485460}
+  - {fileID: 716118266}
   m_Father: {fileID: 6407556730495778221}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &2375198094886436066
@@ -12019,7 +12142,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OnEnterLocation:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 716118268}
+        m_TargetAssemblyTypeName: ExplorerEvent, Assembly-CSharp
+        m_MethodName: InvokeEvent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnLeaveLocation:
     m_PersistentCalls:
       m_Calls: []
@@ -15388,7 +15523,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7715062789893119559
 RectTransform:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ public class CharacterSaveInfo
     public int Level;
     public int Expirience;
     public int ExpirienceBorder;
+
     public bool InParty;
     public int PositionInParty;
 

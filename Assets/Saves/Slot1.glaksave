@@ -1,0 +1,73 @@
+{
+    "Id": 1,
+    "LocationName": "DimaHome",
+    "IntValues": {
+        "data": []
+    },
+    "FloatValues": {
+        "data": []
+    },
+    "BoolValues": {
+        "data": [
+            {
+                "Key": "ХапанулХапачку?",
+                "Value": true
+            }
+        ]
+    },
+    "StringValues": {
+        "data": [
+            {
+                "Key": "Имя",
+                "Value": "Драчила"
+            }
+        ]
+    },
+    "InventoryItems": {
+        "data": [
+            {
+                "Key": "item 0",
+                "Value": 3
+            },
+            {
+                "Key": "Пиво 0.5",
+                "Value": 6
+            },
+            {
+                "Key": "Тестовое событие",
+                "Value": 9
+            }
+        ]
+    },
+    "PlayerPosition": {
+        "x": -0.2476973980665207,
+        "y": 1.2423046827316285
+    },
+    "PlayerDirection": 1,
+    "SavedCharacters": [
+        {
+            "Name": "Никитос",
+            "Heal": 75,
+            "Mana": 0,
+            "Level": 1,
+            "Expirience": 0,
+            "ExpirienceBorder": 35,
+            "InParty": true,
+            "PositionInParty": 0,
+            "DefaultHeal": 75,
+            "DefaultMana": 50,
+            "DefaultDamage": 25,
+            "DefaultDefence": 5,
+            "DefaultAgility": 5,
+            "Abilities": [
+                "Ударить сильно"
+            ],
+            "States": [],
+            "WeaponName": "",
+            "HeadName": "",
+            "BodyName": "",
+            "ShieldName": "",
+            "TalismanName": ""
+        }
+    ]
+}

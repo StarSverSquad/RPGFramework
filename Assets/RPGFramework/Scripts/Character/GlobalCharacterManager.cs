@@ -27,7 +27,8 @@ public class GlobalCharacterManager : MonoBehaviour, IManagerInitialize, IDispos
 
         characters.Add(trueCharacter);
 
-        trueCharacter.InitializeEntity();
+        if (initialize)
+            trueCharacter.InitializeEntity();
 
         OnCharaterListChanged?.Invoke();
     }

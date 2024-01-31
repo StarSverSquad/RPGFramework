@@ -11,6 +11,7 @@ public class GameManager : ContentManagerBase
     public AudioManager gameAudio;
     public LoadingScreenManager loadingScreen;
     public SceneLoadManager sceneLoader;
+    public SaveLoadManager saveLoad;
 
     public GameConfig GameConfig { get; private set; }
 

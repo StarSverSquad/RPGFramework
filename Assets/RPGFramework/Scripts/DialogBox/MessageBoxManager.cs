@@ -16,20 +16,15 @@ public class MessageBoxManager : TextWriterBase
     [Header("Message")]
     [Tooltip("0 - bottom, 1 - center, 2 - top")]
     [SerializeField]
-    private float[] messageBoxYPositions = new float[3];
+    private RectTransform[] messageBoxYPoints = new RectTransform[3];
 
     [Tooltip("0 - bottom, 1 - center, 2 - top")]
     [SerializeField]
-    private float[] nameBoxYPositions = new float[3];
+    private RectTransform[] nameBoxYPoints = new RectTransform[3];
 
     [Tooltip("0 - without image, 1 - with image")]
     [SerializeField]
     private float[] textMargins = new float[2];
-
-    [SerializeField]
-    private float inBattleNameBoxOffset = 0;
-    [SerializeField]
-    private float inBattleMessageBoxOffset = 0;
 
     [SerializeField]
     private RectTransform messageBox;
@@ -71,24 +66,16 @@ public class MessageBoxManager : TextWriterBase
         switch (Message.position)
         {
             case DialogBoxPosition.Bottom:
-                if (BattleManager.IsBattle)
-                {
-                    messageBox.anchoredPosition = new Vector2(messageBox.anchoredPosition.x, messageBoxYPositions[0] + inBattleMessageBoxOffset);
-                    nameBox.anchoredPosition = new Vector2(nameBox.anchoredPosition.x, nameBoxYPositions[0] + inBattleNameBoxOffset);
-                }
-                else
-                {
-                    messageBox.anchoredPosition = new Vector2(messageBox.anchoredPosition.x, messageBoxYPositions[0]);
-                    nameBox.anchoredPosition = new Vector2(nameBox.anchoredPosition.x, nameBoxYPositions[0]);
-                }
+                messageBox.anchoredPosition = new Vector2(messageBox.anchoredPosition.x, messageBoxYPoints[0].anchoredPosition.y);
+                nameBox.anchoredPosition = new Vector2(nameBox.anchoredPosition.x, nameBoxYPoints[0].anchoredPosition.y);
                 break;
             case DialogBoxPosition.Center:
-                messageBox.anchoredPosition = new Vector2(messageBox.anchoredPosition.x, messageBoxYPositions[1]);
-                nameBox.anchoredPosition = new Vector2(nameBox.anchoredPosition.x, nameBoxYPositions[1]);
+                messageBox.anchoredPosition = new Vector2(messageBox.anchoredPosition.x, messageBoxYPoints[1].anchoredPosition.y);
+                nameBox.anchoredPosition = new Vector2(nameBox.anchoredPosition.x, nameBoxYPoints[1].anchoredPosition.y);
                 break;
             case DialogBoxPosition.Top:
-                messageBox.anchoredPosition = new Vector2(messageBox.anchoredPosition.x, messageBoxYPositions[2]);
-                nameBox.anchoredPosition = new Vector2(nameBox.anchoredPosition.x, nameBoxYPositions[2]);
+                messageBox.anchoredPosition = new Vector2(messageBox.anchoredPosition.x, messageBoxYPoints[2].anchoredPosition.y);
+                nameBox.anchoredPosition = new Vector2(nameBox.anchoredPosition.x, nameBoxYPoints[2].anchoredPosition.y);
                 break;
         }
 

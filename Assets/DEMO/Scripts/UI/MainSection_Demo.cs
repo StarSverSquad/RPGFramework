@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainSection : UISectionBase
+public class MainSection_Demo : UISectionBase
 {
     [Space]
     public TextMeshProUGUI Dmg;

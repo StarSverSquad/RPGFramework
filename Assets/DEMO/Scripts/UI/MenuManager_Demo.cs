@@ -7,16 +7,37 @@ public class MenuManager_Demo : UIManagerBase
 {
     public UIPageBase MainPage;
 
+    private void Start()
+    {
+        Initialize();
+    }
+
     public override void Initialize()
     {
-        InitializeChild();
-
+        InitializeChild(); 
+        
         SetPage(MainPage);
     }
 
-    // Update is called once per frame
-    void Update()
+    /*
+     * 
+     * Эти методы я создал для отлдки, можешь их изменить и тд.
+     * Они привызаны к кнопкам на сцене.
+     * 
+     */
+
+    public void Exit()
     {
-        Initialize();
+        Application.Quit();
+    }
+
+    public void NewGame()
+    {
+        GameManager.Instance.saveLoad.NewGame();
+    }
+
+    public void LoadGame()
+    {
+        GameManager.Instance.saveLoad.Load(1);
     }
 }

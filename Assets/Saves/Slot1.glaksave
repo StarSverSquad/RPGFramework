@@ -27,46 +27,64 @@
         "data": [
             {
                 "Key": "item 0",
-                "Value": 3
+                "Value": 1
             },
             {
-                "Key": "Пиво 0.5",
-                "Value": 6
+                "Key": "item1",
+                "Value": 1
+            },
+            {
+                "Key": "item2",
+                "Value": 1
+            },
+            {
+                "Key": "item3",
+                "Value": 1
+            },
+            {
+                "Key": "item4",
+                "Value": 1
+            },
+            {
+                "Key": "item5",
+                "Value": 1
+            },
+            {
+                "Key": "item6",
+                "Value": 1
             },
             {
                 "Key": "Тестовое событие",
-                "Value": 9
+                "Value": 1
             }
         ]
     },
     "PlayerPosition": {
-        "x": 0.4206099510192871,
-        "y": 0.627131998538971
+        "x": -1.6534837484359742,
+        "y": 1.0971300601959229
     },
-    "PlayerDirection": 2,
+    "PlayerDirection": 4,
     "SavedCharacters": [
         {
-            "Name": "Никитос",
-            "Heal": 75,
-            "Mana": 0,
-            "Level": 1,
+            "Name": "Димас",
+            "Heal": 256,
+            "Mana": 147,
+            "Level": 4,
             "Expirience": 0,
-            "ExpirienceBorder": 35,
+            "ExpirienceBorder": 111,
             "InParty": true,
             "PositionInParty": 0,
-            "DefaultHeal": 75,
-            "DefaultMana": 50,
-            "DefaultDamage": 25,
-            "DefaultDefence": 5,
-            "DefaultAgility": 5,
-            "Abilities": [
-                "Ударить сильно"
-            ],
+            "DefaultHeal": 256,
+            "DefaultMana": 147,
+            "DefaultDamage": 37,
+            "DefaultDefence": 14,
+            "DefaultAgility": 20,
+            "Abilities": [],
             "States": [],
-            "WeaponName": "",
+            "WeaponName": "Заточка зека",
             "HeadName": "",
             "BodyName": "",
-            "ShieldName": "",
+            "ShieldName": "Щит щиглов",
             "TalismanName": ""
         }
     ]

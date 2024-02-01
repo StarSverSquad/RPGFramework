@@ -6,11 +6,12 @@ using UnityEngine.Events;
 
 public class UIPageBase : MonoBehaviour, IManagerInitialize
 {
+    [Header("События")]
     public UnityEvent OnOpenPage;
     public UnityEvent OnClosePage;
-
+    [Header("Настройки")]
     public UISectionBase StartSection;
-
+    [Space]
     public GameObject Content;
 
     public void Initialize()

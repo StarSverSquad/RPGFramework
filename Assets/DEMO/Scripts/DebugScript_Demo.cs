@@ -8,10 +8,6 @@ public class DebugScript_Demo : MonoBehaviour
 
     public RPGCharacter Character;
 
-    public RPGCollectable Item0;
-    public RPGCollectable Item1;
-    public RPGCollectable Item2;
-
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
@@ -23,6 +19,18 @@ public class DebugScript_Demo : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))
             GameManager.Instance.saveLoad.Load(1);
 
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            GameManager.Instance.character.Characters[0].Heal -= 25;
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            GameManager.Instance.character.Characters[0].Expireance = GameManager.Instance.character.Characters[0].ExpireanceBorder;
+
+            GameManager.Instance.character.Characters[0].LevelUp();
+        }
+
         if (Input.GetKeyDown(KeyCode.U))
         {
             GameManager.Instance.character.AddCharacter(Character);
@@ -31,9 +39,10 @@ public class DebugScript_Demo : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.I))
         {
-            GameManager.Instance.inventory.AddToItemCount(Item0, 1);
-            GameManager.Instance.inventory.AddToItemCount(Item1, 2);
-            GameManager.Instance.inventory.AddToItemCount(Item2, 3);
+            foreach (var item in GameManager.Instance.GameData.Collectables)
+            {
+                GameManager.Instance.inventory.AddToItemCount(item, 1);
+            } 
         }
     }
 }

@@ -32,6 +32,11 @@ public class MainSection_Demo : UISectionBase
         base.Initialize();
     }
 
+    public void ExitToMainMenu()
+    {
+        GameManager.Instance.sceneLoader.LoadScene("DemoMenu");
+    }
+
     public void UpdateInfo()
     {
         if (GameManager.Instance.character.Characters.Length == 0)

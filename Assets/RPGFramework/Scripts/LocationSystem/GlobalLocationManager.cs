@@ -101,7 +101,7 @@ public class GlobalLocationManager : MonoBehaviour
 
         if (message.Location.SceneName != SceneManager.GetActiveScene().name)
         {
-            GameManager.Instance.sceneLoader.LoadScene(message.Location.SceneName);
+            GameManager.Instance.sceneLoader.LoadGameScene(message.Location.SceneName);
 
             yield return new WaitWhile(() => GameManager.Instance.sceneLoader.IsLoading);
         }

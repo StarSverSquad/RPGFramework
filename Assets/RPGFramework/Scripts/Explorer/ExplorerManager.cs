@@ -8,6 +8,7 @@ public class ExplorerManager : ContentManagerBase, IManagerInitialize
 
     public ExplorerEventHandler eventHandler;
     public PlayerExplorerManager playerManager;
+    public ExplorerItemConsumeManager ItemConsumer;
 
     public static PlayerExplorerMovement PlayerMovement => Instance.playerManager.movement;
 

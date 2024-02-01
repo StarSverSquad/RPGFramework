@@ -9,7 +9,7 @@ using UnityEngine.Events;
 
 public class UISectionBase : MonoBehaviour, IManagerInitialize
 {
-
+    [Header("События")]
     public UnityEvent OnFocus;
     public UnityEvent OnLostFocus;
     [Space]
@@ -20,11 +20,17 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
     public UnityEvent OnCancel;
     public UnityEvent OnAccept;
     [Space]
-    public UISectionBase parent;
-    public UISectionBase child;
-    [Space]
+    [Header("Настройки")]
     public UIElementBase DefaultElement;
-    public UIElementBase CurrentElement;
+
+    private UISectionBase parent;
+    public UISectionBase Parent => parent;
+
+    private UISectionBase child;
+    public UISectionBase Child => child;
+
+    private UIElementBase currentElement;
+    public UIElementBase CurrentElement => currentElement;
 
     private Coroutine focusCoroutine = null;
     public bool IsHaveFocus => focusCoroutine != null;
@@ -37,9 +43,9 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
         if (isInitialized)
             return;
 
-        CurrentElement = DefaultElement;
+        currentElement = DefaultElement;
 
-        CurrentElement.Focus();
+        currentElement.Focus();
 
         isInitialized = true;
 
@@ -62,8 +68,8 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
         if (!isInitialized)
             return;
 
-        if (CurrentElement != null)
-            CurrentElement.Unfocus();
+        if (currentElement != null)
+            currentElement.Unfocus();
 
         if (child != null)
         {
@@ -91,8 +97,8 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
         if (!IsHaveFocus)
             focusCoroutine = StartCoroutine(SectionCoroutine());
 
-        if (CurrentElement != null)
-            CurrentElement.Focus();
+        if (currentElement != null)
+            currentElement.Focus();
 
         OnFocus.Invoke();
     }
@@ -110,11 +116,11 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
 
     public virtual void ChangeElementFocus(UIElementBase element)
     {
-        CurrentElement.Unfocus();
+        currentElement.Unfocus();
 
-        CurrentElement = element;
+        currentElement = element;
 
-        CurrentElement.Focus();
+        currentElement.Focus();
     }
 
     public virtual bool CancelCanExecute() => Input.GetKeyDown(GameManager.Instance.GameConfig.Cancel);
@@ -136,7 +142,7 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
                 OnCancel.Invoke();
             }
 
-            if (CurrentElement != null)
+            if (currentElement != null)
             {
                 if (AcceptCanExecute())
                 {
@@ -144,38 +150,38 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
 
                     OnAccept.Invoke();
 
-                    CurrentElement.OnAction.Invoke();
+                    currentElement.OnAction.Invoke();
                 }
 
-                if (TransmitionUp() && CurrentElement.UpTransmition != null)
+                if (TransmitionUp() && currentElement.UpTransmition != null)
                 {
                     yield return null;
 
-                    ChangeElementFocus(CurrentElement.UpTransmition);
+                    ChangeElementFocus(currentElement.UpTransmition);
 
                     OnChange.Invoke();
                 }
-                else if (TransmitionDown() && CurrentElement.DownTransmition != null)
+                else if (TransmitionDown() && currentElement.DownTransmition != null)
                 {
                     yield return null;
 
-                    ChangeElementFocus(CurrentElement.DownTransmition);
+                    ChangeElementFocus(currentElement.DownTransmition);
 
                     OnChange.Invoke();
                 }
-                else if (TransmitionLeft() && CurrentElement.LeftTransmition != null)
+                else if (TransmitionLeft() && currentElement.LeftTransmition != null)
                 {
                     yield return null;
 
-                    ChangeElementFocus(CurrentElement.LeftTransmition);
+                    ChangeElementFocus(currentElement.LeftTransmition);
 
                     OnChange.Invoke();
                 }
-                else if (TransmitionRight() && CurrentElement.RightTransmition != null)
+                else if (TransmitionRight() && currentElement.RightTransmition != null)
                 {
                     yield return null;
 
-                    ChangeElementFocus(CurrentElement.RightTransmition);
+                    ChangeElementFocus(currentElement.RightTransmition);
 
                     OnChange.Invoke();
                 }

@@ -11,6 +11,8 @@ public class SaveLoadManager : MonoBehaviour
 {
     private readonly DirectoryInfo PlaceForSaves = new DirectoryInfo(Application.dataPath + @"\Saves");
 
+    public LocationInfo NewGameLocation;
+
     public void Start()
     {
         if (!PlaceForSaves.Exists) PlaceForSaves.Create();
@@ -68,6 +70,7 @@ public class SaveLoadManager : MonoBehaviour
         GameManager.Instance.GameData.BoolValues = CellForSave.BoolValues;
         GameManager.Instance.GameData.StringValues = CellForSave.StringValues;
 
+        GameManager.Instance.character.Dispose();
         foreach (var person in CellForSave.SavedCharacters)
             LoadCharacter(person);
 
@@ -83,6 +86,17 @@ public class SaveLoadManager : MonoBehaviour
         GameManager.Instance.locationManager.ChangeLocation(location, CellForSave.PlayerPosition, CellForSave.PlayerDirection);
     }
 
+    /// <summary>
+    /// Просто начинает новую игру.
+    /// </summary>
+    public void NewGame()
+    {
+        GameManager.Instance.character.Dispose();
+        GameManager.Instance.inventory.Dispose();
+
+        GameManager.Instance.locationManager.ChangeLocation(NewGameLocation);
+    }
+
     public List<CharacterSaveInfo> SaveCharacters(List<RPGCharacter> RegisteredCharacters, List<RPGCharacter> Characters)
     {
         List <CharacterSaveInfo> SavedCharacters = new List <CharacterSaveInfo>();
@@ -93,6 +107,7 @@ public class SaveLoadManager : MonoBehaviour
             {
                 Name = person.Name,
                 Heal = person.Heal,
+                Mana = person.Mana,
                 Level = person.Level,
                 Expirience = person.Expireance,
                 ExpirienceBorder = person.ExpireanceBorder,
@@ -123,8 +138,6 @@ public class SaveLoadManager : MonoBehaviour
     {
         RPGCharacter Glek = Instantiate(GameManager.Instance.GameData.Characters.FirstOrDefault(i => i.Name == SavedCharacter.Name));
 
-        Glek.Name = SavedCharacter.Name;
-        Glek.Heal = SavedCharacter.Heal;
         Glek.Level = SavedCharacter.Level;
         Glek.Expireance = SavedCharacter.Expirience;
         Glek.ExpireanceBorder = SavedCharacter.ExpirienceBorder;
@@ -156,5 +169,8 @@ public class SaveLoadManager : MonoBehaviour
             GameManager.Instance.character.AddCharacter(Glek);
         else 
             GameManager.Instance.character.RegisterCharacter(Glek);
+
+        GameManager.Instance.character.GetRegisteredCharacter(Glek).Heal = SavedCharacter.Heal;
+        GameManager.Instance.character.GetRegisteredCharacter(Glek).Mana = SavedCharacter.Mana;
     }
 }

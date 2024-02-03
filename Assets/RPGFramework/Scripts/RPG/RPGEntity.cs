@@ -6,11 +6,10 @@ using UnityEngine;
 
 public class RPGEntity : ScriptableObject
 {
+    public string Tag;
     public string Name;
-
     [Multiline(3)]
     public string Description;
-
     [Header("Настройки сущности")]
     public int DefaultHeal;
     public int DefaultMana;
@@ -97,6 +96,9 @@ public class RPGEntity : ScriptableObject
 
     #region [ДЛЯ СОСТОЯНИЙ]
 
+    /// <summary>
+    /// Добовляет состоаяние
+    /// </summary>
     public virtual void AddState(RPGEntityState state)
     {
         if (HasState(state))
@@ -112,7 +114,9 @@ public class RPGEntity : ScriptableObject
         OnStateAdded?.Invoke(state);
         OnStateChanged?.Invoke(state);
     }
-
+    /// <summary>
+    /// Удаляет состояние
+    /// </summary>
     public virtual void RemoveState(RPGEntityState state)
     {
         if (!HasState(state))
@@ -125,7 +129,9 @@ public class RPGEntity : ScriptableObject
         OnStateRemoved?.Invoke(state);
         OnStateChanged?.Invoke(state);
     }
-
+    /// <summary>
+    /// Удаляет все состояния
+    /// </summary>
     public virtual void RemoveAllStates()
     {
         stateInstances.Clear();
@@ -134,7 +140,9 @@ public class RPGEntity : ScriptableObject
 
         OnAllStatesChanged?.Invoke();
     }
-
+    /// <summary>
+    /// Удаляет только те состояния которые не могут существовать вне битвы
+    /// </summary>
     public virtual void RemoveNonBattleStates()
     {
         RPGEntityState[] states = States.Where(i => i.OnlyForBattle).ToArray();
@@ -144,7 +152,9 @@ public class RPGEntity : ScriptableObject
 
         UpdateStats();
     }
-
+    /// <summary>
+    /// Обнавляет выбранное состояние
+    /// </summary>
     public virtual void UpdateState(RPGEntityState state)
     {
         if (!HasState(state))
@@ -162,7 +172,9 @@ public class RPGEntity : ScriptableObject
         if (instance.TurnsLeft <= 0)
             RemoveState(state);
     }
-
+    /// <summary>
+    /// Обнавляет все состояния
+    /// </summary>
     public virtual void UpdateAllStates()
     {
         foreach (var state in States)
@@ -170,13 +182,24 @@ public class RPGEntity : ScriptableObject
 
         OnAllStatesChanged?.Invoke();
     }
-
-    public virtual bool HasState(RPGEntityState state) => States.Any(i => i.Name == state.Name);
-
-    public virtual RPGEntityStateInstance GetStateInstance(RPGEntityState state) => stateInstances.FirstOrDefault(i => i.Original.Name == state.Name);
+    /// <summary>
+    /// Проверяет наличие состояния
+    /// </summary>
+    public virtual bool HasState(RPGEntityState state) => States.Any(i => i.Tag == state.Tag);
+    /// <summary>
+    /// Создаёт экзмпляр состояния
+    /// </summary>
+    public virtual RPGEntityStateInstance GetStateInstance(RPGEntityState state) => stateInstances.FirstOrDefault(i => i.Original.Tag == state.Tag);
 
     #endregion
 
+    /// <summary>
+    /// Наносит урон сущности
+    /// </summary>
+    /// <param name="who">Кто наносит урон</param>
+    /// <param name="DamageModifier">Модификатор урона</param>
+    /// <param name="dontHurt">[Выстовлять только если нужен только расчет урона]</param>
+    /// <returns>Полученный урон</returns>
     public virtual int GiveDamage(RPGEntity who, float DamageModifier = 1, bool dontHurt = false)
     {
         int resultDamage = Mathf.RoundToInt(who.Damage * DamageModifier) - Mathf.RoundToInt(Defence * .5f);
@@ -191,6 +214,12 @@ public class RPGEntity : ScriptableObject
 
         return resultDamage;
     }
+    /// <summary>
+    /// Наносит урон сущности
+    /// </summary>
+    /// <param name="damage">Урон</param>
+    /// <param name="dontHurt">[Выстовлять только если нужен только расчет урона]</param>
+    /// <returns></returns>
     public virtual int GiveDamage(int damage, bool dontHurt = false)
     {
         int resultDamage = Mathf.RoundToInt(damage) - Mathf.RoundToInt(Defence * .5f);

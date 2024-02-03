@@ -20,11 +20,7 @@ public class FloatVarCondition : ConditionBase
     public override bool Invoke()
     {
         if (!GameManager.Instance.GameData.FloatValues.HaveKey(Var))
-        {
-            Debug.LogWarning($"FLOAT_VAR_CONDITION: Переменная {Var} не найдена");
-
             return false;
-        }
 
         return Operation switch
         {

@@ -37,13 +37,6 @@ public class AudioManager : MonoBehaviour
     private Coroutine fadeBGSCoroutine;
     private Coroutine fadeMECoroutine;
 
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F)) PauseBGM(0.2f);
-        else if (Input.GetKeyDown(KeyCode.D)) ResumeBGM();
-    }
-
     #region BGM
 
     public void PlayBGM(AudioClip clip, float volume = 1, float fadeTime = 0)

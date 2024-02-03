@@ -6,33 +6,35 @@ using UnityEngine;
 [Serializable]
 public class CharacterSaveInfo
 {
-    public string Name;
+    public string Tag;
 
     public int Heal;
     public int Mana;
+    public int Level;
+    public int Expirience;
+    public int ExpirienceBorder;
+
+    public bool InParty;
+    public int PositionInParty;
 
     public int DefaultHeal;
     public int DefaultMana;
-
     public int DefaultDamage;
-    public int DefaultDefance;
+    public int DefaultDefence;
     public int DefaultAgility;
 
-    public int Level;
-    public int Expireance;
-    public int ExpireanceBorder;
+    public List<string> Abilities;
+    public List<string> States;
 
-    public List<string> Abilitys;
-
-    public string WeaponName;
-    public string HeadName;
-    public string BodyName;
-    public string GlovesName;
-    public string BoodsName;
-    public string TalismanName;
+    public string WeaponTag;
+    public string HeadTag;
+    public string BodyTag;
+    public string ShieldTag;
+    public string TalismanTag;
 
     public CharacterSaveInfo()
     {
-        Abilitys = new List<string>();
+        Abilities = new List<string>();
+        States = new List<string>();
     }
 }

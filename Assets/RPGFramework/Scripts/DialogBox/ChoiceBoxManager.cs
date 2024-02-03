@@ -13,7 +13,7 @@ public class ChoiceBoxManager : ChoiceBase<string>
     /// Top, Center, Bottom
     /// </summary>
     [SerializeField]
-    private Vector2[] positions = new Vector2[3];
+    private RectTransform[] points = new RectTransform[3];
 
     [SerializeField]
     private float animationSpeed;
@@ -48,16 +48,13 @@ public class ChoiceBoxManager : ChoiceBase<string>
         switch (position)
         {
             case Position.Top:
-                choiceBox.anchoredPosition = positions[0];
+                choiceBox.anchoredPosition = points[0].anchoredPosition;
                 break;
             case Position.Bottom:
-                if (BattleManager.IsBattle)
-                    choiceBox.anchoredPosition = positions[2] + new Vector2(0, 0);
-                else
-                    choiceBox.anchoredPosition = positions[2];
+                choiceBox.anchoredPosition = points[2].anchoredPosition;
                 break;
             case Position.Center:
-                choiceBox.anchoredPosition = positions[1];
+                choiceBox.anchoredPosition = points[1].anchoredPosition;
                 break;
             default:
                 choiceBox.anchoredPosition = Vector2.zero;
@@ -69,13 +66,13 @@ public class ChoiceBoxManager : ChoiceBase<string>
         switch (position)
         {
             case Position.Top:
-                choiceBox.anchoredPosition = positions[0];
+                choiceBox.anchoredPosition = points[0].anchoredPosition;
                 break;
             case Position.Bottom:
-                choiceBox.anchoredPosition = positions[2];
+                choiceBox.anchoredPosition = points[2].anchoredPosition;
                 break;
             case Position.Center:
-                choiceBox.anchoredPosition = positions[1];
+                choiceBox.anchoredPosition = points[1].anchoredPosition;
                 break;
             case Position.Custom:
                 choiceBox.anchoredPosition = cpos;

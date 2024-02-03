@@ -4,10 +4,6 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
-using static UnityEditor.VersionControl.Asset;
-using static UnityEngine.GraphicsBuffer;
-using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class ChoiceSection_Demo : UISectionBase
 {
@@ -53,7 +49,7 @@ public class ChoiceSection_Demo : UISectionBase
 
     public void InitializeWearable()
     {
-        Items = GameManager.Instance.inventory.GetWerables().Select(i => i.Name).ToList();
+        Items = GameManager.Instance.inventory.GetWerables().Select(i => i.Tag).ToList();
 
         startIndex = 0;
         currentElementId = 0;
@@ -65,7 +61,7 @@ public class ChoiceSection_Demo : UISectionBase
 
     public void InitializeCollectables()
     {
-        Items = GameManager.Instance.inventory.Slots.Select(i => i.Item.Name).ToList();
+        Items = GameManager.Instance.inventory.Slots.Select(i => i.Item.Tag).ToList();
 
         startIndex = 0;
         currentElementId = 0;
@@ -95,7 +91,7 @@ public class ChoiceSection_Demo : UISectionBase
             InventorySlot slot = GameManager.Instance.inventory.GetSlotByItemName(Items[i]);
 
             Elements[elementIndex].GetComponentInChildren<Image>().sprite = slot.Item.Icon;
-            Elements[elementIndex].GetComponentInChildren<TextMeshProUGUI>().text = slot.Item.Name + (slot.Count > 1 ? $" {slot.Count}x" : "");
+            Elements[elementIndex].GetComponentInChildren<TextMeshProUGUI>().text = slot.Item.Tag + (slot.Count > 1 ? $" {slot.Count}x" : "");
 
             Elements[elementIndex].UpTransmition = elementIndex != 0 ? Elements[elementIndex - 1] : null;
             Elements[elementIndex].DownTransmition = elementIndex != count - 1 ? Elements[elementIndex + 1] : null;

@@ -158,6 +158,7 @@ public class GlobalLocationManager : MonoBehaviour
         }
 
         CurrentLocation = message.Location;
+
         OnLocationChanged?.Invoke(message.Location);
 
         GameManager.Instance.loadingScreen.DeactivatePart1();

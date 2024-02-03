@@ -6,6 +6,7 @@ public class ExplorerEventHandler : MonoBehaviour
 {
     [SerializeField]
     private GraphEvent CurrentEvent;
+    public GraphEvent HandledEvent => CurrentEvent;
 
     public bool EventRuning => CurrentEvent != null;
 
@@ -23,6 +24,16 @@ public class ExplorerEventHandler : MonoBehaviour
             CurrentEvent = e;
 
             e.OnEnd += E_OnEnd;
+        }
+    }
+
+    public void ForceUnhandle()
+    {
+        if (EventRuning)
+        {
+            CurrentEvent.OnEnd -= E_OnEnd;
+
+            CurrentEvent = null;
         }
     }
 

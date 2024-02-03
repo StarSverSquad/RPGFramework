@@ -8,7 +8,9 @@ public class RPGEntityState : ScriptableObject
 {
     public GraphEvent Event;
 
+    public string Tag;
     public string Name;
+
     public Color Color;
 
     public Sprite Icon;

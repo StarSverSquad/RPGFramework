@@ -55,7 +55,7 @@ public class GlobalCharacterManager : MonoBehaviour, IManagerInitialize, IDispos
 
     public bool CharacterIsRegisted(RPGCharacter character)
     {
-        return registredCharacters.Any(i => i.Name == character.Name);
+        return registredCharacters.Any(i => i.Tag == character.Tag);
     }
 
     public RPGCharacter GetRegisteredCharacter(RPGCharacter character)
@@ -63,7 +63,7 @@ public class GlobalCharacterManager : MonoBehaviour, IManagerInitialize, IDispos
         if (!CharacterIsRegisted(character))
             RegisterCharacter(character);
 
-        return registredCharacters.FirstOrDefault(i => i.Name == character.Name);
+        return registredCharacters.FirstOrDefault(i => i.Tag == character.Tag);
     }
 
     public void Dispose()

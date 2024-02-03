@@ -23,6 +23,7 @@ public class RPGEnemySquad : ScriptableObject
         public int CountRange;
     }
 
+    public string Tag;
     public string Name;
 
     public List<EnemySlot> Enemies = new List<EnemySlot>();

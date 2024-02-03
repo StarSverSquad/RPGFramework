@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameData
+public class GameData : IDisposable
 {
     public GameManager Manager;
 
@@ -24,14 +25,33 @@ public class GameData
     {
         Manager = manager;
 
-        IntValues = Manager.GameConfig.IntValues;
-        FloatValues = Manager.GameConfig.FloatValues;
-        BoolValues = Manager.GameConfig.BoolValues;
-        StringValues = Manager.GameConfig.StringValues;
+        UpdateData();
+    }
+
+    private void UpdateData()
+    {
+        IntValues = new CustomDictionary<int>();
+        FloatValues = new CustomDictionary<float>();
+        BoolValues = new CustomDictionary<bool>();
+        StringValues = new CustomDictionary<string>();
+
+        foreach (var data in Manager.GameConfig.IntValues.data)
+            IntValues.Add(data.Key, data.Value);
+        foreach (var data in Manager.GameConfig.FloatValues.data)
+            FloatValues.Add(data.Key, data.Value);
+        foreach (var data in Manager.GameConfig.BoolValues.data)
+            BoolValues.Add(data.Key, data.Value);
+        foreach (var data in Manager.GameConfig.StringValues.data)
+            StringValues.Add(data.Key, data.Value);
 
         Characters = Resources.LoadAll<RPGCharacter>("Characters");
         States = Resources.LoadAll<RPGEntityState>("EntityStates");
         Collectables = Resources.LoadAll<RPGCollectable>("Items");
         Abilities = Resources.LoadAll<RPGAbility>("Abilities");
+    }
+
+    public void Dispose()
+    {
+        UpdateData();
     }
 }

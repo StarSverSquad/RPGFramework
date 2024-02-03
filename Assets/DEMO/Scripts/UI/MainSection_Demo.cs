@@ -49,7 +49,7 @@ public class MainSection_Demo : UISectionBase
 
         CharacterIcon.sprite = character.Icon;
         CharacterClass.text = character.Class;
-        CharacterName.text = character.Name;
+        CharacterName.text = character.Tag;
         CharacterLevel.text = $"Статус {character.Level}";
 
         Dmg.text = $"Атака: {character.Damage}";
@@ -58,27 +58,27 @@ public class MainSection_Demo : UISectionBase
         Luck.text = $"Удача: {character.Luck}";
 
         if (character.WeaponSlot != null)
-            Weapon.text = $"Оружие: {character.WeaponSlot.Name}";
+            Weapon.text = $"Оружие: {character.WeaponSlot.Tag}";
         else
             Weapon.text = $"Оружие: ПУСТО";
 
         if (character.HeadSlot != null)
-            Head.text = $"Голова: {character.HeadSlot.Name}";
+            Head.text = $"Голова: {character.HeadSlot.Tag}";
         else
             Head.text = $"Голова: ПУСТО";
 
         if (character.BodySlot != null)
-            Body.text = $"Тело: {character.BodySlot.Name}";
+            Body.text = $"Тело: {character.BodySlot.Tag}";
         else
             Body.text = $"Тело: ПУСТО";
 
         if (character.ShieldSlot != null)
-            Shield.text = $"Щит: {character.ShieldSlot.Name}";
+            Shield.text = $"Щит: {character.ShieldSlot.Tag}";
         else
             Shield.text = $"Щит: ПУСТО";
 
         if (character.TalismanSlot != null)
-            Talisman.text = $"Талисман: {character.TalismanSlot.Name}";
+            Talisman.text = $"Талисман: {character.TalismanSlot.Tag}";
         else
             Talisman.text = $"Талисман: ПУСТО";
     }

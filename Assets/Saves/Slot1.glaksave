@@ -10,81 +10,43 @@
     "BoolValues": {
         "data": [
             {
-                "Key": "ХапанулХапачку?",
+                "Key": "DimasHomeCatscene",
                 "Value": true
             }
         ]
     },
     "StringValues": {
-        "data": [
-            {
-                "Key": "Имя",
-                "Value": "Драчила"
-            }
-        ]
+        "data": []
     },
     "InventoryItems": {
-        "data": [
-            {
-                "Key": "item 0",
-                "Value": 1
-            },
-            {
-                "Key": "item1",
-                "Value": 1
-            },
-            {
-                "Key": "item2",
-                "Value": 1
-            },
-            {
-                "Key": "item3",
-                "Value": 1
-            },
-            {
-                "Key": "item4",
-                "Value": 1
-            },
-            {
-                "Key": "item5",
-                "Value": 1
-            },
-            {
-                "Key": "item6",
-                "Value": 1
-            },
-            {
-                "Key": "Тестовое событие",
-                "Value": 1
-            }
-        ]
+        "data": []
     },
     "PlayerPosition": {
-        "x": -1.6534837484359742,
-        "y": 1.0971300601959229
+        "x": -0.24000194668769837,
+        "y": 1.130000352859497
     },
-    "PlayerDirection": 4,
+    "PlayerDirection": 3,
     "SavedCharacters": [
         {
-            "Name": "Димас",
-            "Heal": 256,
-            "Mana": 147,
-            "Level": 4,
+            "Name": "Димейн",
+            "Heal": 100,
+            "Mana": 50,
+            "Level": 1,
             "Expirience": 0,
-            "ExpirienceBorder": 111,
+            "ExpirienceBorder": 20,
             "InParty": true,
             "PositionInParty": 0,
-            "DefaultHeal": 256,
-            "DefaultMana": 147,
-            "DefaultDamage": 37,
-            "DefaultDefence": 14,
-            "DefaultAgility": 20,
+            "DefaultHeal": 100,
+            "DefaultMana": 50,
+            "DefaultDamage": 10,
+            "DefaultDefence": 10,
+            "DefaultAgility": 10,
             "Abilities": [],
             "States": [],
-            "WeaponName": "Заточка зека",
+            "WeaponName": "",
             "HeadName": "",
             "BodyName": "",
-            "ShieldName": "Щит щиглов",
+            "ShieldName": "",
             "TalismanName": ""
         }
     ]

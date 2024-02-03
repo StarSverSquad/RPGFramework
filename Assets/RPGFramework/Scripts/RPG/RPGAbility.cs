@@ -10,6 +10,7 @@ public class RPGAbility : ScriptableObject
         AllTeam, Teammate, AllEnemys, Enemy, Any, All
     }
 
+    public string Tag;
     public string Name;
     [Multiline()]
     public string Destription;

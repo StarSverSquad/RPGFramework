@@ -16,8 +16,9 @@ public class RPGCollectable : ScriptableObject
         Any, Noway, Battle, Explorer
     }
 
+    public string Tag;
     public string Name;
-
+    [Multiline(2)]
     public string Description;
 
     public Rareness Rare;

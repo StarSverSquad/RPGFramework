@@ -37,7 +37,7 @@ public class InventoryManager : MonoBehaviour, IEnumerable<InventorySlot>, IDisp
     {
         foreach (InventorySlot slot in slots)
         {
-            if (slot.Item.Name == name)
+            if (slot.Item.Tag == name)
                 return slot;
         }
 
@@ -105,7 +105,7 @@ public class InventoryManager : MonoBehaviour, IEnumerable<InventorySlot>, IDisp
     /// <param name="value">Значение</param>
     public void AddToItemCount(RPGCollectable item, int value)
     {
-        InventorySlot slot = this[item.Name];
+        InventorySlot slot = this[item.Tag];
 
         if (slot == null && value <= 0)
         {
@@ -118,7 +118,7 @@ public class InventoryManager : MonoBehaviour, IEnumerable<InventorySlot>, IDisp
         slot.Count += value;
 
         if (slot.Count <= 0)
-            DeleteSlotByItemName(item.Name);
+            DeleteSlotByItemName(item.Tag);
     }
     /// <summary>
     /// Устанавлиет кол-во предметов

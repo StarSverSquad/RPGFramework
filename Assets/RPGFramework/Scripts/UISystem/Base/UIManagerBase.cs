@@ -7,7 +7,6 @@ using UnityEngine;
 
 public class UIManagerBase : ContentManagerBase, IManagerInitialize
 {
-    [SerializeField]
     private UIPageBase currentPage = null;
     public UIPageBase CurrentPage => currentPage;
 

@@ -20,11 +20,7 @@ public class IntVarCondition : ConditionBase
     public override bool Invoke()
     {
         if (!GameManager.Instance.GameData.IntValues.HaveKey(Var))
-        {
-            Debug.LogWarning($"INT_VAR_CONDITION: Переменная {Var} не найдена");
-
             return false;
-        }
 
         return Operation switch
         {

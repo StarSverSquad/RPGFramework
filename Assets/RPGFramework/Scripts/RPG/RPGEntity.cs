@@ -6,11 +6,10 @@ using UnityEngine;
 
 public class RPGEntity : ScriptableObject
 {
+    public string Tag;
     public string Name;
-
     [Multiline(3)]
     public string Description;
-
     [Header("Настройки сущности")]
     public int DefaultHeal;
     public int DefaultMana;
@@ -186,11 +185,11 @@ public class RPGEntity : ScriptableObject
     /// <summary>
     /// Проверяет наличие состояния
     /// </summary>
-    public virtual bool HasState(RPGEntityState state) => States.Any(i => i.Name == state.Name);
+    public virtual bool HasState(RPGEntityState state) => States.Any(i => i.Tag == state.Tag);
     /// <summary>
     /// Создаёт экзмпляр состояния
     /// </summary>
-    public virtual RPGEntityStateInstance GetStateInstance(RPGEntityState state) => stateInstances.FirstOrDefault(i => i.Original.Name == state.Name);
+    public virtual RPGEntityStateInstance GetStateInstance(RPGEntityState state) => stateInstances.FirstOrDefault(i => i.Original.Tag == state.Tag);
 
     #endregion
 

@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class UIElementBase : MonoBehaviour
 {
-    [Header("Actions")]
+    [Header("События")]
     public UnityEvent OnFocus;
     public UnityEvent OnLostFocus;
     public UnityEvent OnAction;
-    [Header("Transmitions")]
+    [Header("Переходы")]
     public UIElementBase UpTransmition;
     public UIElementBase DownTransmition;
     public UIElementBase LeftTransmition;

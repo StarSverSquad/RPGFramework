@@ -26,12 +26,13 @@ public abstract class TextWriterBase : MonoBehaviour
 
     public bool IsWriting => writeCoroutine != null;
 
-    [SerializeField]
     private bool isSkiped = false;
     public bool IsSkiped => isSkiped;
 
-    [SerializeField]
     private bool isPause = false;
+    public bool IsPause => isPause;
+
+    private string previewText = string.Empty;
 
     private Coroutine writeCoroutine;
 
@@ -168,6 +169,8 @@ public abstract class TextWriterBase : MonoBehaviour
         if (message.clear)
             textMeshPro.text = string.Empty;
 
+        previewText = textMeshPro.text;
+
         isSkiped = false;
 
         float letterDelay = 1f / (message.speed <= 0 ? defaultTextSpeed : message.speed);
@@ -204,7 +207,7 @@ public abstract class TextWriterBase : MonoBehaviour
 
             if (isSkiped)
             {
-                textMeshPro.text = outcomeText.Replace(ActionPoint.ToString(), string.Empty);
+                textMeshPro.text = previewText + outcomeText.Replace(ActionPoint.ToString(), string.Empty);
                 break;
             }
 

@@ -2,12 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.VersionControl.Asset;
 
 [Serializable]
 public class CharacterSaveInfo
 {
-    public string Name;
+    public string Tag;
 
     public int Heal;
     public int Mana;
@@ -27,11 +26,11 @@ public class CharacterSaveInfo
     public List<string> Abilities;
     public List<string> States;
 
-    public string WeaponName;
-    public string HeadName;
-    public string BodyName;
-    public string ShieldName;
-    public string TalismanName;
+    public string WeaponTag;
+    public string HeadTag;
+    public string BodyTag;
+    public string ShieldTag;
+    public string TalismanTag;
 
     public CharacterSaveInfo()
     {

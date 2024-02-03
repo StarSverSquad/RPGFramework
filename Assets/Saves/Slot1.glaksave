@@ -10,58 +10,38 @@
     "BoolValues": {
         "data": [
             {
-                "Key": "ХапанулХапачку?",
+                "Key": "DimasHomeCatscene",
                 "Value": true
             }
         ]
     },
     "StringValues": {
-        "data": [
-            {
-                "Key": "Имя",
-                "Value": "Драчила"
-            }
-        ]
+        "data": []
     },
     "InventoryItems": {
-        "data": [
-            {
-                "Key": "item 0",
-                "Value": 3
-            },
-            {
-                "Key": "Пиво 0.5",
-                "Value": 6
-            },
-            {
-                "Key": "Тестовое событие",
-                "Value": 9
-            }
-        ]
+        "data": []
     },
     "PlayerPosition": {
-        "x": 0.4206099510192871,
-        "y": 0.627131998538971
+        "x": -0.24000194668769837,
+        "y": 1.130000352859497
     },
-    "PlayerDirection": 2,
+    "PlayerDirection": 3,
     "SavedCharacters": [
         {
-            "Name": "Никитос",
-            "Heal": 75,
-            "Mana": 0,
+            "Name": "Димейн",
+            "Heal": 100,
+            "Mana": 50,
             "Level": 1,
             "Expirience": 0,
-            "ExpirienceBorder": 35,
+            "ExpirienceBorder": 20,
             "InParty": true,
             "PositionInParty": 0,
-            "DefaultHeal": 75,
+            "DefaultHeal": 100,
             "DefaultMana": 50,
-            "DefaultDamage": 25,
-            "DefaultDefence": 5,
-            "DefaultAgility": 5,
-            "Abilities": [
-                "Ударить сильно"
-            ],
+            "DefaultDamage": 10,
+            "DefaultDefence": 10,
+            "DefaultAgility": 10,
+            "Abilities": [],
             "States": [],
             "WeaponName": "",
             "HeadName": "",

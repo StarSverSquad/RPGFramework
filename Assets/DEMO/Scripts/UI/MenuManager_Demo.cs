@@ -19,13 +19,6 @@ public class MenuManager_Demo : UIManagerBase
         SetPage(MainPage);
     }
 
-    /*
-     * 
-     * Эти методы я создал для отлдки, можешь их изменить и тд.
-     * Они привызаны к кнопкам на сцене.
-     * 
-     */
-
     public void Exit()
     {
         Application.Quit();
@@ -33,11 +26,11 @@ public class MenuManager_Demo : UIManagerBase
 
     public void NewGame()
     {
-        GameManager.Instance.saveLoad.NewGame();
+        GameManager.Instance.NewGame();
     }
 
     public void LoadGame()
     {
-        GameManager.Instance.saveLoad.Load(1);
+        GameManager.Instance.LoadGame(1);
     }
 }

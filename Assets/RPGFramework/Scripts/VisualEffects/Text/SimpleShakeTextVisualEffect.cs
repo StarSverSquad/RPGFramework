@@ -1,11 +1,17 @@
-﻿using System;
+﻿using DG.Tweening;
+using DG.Tweening.Core;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-internal class SimpleShakeTextVisualEffect : TextVisualEffectBase
+public class SimpleShakeTextVisualEffect : TextVisualEffectBase
 {
+    public SimpleShakeTextVisualEffect(TextMeshProUGUI textMesh, MonoBehaviour listener) : base(textMesh, listener)
+    {
+    }
+
     protected override IEnumerator EffectCoroutine(TextMeshProUGUI textMesh)
     {
         while (true)
@@ -19,7 +25,6 @@ internal class SimpleShakeTextVisualEffect : TextVisualEffectBase
                 yield return new WaitForFixedUpdate();
                 continue;
             }
-                
 
             for (int i = 0; i < textInfo.characterCount; i++)
             {
@@ -55,7 +60,7 @@ internal class SimpleShakeTextVisualEffect : TextVisualEffectBase
                 textMesh.UpdateGeometry(meshInfo.mesh, i);
             }
 
-            yield return new WaitForSeconds(0.04f);
+            yield return new WaitForSeconds(0.05f);
         }
     }
 }

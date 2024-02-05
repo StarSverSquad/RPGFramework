@@ -229,17 +229,17 @@ public class BattlePipeline : MonoBehaviour
 
     private IEnumerator BattleEnter()
     {
-        foreach (var item in GameManager.Instance.character.Characters)
+        foreach (var item in GameManager.Instance.Character.Characters)
         {
             if (item.ParticipateInBattle)
                 Data.Characters.Add(new BattleCharacterInfo(item));
         }
 
         if (Data.BattleInfo.StopGlobalMusic)
-            GameManager.Instance.gameAudio.PauseBGM(0.2f);
+            GameManager.Instance.GameAudio.PauseBGM(0.2f);
 
         if (Data.BattleInfo.StopGlobalMusic)
-            GameManager.Instance.gameAudio.PauseBGS();
+            GameManager.Instance.GameAudio.PauseBGS();
 
         VisualTransmition.InitializeCustomEffect(Data.BattleInfo.BattleEnterEffect);
 
@@ -297,10 +297,10 @@ public class BattlePipeline : MonoBehaviour
 
 
         if (Data.BattleInfo.StopGlobalMusic)
-            GameManager.Instance.gameAudio.ResumeBGM();
+            GameManager.Instance.GameAudio.ResumeBGM();
 
         if (Data.BattleInfo.StopGlobalMusic)
-            GameManager.Instance.gameAudio.ResumeBGS();
+            GameManager.Instance.GameAudio.ResumeBGS();
 
         Data.Dispose();
 
@@ -654,7 +654,7 @@ public class BattlePipeline : MonoBehaviour
                     break;
                 // Выбор пердмета
                 case ChoiceAction.Item:
-                    if (GameManager.Instance.inventory.Slots.Length != 0)
+                    if (GameManager.Instance.Inventory.Slots.Length != 0)
                     {
                         BattleManager.Instance.choice.InvokeChoiceItem();
 
@@ -1135,7 +1135,7 @@ public class BattlePipeline : MonoBehaviour
         yield return new WaitWhile(() => CommonManager.Instance.MessageBox.IsWriting);
 
         if (!Data.BattleInfo.CanLose)
-            SceneManager.LoadScene("GameOver");
+            SceneManager.LoadScene(Data.GameOverSceneName);
     }
 
     private IEnumerator Win()
@@ -1187,7 +1187,7 @@ public class BattlePipeline : MonoBehaviour
 
             int count = Mathf.RoundToInt(Random.Range(drop.Count - drop.CountRange, drop.Count + drop.CountRange));
 
-            GameManager.Instance.inventory.AddToItemCount(drop.item, count);
+            GameManager.Instance.Inventory.AddToItemCount(drop.item, count);
 
             string countText = count > 0 ? $"{count}x" : "";
 

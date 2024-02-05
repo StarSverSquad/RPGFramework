@@ -281,7 +281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05ae4fbe904808445ac2bae322f80f3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnFocus:
+  OnFocusEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6420346212878385147}
@@ -296,7 +296,7 @@ MonoBehaviour:
           m_StringArgument: HOVER
           m_BoolArgument: 0
         m_CallState: 2
-  OnLostFocus:
+  OnLostFocusEvent:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6420346212878385147}
@@ -311,7 +311,7 @@ MonoBehaviour:
           m_StringArgument: IDLE
           m_BoolArgument: 0
         m_CallState: 2
-  OnAction:
+  OnActionEvent:
     m_PersistentCalls:
       m_Calls: []
   UpTransmition: {fileID: 0}

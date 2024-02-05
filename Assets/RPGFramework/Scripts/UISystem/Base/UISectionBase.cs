@@ -9,6 +9,11 @@ using UnityEngine.Events;
 
 public class UISectionBase : MonoBehaviour, IManagerInitialize
 {
+    public enum TransmitionDirection
+    {
+        Up, Down, Left, Right
+    }
+
     [Header("События")]
     public UnityEvent OnFocus;
     public UnityEvent OnLostFocus;
@@ -108,6 +113,9 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
         {
             StopCoroutine(focusCoroutine);
 
+            if (currentElement != null)
+                currentElement.Unfocus();
+
             focusCoroutine = null;
         }          
 
@@ -144,42 +152,52 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
 
             if (currentElement != null)
             {
-                if (AcceptCanExecute())
+                if (AcceptCanExecute() && currentElement.CanSubmit())
                 {
                     yield return null;
+
+                    currentElement.OnSubmit();
 
                     OnAccept.Invoke();
 
-                    currentElement.OnAction.Invoke();
+                    currentElement.OnActionEvent.Invoke();
                 }
 
-                if (TransmitionUp() && currentElement.UpTransmition != null)
+                if (TransmitionUp() && currentElement.UpTransmition != null && currentElement.CanTransmition(TransmitionDirection.Up))
                 {
                     yield return null;
+
+                    currentElement.OnTransmition(TransmitionDirection.Up);
 
                     ChangeElementFocus(currentElement.UpTransmition);
 
                     OnChange.Invoke();
                 }
-                else if (TransmitionDown() && currentElement.DownTransmition != null)
+                else if (TransmitionDown() && currentElement.DownTransmition != null && currentElement.CanTransmition(TransmitionDirection.Down))
                 {
                     yield return null;
+
+                    currentElement.OnTransmition(TransmitionDirection.Down);
 
                     ChangeElementFocus(currentElement.DownTransmition);
 
                     OnChange.Invoke();
                 }
-                else if (TransmitionLeft() && currentElement.LeftTransmition != null)
+                else if (TransmitionLeft() && currentElement.LeftTransmition != null && currentElement.CanTransmition(TransmitionDirection.Left))
                 {
                     yield return null;
+
+                    currentElement.OnTransmition(TransmitionDirection.Left);
 
                     ChangeElementFocus(currentElement.LeftTransmition);
 
                     OnChange.Invoke();
                 }
-                else if (TransmitionRight() && currentElement.RightTransmition != null)
+                else if (TransmitionRight() && currentElement.RightTransmition != null && currentElement.CanTransmition(TransmitionDirection.Right))
                 {
                     yield return null;
+
+                    currentElement.OnTransmition(TransmitionDirection.Right);
 
                     ChangeElementFocus(currentElement.RightTransmition);
 

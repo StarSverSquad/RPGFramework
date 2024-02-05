@@ -4,10 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class InventoryManager : MonoBehaviour, IEnumerable<InventorySlot>, IDisposable
+public class InventoryManager : IEnumerable<InventorySlot>, IDisposable
 {
-    private List<InventorySlot> slots = new List<InventorySlot>();
+    private List<InventorySlot> slots;
     public InventorySlot[] Slots => slots.ToArray();
+
+    public InventoryManager()
+    {
+        slots = new List<InventorySlot>();
+    }
 
     public InventorySlot this[string itemName]
     {

@@ -29,6 +29,8 @@ public class BattleData : MonoBehaviour, IDisposable
 
     public int AdditionConcentrationOnDefence = 10;
 
+    public string GameOverSceneName = "GameOver";
+
     [Header("Звуки")]
     public AudioClip Hover;
     public AudioClip Sellect;

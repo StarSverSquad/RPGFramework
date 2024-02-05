@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db90801ee6a72ee46bdd78b491030146, type: 3}
+  m_Name: KeparickSquad
+  m_EditorClassIdentifier: 
+  Tag: KeparickSquad
+  Name: "\u0417\u043B\u0430\u044F \u043A\u0435\u043F\u043A\u0430"
+  Enemies:
+  - ScreenPosition: {x: 0, y: 1}
+    Enemy: {fileID: 11400000, guid: bb46a92ce1944a94d9bd0b4753232f9c, type: 2}
+  MoneyConstDrop: 0
+  Money: 10
+  ExpConstDrop: 1
+  Expireance: 25
+  EnemiesDrop:
+  - item: {fileID: 11400000, guid: f811eac1c59ab444a924ef27c72eed33, type: 2}
+    Chance: 1
+    Count: 1
+    CountRange: 0

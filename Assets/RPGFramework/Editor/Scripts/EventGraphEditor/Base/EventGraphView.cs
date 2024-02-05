@@ -146,6 +146,7 @@ public class EventGraphView : GraphView
         evt.menu.AppendAction("События исследования/Запуск самопис. события", i => CreateNode(new InvokeCustomAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Настройка солнечного света", i => CreateNode(new SetupSunLightAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Смена локации", i => CreateNode(new LocationTrasmitionAction(), mousePosition));
+        evt.menu.AppendAction("События исследования/Сохранение игры", i => CreateNode(new SaveAction(), mousePosition));
 
         evt.menu.AppendAction("События битвы/Битва", i => CreateNode(new InvokeBattleAction(), mousePosition));
 

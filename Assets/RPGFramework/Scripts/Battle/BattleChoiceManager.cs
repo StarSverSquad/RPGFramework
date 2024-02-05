@@ -287,7 +287,7 @@ public class BattleChoiceManager : MonoBehaviour
     {
         List<IndependenceChoiceUI.ElementInfo> choices = new List<IndependenceChoiceUI.ElementInfo>();
 
-        foreach (var slot in GameManager.Instance.inventory.Slots)
+        foreach (var slot in GameManager.Instance.Inventory.Slots)
         {
             if (slot.Item.Usage == RPGCollectable.Usability.Noway ||
                 slot.Item.Usage == RPGCollectable.Usability.Explorer)

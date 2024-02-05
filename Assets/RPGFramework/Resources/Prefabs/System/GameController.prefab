@@ -795,11 +795,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6364472434461010477}
   - component: {fileID: 5394854492906961272}
-  - component: {fileID: 4728295912423736072}
   - component: {fileID: 1506467258918832225}
-  - component: {fileID: 4246946872983306619}
   - component: {fileID: 6071720232034816392}
-  - component: {fileID: 5048356505336248193}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -836,25 +833,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   container: {fileID: 1065688202190497533}
-  inventory: {fileID: 4728295912423736072}
-  character: {fileID: 4246946872983306619}
-  locationManager: {fileID: 1506467258918832225}
-  gameAudio: {fileID: 3070494362159572897}
-  loadingScreen: {fileID: 7824229713666495633}
-  sceneLoader: {fileID: 6071720232034816392}
-  saveLoad: {fileID: 5048356505336248193}
---- !u!114 &4728295912423736072
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5511591142689386751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab77b221cdf84934ba82fdfee77f035b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  LocationManager: {fileID: 1506467258918832225}
+  GameAudio: {fileID: 3070494362159572897}
+  LoadingScreen: {fileID: 7824229713666495633}
+  SceneLoader: {fileID: 6071720232034816392}
+  newGameLocation: {fileID: 0}
 --- !u!114 &1506467258918832225
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -868,18 +851,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   CurrentLocation: {fileID: 0}
---- !u!114 &4246946872983306619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5511591142689386751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01de55bd4a82a8649a3a9a09c8d0877d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6071720232034816392
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -893,18 +864,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isLoading: 0
---- !u!114 &5048356505336248193
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5511591142689386751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 735ae11fe69fbaf49a0131ba03c446a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &5611195430967409547
 GameObject:
   m_ObjectHideFlags: 0

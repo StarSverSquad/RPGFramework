@@ -24,7 +24,7 @@ public class ExplorerItemConsumeManager : MonoBehaviour
     private IEnumerator ConsumeCoroutine(RPGConsumed item, RPGEntity who, RPGEntity target)
     {
         if (item.Usage == RPGCollectable.Usability.Battle || item.Usage == RPGCollectable.Usability.Noway
-            || !GameManager.Instance.inventory.HasItemSlot(item))
+            || !GameManager.Instance.Inventory.HasItemSlot(item))
         {
             consumeCoroutine = null;
 
@@ -38,7 +38,7 @@ public class ExplorerItemConsumeManager : MonoBehaviour
 
         who.Heal = who.Heal == 0 ? 1 : who.Heal;
 
-        GameManager.Instance.inventory.AddToItemCount(item, -1);
+        GameManager.Instance.Inventory.AddToItemCount(item, -1);
 
         consumeCoroutine = null;
     }

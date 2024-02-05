@@ -145,8 +145,7 @@ GameObject:
   - component: {fileID: 7803130491144709548}
   - component: {fileID: 4104447813070047853}
   - component: {fileID: 1662305894183103340}
-  - component: {fileID: 6727328914271049701}
-  - component: {fileID: 5547344593540898094}
+  - component: {fileID: 4781730653677710944}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -212,7 +211,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.2
---- !u!114 &6727328914271049701
+--- !u!114 &4781730653677710944
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -221,76 +220,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 4460879589924130566}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05ae4fbe904808445ac2bae322f80f3a, type: 3}
+  m_Script: {fileID: 11500000, guid: b3c1018141d50e146a05017574898539, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  OnFocus:
+  OnFocusEvent:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5547344593540898094}
-        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
-        m_MethodName: SetTrigger
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: HOVER
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnLostFocus:
+      m_Calls: []
+  OnLostFocusEvent:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5547344593540898094}
-        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
-        m_MethodName: SetTrigger
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: IDLE
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnAction:
+      m_Calls: []
+  OnActionEvent:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5547344593540898094}
-        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
-        m_MethodName: SetTrigger
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: SELECTED
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   UpTransmition: {fileID: 0}
   DownTransmition: {fileID: 0}
   LeftTransmition: {fileID: 0}
   RightTransmition: {fileID: 0}
---- !u!95 &5547344593540898094
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4460879589924130566}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 71877369b6e906f41beab2d516464348, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
+  buttonImage: {fileID: 1662305894183103340}
+  startColor: {r: 1, g: 1, b: 1, a: 1}
+  endColor: {r: 1, g: 0.94748104, b: 0, a: 1}
+  fadeTime: 1

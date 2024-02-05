@@ -21,9 +21,9 @@ public class AddRemoveCharacterAction : GraphActionBase
     public override IEnumerator ActionCoroutine()
     {
         if (isAdd)
-            GameManager.Instance.character.AddCharacter(character);
+            GameManager.Instance.Character.AddCharacter(character);
         else
-            GameManager.Instance.character.RemoveCharacter(character);
+            GameManager.Instance.Character.RemoveCharacter(character);
 
         if (updateModels)
             LocalManager.Instance.Character.UpdateModels();

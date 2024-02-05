@@ -10,7 +10,7 @@ public class LocalLocationManager : MonoBehaviour, IManagerInitialize
     [SerializeField]
     private List<LocationObject> Locations = new List<LocationObject>();
 
-    public LocationObject Current => GetLocationByInfo(GameManager.Instance.locationManager.CurrentLocation);
+    public LocationObject Current => GetLocationByInfo(GameManager.Instance.LocationManager.CurrentLocation);
 
     public void Initialize()
     {

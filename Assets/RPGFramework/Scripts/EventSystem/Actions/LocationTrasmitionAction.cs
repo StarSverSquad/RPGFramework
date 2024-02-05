@@ -21,11 +21,11 @@ public class LocationTrasmitionAction : GraphActionBase
             if (ExplorerManager.Instance.eventHandler.HandledEvent == gameEvent) 
                 ExplorerManager.Instance.eventHandler.ForceUnhandle();
 
-            GameManager.Instance.locationManager.ChangeLocation(Location, SpawnPointName);
+            GameManager.Instance.LocationManager.ChangeLocation(Location, SpawnPointName);
         }
             
 
-        yield return new WaitWhile(() => GameManager.Instance.locationManager.IsChanging);
+        yield return new WaitWhile(() => GameManager.Instance.LocationManager.IsChanging);
     }
 
     public override string GetHeader()

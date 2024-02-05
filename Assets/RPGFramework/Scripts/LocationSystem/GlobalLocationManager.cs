@@ -35,7 +35,8 @@ public class GlobalLocationManager : MonoBehaviour
     /// <param name="pointName">Название точки</param>
     public void ChangeLocation(LocationInfo location, string pointName = "default")
     {
-        if (IsChanging) return;
+        if (IsChanging || location == null) 
+            return;
 
         TransimitionMessage message = new TransimitionMessage()
         {
@@ -92,18 +93,18 @@ public class GlobalLocationManager : MonoBehaviour
 
     private IEnumerator ChangeLocationCoroutine(TransimitionMessage message)
     {
-        GameManager.Instance.loadingScreen.ActivatePart1();
+        GameManager.Instance.LoadingScreen.ActivatePart1();
 
-        yield return new WaitWhile(() => GameManager.Instance.loadingScreen.BgIsFade);
+        yield return new WaitWhile(() => GameManager.Instance.LoadingScreen.BgIsFade);
 
         if (CurrentLocation != null && message.Location.SceneName == SceneManager.GetActiveScene().name)
             LocalManager.Instance.Location.GetLocationByInfo(CurrentLocation).OnLeave();
 
         if (message.Location.SceneName != SceneManager.GetActiveScene().name)
         {
-            GameManager.Instance.sceneLoader.LoadGameScene(message.Location.SceneName);
+            GameManager.Instance.SceneLoader.LoadGameScene(message.Location.SceneName);
 
-            yield return new WaitWhile(() => GameManager.Instance.sceneLoader.IsLoading);
+            yield return new WaitWhile(() => GameManager.Instance.SceneLoader.IsLoading);
         }
 
         if (LocalManager.Instance != null)
@@ -161,9 +162,9 @@ public class GlobalLocationManager : MonoBehaviour
 
         OnLocationChanged?.Invoke(message.Location);
 
-        GameManager.Instance.loadingScreen.DeactivatePart1();
+        GameManager.Instance.LoadingScreen.DeactivatePart1();
 
-        yield return new WaitWhile(() => GameManager.Instance.loadingScreen.BgIsFade);
+        yield return new WaitWhile(() => GameManager.Instance.LoadingScreen.BgIsFade);
 
         changingCoroutine = null;
     }

@@ -49,7 +49,7 @@ public class ChoiceSection_Demo : UISectionBase
 
     public void InitializeWearable()
     {
-        Items = GameManager.Instance.inventory.GetWerables().Select(i => i.Tag).ToList();
+        Items = GameManager.Instance.Inventory.GetWerables().Select(i => i.Tag).ToList();
 
         startIndex = 0;
         currentElementId = 0;
@@ -61,7 +61,7 @@ public class ChoiceSection_Demo : UISectionBase
 
     public void InitializeCollectables()
     {
-        Items = GameManager.Instance.inventory.Slots.Select(i => i.Item.Tag).ToList();
+        Items = GameManager.Instance.Inventory.Slots.Select(i => i.Item.Tag).ToList();
 
         startIndex = 0;
         currentElementId = 0;
@@ -88,10 +88,10 @@ public class ChoiceSection_Demo : UISectionBase
         {
             int elementIndex = i - startIndex;
 
-            InventorySlot slot = GameManager.Instance.inventory.GetSlotByItemName(Items[i]);
+            InventorySlot slot = GameManager.Instance.Inventory.GetSlotByItemName(Items[i]);
 
             Elements[elementIndex].GetComponentInChildren<Image>().sprite = slot.Item.Icon;
-            Elements[elementIndex].GetComponentInChildren<TextMeshProUGUI>().text = slot.Item.Tag + (slot.Count > 1 ? $" {slot.Count}x" : "");
+            Elements[elementIndex].GetComponentInChildren<TextMeshProUGUI>().text = slot.Item.Name + (slot.Count > 1 ? $" {slot.Count}x" : "");
 
             Elements[elementIndex].UpTransmition = elementIndex != 0 ? Elements[elementIndex - 1] : null;
             Elements[elementIndex].DownTransmition = elementIndex != count - 1 ? Elements[elementIndex + 1] : null;
@@ -103,30 +103,30 @@ public class ChoiceSection_Demo : UISectionBase
 
     public void Accept()
     {
-        if (GameManager.Instance.inventory.Slots.Length <= 0 || GameManager.Instance.character.Characters.Length <= 0)
+        if (GameManager.Instance.Inventory.Slots.Length <= 0 || GameManager.Instance.Character.Characters.Length <= 0)
             return;
 
-        InventorySlot slot = GameManager.Instance.inventory[Items[currentElementId]];
+        InventorySlot slot = GameManager.Instance.Inventory[Items[currentElementId]];
 
-        RPGCharacter character = GameManager.Instance.character.Characters[0];
+        RPGCharacter character = GameManager.Instance.Character.Characters[0];
 
         if (allItems)
         {
             if (slot.Item.Usage == RPGCollectable.Usability.Noway || slot.Item.Usage == RPGCollectable.Usability.Battle)
             {
-                GameManager.Instance.gameAudio.PlaySE(errorSound);
+                GameManager.Instance.GameAudio.PlaySE(errorSound);
                 return;
             }
 
             if (slot.Item is RPGConsumed consumed)
             {
-                GameManager.Instance.gameAudio.PlaySE(consumeSound);
+                GameManager.Instance.GameAudio.PlaySE(consumeSound);
 
                 ExplorerManager.Instance.ItemConsumer.CosumeItem(consumed, character, character);
             }
             else
             {
-                GameManager.Instance.gameAudio.PlaySE(selectSound);
+                GameManager.Instance.GameAudio.PlaySE(selectSound);
 
                 if (slot.Item.Event != null)
                     ExplorerManager.Instance.eventHandler.InvokeEvent(slot.Item.Event);
@@ -144,33 +144,33 @@ public class ChoiceSection_Demo : UISectionBase
             {
                 case RPGWerable.UsedType.Head:
                     if (character.HeadSlot != null)
-                        GameManager.Instance.inventory.AddToItemCount(character.HeadSlot, 1);
+                        GameManager.Instance.Inventory.AddToItemCount(character.HeadSlot, 1);
 
-                    GameManager.Instance.inventory.AddToItemCount(werable, -1);
+                    GameManager.Instance.Inventory.AddToItemCount(werable, -1);
 
                     character.HeadSlot = werable;
                     break;
                 case RPGWerable.UsedType.Body:
                     if (character.BodySlot != null)
-                        GameManager.Instance.inventory.AddToItemCount(character.BodySlot, 1);
+                        GameManager.Instance.Inventory.AddToItemCount(character.BodySlot, 1);
 
-                    GameManager.Instance.inventory.AddToItemCount(werable, -1);
+                    GameManager.Instance.Inventory.AddToItemCount(werable, -1);
 
                     character.BodySlot = werable;
                     break;
                 case RPGWerable.UsedType.Shield:
                     if (character.ShieldSlot != null)
-                        GameManager.Instance.inventory.AddToItemCount(character.ShieldSlot, 1);
+                        GameManager.Instance.Inventory.AddToItemCount(character.ShieldSlot, 1);
 
-                    GameManager.Instance.inventory.AddToItemCount(werable, -1);
+                    GameManager.Instance.Inventory.AddToItemCount(werable, -1);
 
                     character.ShieldSlot = werable;
                     break;
                 case RPGWerable.UsedType.Talisman:
                     if (character.TalismanSlot != null)
-                        GameManager.Instance.inventory.AddToItemCount(character.TalismanSlot, 1);
+                        GameManager.Instance.Inventory.AddToItemCount(character.TalismanSlot, 1);
 
-                    GameManager.Instance.inventory.AddToItemCount(werable, -1);
+                    GameManager.Instance.Inventory.AddToItemCount(werable, -1);
 
                     character.TalismanSlot = werable;
                     break;
@@ -178,9 +178,9 @@ public class ChoiceSection_Demo : UISectionBase
                     if (werable is RPGWeapon weapon)
                     {
                         if (character.WeaponSlot != null)
-                            GameManager.Instance.inventory.AddToItemCount(character.WeaponSlot, 1);
+                            GameManager.Instance.Inventory.AddToItemCount(character.WeaponSlot, 1);
 
-                        GameManager.Instance.inventory.AddToItemCount(weapon, -1);
+                        GameManager.Instance.Inventory.AddToItemCount(weapon, -1);
 
                         character.WeaponSlot = weapon;
                     }
@@ -201,7 +201,7 @@ public class ChoiceSection_Demo : UISectionBase
 
             character.UpdateStats();
 
-            GameManager.Instance.gameAudio.PlaySE(equipSound);
+            GameManager.Instance.GameAudio.PlaySE(equipSound);
 
             if ((slot.Item.Usage == RPGCollectable.Usability.Explorer || slot.Item.Usage == RPGCollectable.Usability.Any)
                 && slot.Item.Event != null)
@@ -221,7 +221,7 @@ public class ChoiceSection_Demo : UISectionBase
 
     public void Change()
     {
-        description.text = GameManager.Instance.inventory[Items[currentElementId]].Item.Description;
+        description.text = GameManager.Instance.Inventory[Items[currentElementId]].Item.Description;
     }
 
     public override bool TransmitionDown()
@@ -274,7 +274,7 @@ public class ChoiceSection_Demo : UISectionBase
     {
         yield return new WaitForFixedUpdate();
 
-        if (GameManager.Instance.inventory.Slots.Length == 0 && allItems)
+        if (GameManager.Instance.Inventory.Slots.Length == 0 && allItems)
         {
             animator.SetTrigger("OUT_INSTANCE");
 
@@ -282,7 +282,7 @@ public class ChoiceSection_Demo : UISectionBase
 
             yield break;
         }
-        else if (GameManager.Instance.inventory.GetWerables().Count == 0 && !allItems)
+        else if (GameManager.Instance.Inventory.GetWerables().Count == 0 && !allItems)
         {
             animator.SetTrigger("OUT_INSTANCE");
 

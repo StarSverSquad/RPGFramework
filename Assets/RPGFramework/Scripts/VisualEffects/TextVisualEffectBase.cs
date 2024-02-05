@@ -4,17 +4,31 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public abstract class TextVisualEffectBase : MonoBehaviour
+public abstract class TextVisualEffectBase
 {
     private Coroutine effectCoroutine;
     public bool IsPlaying => effectCoroutine != null;
 
-    public void StartEffect(TextMeshProUGUI textMesh)
+    public int StartLetter { get; set; }
+    public int EndLetter { get; set; }
+
+    protected TextMeshProUGUI TextMesh;
+    protected MonoBehaviour Listener;
+
+    public TextVisualEffectBase(TextMeshProUGUI textMesh, MonoBehaviour listener)
+    {
+        TextMesh = textMesh;
+        Listener = listener;
+    }
+
+    public void StartEffect()
     {
         if (IsPlaying)
             return;
 
-        effectCoroutine = StartCoroutine(EffectCoroutine(textMesh));
+        effectCoroutine = Listener.StartCoroutine(EffectCoroutine(TextMesh));
+
+        OnStartEffect();
     }
 
     public void StopEffect()
@@ -22,10 +36,15 @@ public abstract class TextVisualEffectBase : MonoBehaviour
         if (!IsPlaying)
             return;
 
-        StopCoroutine(effectCoroutine);
+        Listener.StopCoroutine(effectCoroutine);
 
         effectCoroutine = null;
+
+        OnEndEffect();
     }
 
     protected abstract IEnumerator EffectCoroutine(TextMeshProUGUI textMesh);
+
+    public virtual void OnStartEffect() { }
+    public virtual void OnEndEffect() { }
 }

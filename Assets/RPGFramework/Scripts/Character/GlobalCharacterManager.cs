@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class GlobalCharacterManager : MonoBehaviour, IManagerInitialize, IDisposable
+public class GlobalCharacterManager : IDisposable
 {
     public event Action OnCharaterListChanged;
 
-    private List<RPGCharacter> characters = new List<RPGCharacter>();
+    private List<RPGCharacter> characters;
     public RPGCharacter[] Characters => characters.ToArray();
 
-    private List<RPGCharacter> registredCharacters = new List<RPGCharacter>();
+    private List<RPGCharacter> registredCharacters;
     public RPGCharacter[] RegistredCharacters => characters.ToArray();
 
-    public void Initialize()
+    public GlobalCharacterManager()
     {
-
+        characters = new List<RPGCharacter>();
+        registredCharacters = new List<RPGCharacter>();
     }
 
     public void AddCharacter(RPGCharacter character, bool initialize = true)
@@ -50,7 +51,7 @@ public class GlobalCharacterManager : MonoBehaviour, IManagerInitialize, IDispos
         if (CharacterIsRegisted(character))
             return;
 
-        registredCharacters.Add(Instantiate(character));
+        registredCharacters.Add(character.Clone() as RPGCharacter);
     }
 
     public bool CharacterIsRegisted(RPGCharacter character)

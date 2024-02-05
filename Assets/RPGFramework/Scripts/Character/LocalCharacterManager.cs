@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class LocalCharacterManager : MonoBehaviour, IManagerInitialize
 {
-    public RPGCharacter[] Characters => GameManager.Instance.character.Characters;
+    public RPGCharacter[] Characters => GameManager.Instance.Character.Characters;
 
     public List<DynamicExplorerObject> Models = new List<DynamicExplorerObject>();
     public List<Vector2> Targets = new List<Vector2>();
@@ -23,7 +23,7 @@ public class LocalCharacterManager : MonoBehaviour, IManagerInitialize
 
     public void Initialize()
     {
-        GameManager.Instance.character.OnCharaterListChanged += CharacterManager_OnCharaterListChanged;
+        GameManager.Instance.Character.OnCharaterListChanged += CharacterManager_OnCharaterListChanged;
 
         ExplorerManager.PlayerMovement.OnMoving += Movement_OnMoving;
         ExplorerManager.PlayerMovement.OnStopMoving += Movement_OnStopMoving;
@@ -152,7 +152,7 @@ public class LocalCharacterManager : MonoBehaviour, IManagerInitialize
 
     private void OnDestroy()
     {
-        GameManager.Instance.character.OnCharaterListChanged -= CharacterManager_OnCharaterListChanged;
+        GameManager.Instance.Character.OnCharaterListChanged -= CharacterManager_OnCharaterListChanged;
 
         ExplorerManager.PlayerMovement.OnMoving -= Movement_OnMoving;
         ExplorerManager.PlayerMovement.OnStopMoving -= Movement_OnStopMoving;

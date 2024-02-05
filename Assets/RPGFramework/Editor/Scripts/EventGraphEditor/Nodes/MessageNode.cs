@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -127,10 +128,19 @@ public class MessageNode : ActionNodeBase
             objectType = typeof(TextVisualEffectBase)
         };
 
-        textEffectField.SetValueWithoutNotify(dialog.message.textEffect);
-        textEffectField.RegisterValueChangedCallback(effect =>
+        List<string> types = new List<string>() { "None" };
+
+        types.AddRange(action.GetType().Assembly.GetTypes()
+            .Where(i => i.BaseType != null && i.BaseType.Name == "TextVisualEffectBase")
+            .Select(i => i.Name));
+
+        int index = types.IndexOf(dialog.message.textEffectTypeName);
+
+        PopupField<string> effectPopup = new PopupField<string>("Эффект", types, index < 0 ? 0 : index);
+
+        effectPopup.RegisterValueChangedCallback(effect =>
         {
-            dialog.message.textEffect = effect.newValue as TextVisualEffectBase;
+            dialog.message.textEffectTypeName = effect.newValue;
 
             MakeDirty();
         });
@@ -145,6 +155,6 @@ public class MessageNode : ActionNodeBase
         extensionContainer.Add(spriteField);
         extensionContainer.Add(clipField);
         extensionContainer.Add(positionField);
-        extensionContainer.Add(textEffectField);
+        extensionContainer.Add(effectPopup);
     }
 }

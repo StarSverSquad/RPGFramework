@@ -5,13 +5,11 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 
-public class SaveLoadManager : MonoBehaviour
+public class SaveLoadManager
 {
-    private readonly DirectoryInfo PlaceForSaves = new DirectoryInfo(Application.dataPath + @"\Saves");
+    public readonly DirectoryInfo PlaceForSaves = new DirectoryInfo(Application.dataPath + @"\Saves");
 
-    public LocationInfo NewGameLocation;
-
-    public void Start()
+    public SaveLoadManager()
     {
         if (!PlaceForSaves.Exists) PlaceForSaves.Create();
     }
@@ -27,15 +25,15 @@ public class SaveLoadManager : MonoBehaviour
             FloatValues = GameManager.Instance.GameData.FloatValues,
             BoolValues = GameManager.Instance.GameData.BoolValues,
             StringValues = GameManager.Instance.GameData.StringValues,
-            LocationName = GameManager.Instance.locationManager.CurrentLocation.Name,
+            LocationName = GameManager.Instance.LocationManager.CurrentLocation.Name,
             PlayerPosition = ExplorerManager.GetPlayerPosition(),
             PlayerDirection = ExplorerManager.GetPlayerViewDirection(),
             SavedCharacters = SaveCharacters(
-                GameManager.Instance.character.RegistredCharacters.ToList(),
-                GameManager.Instance.character.Characters.ToList())
+                GameManager.Instance.Character.RegistredCharacters.ToList(),
+                GameManager.Instance.Character.Characters.ToList())
         };
 
-        foreach (InventorySlot slot in GameManager.Instance.inventory)
+        foreach (InventorySlot slot in GameManager.Instance.Inventory)
         {
             CellForSave.InventoryItems.Add(slot.Item.Tag, slot.Count);
         }
@@ -68,32 +66,30 @@ public class SaveLoadManager : MonoBehaviour
         GameManager.Instance.GameData.BoolValues = CellForSave.BoolValues;
         GameManager.Instance.GameData.StringValues = CellForSave.StringValues;
 
-        GameManager.Instance.character.Dispose();
+        GameManager.Instance.Character.Dispose();
         foreach (var person in CellForSave.SavedCharacters)
             LoadCharacter(person);
 
-        GameManager.Instance.inventory.Dispose();
+        GameManager.Instance.Inventory.Dispose();
 
         foreach (var item in CellForSave.InventoryItems.data)
         {
-            GameManager.Instance.inventory.AddToItemCount(GameManager.Instance.GameData.Collectables.First(i => i.Tag == item.Key), item.Value);
+            GameManager.Instance.Inventory.AddToItemCount(GameManager.Instance.GameData.Collectables.First(i => i.Tag == item.Key), item.Value);
         }
 
-        LocationInfo location = GameManager.Instance.locationManager.LoadLocationInfoByName(CellForSave.LocationName);
+        LocationInfo location = GameManager.Instance.LocationManager.LoadLocationInfoByName(CellForSave.LocationName);
 
-        GameManager.Instance.locationManager.ChangeLocation(location, CellForSave.PlayerPosition, CellForSave.PlayerDirection);
+        GameManager.Instance.LocationManager.ChangeLocation(location, CellForSave.PlayerPosition, CellForSave.PlayerDirection);
     }
 
-    /// <summary>
-    /// Просто начинает новую игру.
-    /// </summary>
-    public void NewGame()
+    public void SaveConfig()
     {
-        GameManager.Instance.character.Dispose();
-        GameManager.Instance.inventory.Dispose();
-        GameManager.Instance.GameData.Dispose();
 
-        GameManager.Instance.locationManager.ChangeLocation(NewGameLocation);
+    }
+
+    public void LoadConfig()
+    {
+
     }
 
     public List<CharacterSaveInfo> SaveCharacters(List<RPGCharacter> RegisteredCharacters, List<RPGCharacter> Characters)
@@ -135,7 +131,7 @@ public class SaveLoadManager : MonoBehaviour
 
     public void LoadCharacter(CharacterSaveInfo SavedCharacter)
     {
-        RPGCharacter Glek = Instantiate(GameManager.Instance.GameData.Characters.FirstOrDefault(i => i.Tag == SavedCharacter.Tag));
+        RPGCharacter Glek = GameManager.Instance.GameData.Characters.FirstOrDefault(i => i.Tag == SavedCharacter.Tag).Clone() as RPGCharacter;
 
         Glek.Level = SavedCharacter.Level;
         Glek.Expireance = SavedCharacter.Expirience;
@@ -146,11 +142,20 @@ public class SaveLoadManager : MonoBehaviour
         Glek.DefaultDefence = SavedCharacter.DefaultDefence;
         Glek.DefaultAgility = SavedCharacter.DefaultAgility;
 
-        Glek.WeaponSlot = (RPGWeapon)GameManager.Instance.GameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.WeaponTag);
-        Glek.HeadSlot = (RPGWerable)GameManager.Instance.GameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.HeadTag);
-        Glek.BodySlot = (RPGWerable)GameManager.Instance.GameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.BodyTag);
-        Glek.ShieldSlot = (RPGWerable)GameManager.Instance.GameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.ShieldTag);
-        Glek.TalismanSlot = (RPGWerable)GameManager.Instance.GameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.TalismanTag);
+        if (SavedCharacter.WeaponTag != string.Empty)
+            Glek.WeaponSlot = (RPGWeapon)GameManager.Instance.GameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.WeaponTag);
+        
+        if (SavedCharacter.HeadTag != string.Empty)
+            Glek.HeadSlot = (RPGWerable)GameManager.Instance.GameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.HeadTag);
+        
+        if (SavedCharacter.BodyTag != string.Empty)
+            Glek.BodySlot = (RPGWerable)GameManager.Instance.GameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.BodyTag);
+        
+        if (SavedCharacter.ShieldTag != string.Empty)
+            Glek.ShieldSlot = (RPGWerable)GameManager.Instance.GameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.ShieldTag);
+        
+        if (SavedCharacter.TalismanTag != string.Empty)
+            Glek.TalismanSlot = (RPGWerable)GameManager.Instance.GameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.TalismanTag);
 
         Glek.Abilities.Clear();
         foreach (var ability in SavedCharacter.Abilities)
@@ -165,11 +170,11 @@ public class SaveLoadManager : MonoBehaviour
         }
 
         if (SavedCharacter.InParty)
-            GameManager.Instance.character.AddCharacter(Glek);
+            GameManager.Instance.Character.AddCharacter(Glek);
         else 
-            GameManager.Instance.character.RegisterCharacter(Glek);
+            GameManager.Instance.Character.RegisterCharacter(Glek);
 
-        GameManager.Instance.character.GetRegisteredCharacter(Glek).Heal = SavedCharacter.Heal;
-        GameManager.Instance.character.GetRegisteredCharacter(Glek).Mana = SavedCharacter.Mana;
+        GameManager.Instance.Character.GetRegisteredCharacter(Glek).Heal = SavedCharacter.Heal;
+        GameManager.Instance.Character.GetRegisteredCharacter(Glek).Mana = SavedCharacter.Mana;
     }
 }

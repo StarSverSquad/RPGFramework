@@ -34,22 +34,22 @@ public class MainSection_Demo : UISectionBase
 
     public void ExitToMainMenu()
     {
-        GameManager.Instance.sceneLoader.LoadScene("DemoMenu");
+        GameManager.Instance.SceneLoader.LoadScene("DemoMenu");
     }
 
     public void UpdateInfo()
     {
-        if (GameManager.Instance.character.Characters.Length == 0)
+        if (GameManager.Instance.Character.Characters.Length == 0)
             return;
 
-        RPGCharacter character = GameManager.Instance.character.Characters[0];
+        RPGCharacter character = GameManager.Instance.Character.Characters[0];
 
         HpBar.SetValue(character.Heal, character.MaxHeal);
         MpBar.SetValue(character.Mana, character.MaxMana);
 
         CharacterIcon.sprite = character.Icon;
         CharacterClass.text = character.Class;
-        CharacterName.text = character.Tag;
+        CharacterName.text = character.Name;
         CharacterLevel.text = $"Статус {character.Level}";
 
         Dmg.text = $"Атака: {character.Damage}";
@@ -58,27 +58,27 @@ public class MainSection_Demo : UISectionBase
         Luck.text = $"Удача: {character.Luck}";
 
         if (character.WeaponSlot != null)
-            Weapon.text = $"Оружие: {character.WeaponSlot.Tag}";
+            Weapon.text = $"Оружие: {character.WeaponSlot.Name}";
         else
             Weapon.text = $"Оружие: ПУСТО";
 
         if (character.HeadSlot != null)
-            Head.text = $"Голова: {character.HeadSlot.Tag}";
+            Head.text = $"Голова: {character.HeadSlot.Name}";
         else
             Head.text = $"Голова: ПУСТО";
 
         if (character.BodySlot != null)
-            Body.text = $"Тело: {character.BodySlot.Tag}";
+            Body.text = $"Тело: {character.BodySlot.Name}";
         else
             Body.text = $"Тело: ПУСТО";
 
         if (character.ShieldSlot != null)
-            Shield.text = $"Щит: {character.ShieldSlot.Tag}";
+            Shield.text = $"Щит: {character.ShieldSlot.Name}";
         else
             Shield.text = $"Щит: ПУСТО";
 
         if (character.TalismanSlot != null)
-            Talisman.text = $"Талисман: {character.TalismanSlot.Tag}";
+            Talisman.text = $"Талисман: {character.TalismanSlot.Name}";
         else
             Talisman.text = $"Талисман: ПУСТО";
     }

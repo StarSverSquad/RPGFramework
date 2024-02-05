@@ -278,6 +278,6 @@ public class BattleUsingService
             yield return new WaitForSeconds(.5f);
         }
 
-        gameManager.inventory.AddToItemCount(item, -1);
+        gameManager.Inventory.AddToItemCount(item, -1);
     }
 }

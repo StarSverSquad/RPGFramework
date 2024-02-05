@@ -21,7 +21,7 @@ public class CharacterInPartyCondition : ConditionBase
             return false;
         }
 
-        return GameManager.Instance.character.Characters.Any(i => i.Tag == Value.Tag);
+        return GameManager.Instance.Character.Characters.Any(i => i.Tag == Value.Tag);
     }
 
     public override string GetLabel()

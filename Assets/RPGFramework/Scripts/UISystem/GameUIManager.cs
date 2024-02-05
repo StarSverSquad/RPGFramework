@@ -11,7 +11,7 @@ public class GameUIManager : UIManagerBase
         if (!IsOpen 
             && !BattleManager.IsBattle 
             && !ExplorerManager.Instance.eventHandler.EventRuning
-            && !GameManager.Instance.sceneLoader.IsLoading
+            && !GameManager.Instance.SceneLoader.IsLoading
             && Input.GetKeyDown(GameManager.Instance.GameConfig.Additional))
             SetPage(MainPage);
     }

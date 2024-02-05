@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
+/// <summary>
+/// Scene bootsrap class
+/// </summary>
 public class LocalManager : ContentManagerBase
 {
     public static LocalManager Instance;

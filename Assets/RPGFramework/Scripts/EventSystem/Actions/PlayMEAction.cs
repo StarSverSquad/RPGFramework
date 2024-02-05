@@ -15,7 +15,7 @@ public class PlayMEAction : GraphActionBase
 
     public override IEnumerator ActionCoroutine()
     {
-        GameManager.Instance.gameAudio.PlayME(clip, volume);
+        GameManager.Instance.GameAudio.PlayME(clip, volume);
 
         yield break;
     }

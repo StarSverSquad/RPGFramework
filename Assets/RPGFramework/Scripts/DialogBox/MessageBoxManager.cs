@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -44,7 +45,10 @@ public class MessageBoxManager : TextWriterBase
     [SerializeField]
     private TextMeshProUGUI textMeshProNameBox;
 
+    private TextVisualEffectBase textEffect = null;
+
     public MessageInfo Message => message is MessageInfo m ? m : null;
+
 
     protected override void Awake()
     {
@@ -140,15 +144,28 @@ public class MessageBoxManager : TextWriterBase
         {
             letterEffect.Play();
         }
+
+        // Эфекты текста нужно наверное даработать
+        if (textEffect != null)
+        {
+            textEffect.EndLetter = textMeshPro.text.Length;
+        }
     }
 
     public override void OnStartWriting()
     {
         letterEffect.clip = Message.letterSound;
 
-        if (Message.textEffect != null)
+        // Эфекты текста нужно наверное даработать
+        if (Message.textEffectTypeName != "None" && Message.textEffectTypeName != string.Empty)
         {
-            Message.textEffect.StartEffect(textMeshPro);
+            TextVisualEffectBase effect = (TextVisualEffectBase)Activator.CreateInstance(GetType().Assembly.GetType(Message.textEffectTypeName), new object[] { textMeshPro, this });
+
+            effect.StartLetter = 0;
+
+            effect.StartEffect();
+
+            textEffect = effect;
         }
 
         SetupDialog();
@@ -172,9 +189,12 @@ public class MessageBoxManager : TextWriterBase
     {
         arrow.SetActive(false);
 
-        if (Message.textEffect != null)
+        // Эфекты текста нужно наверное даработать
+        if ((Message.clear || Message.closeWindow) && textEffect != null)
         {
-            Message.textEffect.StopEffect();
+            textEffect.StopEffect();
+
+            textEffect = null;
         }
     }
 }
@@ -192,11 +212,12 @@ public class MessageInfo : WriterMessage
 
     public MessageBoxManager.DialogBoxPosition position;
 
-    public TextVisualEffectBase textEffect;
+    public string textEffectTypeName;
 
     public MessageInfo() : base()
     {
         name = string.Empty;
+        textEffectTypeName = "None";
 
         closeWindow = false;
 

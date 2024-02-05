@@ -11,29 +11,29 @@ public class DebugScript_Demo : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
-            GameManager.Instance.locationManager.ChangeLocation(Location);
+            GameManager.Instance.LocationManager.ChangeLocation(Location);
 
         if (Input.GetKeyDown(KeyCode.S))
-            GameManager.Instance.saveLoad.Save(1);
+            GameManager.Instance.SaveLoad.Save(1);
 
         if (Input.GetKeyDown(KeyCode.L))
-            GameManager.Instance.saveLoad.Load(1);
+            GameManager.Instance.SaveLoad.Load(1);
 
         if (Input.GetKeyDown(KeyCode.D))
         {
-            GameManager.Instance.character.Characters[0].Heal -= 25;
+            GameManager.Instance.Character.Characters[0].Heal -= 25;
         }
 
         if (Input.GetKeyDown(KeyCode.F))
         {
-            GameManager.Instance.character.Characters[0].Expireance = GameManager.Instance.character.Characters[0].ExpireanceBorder;
+            GameManager.Instance.Character.Characters[0].Expireance = GameManager.Instance.Character.Characters[0].ExpireanceBorder;
 
-            GameManager.Instance.character.Characters[0].LevelUp();
+            GameManager.Instance.Character.Characters[0].LevelUp();
         }
 
         if (Input.GetKeyDown(KeyCode.U))
         {
-            GameManager.Instance.character.AddCharacter(Character);
+            GameManager.Instance.Character.AddCharacter(Character);
             LocalManager.Instance.Character.UpdateModels();
         }
 
@@ -41,7 +41,7 @@ public class DebugScript_Demo : MonoBehaviour
         {
             foreach (var item in GameManager.Instance.GameData.Collectables)
             {
-                GameManager.Instance.inventory.AddToItemCount(item, 1);
+                GameManager.Instance.Inventory.AddToItemCount(item, 1);
             } 
         }
     }

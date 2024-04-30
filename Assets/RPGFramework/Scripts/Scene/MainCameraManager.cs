@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Camera))]
 public class MainCameraManager : MonoBehaviour
 {
     public enum CameraLink
@@ -14,6 +13,8 @@ public class MainCameraManager : MonoBehaviour
     {
         Linear, Interpolate
     }
+
+    public CameraShake Shake;
 
     private CameraLink link = CameraLink.LocationPoint;
     public CameraLink Link => link;

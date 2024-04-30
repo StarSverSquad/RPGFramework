@@ -1,6 +1,4 @@
-﻿using static UnityEngine.EventSystems.EventTrigger;
-
-public class BattleCharacterInfo : BattleEntityInfo
+﻿public class BattleCharacterInfo : BattleEntityInfo
 {
     public BattleCharacterAction BattleAction { get; set; }
 

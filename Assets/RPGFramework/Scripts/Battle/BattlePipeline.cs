@@ -654,7 +654,9 @@ public class BattlePipeline : MonoBehaviour
                     break;
                 // Выбор пердмета
                 case ChoiceAction.Item:
-                    if (GameManager.Instance.Inventory.Slots.Length != 0)
+                    if (GameManager.Instance.Inventory.Slots
+                        .Where(i => i.Item.Usage == RPGCollectable.Usability.Battle ||
+                                    i.Item.Usage == RPGCollectable.Usability.Any).Count() > 0)
                     {
                         BattleManager.Instance.choice.InvokeChoiceItem();
 

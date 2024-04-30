@@ -20,21 +20,35 @@ public class LocationTrasmitionNode : ActionNodeBase
             allowSceneObjects = false
         };
 
-        locationField.SetValueWithoutNotify(act.Location);
+        locationField.SetValueWithoutNotify(act.Message.Location);
         locationField.RegisterValueChangedCallback(value =>
         {
-            act.Location = (LocationInfo)value.newValue;
+            act.Message.Location = (LocationInfo)value.newValue;
+
+            MakeDirty();
         });
 
         TextField spawnPointField = new TextField("Точка спавна");
 
-        spawnPointField.SetValueWithoutNotify(act.SpawnPointName);
+        spawnPointField.SetValueWithoutNotify(act.Message.Point);
         spawnPointField.RegisterValueChangedCallback(value =>
         {
-            act.SpawnPointName = value.newValue;
+            act.Message.Point = value.newValue;
+
+            MakeDirty();
+        });
+
+        EnumField enumField = new EnumField("Направление", act.Message.Direction);
+
+        enumField.RegisterValueChangedCallback(data =>
+        {
+            act.Message.Direction = (CommonDirection)data.newValue;
+
+            MakeDirty();
         });
 
         extensionContainer.Add(locationField);
         extensionContainer.Add(spawnPointField);
+        extensionContainer.Add(enumField);
     }
 }

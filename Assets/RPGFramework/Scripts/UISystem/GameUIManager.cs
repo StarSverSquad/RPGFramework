@@ -8,9 +8,9 @@ public class GameUIManager : UIManagerBase
 
     private void Update()
     {
-        if (!IsOpen 
+        if (!IsOpen
             && !BattleManager.IsBattle 
-            && !ExplorerManager.Instance.eventHandler.EventRuning
+            && !ExplorerManager.Instance.EventHandler.EventRuning
             && !GameManager.Instance.SceneLoader.IsLoading
             && Input.GetKeyDown(GameManager.Instance.GameConfig.Additional))
             SetPage(MainPage);

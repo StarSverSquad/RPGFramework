@@ -39,8 +39,8 @@ public class SimpleShakeTextVisualEffect : TextVisualEffectBase
                 var vertexes = textInfo.meshInfo[characterInfo.materialReferenceIndex].vertices;
 
 
-                float randX = UnityEngine.Random.Range(-5f, 5f);
-                float randY = UnityEngine.Random.Range(-5f, 5f);
+                float randX = UnityEngine.Random.Range(-3f, 3f);
+                float randY = UnityEngine.Random.Range(-3f, 3f);
 
                 for (int j = 0; j < 4; j++)
                 {
@@ -60,7 +60,7 @@ public class SimpleShakeTextVisualEffect : TextVisualEffectBase
                 textMesh.UpdateGeometry(meshInfo.mesh, i);
             }
 
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.03f);
         }
     }
 }

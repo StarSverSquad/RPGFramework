@@ -136,13 +136,20 @@ public class EventGraphView : GraphView
 
         evt.menu.AppendAction("Ветвление/Условие", i => CreateNode(new ConditionAction(), mousePosition));
         evt.menu.AppendAction("Ветвление/Управление переменной", i => CreateNode(new ManageVarAction(), mousePosition));
-        
+
+        evt.menu.AppendAction("Медиа/Отобразить цвет", i => CreateNode(new ShowColorAction(), mousePosition));
+        evt.menu.AppendAction("Медиа/Отобразить изображение", i => CreateNode(new ShowImageAction(), mousePosition));
+        evt.menu.AppendAction("Медиа/Убрать медиа", i => CreateNode(new CloseMediaAction(), mousePosition));
+
         evt.menu.AppendAction("Партия/Изменить состав команды", i => CreateNode(new AddRemoveCharacterAction(), mousePosition));
+        evt.menu.AppendAction("Партия/Изменить количетво предмета", i => CreateNode(new ChangeItemCountAction(), mousePosition));
+        evt.menu.AppendAction("Партия/Двигать персонажа из партии", i => CreateNode(new MoveCharacterAction(), mousePosition));
 
         evt.menu.AppendAction("События исследования/Управление BGM", i => CreateNode(new ManageBGMAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Управление BGS", i => CreateNode(new ManageBGSAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Запуск SE", i => CreateNode(new PlaySEAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Запуск ME", i => CreateNode(new PlayMEAction(), mousePosition));
+        evt.menu.AppendAction("События исследования/Двигать персонажа на сцене", i => CreateNode(new MoveDEOAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Запуск самопис. события", i => CreateNode(new InvokeCustomAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Настройка солнечного света", i => CreateNode(new SetupSunLightAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Смена локации", i => CreateNode(new LocationTrasmitionAction(), mousePosition));
@@ -151,9 +158,11 @@ public class EventGraphView : GraphView
         evt.menu.AppendAction("События битвы/Битва", i => CreateNode(new InvokeBattleAction(), mousePosition));
 
         evt.menu.AppendAction("Разное/Ждать", i => CreateNode(new WaitAction(), mousePosition));
+        evt.menu.AppendAction("Разное/Запуск анимации", i => CreateNode(new InvokeAnimationAction(), mousePosition));
         evt.menu.AppendAction("Разное/Вкл.\\Выкл. объект", i => CreateNode(new SetActiveAction(), mousePosition));
 
         evt.menu.AppendAction("Конец", i => CreateNode(new EndAction(), mousePosition));
+        
         evt.menu.AppendAction("Отладочное событие", i => CreateNode(new DebugAction(), mousePosition));
     }
 

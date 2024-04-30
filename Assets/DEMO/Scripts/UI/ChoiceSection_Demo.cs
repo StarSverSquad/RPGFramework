@@ -88,7 +88,7 @@ public class ChoiceSection_Demo : UISectionBase
         {
             int elementIndex = i - startIndex;
 
-            InventorySlot slot = GameManager.Instance.Inventory.GetSlotByItemName(Items[i]);
+            InventorySlot slot = GameManager.Instance.Inventory.GetSlotByItemTag(Items[i]);
 
             Elements[elementIndex].GetComponentInChildren<Image>().sprite = slot.Item.Icon;
             Elements[elementIndex].GetComponentInChildren<TextMeshProUGUI>().text = slot.Item.Name + (slot.Count > 1 ? $" {slot.Count}x" : "");
@@ -129,7 +129,7 @@ public class ChoiceSection_Demo : UISectionBase
                 GameManager.Instance.GameAudio.PlaySE(selectSound);
 
                 if (slot.Item.Event != null)
-                    ExplorerManager.Instance.eventHandler.InvokeEvent(slot.Item.Event);
+                    ExplorerManager.Instance.EventHandler.InvokeEvent(slot.Item.Event);
             }
 
             animator.SetTrigger("OUT_INSTANCE");
@@ -206,7 +206,7 @@ public class ChoiceSection_Demo : UISectionBase
             if ((slot.Item.Usage == RPGCollectable.Usability.Explorer || slot.Item.Usage == RPGCollectable.Usability.Any)
                 && slot.Item.Event != null)
             {
-                ExplorerManager.Instance.eventHandler.InvokeEvent(slot.Item.Event);
+                ExplorerManager.Instance.EventHandler.InvokeEvent(slot.Item.Event);
 
                 gameUIManager.Close();
             }

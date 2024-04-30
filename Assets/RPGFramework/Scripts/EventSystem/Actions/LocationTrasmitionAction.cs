@@ -4,28 +4,28 @@ using UnityEngine;
 
 public class LocationTrasmitionAction : GraphActionBase
 {
-    public LocationInfo Location;
-
-    public string SpawnPointName;
+    public GlobalLocationManager.TransimitionMessage Message;
 
     public LocationTrasmitionAction() : base("LocationTrasmition")
     {
-        Location = null;
-        SpawnPointName = "Default";
+        Message = new GlobalLocationManager.TransimitionMessage();
     }
 
     public override IEnumerator ActionCoroutine()
     {
-        if (Location != null)
+        if (Message.Location != null)
         {
-            if (ExplorerManager.Instance.eventHandler.HandledEvent == gameEvent) 
-                ExplorerManager.Instance.eventHandler.ForceUnhandle();
+            if (ExplorerManager.Instance.EventHandler.HandledEvent == gameEvent) 
+                ExplorerManager.Instance.EventHandler.ForceUnhandle();
 
-            GameManager.Instance.LocationManager.ChangeLocation(Location, SpawnPointName);
-        }
-            
+            ExplorerManager.PlayerMovement.CanWalk = false;
+
+            GameManager.Instance.LocationManager.ChangeLocation(Message);
+        }     
 
         yield return new WaitWhile(() => GameManager.Instance.LocationManager.IsChanging);
+
+        ExplorerManager.PlayerMovement.CanWalk = true;
     }
 
     public override string GetHeader()

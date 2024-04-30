@@ -372,6 +372,73 @@ public class ConditionNode : ActionNodeBase
                         conditionBlock.Add(horizontal1);
                     }
                     break;
+                case ItemCondition itemcon:
+                    {
+                        VisualElement horizontal0 = new VisualElement();
+                        horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                        horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                        Label lbl0 = new Label("Предмет");
+                        Label lbl1 = new Label("Количество");
+
+                        horizontal0.Add(lbl0);
+                        horizontal0.Add(lbl1);
+
+                        conditionBlock.Add(horizontal0);
+
+                        VisualElement horizontal1 = new VisualElement();
+                        horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                        horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                        ObjectField itemField = new ObjectField()
+                        {
+                            allowSceneObjects = false,
+                            objectType = typeof(RPGCollectable)
+                        };
+
+                        itemField.SetValueWithoutNotify(itemcon.Value);
+                        itemField.RegisterValueChangedCallback(i =>
+                        {
+                            itemcon.Value = i.newValue as RPGCollectable;
+
+                            MakeDirty();
+                        });
+
+                        horizontal1.Add(itemField);
+
+                        PopupField<int> popupField = new PopupField<int>(new List<int>() { 0, 1, 2, 3, 4, 5 }, 0,
+                                                                        FormatOperationList, FormatOperationList);
+
+                        popupField.SetValueWithoutNotify((int)itemcon.Operation);
+                        popupField.RegisterValueChangedCallback(i =>
+                        {
+                            itemcon.Operation = (ConditionOperation)i.newValue;
+
+                            MakeDirty();
+                        });
+
+                        horizontal1.Add(popupField);
+
+                        IntegerField valfield = new IntegerField();
+                        valfield.SetValueWithoutNotify(itemcon.Count);
+                        valfield.RegisterValueChangedCallback(i =>
+                        {
+                            if (i.newValue < 0)
+                            {
+                                valfield.SetValueWithoutNotify(0);
+                                itemcon.Count = 0;
+                            }
+                            else 
+                                itemcon.Count = i.newValue;
+
+                            MakeDirty();
+                        });
+
+                        horizontal1.Add(valfield);
+
+                        conditionBlock.Add(horizontal1);
+                    }
+                    break;
                 default:
                     Debug.LogWarning($"Для типа {item.GetType().Name} нет UI");
                     break;

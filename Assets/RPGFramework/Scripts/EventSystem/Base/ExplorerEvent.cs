@@ -23,6 +23,7 @@ public class ExplorerEvent : MonoBehaviour
 
     public bool Parallel = false;
 
+    [SerializeReference]
     public GraphEvent Event;
 
     public string GUID { get; set; } = string.Empty;
@@ -45,10 +46,10 @@ public class ExplorerEvent : MonoBehaviour
     public void InvokeEvent()
     {
         if (!hasExecuted && !Event.IsPlaying
-            && (!ExplorerManager.Instance.eventHandler.EventRuning || Parallel))
+            && (!ExplorerManager.Instance.EventHandler.EventRuning || Parallel))
         {
             if (!Parallel)
-                ExplorerManager.Instance.eventHandler.HandleEvent(Event);
+                ExplorerManager.Instance.EventHandler.HandleEvent(Event);
 
             Event.Invoke(ExplorerManager.Instance);
         }

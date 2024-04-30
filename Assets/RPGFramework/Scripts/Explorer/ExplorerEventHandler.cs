@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,9 @@ public class ExplorerEventHandler : MonoBehaviour
     [SerializeField]
     private GraphEvent CurrentEvent;
     public GraphEvent HandledEvent => CurrentEvent;
+
+    public event Action OnHandle;
+    public event Action OnUnhandle;
 
     public bool EventRuning => CurrentEvent != null;
 
@@ -24,6 +28,8 @@ public class ExplorerEventHandler : MonoBehaviour
             CurrentEvent = e;
 
             e.OnEnd += E_OnEnd;
+
+            OnHandle?.Invoke();
         }
     }
 
@@ -34,6 +40,8 @@ public class ExplorerEventHandler : MonoBehaviour
             CurrentEvent.OnEnd -= E_OnEnd;
 
             CurrentEvent = null;
+
+            OnUnhandle?.Invoke();
         }
     }
 
@@ -42,5 +50,7 @@ public class ExplorerEventHandler : MonoBehaviour
         CurrentEvent.OnEnd -= E_OnEnd;
 
         CurrentEvent = null;
+
+        OnUnhandle?.Invoke();
     }
 }

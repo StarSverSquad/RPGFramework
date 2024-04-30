@@ -14,9 +14,9 @@ public class InventoryManager : IEnumerable<InventorySlot>, IDisposable
         slots = new List<InventorySlot>();
     }
 
-    public InventorySlot this[string itemName]
+    public InventorySlot this[string itemTag]
     {
-        get => GetSlotByItemName(itemName);
+        get => GetSlotByItemTag(itemTag);
     }
     public InventorySlot this[RPGCollectable item]
     {
@@ -38,7 +38,7 @@ public class InventoryManager : IEnumerable<InventorySlot>, IDisposable
         return slots.Where(i => i.Item is RPGWerable).Select(i => i.Item as RPGWerable).ToList();
     }
 
-    public InventorySlot GetSlotByItemName(string name)
+    public InventorySlot GetSlotByItemTag(string name)
     {
         foreach (InventorySlot slot in slots)
         {
@@ -76,7 +76,7 @@ public class InventoryManager : IEnumerable<InventorySlot>, IDisposable
 
     public void DeleteSlotByItemName(string name)
     {
-        InventorySlot slot = GetSlotByItemName(name);
+        InventorySlot slot = GetSlotByItemTag(name);
 
         if (slot != null)
             DeleteSlot(slot);
@@ -132,7 +132,7 @@ public class InventoryManager : IEnumerable<InventorySlot>, IDisposable
     /// <param name="value">Значение</param>
     public void SetItemCount(RPGCollectable item, int value)
     {
-        InventorySlot slot = GetSlotByItemName(item.name);
+        InventorySlot slot = GetSlotByItemTag(item.name);
 
         if (slot == null && value <= 0)
         {

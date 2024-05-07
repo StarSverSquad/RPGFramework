@@ -375,7 +375,7 @@ TextureImporter:
         width: 16
         height: 16
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -383,6 +383,27 @@ TextureImporter:
       bones: []
       spriteID: 9d2d09183e5824e489990bed3434bb04
       internalID: -1899380355
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: BattleSpriteSheet_12
+      rect:
+        serializedVersion: 2
+        x: 36
+        y: 40
+        width: 12
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 87866773b22b3f445abef8f87b8b3d94
+      internalID: -1497931587
       vertices: []
       indices: 
       edges: []
@@ -402,6 +423,7 @@ TextureImporter:
       BattleSpriteSheet_1: 1069213552
       BattleSpriteSheet_10: -1069818780
       BattleSpriteSheet_11: -1899380355
+      BattleSpriteSheet_12: -1497931587
       BattleSpriteSheet_2: 620198375
       BattleSpriteSheet_3: 1525378765
       BattleSpriteSheet_4: -1520021734

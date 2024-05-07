@@ -244,7 +244,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  Abilities: []
+  Abilities:
+  - {fileID: 11400000, guid: a332423d61d4e7543bd76a31eaf535da, type: 2}
+  - {fileID: 11400000, guid: 1cf7f4c2e4343b040b18ae309ecc0b95, type: 2}
   WeaponSlot: {fileID: 0}
   HeadSlot: {fileID: 0}
   BodySlot: {fileID: 0}

@@ -29,7 +29,7 @@ public class CharacterBox : MonoBehaviour, IDisposable
 
     [Tooltip("Fight, Act, Item, Defence")]
     [SerializeField]
-    private Sprite[] actIcons = new Sprite[4];
+    private Sprite[] actIcons = new Sprite[5];
 
     [SerializeField]
     private LineBar healBar;
@@ -93,6 +93,9 @@ public class CharacterBox : MonoBehaviour, IDisposable
                 break;
             case BattleCharacterAction.Defence:
                 actImage.sprite = actIcons[3];
+                break;
+            case BattleCharacterAction.Spell:
+                actImage.sprite = actIcons[4];
                 break;
             default:
                 actImage.enabled = false;

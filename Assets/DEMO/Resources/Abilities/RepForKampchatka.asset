@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25ceb6377fe5daa428bd73e63374c443, type: 3}
+  m_Name: RepForKampchatka
+  m_EditorClassIdentifier: 
+  Tag: RepForKampchatka
+  Name: "\u0420\u0435\u043F \u043F\u0440\u043E \u043A\u0430\u043C\u0447\u0430\u0442\u0441\u043A\u043E\u0433\u043E
+    \u043A\u0440\u0430\u0431\u0430"
+  Destription: "\u041A\u0440\u0430\u0431 \u0433\u043B\u044E\u0431\u043E\u043A \u0437\u0430\u043F\u043E\u043C\u0438\u043D\u0430\u0439
+    \u0441\u044B\u043D\u043E\u043A..."
+  icon: {fileID: -825488030, guid: 43a40bfc1d0a404438f3a7f4ccf8b0e6, type: 3}
+  Direction: 0
+  ManaCost: 0
+  ConcentrationCost: 60
+  ForDeath: 0
+  ForAlive: 1
+  Damage: 0
+  WakeupCharacter: 0
+  StartEvent: {fileID: 0}
+  EndEvent: {fileID: 11400000, guid: 51581f7aa810d9644b1f77f0a429295a, type: 2}
+  VisualEffect: {fileID: 0}
+  Effects:
+  - rid: 3369752620995182595
+  references:
+    version: 2
+    RefIds:
+    - rid: 3369752620995182595
+      type: {class: ChangeManaHealPercentEffect, ns: , asm: Assembly-CSharp}
+      data:
+        Heal: 0
+        Mana: 0.5

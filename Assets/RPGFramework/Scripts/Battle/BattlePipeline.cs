@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -84,33 +85,18 @@ public class BattlePipeline : MonoBehaviour
 
         yield return StartCoroutine(BattleEnter());
 
-        foreach (var item in Data.BattleInfo.Events
-            .Where(i => i.Period == RPGBattleEvent.InvokePeriod.OnBattleStart))
-        {
-            item.Event.Invoke(this);
-
-            yield return new WaitWhile(() => item.Event.IsPlaying);
-        }
+        yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnBattleStart));
 
         if (Data.BattleInfo.EnemyStart)
         {
-            foreach (var item in Data.BattleInfo.Events
-                .Where(i => i.Period == RPGBattleEvent.InvokePeriod.OnEnemyTurn && i.Turn == TurnCounter))
-            {
-                item.Event.Invoke(this);
+            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnEnemyTurn, true));
 
-                yield return new WaitWhile(() => item.Event.IsPlaying);
-            }
-
-            foreach (var item in Data.BattleInfo.Events
-                .Where(i => i.Period == RPGBattleEvent.InvokePeriod.EveryEnemyTurn))
-            {
-                item.Event.Invoke(this);
-
-                yield return new WaitWhile(() => item.Event.IsPlaying);
-            }
+            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.EveryEnemyTurn));
 
             yield return StartCoroutine(EnemyTurn());
+
+            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLessCharacterHeal));
+
             TurnCounter++;
         }
 
@@ -127,21 +113,9 @@ public class BattlePipeline : MonoBehaviour
 
             yield return StartCoroutine(UpdateEntitysStates());
 
-            foreach (var item in Data.BattleInfo.Events
-                .Where(i => i.Period == RPGBattleEvent.InvokePeriod.OnPlayerTurn && i.Turn == TurnCounter))
-            {
-                item.Event.Invoke(this);
+            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnPlayerTurn, true));
 
-                yield return new WaitWhile(() => item.Event.IsPlaying);
-            }
-
-            foreach (var item in Data.BattleInfo.Events
-                .Where(i => i.Period == RPGBattleEvent.InvokePeriod.EveryPlayerTurn))
-            {
-                item.Event.Invoke(this);
-
-                yield return new WaitWhile(() => item.Event.IsPlaying);
-            }
+            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.EveryPlayerTurn));
 
             if (!AllKeysFalse)
                 break;
@@ -151,76 +125,42 @@ public class BattlePipeline : MonoBehaviour
             if (Data.Enemys.Count == 0)
                 InvokeWin();
 
-            foreach (var item in Data.BattleInfo.Events
-                .Where(i => i.Period == RPGBattleEvent.InvokePeriod.OnEnemyTurn && i.Turn == TurnCounter))
-            {
-                item.Event.Invoke(this);
+            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnEnemyTurn, true));
 
-                yield return new WaitWhile(() => item.Event.IsPlaying);
-            }
-
-            foreach (var item in Data.BattleInfo.Events
-                .Where(i => i.Period == RPGBattleEvent.InvokePeriod.EveryEnemyTurn))
-            {
-                item.Event.Invoke(this);
-
-                yield return new WaitWhile(() => item.Event.IsPlaying);
-            }
+            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.EveryEnemyTurn));
 
             if (!AllKeysFalse)
                 break;
 
             yield return StartCoroutine(EnemyTurn());
 
+            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLessCharacterHeal));
+
             TurnCounter++;
         }
 
         if (fleeKey)
         {
-            foreach (var item in Data.BattleInfo.Events
-                .Where(i => i.Period == RPGBattleEvent.InvokePeriod.OnFlee))
-            {
-                item.Event.Invoke(this);
-
-                yield return new WaitWhile(() => item.Event.IsPlaying);
-            }
+            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnFlee));
 
             yield return StartCoroutine(Flee());
         }
 
         if (winKey)
         {
-            foreach (var item in Data.BattleInfo.Events
-                .Where(i => i.Period == RPGBattleEvent.InvokePeriod.OnWin))
-            {
-                item.Event.Invoke(this);
-
-                yield return new WaitWhile(() => item.Event.IsPlaying);
-            }
+            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnWin));
 
             yield return StartCoroutine(Win());
         }
 
         if (loseKey)
         {
-            foreach (var item in Data.BattleInfo.Events
-                .Where(i => i.Period == RPGBattleEvent.InvokePeriod.OnLose))
-            {
-                item.Event.Invoke(this);
-
-                yield return new WaitWhile(() => item.Event.IsPlaying);
-            }
+            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLose));
 
             yield return StartCoroutine(Lose());
         }
 
-        foreach (var item in Data.BattleInfo.Events
-            .Where(i => i.Period == RPGBattleEvent.InvokePeriod.OnBattleEnd))
-        {
-            item.Event.Invoke(this);
-
-            yield return new WaitWhile(() => item.Event.IsPlaying);
-        }
+        yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnBattleEnd));
 
         yield return StartCoroutine(BattleExit());
 
@@ -499,7 +439,7 @@ public class BattlePipeline : MonoBehaviour
                             case RPGAbility.AbilityDirection.All:
                             case RPGAbility.AbilityDirection.AllEnemys:
                             case RPGAbility.AbilityDirection.AllTeam:
-                                BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
+                                BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Spell);
 
                                 currentCharacter.ReservedConcentration = -currentCharacter.Ability.ConcentrationCost;
                                 Utility.AddConcetration(-currentCharacter.Ability.ConcentrationCost);
@@ -782,6 +722,8 @@ public class BattlePipeline : MonoBehaviour
 
                         yield return new WaitWhile(() => BattleManager.Instance.attackQTE.QTE.IsWorking);
 
+                        yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.BeforeHit, false, characterInfo.EnemyBuffer.Entity.Tag));
+
                         VisualAttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.Effect;
 
                         if (effect.LocaleInCenter)
@@ -806,6 +748,10 @@ public class BattlePipeline : MonoBehaviour
 
                         // Нанесение урона врагу
                         BattleManager.Utility.DamageEnemy(characterInfo, characterInfo.EnemyBuffer, BattleManager.Instance.attackQTE.QTE.DamageFactor);
+
+                        yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.AfterHit, false, characterInfo.EnemyBuffer.Entity.Tag));
+
+                        yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLessEnemyHeal, false, characterInfo.EnemyBuffer.Entity.Tag));
                     }
                     break;
                 // Если персонаж действует
@@ -982,7 +928,7 @@ public class BattlePipeline : MonoBehaviour
 
                 for (int i = 0; i < deads.Length; i++)
                 {
-                    yield return new WaitWhile(() => BattleManager.Instance.enemyModels.GetModel(deads[i]).IsAnimating);
+                    yield return new WaitWhile(() => BattleManager.Instance.enemyModels.GetModel(deads[i]).IsAnimatingEffect);
 
                     BattleManager.Utility.RemoveEnemy(deads[i]);
                 }
@@ -993,6 +939,39 @@ public class BattlePipeline : MonoBehaviour
         }
 
         IsPlayerTurn = false;
+    }
+
+    private IEnumerator InvokeBattleEvent(RPGBattleEvent.InvokePeriod period, bool byTurn = false, string byEntity = "")
+    {
+        List<RPGBattleEvent> events = Data.BattleInfo.Events;
+
+        if (byTurn)
+            events = events.Where(i => i.Turn == TurnCounter).ToList();
+
+        if (!string.IsNullOrEmpty(byEntity))
+        {
+            events = events.Where(i => i.EntityTag == byEntity).ToList();
+        }
+
+        events = events.Where(i => i.Period == period).ToList();
+
+        if (period == RPGBattleEvent.InvokePeriod.OnLessCharacterHeal)
+        {
+            events = events.Where(i => Data.Characters.Any(ch => ch.Heal <= i.Heal && i.EntityTag == ch.Entity.Tag)).ToList();
+        }
+        else if (period == RPGBattleEvent.InvokePeriod.OnLessEnemyHeal)
+        {
+            events = events.Where(i => Data.Enemys.Any(enem => enem.Heal <= i.Heal && i.EntityTag == enem.Entity.Tag)).ToList();
+        }
+
+        foreach (var @event in events)
+        {
+            @event.Event.Invoke(this);
+
+            yield return new WaitWhile(() => @event.Event.IsPlaying);
+        }
+
+        yield break;
     }
 
     private void NextCharacter()

@@ -2,7 +2,12 @@
     "Id": 0,
     "LocationName": "Город",
     "IntValues": {
-        "data": []
+        "data": [
+            {
+                "Key": "ValodyaTalk",
+                "Value": 0
+            }
+        ]
     },
     "FloatValues": {
         "data": []
@@ -14,7 +19,19 @@
                 "Value": true
             },
             {
+                "Key": "WeirdGrip",
+                "Value": false
+            },
+            {
                 "Key": "DimasHomeCatscene",
+                "Value": true
+            },
+            {
+                "Key": "KeparicBattle",
+                "Value": true
+            },
+            {
+                "Key": "BongPickuped",
                 "Value": true
             },
             {
@@ -27,31 +44,39 @@
         "data": []
     },
     "InventoryItems": {
-        "data": []
+        "data": [
+            {
+                "Key": "Bong",
+                "Value": 1
+            }
+        ]
     },
     "PlayerPosition": {
-        "x": 50.62254333496094,
-        "y": 13.978401184082032
+        "x": 50.53519821166992,
+        "y": 14.130805015563965
     },
     "PlayerDirection": 1,
     "SavedCharacters": [
         {
             "Tag": "Dimas_DEMO",
-            "Heal": 50,
-            "Mana": 50,
-            "Level": 1,
+            "Heal": 72,
+            "Mana": 68,
+            "Level": 2,
             "Expirience": 0,
-            "ExpirienceBorder": 20,
+            "ExpirienceBorder": 36,
             "InParty": true,
             "PositionInParty": 0,
-            "DefaultHeal": 50,
-            "DefaultMana": 50,
-            "DefaultDamage": 10,
-            "DefaultDefence": 3,
-            "DefaultAgility": 3,
-            "Abilities": [],
+            "DefaultHeal": 72,
+            "DefaultMana": 68,
+            "DefaultDamage": 12,
+            "DefaultDefence": 4,
+            "DefaultAgility": 5,
+            "Abilities": [
+                "RepForLove",
+                "RepForKampchatka"
+            ],
             "States": [],
-            "WeaponTag": "",
+            "WeaponTag": "NozikPotato",
             "HeadTag": "",
             "BodyTag": "",
             "ShieldTag": "",

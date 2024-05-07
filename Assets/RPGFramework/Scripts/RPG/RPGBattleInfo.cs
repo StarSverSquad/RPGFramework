@@ -45,7 +45,8 @@ public class RPGBattleEvent
     public enum InvokePeriod
     {
         NoWay, EveryPlayerTurn, EveryEnemyTurn, OnPlayerTurn, OnEnemyTurn, 
-        OnWin, OnFlee, OnLose, OnBattleStart, OnBattleEnd
+        OnWin, OnFlee, OnLose, OnBattleStart, OnBattleEnd, BeforeHit, AfterHit,
+        OnLessEnemyHeal, OnLessCharacterHeal
     }
 
     public InvokePeriod Period;
@@ -56,4 +57,7 @@ public class RPGBattleEvent
     public GraphEvent Event;
 
     public int Turn;
+
+    public string EntityTag;
+    public float Heal;
 }

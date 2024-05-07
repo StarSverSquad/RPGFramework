@@ -134,6 +134,8 @@ public class BattleUtility : MonoBehaviour
 
         int realDamage = character.Entity.GiveDamage(Mathf.RoundToInt(bullet.enemy.Damage * bullet.DamageModifier * (character.IsDefence ? .5f : 1f)));
 
+        BattleManager.Instance.Shaker.Shake(2);
+
         if (bullet.State != null)
         {
             character.Entity.AddState(bullet.State);

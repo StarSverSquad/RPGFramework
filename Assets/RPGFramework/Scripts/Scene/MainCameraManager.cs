@@ -14,8 +14,6 @@ public class MainCameraManager : MonoBehaviour
         Linear, Interpolate
     }
 
-    public CameraShake Shake;
-
     private CameraLink link = CameraLink.LocationPoint;
     public CameraLink Link => link;
 

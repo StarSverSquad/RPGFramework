@@ -75,5 +75,5 @@
 
 public enum BattleCharacterAction
 {
-    None, Fight, Act, Item, Defence
+    None, Fight, Act, Item, Defence, Spell
 }

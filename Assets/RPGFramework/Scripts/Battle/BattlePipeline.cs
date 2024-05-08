@@ -1010,7 +1010,7 @@ public class BattlePipeline : MonoBehaviour
 
             if (character.Entity.Heal != oldHeal)
             {
-                BattleManager.Utility.SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1.4f), oldHeal - character.Entity.Heal);
+                BattleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f), (oldHeal - character.Entity.Heal).ToString());
             }
         }
 
@@ -1027,7 +1027,7 @@ public class BattlePipeline : MonoBehaviour
 
             if (enemy.Entity.Heal != oldHeal)
             {
-                BattleManager.Utility.SpawnDamageText(model.DamageTextGlobalPoint, oldHeal - enemy.Entity.Heal);
+                BattleManager.Utility.SpawnFallingText(model.DamageTextGlobalPoint, (oldHeal - enemy.Entity.Heal).ToString());
             }
         }
     }
@@ -1048,7 +1048,7 @@ public class BattlePipeline : MonoBehaviour
             if (enemyinfo.States.Any(i => i.SkipTurn))
                 continue;
 
-            RPGAttackPattern pattern = enemy.Patterns[UnityEngine.Random.Range(0, enemy.Patterns.Count)];
+            RPGAttackPattern pattern = enemy.Patterns[Random.Range(0, enemy.Patterns.Count)];
             pattern.enemy = (RPGEnemy)enemyinfo.Entity;
 
             patterns.Add(pattern);
@@ -1057,11 +1057,11 @@ public class BattlePipeline : MonoBehaviour
         foreach (var pattern in patterns)
             BattleManager.Instance.pattern.AddPattern(pattern);
 
-        int chars = UnityEngine.Random.Range(1, Data.Characters.Where(i => !i.IsDead).Count() + 1);
+        int chars = Random.Range(1, Data.Characters.Where(i => !i.IsDead).Count() + 1);
 
         for (int i = 0; i < chars; i++)
         {
-            BattleCharacterInfo characterInfo = Data.Characters[UnityEngine.Random.Range(0, Data.Characters.Count)];
+            BattleCharacterInfo characterInfo = Data.Characters[Random.Range(0, Data.Characters.Count)];
 
             if (characterInfo.IsTarget || characterInfo.IsDead)
             {
@@ -1103,17 +1103,21 @@ public class BattlePipeline : MonoBehaviour
         IsLose = true;
 
         BattleManager.Instance.battleAudio.StopMusic();
-        BattleManager.Instance.battleAudio.PlaySound(Data.Lose);
 
-        BattleManager.Instance.characterBox.SetActive(false);
-
-        CommonManager.Instance.MessageBox.Write(new MessageInfo()
+        if (Data.BattleInfo.ShowDeadMessage)
         {
-            text = "* Ваша команда проебала!",
-            closeWindow = true,
-        });
+            BattleManager.Instance.battleAudio.PlaySound(Data.Lose);
 
-        yield return new WaitWhile(() => CommonManager.Instance.MessageBox.IsWriting);
+            BattleManager.Instance.characterBox.SetActive(false);
+
+            CommonManager.Instance.MessageBox.Write(new MessageInfo()
+            {
+                text = "* Ваша команда проебала!",
+                closeWindow = true,
+            });
+
+            yield return new WaitWhile(() => CommonManager.Instance.MessageBox.IsWriting);
+        }
 
         if (!Data.BattleInfo.CanLose)
             SceneManager.LoadScene(Data.GameOverSceneName);
@@ -1170,7 +1174,7 @@ public class BattlePipeline : MonoBehaviour
 
             GameManager.Instance.Inventory.AddToItemCount(drop.item, count);
 
-            string countText = count > 0 ? $"{count}x" : "";
+            string countText = count > 1 ? $"{count}x" : "";
 
             if (first)
             {

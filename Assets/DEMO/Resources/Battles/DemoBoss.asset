@@ -18,6 +18,7 @@ MonoBehaviour:
   CanFlee: 0
   ShowStartMessage: 0
   ShowEndMessage: 0
+  ShowDeadMessage: 0
   BattleMusic: {fileID: 0}
   MusicVolume: 1
   StopGlobalMusic: 1
@@ -28,6 +29,7 @@ MonoBehaviour:
   - rid: 3369752620995182606
   - rid: 3369752620995182617
   - rid: 3369752620995182625
+  - rid: 3369752651146461273
   references:
     version: 2
     RefIds:
@@ -60,4 +62,14 @@ MonoBehaviour:
         Event: {fileID: 11400000, guid: 432e8e610723b5e418a7c1248bba45d7, type: 2}
         Turn: 0
         EntityTag: Valodya_DEMO
+        Heal: 0
+    - rid: 3369752651146461273
+      type: {class: RPGBattleEvent, ns: , asm: Assembly-CSharp}
+      data:
+        Period: 7
+        IsCustomEvent: 0
+        CustomAction: {fileID: 0}
+        Event: {fileID: 11400000, guid: 894f5b1263aa2e341b7b7e245d0e0c16, type: 2}
+        Turn: 0
+        EntityTag: 
         Heal: 0

@@ -55,6 +55,9 @@ public class GameManager : ContentManagerBase
         Character.Dispose();
         GameData.Dispose();
 
+        PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
+
         LocationManager.ChangeLocation(newGameLocation);
     }
 

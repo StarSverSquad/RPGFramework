@@ -178,6 +178,13 @@ public class MessageBoxManager : TextWriterBase
             messageBox.gameObject.SetActive(false);
             nameBox.gameObject.SetActive(false);
         }
+
+        if (textEffect != null)
+        {
+            textEffect.StopEffect();
+
+            textEffect = null;
+        }
     }
 
     public override void OnWait()
@@ -190,12 +197,12 @@ public class MessageBoxManager : TextWriterBase
         arrow.SetActive(false);
 
         // Эфекты текста нужно наверное даработать
-        if ((Message.clear || Message.closeWindow) && textEffect != null)
-        {
-            textEffect.StopEffect();
+        //if ((Message.clear || Message.closeWindow) && textEffect != null)
+        //{
+        //    textEffect.StopEffect();
 
-            textEffect = null;
-        }
+        //    textEffect = null;
+        //}
     }
 }
 

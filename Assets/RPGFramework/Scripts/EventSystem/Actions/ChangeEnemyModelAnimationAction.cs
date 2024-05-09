@@ -45,6 +45,6 @@ public class ChangeEnemyModelAnimationAction : GraphActionBase
 
     public override string GetHeader()
     {
-        return "Изменить статы врага";
+        return "Сменить анимацию врага";
     }
 }

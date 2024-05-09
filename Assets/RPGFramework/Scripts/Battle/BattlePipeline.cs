@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -1101,6 +1100,10 @@ public class BattlePipeline : MonoBehaviour
     private IEnumerator Lose()
     {
         IsLose = true;
+
+        PlayerPrefs.SetFloat("DeadX", BattleManager.Instance.player.transform.position.x - Camera.main.transform.position.x);
+        PlayerPrefs.SetFloat("DeadY", BattleManager.Instance.player.transform.position.y - Camera.main.transform.position.y);
+        PlayerPrefs.Save();
 
         BattleManager.Instance.battleAudio.StopMusic();
 

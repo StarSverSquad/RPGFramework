@@ -153,7 +153,9 @@ public abstract class TextWriterBase : MonoBehaviour
             if (SkipCanExecute())
             {
                 isSkiped = true;
+
                 OnSkipedCallback?.Invoke();
+
                 break;
             }
 
@@ -208,6 +210,7 @@ public abstract class TextWriterBase : MonoBehaviour
             if (isSkiped)
             {
                 textMeshPro.text = previewText + outcomeText.Replace(ActionPoint.ToString(), string.Empty);
+
                 break;
             }
 
@@ -248,6 +251,9 @@ public abstract class TextWriterBase : MonoBehaviour
             yield return new WaitUntil(() => ContinueCanExecute());
             OnEndWait();
         }
+
+        actions.Clear();
+        actionsTexts.Clear();
 
         writeCoroutine = null;
 

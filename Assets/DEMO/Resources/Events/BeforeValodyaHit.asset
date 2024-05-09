@@ -17,25 +17,41 @@ MonoBehaviour:
   - rid: 3369752620995182620
   - rid: 3369752620995182626
   - rid: 3369752620995182621
-  - rid: 3369752620995182618
-  - rid: 3369752620995182627
+  - rid: 3369752651146461292
+  - rid: 3369752651146461293
+  - rid: 3369752651146461295
   - rid: 3369752620995182628
+  - rid: 3369752620995182627
+  - rid: 3369752620995182618
+  - rid: 3369752651146461296
   Meta:
     edges:
-    - inputPortName: Input
-      inputNodeGUID: 99ac3ab04abcb9b4db1685242b6f64a6
-      outputPortName: Output
-      outputNodeGUID: 254a5e7192eb5fc48a98ddacef824797
     - inputPortName: Input
       inputNodeGUID: 324577a63e4ea5b448b11a08bbb5b651
       outputPortName: Output
       outputNodeGUID: 99ac3ab04abcb9b4db1685242b6f64a6
     - inputPortName: Input
-      inputNodeGUID: bfd5d93d90e749d44b3eb4c26a96e315
+      inputNodeGUID: 99ac3ab04abcb9b4db1685242b6f64a6
+      outputPortName: Output
+      outputNodeGUID: 254a5e7192eb5fc48a98ddacef824797
+    - inputPortName: Input
+      inputNodeGUID: b3a186ae5769db642bacd82acd8961c7
       outputPortName: Output
       outputNodeGUID: 324577a63e4ea5b448b11a08bbb5b651
     - inputPortName: Input
-      inputNodeGUID: 254a5e7192eb5fc48a98ddacef824797
+      inputNodeGUID: fe4208203a0093640b97de1acb892c67
+      outputPortName: Output
+      outputNodeGUID: c35b4b2e406727741b120a1827b4dcba
+    - inputPortName: Input
+      inputNodeGUID: bfd5d93d90e749d44b3eb4c26a96e315
+      outputPortName: Then
+      outputNodeGUID: b3a186ae5769db642bacd82acd8961c7
+    - inputPortName: Input
+      inputNodeGUID: c35b4b2e406727741b120a1827b4dcba
+      outputPortName: Else
+      outputNodeGUID: b3a186ae5769db642bacd82acd8961c7
+    - inputPortName: Input
+      inputNodeGUID: 65bda9dea4875cc4b877e62b84374bfa
       outputPortName: Yes
       outputNodeGUID: a2badee3f968cb64ebb0eea315b8c850
     - inputPortName: Input
@@ -46,6 +62,10 @@ MonoBehaviour:
       inputNodeGUID: a2badee3f968cb64ebb0eea315b8c850
       outputPortName: Output
       outputNodeGUID: a44231d496c7e2944b9f1b61841a1b88
+    - inputPortName: Input
+      inputNodeGUID: 254a5e7192eb5fc48a98ddacef824797
+      outputPortName: Output
+      outputNodeGUID: 65bda9dea4875cc4b877e62b84374bfa
     nodes:
     - guid: 99ac3ab04abcb9b4db1685242b6f64a6
       actionIndex: 0
@@ -58,16 +78,28 @@ MonoBehaviour:
       position: {x: 1042.4, y: 182.4}
     - guid: bfd5d93d90e749d44b3eb4c26a96e315
       actionIndex: 3
-      position: {x: 1374.4, y: 200}
-    - guid: a44231d496c7e2944b9f1b61841a1b88
+      position: {x: 1602.4, y: 188}
+    - guid: c35b4b2e406727741b120a1827b4dcba
       actionIndex: 4
-      position: {x: -60.8, y: 222.4}
-    - guid: a2badee3f968cb64ebb0eea315b8c850
+      position: {x: 1589.6, y: 346.4}
+    - guid: b3a186ae5769db642bacd82acd8961c7
       actionIndex: 5
-      position: {x: 98.4, y: 202.4}
-    - guid: 0f12ab5d8808ba94fac705f8ccf14036
+      position: {x: 1321.6, y: 165.6}
+    - guid: fe4208203a0093640b97de1acb892c67
       actionIndex: 6
-      position: {x: 459.2, y: 418.4}
+      position: {x: 1881.6, y: 354.4}
+    - guid: 0f12ab5d8808ba94fac705f8ccf14036
+      actionIndex: 7
+      position: {x: 146.4, y: 424}
+    - guid: a2badee3f968cb64ebb0eea315b8c850
+      actionIndex: 8
+      position: {x: -216.8, y: 267.2}
+    - guid: a44231d496c7e2944b9f1b61841a1b88
+      actionIndex: 9
+      position: {x: -373.6, y: 228}
+    - guid: 65bda9dea4875cc4b877e62b84374bfa
+      actionIndex: 10
+      position: {x: 147.2, y: 234.4}
   references:
     version: 2
     RefIds:
@@ -99,7 +131,7 @@ MonoBehaviour:
       type: {class: ChangeEnemyStatsAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions:
-        - rid: 3369752620995182621
+        - rid: 3369752651146461293
         EnemyTag: Valodya_DEMO
         newDamage: 0
         newDefance: 9999
@@ -109,10 +141,47 @@ MonoBehaviour:
       type: {class: RandomAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions:
-        - rid: 3369752620995182620
+        - rid: 3369752651146461296
         - rid: 3369752620995182628
-        Chance: 0.48
+        Chance: 0.6
     - rid: 3369752620995182628
       type: {class: EndAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions: []
+    - rid: 3369752651146461292
+      type: {class: ManageVarAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 3369752651146461295
+        Var: 4
+        Operation: 1
+        VarName: ValodyShowDefence
+        BoolBuffer: 0
+        IntBuffer: 1
+        StringBuffer: 
+        FloatBuffer: 0
+    - rid: 3369752651146461293
+      type: {class: ConditionAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 3369752620995182621
+        - rid: 3369752651146461292
+        Conditions:
+        - rid: 3369752651146461294
+    - rid: 3369752651146461294
+      type: {class: PlayerPrefsCondition, ns: , asm: Assembly-CSharp}
+      data:
+        Key: ValodyShowDefence
+        Value: 2
+        Operation: 0
+    - rid: 3369752651146461295
+      type: {class: EndAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions: []
+    - rid: 3369752651146461296
+      type: {class: DebugAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 3369752620995182620
+        ConsoleOutputText: a
+        WarningLevel: 0

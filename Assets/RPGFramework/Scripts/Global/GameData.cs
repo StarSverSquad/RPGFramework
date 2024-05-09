@@ -35,13 +35,13 @@ public class GameData : IDisposable
         BoolValues = new CustomDictionary<bool>();
         StringValues = new CustomDictionary<string>();
 
-        foreach (var data in Manager.GameConfig.IntValues.data)
+        foreach (var data in Manager.BaseOptions.IntValues.data)
             IntValues.Add(data.Key, data.Value);
-        foreach (var data in Manager.GameConfig.FloatValues.data)
+        foreach (var data in Manager.BaseOptions.FloatValues.data)
             FloatValues.Add(data.Key, data.Value);
-        foreach (var data in Manager.GameConfig.BoolValues.data)
+        foreach (var data in Manager.BaseOptions.BoolValues.data)
             BoolValues.Add(data.Key, data.Value);
-        foreach (var data in Manager.GameConfig.StringValues.data)
+        foreach (var data in Manager.BaseOptions.StringValues.data)
             StringValues.Add(data.Key, data.Value);
 
         Characters = Resources.LoadAll<RPGCharacter>("Characters");

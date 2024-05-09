@@ -68,7 +68,7 @@ public class GameOverManager : MonoBehaviour
 
         yield return new WaitForSeconds(2);
 
-        yield return new WaitUntil(() => Input.GetKeyDown(GameManager.Instance.GameConfig.Accept));
+        yield return new WaitUntil(() => Input.GetKeyDown(GameManager.Instance.BaseOptions.Accept));
 
         bg.GetComponent<Image>().DOColor(new Color(1, 1, 1, 0), 2f).SetLoops(0).Play();
 

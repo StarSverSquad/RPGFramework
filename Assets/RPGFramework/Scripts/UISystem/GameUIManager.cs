@@ -12,7 +12,7 @@ public class GameUIManager : UIManagerBase
             && !BattleManager.IsBattle 
             && !ExplorerManager.Instance.EventHandler.EventRuning
             && !GameManager.Instance.SceneLoader.IsLoading
-            && Input.GetKeyDown(GameManager.Instance.GameConfig.Additional))
+            && Input.GetKeyDown(GameManager.Instance.BaseOptions.Additional))
             SetPage(MainPage);
     }
 }

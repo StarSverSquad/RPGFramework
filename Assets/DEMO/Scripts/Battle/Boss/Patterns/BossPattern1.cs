@@ -20,7 +20,7 @@ public class BossPattern1 : RPGAttackPattern
 
         while (true)
         {
-            GameObject objbullet = CreateObject(sword, up ? new Vector2(4.3f, 7.5f) : new Vector2(-4.3f, -7.7f));
+            GameObject objbullet = CreateObjectRelativeCenter(sword, up ? new Vector2(4.3f, 7.5f) : new Vector2(-4.3f, -7.7f));
 
             DirectionalBullet bullet = objbullet.GetComponent<DirectionalBullet>();
 

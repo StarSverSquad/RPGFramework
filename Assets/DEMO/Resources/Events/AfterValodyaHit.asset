@@ -42,6 +42,10 @@ MonoBehaviour:
       outputPortName: Then
       outputNodeGUID: 28527664c5c466047bf602875fc49343
     - inputPortName: Input
+      inputNodeGUID: 10ec98dd3e3ef574b9e33e59685dbccd
+      outputPortName: Else
+      outputNodeGUID: 28527664c5c466047bf602875fc49343
+    - inputPortName: Input
       inputNodeGUID: ff655f748bc76954f83da72eb780cecf
       outputPortName: Output
       outputNodeGUID: 1b34ffa78fbd62b4894982035dea515d
@@ -57,10 +61,6 @@ MonoBehaviour:
       inputNodeGUID: a2553b4912dd3f3408812531e11f6f98
       outputPortName: Output
       outputNodeGUID: 725f3de52b0506641ae3303b0f1e3356
-    - inputPortName: Input
-      inputNodeGUID: 10ec98dd3e3ef574b9e33e59685dbccd
-      outputPortName: Else
-      outputNodeGUID: 28527664c5c466047bf602875fc49343
     nodes:
     - guid: db2b7e223046b3b4087a3d7cfe4cdf6b
       actionIndex: 0
@@ -143,8 +143,8 @@ MonoBehaviour:
           text: "\u041D\u0443 \u0447\u0442\u043E \u0449\u0438\u0433\u043E \u0442\u044B
             \u0432\u0435\u0434\u044C \u043D\u0430\u0432\u0435\u0440\u043D\u0438\u043A\u0430
             \u0434\u0443\u043C\u0430\u043B \u0447\u0442\u043E \u044F \u0431\u0443\u0434\u0443
-            \u043F\u0440\u043E\u0441\u0442\u043E \u0441\u0442\u043E\u044F\u0442\u044C\n\u0438
-            \u043F\u0440\u0438\u043D\u0438\u043C\u0430\u0442\u044C \u0443\u0434\u0430\u0440\u044B!"
+            \n\u043F\u0440\u043E\u0441\u0442\u043E \u0441\u0442\u043E\u044F\u0442\u044C
+            \u0438 \u043F\u0440\u0438\u043D\u0438\u043C\u0430\u0442\u044C \u0443\u0434\u0430\u0440\u044B!"
           speed: 0
           clear: 1
           wait: 1

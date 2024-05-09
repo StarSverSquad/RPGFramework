@@ -82,14 +82,34 @@ public class SaveLoadManager
         GameManager.Instance.LocationManager.ChangeLocation(location, CellForSave.PlayerPosition, CellForSave.PlayerDirection);
     }
 
-    public void SaveConfig()
+    public void SaveConfig(GameConfig gameConfig)
     {
+        string PathToSave = PlaceForSaves.FullName + @"\Config.cfg";
 
+        string JSONSave = JsonUtility.ToJson(gameConfig, true);
+
+        using (var PlaceForSave = new StreamWriter(PathToSave, false))
+        {
+            PlaceForSave.WriteLine(JSONSave);
+        }
     }
 
-    public void LoadConfig()
+    public GameConfig? LoadConfig()
     {
+        string PathToSave = PlaceForSaves.FullName + @"\Config.cfg";
 
+        string JSONSave;
+
+        if (!File.Exists(PathToSave)) return null;
+
+        using (var PlaceForSave = new StreamReader(PathToSave, false))
+        {
+            JSONSave = PlaceForSave.ReadToEnd();
+        }
+
+        GameConfig config = JsonUtility.FromJson<GameConfig>(JSONSave);
+
+        return config;
     }
 
     public List<CharacterSaveInfo> SaveCharacters(List<RPGCharacter> RegisteredCharacters, List<RPGCharacter> Characters)

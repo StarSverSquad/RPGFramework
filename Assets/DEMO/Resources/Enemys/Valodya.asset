@@ -16,13 +16,14 @@ MonoBehaviour:
   Name: "\u0412\u0430\u043B\u043E\u0434\u044F REQUIEM"
   Description: "\u0427\u0442\u043E \u0436\u0435...<\\:>\n\u041F\u043E\u0445\u043E\u0436\u0435
     \u0443 \u0432\u0430\u0441 \u043F\u0440\u043E\u0431\u043B\u0435\u043C\u044B"
-  DefaultHeal: 300
+  DefaultHeal: 200
   DefaultMana: 0
-  DefaultDamage: 15
+  DefaultDamage: 13
   DefaultDefence: 3
   DefaultAgility: 10
   DefaultLuck: 5
   Patterns:
+  - {fileID: 7402597773066921840, guid: c2b6dc762863c4d4ba5c73363d832498, type: 3}
   - {fileID: 7222299820296667489, guid: 3b4da32fdc913e84ba150b9aef2201de, type: 3}
   - {fileID: 6159225960653585743, guid: 29c52af115654764b90c4abec8f2dfc9, type: 3}
   - {fileID: 8427086860265614378, guid: afdfe98f598eec447b2a01b9dd4ebfe4, type: 3}

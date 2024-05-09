@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
@@ -9,23 +8,18 @@ public abstract class TextActionBase
 {
     public enum ActionType
     {
-        TextReplace, TextAction, All
+        TextReplace, TextAction
     }
-
-    private ActionType _actType;
-    public ActionType ActType => _actType;
-
-    private Regex _regex;
 
     public TextWriterBase TextWriter;
 
-    protected string resultText;
-    public string ResultText => resultText;
+    public ActionType Type { get; private set; }
+    public Regex Regex { get; private set; }
 
     public TextActionBase(Regex regex, ActionType actType)
     {
-        _regex = regex;
-        _actType = actType;
+        this.Regex = regex;
+        this.Type = actType;
     }
 
     public Coroutine Invoke(MonoBehaviour listner)
@@ -33,9 +27,19 @@ public abstract class TextActionBase
         return listner.StartCoroutine(Action());
     }
 
-    public bool MatchRegex(string str) => _regex.IsMatch(str);
+    public bool MatchRegex(string str) => Regex.IsMatch(str);
 
-    public abstract void CalculateText(string str);
+    /// <summary>
+    /// Нужен для обработки текста внутри тега.
+    /// Используеться для любой теговой обработки.
+    /// </summary>
+    public virtual void ParseText(string str) { }
 
-    protected abstract IEnumerator Action();
+    /// <summary>
+    /// Нужен для обработки текста внутри тега и возращения нового.
+    /// Используется для подмены текста.
+    /// </summary>
+    public virtual string GetText(string str) => "";
+
+    protected virtual IEnumerator Action() { yield break; } 
 }

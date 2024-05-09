@@ -19,6 +19,7 @@ public class CommonManager : ContentManagerBase, IManagerInitialize
 
     public override void InitializeChild()
     {
+        MessageBox.Initialize();
         Media.Initialize();
     }
 }

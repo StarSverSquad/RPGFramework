@@ -49,10 +49,9 @@ public class MessageBoxManager : TextWriterBase
 
     public MessageInfo Message => message is MessageInfo m ? m : null;
 
-
-    protected override void Awake()
+    public override void Initialize()
     {
-        base.Awake();
+        base.Initialize();
 
         arrow.SetActive(false);
         messageBox.gameObject.SetActive(false);
@@ -130,12 +129,12 @@ public class MessageBoxManager : TextWriterBase
 
     public override bool ContinueCanExecute()
     {
-        return Input.GetKeyDown(GameManager.Instance.GameConfig.Accept);
+        return Input.GetKeyDown(GameManager.Instance.BaseOptions.Accept);
     }
 
     public override bool SkipCanExecute()
     {
-        return Input.GetKeyDown(GameManager.Instance.GameConfig.Cancel);
+        return Input.GetKeyDown(GameManager.Instance.BaseOptions.Cancel);
     }
 
     public override void OnEveryLetter(char letter)
@@ -195,14 +194,6 @@ public class MessageBoxManager : TextWriterBase
     public override void OnEndWait()
     {
         arrow.SetActive(false);
-
-        // Эфекты текста нужно наверное даработать
-        //if ((Message.clear || Message.closeWindow) && textEffect != null)
-        //{
-        //    textEffect.StopEffect();
-
-        //    textEffect = null;
-        //}
     }
 }
 

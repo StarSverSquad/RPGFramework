@@ -23,7 +23,6 @@ MonoBehaviour:
   - rid: 3369752620995182628
   - rid: 3369752620995182627
   - rid: 3369752620995182618
-  - rid: 3369752651146461296
   Meta:
     edges:
     - inputPortName: Input
@@ -51,10 +50,6 @@ MonoBehaviour:
       outputPortName: Else
       outputNodeGUID: b3a186ae5769db642bacd82acd8961c7
     - inputPortName: Input
-      inputNodeGUID: 65bda9dea4875cc4b877e62b84374bfa
-      outputPortName: Yes
-      outputNodeGUID: a2badee3f968cb64ebb0eea315b8c850
-    - inputPortName: Input
       inputNodeGUID: 0f12ab5d8808ba94fac705f8ccf14036
       outputPortName: No
       outputNodeGUID: a2badee3f968cb64ebb0eea315b8c850
@@ -64,8 +59,8 @@ MonoBehaviour:
       outputNodeGUID: a44231d496c7e2944b9f1b61841a1b88
     - inputPortName: Input
       inputNodeGUID: 254a5e7192eb5fc48a98ddacef824797
-      outputPortName: Output
-      outputNodeGUID: 65bda9dea4875cc4b877e62b84374bfa
+      outputPortName: Yes
+      outputNodeGUID: a2badee3f968cb64ebb0eea315b8c850
     nodes:
     - guid: 99ac3ab04abcb9b4db1685242b6f64a6
       actionIndex: 0
@@ -97,9 +92,6 @@ MonoBehaviour:
     - guid: a44231d496c7e2944b9f1b61841a1b88
       actionIndex: 9
       position: {x: -373.6, y: 228}
-    - guid: 65bda9dea4875cc4b877e62b84374bfa
-      actionIndex: 10
-      position: {x: 147.2, y: 234.4}
   references:
     version: 2
     RefIds:
@@ -141,9 +133,9 @@ MonoBehaviour:
       type: {class: RandomAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions:
-        - rid: 3369752651146461296
+        - rid: 3369752620995182620
         - rid: 3369752620995182628
-        Chance: 0.6
+        Chance: 0.3
     - rid: 3369752620995182628
       type: {class: EndAction, ns: , asm: Assembly-CSharp}
       data:
@@ -178,10 +170,3 @@ MonoBehaviour:
       type: {class: EndAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions: []
-    - rid: 3369752651146461296
-      type: {class: DebugAction, ns: , asm: Assembly-CSharp}
-      data:
-        NextActions:
-        - rid: 3369752620995182620
-        ConsoleOutputText: a
-        WarningLevel: 0

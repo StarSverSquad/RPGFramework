@@ -48,28 +48,28 @@ public class PlayerExplorerMovement : MonoBehaviour
             && !LocalManager.Instance.GameUI.IsOpen)
         {
 
-            if (Input.GetKey(GameManager.Instance.GameConfig.MoveRight))
+            if (Input.GetKey(GameManager.Instance.BaseOptions.MoveRight))
             {
                 MoveDirection = CommonDirection.Right;
                 newViewDirection = CommonDirection.Right;
                 Velocity += new Vector2(1, 0);
             }
 
-            if (Input.GetKey(GameManager.Instance.GameConfig.MoveLeft))
+            if (Input.GetKey(GameManager.Instance.BaseOptions.MoveLeft))
             {
                 MoveDirection = CommonDirection.Left;
                 newViewDirection = CommonDirection.Left;
                 Velocity += new Vector2(-1, 0);
             }
 
-            if (Input.GetKey(GameManager.Instance.GameConfig.MoveUp))
+            if (Input.GetKey(GameManager.Instance.BaseOptions.MoveUp))
             {
                 MoveDirection = CommonDirection.Up;
                 newViewDirection = CommonDirection.Up;
                 Velocity += new Vector2(0, 1);
             }
 
-            if (Input.GetKey(GameManager.Instance.GameConfig.MoveDown))
+            if (Input.GetKey(GameManager.Instance.BaseOptions.MoveDown))
             {
                 MoveDirection = CommonDirection.Down;
                 newViewDirection = CommonDirection.Down;
@@ -105,7 +105,7 @@ public class PlayerExplorerMovement : MonoBehaviour
 
         NormolizedVelocity = Velocity.normalized;
 
-        IsRun = Input.GetKey(GameManager.Instance.GameConfig.Run) && CanRun;
+        IsRun = Input.GetKey(GameManager.Instance.BaseOptions.Run) && CanRun;
 
         Velocity = ResultSpeed * Velocity.normalized;
 

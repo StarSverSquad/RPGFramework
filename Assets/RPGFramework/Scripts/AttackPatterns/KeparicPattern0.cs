@@ -22,9 +22,9 @@ public class KeparicPattern0 : RPGAttackPattern
             KepkaBullet blt;
 
             if (right)
-                blt = CreateObject(KeparicBullet.gameObject, new Vector2(1f, 1.5f)).GetComponent<KepkaBullet>();
+                blt = CreateObjectRelativeCenter(KeparicBullet.gameObject, new Vector2(1f, 1.5f)).GetComponent<KepkaBullet>();
             else
-                blt = CreateObject(KeparicBullet.gameObject, new Vector2(-1f, 1.5f)).GetComponent<KepkaBullet>();
+                blt = CreateObjectRelativeCenter(KeparicBullet.gameObject, new Vector2(-1f, 1.5f)).GetComponent<KepkaBullet>();
 
             blt.Initialize(right);
 
@@ -46,9 +46,9 @@ public class KeparicPattern0 : RPGAttackPattern
             KepkaBullet blt;
 
             if (right)
-                blt = CreateObject(KeparicBullet.gameObject, new Vector2(2f, 1.5f)).GetComponent<KepkaBullet>();
+                blt = CreateObjectRelativeCenter(KeparicBullet.gameObject, new Vector2(2f, 1.5f)).GetComponent<KepkaBullet>();
             else
-                blt = CreateObject(KeparicBullet.gameObject, new Vector2(-2f, 1.5f)).GetComponent<KepkaBullet>();
+                blt = CreateObjectRelativeCenter(KeparicBullet.gameObject, new Vector2(-2f, 1.5f)).GetComponent<KepkaBullet>();
 
             blt.Initialize(right);
 

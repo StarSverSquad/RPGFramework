@@ -21,8 +21,11 @@ public class MessageNode : ActionNodeBase
         {
             multiline = true,
             tooltip = "Комманды:\n" +
-                      "\\<[color]=HEXCOLOR>(text)</[color]> - установка цвета (без [])\n" +
-                      "<\\(. или : или |)> - ждать 0.25с, 0.5с, 1с"
+                      "< color=[HEXCOLOR] >[...]< /color > - установка цвета\n" +
+                      "< size=[%] >[...]< /size > - установка размера\n" +
+                      "< \\(., :, |) > - ждать 0.25с, 0.5с, 1с\n" +
+                      "< ! > - пауза\n" +
+                      "< %[LOCALE TAG] > - локализация"
         };
 
         textField.SetValueWithoutNotify(dialog.message.text);

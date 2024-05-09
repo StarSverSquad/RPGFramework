@@ -1007,10 +1007,15 @@ public class BattlePipeline : MonoBehaviour
 
             CharacterBox box = BattleManager.Instance.characterBox.GetBox(character);
 
-            if (character.Entity.Heal != oldHeal)
+            if (character.Entity.Heal < oldHeal)
             {
-                BattleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f), (oldHeal - character.Entity.Heal).ToString());
+                BattleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f), (oldHeal - character.Entity.Heal).ToString(), Color.white, Color.red);
             }
+            else
+            {
+                BattleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f), (oldHeal - character.Entity.Heal).ToString(), Color.white, Color.green);
+            } 
+
         }
 
         foreach (var enemy in Data.Enemys)
@@ -1024,9 +1029,13 @@ public class BattlePipeline : MonoBehaviour
 
             EnemyModel model = BattleManager.Instance.enemyModels.GetModel(enemy);
 
-            if (enemy.Entity.Heal != oldHeal)
+            if (enemy.Entity.Heal < oldHeal)
             {
-                BattleManager.Utility.SpawnFallingText(model.DamageTextGlobalPoint, (oldHeal - enemy.Entity.Heal).ToString());
+                BattleManager.Utility.SpawnFallingText(model.DamageTextGlobalPoint, (oldHeal - enemy.Entity.Heal).ToString(), Color.white, Color.red);
+            }
+            else
+            {
+                BattleManager.Utility.SpawnFallingText(model.DamageTextGlobalPoint, (oldHeal - enemy.Entity.Heal).ToString(), Color.white, Color.green);
             }
         }
     }
@@ -1164,7 +1173,7 @@ public class BattlePipeline : MonoBehaviour
 
             GameManager.Instance.GameData.Money += money;
 
-            moneyText += $"* Вы получили {money} {GameManager.Instance.GameConfig.MoneyName}!\n";
+            moneyText += $"* Вы получили {money} {GameManager.ILocalization.GetLocale("Basic_MoneyName")}!\n";
         }
 
         bool first = true;
@@ -1177,16 +1186,16 @@ public class BattlePipeline : MonoBehaviour
 
             GameManager.Instance.Inventory.AddToItemCount(drop.item, count);
 
-            string countText = count > 1 ? $"{count}x" : "";
+            string countText = count > 1 ? $" {count}x" : "";
 
             if (first)
             {
-                dropText += $"* Вы получили {drop.item.Name} {countText}";
+                dropText += $"* Вы получили {drop.item.Name}{countText}";
 
                 first = false;
             }
             else
-                dropText += $", {drop.item.Name} {countText}";
+                dropText += $", {drop.item.Name}{countText}";
         }
 
         if (!first)

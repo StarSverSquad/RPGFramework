@@ -21,7 +21,7 @@ public class TestPattern : RPGAttackPattern
         {
             float y = Random.Range(-2.5f, 0.5f);
 
-            CreateObject(SomeBullet.gameObject, new Vector2(-4, y));
+            CreateObjectRelativeCenter(SomeBullet.gameObject, new Vector2(-4, y));
 
             yield return new WaitForSeconds(time);
         }
@@ -35,7 +35,7 @@ public class TestPattern : RPGAttackPattern
         {
             float y = Random.Range(-2.5f, 0.5f);
 
-            CreateObject(SomeBullet.gameObject, new Vector2(-4, y));
+            CreateObjectRelativeCenter(SomeBullet.gameObject, new Vector2(-4, y));
 
             yield return new WaitForSeconds(time);
         }

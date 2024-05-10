@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class ConditionNode : ActionNodeBase
 {
@@ -363,6 +364,121 @@ public class ConditionNode : ActionNodeBase
                         charField.RegisterValueChangedCallback(i =>
                         {
                             cip.Value = i.newValue as RPGCharacter;
+
+                            MakeDirty();
+                        });
+
+                        horizontal1.Add(charField);
+
+                        conditionBlock.Add(horizontal1);
+                    }
+                    break;
+                case ItemCondition itemcon:
+                    {
+                        VisualElement horizontal0 = new VisualElement();
+                        horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                        horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                        Label lbl0 = new Label("Предмет");
+                        Label lbl1 = new Label("Количество");
+
+                        horizontal0.Add(lbl0);
+                        horizontal0.Add(lbl1);
+
+                        conditionBlock.Add(horizontal0);
+
+                        VisualElement horizontal1 = new VisualElement();
+                        horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                        horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                        ObjectField itemField = new ObjectField()
+                        {
+                            allowSceneObjects = false,
+                            objectType = typeof(RPGCollectable)
+                        };
+
+                        itemField.SetValueWithoutNotify(itemcon.Value);
+                        itemField.RegisterValueChangedCallback(i =>
+                        {
+                            itemcon.Value = i.newValue as RPGCollectable;
+
+                            MakeDirty();
+                        });
+
+                        horizontal1.Add(itemField);
+
+                        PopupField<int> popupField = new PopupField<int>(new List<int>() { 0, 1, 2, 3, 4, 5 }, 0,
+                                                                        FormatOperationList, FormatOperationList);
+
+                        popupField.SetValueWithoutNotify((int)itemcon.Operation);
+                        popupField.RegisterValueChangedCallback(i =>
+                        {
+                            itemcon.Operation = (ConditionOperation)i.newValue;
+
+                            MakeDirty();
+                        });
+
+                        horizontal1.Add(popupField);
+
+                        IntegerField valfield = new IntegerField();
+                        valfield.SetValueWithoutNotify(itemcon.Count);
+                        valfield.RegisterValueChangedCallback(i =>
+                        {
+                            if (i.newValue < 0)
+                            {
+                                valfield.SetValueWithoutNotify(0);
+                                itemcon.Count = 0;
+                            }
+                            else 
+                                itemcon.Count = i.newValue;
+
+                            MakeDirty();
+                        });
+
+                        horizontal1.Add(valfield);
+
+                        conditionBlock.Add(horizontal1);
+                    }
+                    break;
+                case PlayerPrefsCondition pref:
+                    {
+                        VisualElement horizontal0 = new VisualElement();
+                        horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                        horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                        Label lbl0 = new Label("Ключ");
+                        Label lbl1 = new Label("Значение");
+
+                        horizontal0.Add(lbl0);
+                        horizontal0.Add(lbl1);
+
+                        conditionBlock.Add(horizontal0);
+
+                        VisualElement horizontal1 = new VisualElement();
+                        horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                        horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                        TextField namefield = new TextField();
+                        namefield.SetValueWithoutNotify(pref.Key);
+                        namefield.RegisterValueChangedCallback(i =>
+                        {
+                            pref.Key = i.newValue;
+
+                            MakeDirty();
+                        });
+
+                        horizontal1.Add(namefield);
+
+                        Label lbl = new Label("==");
+
+                        horizontal1.Add(lbl);
+
+                        IntegerField charField = new IntegerField();
+
+                        charField.SetValueWithoutNotify(pref.Value);
+                        charField.RegisterValueChangedCallback(i =>
+                        {
+                            pref.Value = i.newValue;
 
                             MakeDirty();
                         });

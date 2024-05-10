@@ -17,8 +17,10 @@ public class RPGBattleInfo : ScriptableObject
     [Tooltip("Можно ли сбежать?")]
     public bool CanFlee = false;
 
+    [Tooltip("Стандартный вывод сообщений")]
     public bool ShowStartMessage = true;
     public bool ShowEndMessage = true;
+    public bool ShowDeadMessage = true;
 
     [Header("Настройки аудио")]
     public AudioClip BattleMusic;
@@ -45,7 +47,8 @@ public class RPGBattleEvent
     public enum InvokePeriod
     {
         NoWay, EveryPlayerTurn, EveryEnemyTurn, OnPlayerTurn, OnEnemyTurn, 
-        OnWin, OnFlee, OnLose, OnBattleStart, OnBattleEnd
+        OnWin, OnFlee, OnLose, OnBattleStart, OnBattleEnd, BeforeHit, AfterHit,
+        OnLessEnemyHeal, OnLessCharacterHeal
     }
 
     public InvokePeriod Period;
@@ -56,4 +59,7 @@ public class RPGBattleEvent
     public GraphEvent Event;
 
     public int Turn;
+
+    public string EntityTag;
+    public float Heal;
 }

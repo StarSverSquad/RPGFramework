@@ -45,6 +45,23 @@ public class RPGBattleInfoEditor : Editor
                 info.Events[i].Turn = EditorGUILayout.IntField("Ход", info.Events[i].Turn);
             }
 
+            if (info.Events[i].Period == RPGBattleEvent.InvokePeriod.BeforeHit ||
+                info.Events[i].Period == RPGBattleEvent.InvokePeriod.AfterHit)
+            {
+                GUILayout.Space(5);
+
+                info.Events[i].EntityTag = EditorGUILayout.TextField("Тег", info.Events[i].EntityTag);
+            }
+
+            if (info.Events[i].Period == RPGBattleEvent.InvokePeriod.OnLessEnemyHeal ||
+                info.Events[i].Period == RPGBattleEvent.InvokePeriod.OnLessCharacterHeal)
+            {
+                GUILayout.Space(5);
+
+                info.Events[i].EntityTag = EditorGUILayout.TextField("Тег", info.Events[i].EntityTag);
+                info.Events[i].Heal = EditorGUILayout.FloatField("Хп", info.Events[i].Heal);
+            }
+
             if (GUILayout.Button("Удалить", GUILayout.Width(150)))
                 info.Events.Remove(info.Events[i]);
 

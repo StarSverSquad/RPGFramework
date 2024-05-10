@@ -8,6 +8,7 @@ public class CommonManager : ContentManagerBase, IManagerInitialize
 
     public MessageBoxManager MessageBox;
     public ChoiceBoxManager ChoiceBox;
+    public MediaManager Media;
 
     public void Initialize()
     {
@@ -18,6 +19,7 @@ public class CommonManager : ContentManagerBase, IManagerInitialize
 
     public override void InitializeChild()
     {
-        
+        MessageBox.Initialize();
+        Media.Initialize();
     }
 }

@@ -10,9 +10,9 @@ public class WaitTextAction : TextActionBase
     public WaitTextAction() : base(new Regex(@"\\(\.|:|\|)"), ActionType.TextAction)
     {
         waitTime = 0;
-    }//
+    }
 
-    public override void CalculateText(string str)
+    public override void ParseText(string str)
     {
         switch (str[1])
         {

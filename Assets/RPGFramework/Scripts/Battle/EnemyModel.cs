@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class EnemyModel : MonoBehaviour 
 {
-    [SerializeField]
-    private VisualDeathEffectBase deathEffect;
-    [SerializeField]
-    private VisualDamageEffectBase damageEffect;
+    [Serializable]
+    public struct ModelAnimator
+    {
+        public Animator Animator;
+        public string Tag;
+    }
 
+    [Header("Ссылки")]
     [SerializeField]
     private GameObject modelContainer;
-
     [SerializeField]
     private IconList iconList;
 
@@ -24,7 +27,17 @@ public class EnemyModel : MonoBehaviour
     private RectTransform attackPoint;
     public Vector2 AttackGlobalPoint => attackPoint.transform.position;
 
-    public bool IsAnimating => damageEffect.IsAnimating || deathEffect.IsAnimating;
+    [Header("Еффекты")]
+    [SerializeField]
+    private VisualDeathEffectBase deathEffect;
+    [SerializeField]
+    private VisualDamageEffectBase damageEffect;
+
+    [Header("Аниматоры")]
+    [SerializeField]
+    private List<ModelAnimator> animators = new List<ModelAnimator>();
+
+    public bool IsAnimatingEffect => damageEffect.IsAnimating || deathEffect.IsAnimating;
 
     private BattleEnemyInfo enemy;
 
@@ -66,6 +79,8 @@ public class EnemyModel : MonoBehaviour
         if (deathEffect != null)
             deathEffect.Cleanup();
     }
+
+    public Animator GetAnimator(string tag) => animators.First(a => a.Tag == tag).Animator;
 
     private void OnDestroy()
     {

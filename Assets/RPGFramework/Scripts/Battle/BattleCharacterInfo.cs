@@ -1,6 +1,4 @@
-﻿using static UnityEngine.EventSystems.EventTrigger;
-
-public class BattleCharacterInfo : BattleEntityInfo
+﻿public class BattleCharacterInfo : BattleEntityInfo
 {
     public BattleCharacterAction BattleAction { get; set; }
 
@@ -77,5 +75,5 @@ public class BattleCharacterInfo : BattleEntityInfo
 
 public enum BattleCharacterAction
 {
-    None, Fight, Act, Item, Defence
+    None, Fight, Act, Item, Defence, Spell
 }

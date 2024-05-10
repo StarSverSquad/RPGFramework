@@ -19,4 +19,12 @@ public class WaitAction : GraphActionBase
     {
         return "Ждать";
     }
+
+    public override object Clone()
+    {
+        return new WaitAction()
+        {
+            time = time
+        };
+    }
 }

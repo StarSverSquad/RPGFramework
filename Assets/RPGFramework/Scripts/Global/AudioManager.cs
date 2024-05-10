@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Rendering;
 
 public class AudioManager : MonoBehaviour
@@ -15,6 +16,15 @@ public class AudioManager : MonoBehaviour
     private AudioSource MESource;
     [SerializeField]
     private AudioSource SESource;
+
+    [SerializeField]
+    private AudioMixer BGMMixer;
+    [SerializeField]
+    private AudioMixer BGSMixer;
+    [SerializeField]
+    private AudioMixer SEMixer;
+    [SerializeField]
+    private AudioMixer MEMixer;
 
     public AudioClip BGMClip => BGMSource.clip;
     public AudioClip BGSClip => BGSSource.clip;
@@ -36,6 +46,27 @@ public class AudioManager : MonoBehaviour
     private Coroutine fadeBGMCoroutine;
     private Coroutine fadeBGSCoroutine;
     private Coroutine fadeMECoroutine;
+
+    #region Mixers
+
+    public void SetBGMMixerVolume(float volume)
+    {
+        BGMMixer.SetFloat("Volume", volume);
+    }
+    public void SetBGSMixerVolume(float volume)
+    {
+        BGSMixer.SetFloat("Volume", volume);
+    }
+    public void SetSEMixerVolume(float volume)
+    {
+        SEMixer.SetFloat("Volume", volume);
+    }
+    public void SetMEMixerVolume(float volume)
+    {
+        MEMixer.SetFloat("Volume", volume);
+    }
+
+    #endregion
 
     #region BGM
 

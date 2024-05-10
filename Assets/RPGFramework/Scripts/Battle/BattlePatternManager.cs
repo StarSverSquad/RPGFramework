@@ -57,14 +57,25 @@ public class BattlePatternManager : MonoBehaviour
         CleanUp();
     }
 
-    /// <summary>
-    /// Создаёт объект паттерна
-    /// </summary>
-    /// <param name="obj">Объект</param>
-    /// <param name="offset">Отступ от центра</param>
-    public GameObject CreatePatternObject(GameObject obj, Vector2 offset)
+    public GameObject CreateObjectRelativeCenter(GameObject obj, Vector2 offset)
     {
         GameObject o = Instantiate(obj, (Vector2)transform.position + offset, Quaternion.identity, transform);
+
+        patternObjects.Add(o);
+
+        return o;
+    }
+    public GameObject CreateObjectRelativeBattleField(GameObject obj, Vector2 offset)
+    {
+        GameObject o = Instantiate(obj, (Vector2)BattleManager.Instance.battleField.transform.position + offset, Quaternion.identity, transform);
+
+        patternObjects.Add(o);
+
+        return o;
+    }
+    public GameObject CreateObjectInWorldSpace(GameObject obj, Vector2 position)
+    {
+        GameObject o = Instantiate(obj, position, Quaternion.identity, transform);
 
         patternObjects.Add(o);
 

@@ -10,6 +10,7 @@ public class LocalCharacterManager : MonoBehaviour, IManagerInitialize
     public RPGCharacter[] Characters => GameManager.Instance.Character.Characters;
 
     public List<DynamicExplorerObject> Models = new List<DynamicExplorerObject>();
+
     public List<Vector2> Targets = new List<Vector2>();
 
     [SerializeField]
@@ -17,18 +18,21 @@ public class LocalCharacterManager : MonoBehaviour, IManagerInitialize
     [SerializeField]
     private float updateSpeed = 1f;
     [SerializeField]
-    private float distance = 0;
-    [SerializeField]
     private float moveTime = 1f;
+
+    private float distance = 0;
+
+    private PlayerExplorerMovement PlayerMovement => ExplorerManager.PlayerMovement;
+    private ExplorerEventHandler EventHandler => ExplorerManager.Instance.EventHandler;
 
     public void Initialize()
     {
-        GameManager.Instance.Character.OnCharaterListChanged += CharacterManager_OnCharaterListChanged;
+        PlayerMovement.OnMoving += Movement_OnMoving;
+        PlayerMovement.OnStopMoving += Movement_OnStopMoving;
+        PlayerMovement.OnStartMoving += PlayerMovement_OnStartMoving;
+        PlayerMovement.OnRotate += PlayerMovement_OnRotate;
 
-        ExplorerManager.PlayerMovement.OnMoving += Movement_OnMoving;
-        ExplorerManager.PlayerMovement.OnStopMoving += Movement_OnStopMoving;
-        ExplorerManager.PlayerMovement.OnStartMoving += PlayerMovement_OnStartMoving;
-        ExplorerManager.PlayerMovement.OnRotate += PlayerMovement_OnRotate;
+        EventHandler.OnHandle += EventHandler_OnHandle;
     }
 
     public void AddModel(DynamicExplorerObject model)
@@ -80,13 +84,13 @@ public class LocalCharacterManager : MonoBehaviour, IManagerInitialize
 
     private void Movement_OnStopMoving()
     {
-        if (Models.Count == 0)
+        if (Models.Count == 0 || EventHandler.EventRuning)
             return;
 
         for (int i = 0; i < Models.Count; i++)
         {
             if (i == 0)
-                Models[i].StopAnimation(ExplorerManager.PlayerMovement.ViewDirection);
+                Models[i].StopAnimation(PlayerMovement.ViewDirection);
             else
                 Models[i].PauseMove();
         }
@@ -94,7 +98,7 @@ public class LocalCharacterManager : MonoBehaviour, IManagerInitialize
 
     private void Movement_OnMoving()
     {
-        if (Models.Count == 0)
+        if (Models.Count == 0 || EventHandler.EventRuning)
             return;
 
         float scalarvelocity = updateSpeed * Time.fixedDeltaTime;
@@ -124,10 +128,10 @@ public class LocalCharacterManager : MonoBehaviour, IManagerInitialize
 
     private void PlayerMovement_OnStartMoving()
     {
-        if (Models.Count == 0)
+        if (Models.Count == 0 || EventHandler.EventRuning)
             return;
 
-        Models[0].AnimateMove(ExplorerManager.PlayerMovement.ViewDirection);
+        Models[0].AnimateMove(PlayerMovement.ViewDirection);
 
         for (int i = 1; i < Models.Count; i++)
         {
@@ -144,19 +148,21 @@ public class LocalCharacterManager : MonoBehaviour, IManagerInitialize
         Models[0].AnimateMove(obj);
     }
 
-    private void CharacterManager_OnCharaterListChanged()
+    private void EventHandler_OnHandle()
     {
-        //UpdateModels();
+        foreach (var model in Models)
+        {
+            model.StopAnimation(PlayerMovement.ViewDirection);
+        }
     }
-
 
     private void OnDestroy()
     {
-        GameManager.Instance.Character.OnCharaterListChanged -= CharacterManager_OnCharaterListChanged;
+        PlayerMovement.OnMoving -= Movement_OnMoving;
+        PlayerMovement.OnStopMoving -= Movement_OnStopMoving;
+        PlayerMovement.OnStartMoving -= PlayerMovement_OnStartMoving;
+        PlayerMovement.OnRotate -= PlayerMovement_OnRotate;
 
-        ExplorerManager.PlayerMovement.OnMoving -= Movement_OnMoving;
-        ExplorerManager.PlayerMovement.OnStopMoving -= Movement_OnStopMoving;
-        ExplorerManager.PlayerMovement.OnStartMoving -= PlayerMovement_OnStartMoving;
-        ExplorerManager.PlayerMovement.OnRotate -= PlayerMovement_OnRotate;
+        EventHandler.OnHandle -= EventHandler_OnHandle;
     }
 }

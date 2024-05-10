@@ -14,7 +14,7 @@ public class BattleUsingService
         this.gameManager = gameManager;
     }
 
-    public IEnumerator UseAbility(RPGAbility ability, BattleEntityInfo user, params BattleEntityInfo[] targets)
+    public IEnumerator UseAbility(RPGAbility ability, BattleEntityInfo user, params BattleEntityInfo[] targets) 
     {
         if (targets.Any(i => i is BattleEnemyInfo) && ability.VisualEffect != null)
         {
@@ -77,20 +77,20 @@ public class BattleUsingService
 
                 if (healDif < 0)
                 {
-                    battleManager.utility.SpawnDamageText((Vector2)model.transform.position + new Vector2(0, 0.5f),
-                                    Mathf.Abs(healDif).ToString(), Color.red, Color.white);
+                    battleManager.utility.SpawnFallingText((Vector2)model.transform.position + new Vector2(0, 0.5f),
+                                    Mathf.Abs(healDif).ToString(), Color.white, Color.red);
 
                     model.Damage();
                 }
                     
                 else if (healDif > 0)
-                    battleManager.utility.SpawnDamageText((Vector2)model.transform.position + new Vector2(0, 0.5f),
-                                    healDif.ToString(), Color.green, Color.white);
+                    battleManager.utility.SpawnFallingText((Vector2)model.transform.position + new Vector2(0, 0.5f),
+                                    healDif.ToString(), Color.white, Color.green);
 
                 for (int i = 0; i < states.Count; i++)
                 {
-                    battleManager.utility.SpawnDamageText(model.AttackGlobalPoint + new Vector2(0, 0.2f + (0.2f * i)), states[i].Name,
-                        states[i].Color, Color.white);
+                    battleManager.utility.SpawnFallingText(model.AttackGlobalPoint + new Vector2(0, 0.2f + (0.2f * i)), states[i].Name,
+                        Color.white, states[i].Color);
                 }
 
 
@@ -110,24 +110,24 @@ public class BattleUsingService
                 CharacterBox box = BattleManager.Instance.characterBox.GetBox(character);
 
                 if (healDif < 0)
-                    battleManager.utility.SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1f),
-                                    Mathf.Abs(healDif).ToString(), Color.red, Color.white);
+                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
+                                    Mathf.Abs(healDif).ToString(), Color.white, Color.red);
                 else if (healDif > 0)
-                    battleManager.utility.SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1f),
-                                    healDif.ToString(), Color.green, Color.white);
+                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
+                                    healDif.ToString(), Color.white, Color.green);
 
                 if (manaDif > 0)
-                    battleManager.utility.SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1.4f),
-                                    manaDif.ToString(), Color.cyan, Color.white);
+                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f),
+                                    manaDif.ToString(), Color.white, Color.cyan);
 
                 for (int i = 0; i < states.Count; i++)
                 {
-                    battleManager.utility.SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 2f + (0.2f * i)), states[i].Name,
-                                                            states[i].Color, Color.white);
+                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 2f + (0.2f * i)), states[i].Name,
+                                                            Color.white, states[i].Color);
                 }
 
                 if (character.Heal <= 0)
-                    battleManager.utility.FallCharacter(character);
+                    character.Heal = 1;
 
                 if (ability.WakeupCharacter && character.IsDead)
                 {
@@ -207,20 +207,20 @@ public class BattleUsingService
 
                 if (healDif < 0)
                 {
-                    battleManager.utility.SpawnDamageText((Vector2)model.transform.position + new Vector2(0, 0.5f),
-                                    Mathf.Abs(healDif).ToString(), Color.red, Color.white);
+                    battleManager.utility.SpawnFallingText((Vector2)model.transform.position + new Vector2(0, 0.5f),
+                                    Mathf.Abs(healDif).ToString(), Color.white, Color.red);
 
                     model.Damage();
                 }
                     
                 else if (healDif > 0)
-                    battleManager.utility.SpawnDamageText((Vector2)model.transform.position + new Vector2(0, 0.5f),
-                                    healDif.ToString(), Color.green, Color.white);
+                    battleManager.utility.SpawnFallingText((Vector2)model.transform.position + new Vector2(0, 0.5f),
+                                    healDif.ToString(), Color.white, Color.green);
 
                 for (int i = 0; i < states.Count; i++)
                 {
-                    battleManager.utility.SpawnDamageText(model.AttackGlobalPoint + new Vector2(0, 0.2f + (0.2f * i)), states[i].Name,
-                        states[i].Color, Color.white);
+                    battleManager.utility.SpawnFallingText(model.AttackGlobalPoint + new Vector2(0, 0.2f + (0.2f * i)), states[i].Name,
+                        Color.white, states[i].Color);
                 }
 
 
@@ -240,24 +240,25 @@ public class BattleUsingService
                 CharacterBox box = BattleManager.Instance.characterBox.GetBox(character);
 
                 if (healDif < 0)
-                    battleManager.utility.SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1f),
-                                    Mathf.Abs(healDif).ToString(), Color.red, Color.white);
+                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
+                                    Mathf.Abs(healDif).ToString(), Color.white, Color.red);
                 else if (healDif > 0)
-                    battleManager.utility.SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1f),
-                                    healDif.ToString(), Color.green, Color.white);
+                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
+                                    healDif.ToString(), Color.white, Color.green);
 
                 if (manaDif > 0)
-                    battleManager.utility.SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1.4f),
-                                    manaDif.ToString(), Color.cyan, Color.white);
+                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f),
+                                    manaDif.ToString(), Color.white, Color.cyan);
 
                 for (int i = 0; i < states.Count; i++)
                 {
-                    battleManager.utility.SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 2f + (0.2f * i)), states[i].Name,
-                                                            states[i].Color, Color.white);
+                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 2f + (0.2f * i)), states[i].Name,
+                                                            Color.white, states[i].Color);
                 }
 
                 if (character.Heal <= 0)
-                    battleManager.utility.FallCharacter(character);
+                    character.Heal = 1;
+                    
 
                 if (item.WakeupCharacter && character.IsDead)
                 {

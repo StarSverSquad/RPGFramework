@@ -131,13 +131,13 @@ public class UISectionBase : MonoBehaviour, IManagerInitialize
         currentElement.Focus();
     }
 
-    public virtual bool CancelCanExecute() => Input.GetKeyDown(GameManager.Instance.GameConfig.Cancel);
-    public virtual bool AcceptCanExecute() => Input.GetKeyDown(GameManager.Instance.GameConfig.Accept);
+    public virtual bool CancelCanExecute() => Input.GetKeyDown(GameManager.Instance.BaseOptions.Cancel);
+    public virtual bool AcceptCanExecute() => Input.GetKeyDown(GameManager.Instance.BaseOptions.Accept);
 
-    public virtual bool TransmitionUp() => Input.GetKeyDown(GameManager.Instance.GameConfig.MoveUp);
-    public virtual bool TransmitionDown() => Input.GetKeyDown(GameManager.Instance.GameConfig.MoveDown);
-    public virtual bool TransmitionLeft() => Input.GetKeyDown(GameManager.Instance.GameConfig.MoveLeft);
-    public virtual bool TransmitionRight() => Input.GetKeyDown(GameManager.Instance.GameConfig.MoveRight);
+    public virtual bool TransmitionUp() => Input.GetKeyDown(GameManager.Instance.BaseOptions.MoveUp);
+    public virtual bool TransmitionDown() => Input.GetKeyDown(GameManager.Instance.BaseOptions.MoveDown);
+    public virtual bool TransmitionLeft() => Input.GetKeyDown(GameManager.Instance.BaseOptions.MoveLeft);
+    public virtual bool TransmitionRight() => Input.GetKeyDown(GameManager.Instance.BaseOptions.MoveRight);
 
     protected virtual IEnumerator SectionCoroutine()
     {

@@ -199,7 +199,7 @@ public class DynamicExplorerObject : MonoBehaviour
     }
     public void TranslateBySpeed(Vector2 moveVector, float speed, bool isAnimate = true)
     {
-        TranslateByTime(moveVector, moveVector.sqrMagnitude / speed, isAnimate);
+        TranslateByTime(moveVector, moveVector.magnitude / speed, isAnimate);
     }
 
     public void MoveToByTime(Vector2 position, float time, bool isAnimate = true)

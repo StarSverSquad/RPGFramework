@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -15,54 +16,56 @@ public abstract class RPGAttackPattern : MonoBehaviour
     /// </summary>
     public bool IsWorking => isWorking;
 
-    /// <summary>
-    /// Владелец паттерна
-    /// </summary>
+    protected Vector2 BattleFieldPosition => BattleManager.Instance.battleField.transform.position;
+
     [HideInInspector]
     public RPGEnemy enemy;
 
-    /// <summary>
-    /// Запускает паттерн
-    /// </summary>
-    /// <param name="tiny">Сокращённый или нет</param>
     public void Invoke(bool tiny = false) => StartCoroutine(MainPatternCoroutine(tiny));
 
-    /// <summary>
-    /// Создаёт объект паттерна
-    /// </summary>
-    /// <param name="obj">Объект</param>
-    /// <param name="offset">Отступ от центра</param>
-    public GameObject CreateObject(GameObject obj, Vector2 offset)
+
+    [Obsolete]
+    protected GameObject CreateObject(GameObject obj, Vector2 offset)
+    {
+        return CreateObjectRelativeCenter(obj, offset);
+    }
+
+    protected GameObject CreateObjectRelativeCenter(GameObject obj, Vector2 offset)
     {
         PatternBullet pb;
 
-        obj.TryGetComponent(out pb);
+        if (obj.TryGetComponent(out pb))
+            pb.enemy = enemy ?? BattleManager.Data.Enemys[0].Enemy;
 
-        // Если есть копонент PatternBullet то устанавливает ему его владельца
-        if (pb != null)
-            pb.enemy = enemy;
-        else
-            pb.enemy = BattleManager.Data.Enemys[0].Enemy;
+        return BattleManager.Instance.pattern.CreateObjectRelativeCenter(obj, offset);
+    }
+    protected GameObject CreateObjectRelativeBattleField(GameObject obj, Vector2 offset)
+    {
+        PatternBullet pb;
 
+        if (obj.TryGetComponent(out pb))
+            pb.enemy = enemy ?? BattleManager.Data.Enemys[0].Enemy;
 
-        return BattleManager.Instance.pattern.CreatePatternObject(obj, offset);
+        return BattleManager.Instance.pattern.CreateObjectRelativeBattleField(obj, offset);
+    }
+    protected GameObject CreateObjectInWorldSpace(GameObject obj, Vector2 position)
+    {
+        PatternBullet pb;
+
+        if (obj.TryGetComponent(out pb))
+            pb.enemy = enemy ?? BattleManager.Data.Enemys[0].Enemy;
+
+        return BattleManager.Instance.pattern.CreateObjectInWorldSpace(obj, position);
     }
 
-    /// <summary>
-    /// Курутина паттерна
-    /// </summary>
+
     protected abstract IEnumerator PatternCoroutine();
-    /// <summary>
-    /// Курутина сокращённого паттерна (Не обязательна)
-    /// </summary>
     protected virtual IEnumerator TinyPatternCoroutine()
     {
         yield return StartCoroutine(PatternCoroutine());
     }
 
-    /// <summary>
-    /// Основная курутина выполнения паттерна
-    /// </summary>
+
     private IEnumerator MainPatternCoroutine(bool tiny)
     {
         isWorking = true;

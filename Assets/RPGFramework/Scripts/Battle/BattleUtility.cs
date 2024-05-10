@@ -61,41 +61,32 @@ public class BattleUtility : MonoBehaviour
                 BattleManager.Instance.battleAudio.PlaySound(Data.EnemyDamage);
             }
 
-            SpawnDamageText(model.DamageTextGlobalPoint, dmg);
+            SpawnFallingText(model.DamageTextGlobalPoint, dmg.ToString(), Color.white, Color.red);
         }
         else
         {
             BattleManager.Instance.battleAudio.PlaySound(Data.Miss);
-            SpawnDamageText(model.DamageTextGlobalPoint, "ПРОМАХ");
+            SpawnFallingText(model.DamageTextGlobalPoint, "ПРОМАХ");
         }
     }
 
-    public void SpawnDamageText(Vector2 position, int damage)
+    public void SpawnFallingText(Vector2 position, string text)
     {
         GameObject obj = Instantiate(Data.DmgText.gameObject, position, Quaternion.identity, Data.BattleCanvas.transform);
         obj.transform.position = position;
 
-        DamageText dmg = obj.GetComponent<DamageText>();
+        FallingText dmg = obj.GetComponent<FallingText>();
 
-        dmg.Invoke(damage);
+        dmg.Invoke(text);
     }
-    public void SpawnDamageText(Vector2 position, string text)
+    public void SpawnFallingText(Vector2 position, string text, Color colorStart, Color colorEnd)
     {
         GameObject obj = Instantiate(Data.DmgText.gameObject, position, Quaternion.identity, Data.BattleCanvas.transform);
         obj.transform.position = position;
 
-        DamageText dmg = obj.GetComponent<DamageText>();
+        FallingText dmg = obj.GetComponent<FallingText>();
 
-        dmg.OutputSimpleText(text);
-    }
-    public void SpawnDamageText(Vector2 position, string text, Color gradientIn, Color gradientOut)
-    {
-        GameObject obj = Instantiate(Data.DmgText.gameObject, position, Quaternion.identity, Data.BattleCanvas.transform);
-        obj.transform.position = position;
-
-        DamageText dmg = obj.GetComponent<DamageText>();
-
-        dmg.OutputSimpleText(text, gradientIn, gradientOut);
+        dmg.Invoke(text, colorStart, colorEnd);
     }
 
     /// <summary>
@@ -134,10 +125,12 @@ public class BattleUtility : MonoBehaviour
 
         int realDamage = character.Entity.GiveDamage(Mathf.RoundToInt(bullet.enemy.Damage * bullet.DamageModifier * (character.IsDefence ? .5f : 1f)));
 
+        BattleManager.Instance.Shaker.Shake(2);
+
         if (bullet.State != null)
         {
             character.Entity.AddState(bullet.State);
-            SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 2f), bullet.State.Name,
+            SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 2f), bullet.State.Name,
                 bullet.State.Color, Color.white);
         }       
 
@@ -163,9 +156,9 @@ public class BattleUtility : MonoBehaviour
         else
         {
             if (realDamage > 0)
-                SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1f), realDamage);
+                SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f), realDamage.ToString(), Color.white, Color.red);
             else
-                SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1f), "ПРОМАХ");
+                SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f), "ПРОМАХ");
         }
             
     }
@@ -174,7 +167,7 @@ public class BattleUtility : MonoBehaviour
     {
         CharacterBox box = BattleManager.Instance.characterBox.GetBox(character);
 
-        SpawnDamageText((Vector2)box.transform.position + new Vector2(0, 1.4f), "ПАЛ");
+        SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f), "ПАЛ");
 
         box.SetDead(true);
         box.MarkTarget(false);

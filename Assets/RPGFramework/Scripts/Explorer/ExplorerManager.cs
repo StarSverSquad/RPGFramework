@@ -6,11 +6,11 @@ public class ExplorerManager : ContentManagerBase, IManagerInitialize
 {
     public static ExplorerManager Instance;
 
-    public ExplorerEventHandler eventHandler;
-    public PlayerExplorerManager playerManager;
+    public ExplorerEventHandler EventHandler;
+    public PlayerExplorerManager PlayerManager;
     public ExplorerItemConsumeManager ItemConsumer;
 
-    public static PlayerExplorerMovement PlayerMovement => Instance.playerManager.movement;
+    public static PlayerExplorerMovement PlayerMovement => Instance.PlayerManager.movement;
 
     public void Initialize()
     {
@@ -29,14 +29,14 @@ public class ExplorerManager : ContentManagerBase, IManagerInitialize
         if (Instance == null)
             return Vector2.zero;
 
-        return Instance.playerManager.transform.position;
+        return Instance.PlayerManager.transform.position;
     }
     public static Vector3 GetPlayerPosition3D()
     {
         if (Instance == null)
             return Vector3.zero;
 
-        return Instance.playerManager.transform.position;
+        return Instance.PlayerManager.transform.position;
     }
 
     public static CommonDirection GetPlayerViewDirection()
@@ -44,6 +44,6 @@ public class ExplorerManager : ContentManagerBase, IManagerInitialize
         if (Instance == null)
             return CommonDirection.None;
 
-        return Instance.playerManager.movement.ViewDirection;
+        return Instance.PlayerManager.movement.ViewDirection;
     }
 }

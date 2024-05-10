@@ -9,7 +9,9 @@ public struct GameConfig
     public float SEVolume;
     public float MEVolume;
 
-    public Resolution Resolution;
+    public int ResolutionX;
+    public int ResolutionY;
+
     public bool Fullscreen;
 
     public LocalizationLanguage Language;

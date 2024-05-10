@@ -23,7 +23,7 @@ public class GameConfigManager
         GameManager.Instance.GameAudio.SetSEMixerVolume(Config.SEVolume);
         GameManager.Instance.GameAudio.SetMEMixerVolume(Config.MEVolume);
 
-        Screen.SetResolution(Config.Resolution.width, Config.Resolution.height, Config.Fullscreen);
+        Screen.SetResolution(Config.ResolutionX, Config.ResolutionY, Config.Fullscreen);
     }
 
     public void Load()
@@ -54,6 +54,8 @@ public class GameConfigManager
     {
         LocalizationLanguage localization;
 
+        Resolution actual = Screen.resolutions.OrderByDescending(i => i.width).First();
+
         switch (Application.systemLanguage)
         {
             case SystemLanguage.Russian:
@@ -73,7 +75,10 @@ public class GameConfigManager
             MEVolume = 1,
 
             Language = localization,
-            Resolution = Screen.resolutions.OrderByDescending(i => i.width).First(),
+
+            ResolutionX = actual.width,
+            ResolutionY = actual.height,
+
             Fullscreen = true
         };
     }

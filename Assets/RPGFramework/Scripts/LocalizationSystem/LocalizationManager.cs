@@ -15,7 +15,7 @@ public class LocalizationManager
         LocalizationLanguage language = GameManager.Instance.GameConfig.Config.Language;
 
         LocalizationSheet[] actualSheets = sheets.Where(i => i.Language == language || i.IsDefault)
-                                                 .OrderByDescending(i => i.Order)
+                                                 .OrderBy(i => i.Order)
                                                  .ToArray();
 
         for (int i = 0; i < actualSheets.Length; i++)

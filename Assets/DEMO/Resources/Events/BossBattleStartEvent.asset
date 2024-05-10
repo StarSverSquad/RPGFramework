@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: BossBattleStartEvent
   m_EditorClassIdentifier: 
   Actions:
-  - rid: 3369752620995182603
   - rid: 3369752620995182602
-  - rid: 3369752620995182604
   - rid: 3369752620995182605
   - rid: 3369752620995182607
+  - rid: 3369752620995182603
+  - rid: 3369752620995182604
   Meta:
     edges:
     - inputPortName: Input
@@ -25,33 +25,33 @@ MonoBehaviour:
       outputPortName: Output
       outputNodeGUID: 99a05f8b7ccee6043bfaead2256dc535
     - inputPortName: Input
-      inputNodeGUID: 5f16fbf04a9e83345a2d9b0b9eb3ff19
+      inputNodeGUID: 12b9bb45bebd2624798b77edced13ee7
       outputPortName: Output
-      outputNodeGUID: 169b6fc049e05b24ebfb107f0e81bc4d
+      outputNodeGUID: 7d6e1baa0b4e0494e963d210ab71cf5a
     - inputPortName: Input
       inputNodeGUID: 7d6e1baa0b4e0494e963d210ab71cf5a
       outputPortName: Output
       outputNodeGUID: 5f16fbf04a9e83345a2d9b0b9eb3ff19
     - inputPortName: Input
-      inputNodeGUID: 12b9bb45bebd2624798b77edced13ee7
+      inputNodeGUID: 5f16fbf04a9e83345a2d9b0b9eb3ff19
       outputPortName: Output
-      outputNodeGUID: 7d6e1baa0b4e0494e963d210ab71cf5a
+      outputNodeGUID: 169b6fc049e05b24ebfb107f0e81bc4d
     nodes:
-    - guid: 5f16fbf04a9e83345a2d9b0b9eb3ff19
-      actionIndex: 0
-      position: {x: 864, y: 216}
     - guid: 99a05f8b7ccee6043bfaead2256dc535
-      actionIndex: 1
+      actionIndex: 0
       position: {x: 146.4, y: 271.2}
-    - guid: 169b6fc049e05b24ebfb107f0e81bc4d
-      actionIndex: 2
-      position: {x: 445.6, y: 163.2}
     - guid: 12b9bb45bebd2624798b77edced13ee7
-      actionIndex: 3
+      actionIndex: 1
       position: {x: 1855.2, y: 236.8}
     - guid: 7d6e1baa0b4e0494e963d210ab71cf5a
-      actionIndex: 4
+      actionIndex: 2
       position: {x: 1467.2, y: 252.8}
+    - guid: 5f16fbf04a9e83345a2d9b0b9eb3ff19
+      actionIndex: 3
+      position: {x: 926.4, y: 220.8}
+    - guid: 169b6fc049e05b24ebfb107f0e81bc4d
+      actionIndex: 4
+      position: {x: 464, y: 169.6}
   references:
     version: 2
     RefIds:
@@ -65,7 +65,7 @@ MonoBehaviour:
       data:
         NextActions:
         - rid: 3369752620995182607
-        Clip: {fileID: 8300000, guid: 3f2679c270192974aaa37165cce6f551, type: 3}
+        Clip: {fileID: 8300000, guid: 98bc5fe2eeb2896439620505551eaad7, type: 3}
         Volume: 1
     - rid: 3369752620995182604
       type: {class: MessageAction, ns: , asm: Assembly-CSharp}
@@ -80,7 +80,7 @@ MonoBehaviour:
           name: "\u0412\u0430\u043B\u043E\u0434\u044F"
           closeWindow: 1
           letterSound: {fileID: 0}
-          image: {fileID: 0}
+          image: {fileID: -532057104, guid: ca65d791298b4b54c86f8d228c2a7cef, type: 3}
           position: 0
           textEffectTypeName: None
     - rid: 3369752620995182605

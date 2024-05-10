@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Actions:
   - rid: 3369752620995182623
-  - rid: 3369752620995182622
   - rid: 3369752620995182629
   - rid: 3369752651146461281
   - rid: 3369752651146461284
@@ -23,16 +22,15 @@ MonoBehaviour:
   - rid: 3369752651146461282
   - rid: 3369752651146461287
   - rid: 3369752620995182624
+  - rid: 3369752620995182622
+  - rid: 3369752694524215361
+  - rid: 3369752694524215362
   Meta:
     edges:
     - inputPortName: Input
       inputNodeGUID: 28527664c5c466047bf602875fc49343
       outputPortName: Output
       outputNodeGUID: db2b7e223046b3b4087a3d7cfe4cdf6b
-    - inputPortName: Input
-      inputNodeGUID: 172114eac78b25243970eded2bfd7f13
-      outputPortName: Output
-      outputNodeGUID: 6fe0730a07a6b9546a4eeeae81016c2b
     - inputPortName: Input
       inputNodeGUID: db2b7e223046b3b4087a3d7cfe4cdf6b
       outputPortName: Output
@@ -61,37 +59,55 @@ MonoBehaviour:
       inputNodeGUID: a2553b4912dd3f3408812531e11f6f98
       outputPortName: Output
       outputNodeGUID: 725f3de52b0506641ae3303b0f1e3356
+    - inputPortName: Input
+      inputNodeGUID: bd5075b6a0b617e4a8ab03358433c670
+      outputPortName: Output
+      outputNodeGUID: 6fe0730a07a6b9546a4eeeae81016c2b
+    - inputPortName: Input
+      inputNodeGUID: 172114eac78b25243970eded2bfd7f13
+      outputPortName: Else
+      outputNodeGUID: bd5075b6a0b617e4a8ab03358433c670
+    - inputPortName: Input
+      inputNodeGUID: e74968b8545f4994e867a5297199e81b
+      outputPortName: Then
+      outputNodeGUID: bd5075b6a0b617e4a8ab03358433c670
     nodes:
     - guid: db2b7e223046b3b4087a3d7cfe4cdf6b
       actionIndex: 0
       position: {x: 499.2, y: 170.4}
-    - guid: 6fe0730a07a6b9546a4eeeae81016c2b
-      actionIndex: 1
-      position: {x: -134.4, y: 248.8}
     - guid: 172114eac78b25243970eded2bfd7f13
-      actionIndex: 2
+      actionIndex: 1
       position: {x: 103.2, y: 189.6}
     - guid: 28527664c5c466047bf602875fc49343
-      actionIndex: 3
+      actionIndex: 2
       position: {x: 788, y: 144.8}
     - guid: 1b34ffa78fbd62b4894982035dea515d
-      actionIndex: 4
+      actionIndex: 3
       position: {x: 1620.8, y: -76}
     - guid: 4edb02fdc688346469b355f2c7e15bb6
-      actionIndex: 5
+      actionIndex: 4
       position: {x: 1203.2, y: -81.6}
     - guid: ff655f748bc76954f83da72eb780cecf
-      actionIndex: 6
+      actionIndex: 5
       position: {x: 1910.4, y: -62.4}
     - guid: a2553b4912dd3f3408812531e11f6f98
-      actionIndex: 7
+      actionIndex: 6
       position: {x: 2456.8, y: -62.4}
     - guid: 725f3de52b0506641ae3303b0f1e3356
-      actionIndex: 8
+      actionIndex: 7
       position: {x: 2224, y: -12.8}
     - guid: 10ec98dd3e3ef574b9e33e59685dbccd
-      actionIndex: 9
+      actionIndex: 8
       position: {x: 1077.6, y: 253.6}
+    - guid: 6fe0730a07a6b9546a4eeeae81016c2b
+      actionIndex: 9
+      position: {x: -388, y: 203.2}
+    - guid: bd5075b6a0b617e4a8ab03358433c670
+      actionIndex: 10
+      position: {x: -261.6, y: 93.6}
+    - guid: e74968b8545f4994e867a5297199e81b
+      actionIndex: 11
+      position: {x: 52, y: 19.2}
   references:
     version: 2
     RefIds:
@@ -99,7 +115,7 @@ MonoBehaviour:
       type: {class: StartAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions:
-        - rid: 3369752620995182629
+        - rid: 3369752694524215361
     - rid: 3369752620995182623
       type: {class: ChangeEnemyModelAnimationAction, ns: , asm: Assembly-CSharp}
       data:
@@ -205,3 +221,20 @@ MonoBehaviour:
         IntBuffer: 1
         StringBuffer: 
         FloatBuffer: 0
+    - rid: 3369752694524215361
+      type: {class: ConditionAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 3369752694524215362
+        - rid: 3369752620995182629
+        Conditions:
+        - rid: 3369752694524215363
+    - rid: 3369752694524215362
+      type: {class: EndAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions: []
+    - rid: 3369752694524215363
+      type: {class: BoolVarCondition, ns: , asm: Assembly-CSharp}
+      data:
+        Var: ValodyaCantDefence
+        Value: 1

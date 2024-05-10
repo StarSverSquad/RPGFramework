@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.TextCore.Text;
 
 public class BattlePipeline : MonoBehaviour
 {
@@ -161,9 +162,9 @@ public class BattlePipeline : MonoBehaviour
 
         yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnBattleEnd));
 
-        yield return StartCoroutine(BattleExit());
-
         main = null;
+
+        yield return StartCoroutine(BattleExit());
     }
 
     private IEnumerator BattleEnter()
@@ -1011,7 +1012,7 @@ public class BattlePipeline : MonoBehaviour
             {
                 BattleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f), (oldHeal - character.Entity.Heal).ToString(), Color.white, Color.red);
             }
-            else
+            else if (character.Entity.Heal > oldHeal)
             {
                 BattleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f), (oldHeal - character.Entity.Heal).ToString(), Color.white, Color.green);
             } 
@@ -1033,7 +1034,7 @@ public class BattlePipeline : MonoBehaviour
             {
                 BattleManager.Utility.SpawnFallingText(model.DamageTextGlobalPoint, (oldHeal - enemy.Entity.Heal).ToString(), Color.white, Color.red);
             }
-            else
+            else if (enemy.Entity.Heal > oldHeal)
             {
                 BattleManager.Utility.SpawnFallingText(model.DamageTextGlobalPoint, (oldHeal - enemy.Entity.Heal).ToString(), Color.white, Color.green);
             }
@@ -1173,7 +1174,7 @@ public class BattlePipeline : MonoBehaviour
 
             GameManager.Instance.GameData.Money += money;
 
-            moneyText += $"* Вы получили {money} {GameManager.ILocalization.GetLocale("Basic_MoneyName")}!\n";
+            moneyText += $"* Вы получили {money} {GameManager.ILocalization.GetLocale("Base_Money")}!\n";
         }
 
         bool first = true;

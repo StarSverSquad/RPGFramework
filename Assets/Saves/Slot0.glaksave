@@ -20,6 +20,18 @@
             },
             {
                 "Key": "WeirdGrip",
+                "Value": true
+            },
+            {
+                "Key": "StelBread",
+                "Value": true
+            },
+            {
+                "Key": "ValodyaCantDefence",
+                "Value": false
+            },
+            {
+                "Key": "ValodyaScared",
                 "Value": false
             },
             {
@@ -44,24 +56,37 @@
         "data": []
     },
     "InventoryItems": {
-        "data": []
+        "data": [
+            {
+                "Key": "Bong",
+                "Value": 1
+            },
+            {
+                "Key": "PoisonGrip",
+                "Value": 1
+            },
+            {
+                "Key": "Bread",
+                "Value": 2
+            }
+        ]
     },
     "PlayerPosition": {
-        "x": 50.06188201904297,
-        "y": 14.464341163635254
+        "x": 50.559959411621097,
+        "y": 14.134942054748536
     },
-    "PlayerDirection": 3,
+    "PlayerDirection": 1,
     "SavedCharacters": [
         {
             "Tag": "Dimas_DEMO",
-            "Heal": 72,
+            "Heal": 145,
             "Mana": 68,
             "Level": 2,
             "Expirience": 0,
             "ExpirienceBorder": 36,
             "InParty": true,
             "PositionInParty": 0,
-            "DefaultHeal": 72,
+            "DefaultHeal": 145,
             "DefaultMana": 68,
             "DefaultDamage": 12,
             "DefaultDefence": 4,

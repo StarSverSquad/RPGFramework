@@ -18,6 +18,7 @@ public class ExplorerEvent : MonoBehaviour
     private bool hasExecuted = false;
     public bool HasExecuted => hasExecuted;
 
+
     public bool OnlyOne = true;
     public bool CacheResult = false;
 

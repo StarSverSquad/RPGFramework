@@ -30,6 +30,7 @@ MonoBehaviour:
   - rid: 3369752620995182617
   - rid: 3369752620995182625
   - rid: 3369752651146461273
+  - rid: 3369752694524215379
   references:
     version: 2
     RefIds:
@@ -73,3 +74,13 @@ MonoBehaviour:
         Turn: 0
         EntityTag: 
         Heal: 0
+    - rid: 3369752694524215379
+      type: {class: RPGBattleEvent, ns: , asm: Assembly-CSharp}
+      data:
+        Period: 12
+        IsCustomEvent: 0
+        CustomAction: {fileID: 0}
+        Event: {fileID: 11400000, guid: 2d96f76e2028d1f4591c80fb17173f5e, type: 2}
+        Turn: 0
+        EntityTag: Valodya_DEMO
+        Heal: 50

@@ -23,6 +23,8 @@ MonoBehaviour:
   - rid: 3369752620995182628
   - rid: 3369752620995182627
   - rid: 3369752620995182618
+  - rid: 3369752694524215358
+  - rid: 3369752694524215360
   Meta:
     edges:
     - inputPortName: Input
@@ -50,17 +52,25 @@ MonoBehaviour:
       outputPortName: Else
       outputNodeGUID: b3a186ae5769db642bacd82acd8961c7
     - inputPortName: Input
+      inputNodeGUID: 254a5e7192eb5fc48a98ddacef824797
+      outputPortName: Yes
+      outputNodeGUID: a2badee3f968cb64ebb0eea315b8c850
+    - inputPortName: Input
       inputNodeGUID: 0f12ab5d8808ba94fac705f8ccf14036
       outputPortName: No
       outputNodeGUID: a2badee3f968cb64ebb0eea315b8c850
     - inputPortName: Input
-      inputNodeGUID: a2badee3f968cb64ebb0eea315b8c850
+      inputNodeGUID: 9848da501846df845a62f2ec07dd2489
       outputPortName: Output
       outputNodeGUID: a44231d496c7e2944b9f1b61841a1b88
     - inputPortName: Input
-      inputNodeGUID: 254a5e7192eb5fc48a98ddacef824797
-      outputPortName: Yes
-      outputNodeGUID: a2badee3f968cb64ebb0eea315b8c850
+      inputNodeGUID: a2badee3f968cb64ebb0eea315b8c850
+      outputPortName: Else
+      outputNodeGUID: 9848da501846df845a62f2ec07dd2489
+    - inputPortName: Input
+      inputNodeGUID: adce36d3280df84419e37ae5441fb27d
+      outputPortName: Then
+      outputNodeGUID: 9848da501846df845a62f2ec07dd2489
     nodes:
     - guid: 99ac3ab04abcb9b4db1685242b6f64a6
       actionIndex: 0
@@ -91,7 +101,13 @@ MonoBehaviour:
       position: {x: -216.8, y: 267.2}
     - guid: a44231d496c7e2944b9f1b61841a1b88
       actionIndex: 9
-      position: {x: -373.6, y: 228}
+      position: {x: -585.6, y: 192}
+    - guid: 9848da501846df845a62f2ec07dd2489
+      actionIndex: 10
+      position: {x: -451.2, y: 77.6}
+    - guid: adce36d3280df84419e37ae5441fb27d
+      actionIndex: 11
+      position: {x: -100, y: -39.2}
   references:
     version: 2
     RefIds:
@@ -99,7 +115,7 @@ MonoBehaviour:
       type: {class: StartAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions:
-        - rid: 3369752620995182627
+        - rid: 3369752694524215358
     - rid: 3369752620995182619
       type: {class: ChangeEnemyModelAnimationAction, ns: , asm: Assembly-CSharp}
       data:
@@ -167,6 +183,23 @@ MonoBehaviour:
         Value: 2
         Operation: 0
     - rid: 3369752651146461295
+      type: {class: EndAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions: []
+    - rid: 3369752694524215358
+      type: {class: ConditionAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 3369752694524215360
+        - rid: 3369752620995182627
+        Conditions:
+        - rid: 3369752694524215359
+    - rid: 3369752694524215359
+      type: {class: BoolVarCondition, ns: , asm: Assembly-CSharp}
+      data:
+        Var: ValodyaCantDefence
+        Value: 1
+    - rid: 3369752694524215360
       type: {class: EndAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions: []

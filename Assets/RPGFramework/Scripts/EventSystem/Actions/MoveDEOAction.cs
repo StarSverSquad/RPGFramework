@@ -2,9 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-/// <summary>
-/// Move Dynamic Explorer Object Action
-/// </summary>
+[Obsolete]
 public class MoveDEOAction : GraphActionBase
 {
     public DynamicExplorerObject Model;

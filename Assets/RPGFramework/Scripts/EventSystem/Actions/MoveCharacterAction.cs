@@ -3,11 +3,13 @@ using System.Collections;
 using UnityEngine;
 
 
+[Obsolete]
 public class MoveCharacterAction : GraphActionBase
 {
     public int Index;
 
     public Vector2 Offset;
+
     public float Speed;
 
     public bool IsWait;

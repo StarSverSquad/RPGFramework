@@ -5,14 +5,13 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-public abstract class TextWriterBase : MonoBehaviour
+public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
 {
     public const char ActionPoint = '\u1130';
 
     public List<TextActionBase> allActions = new List<TextActionBase>();
 
     public Queue<TextActionBase> actions = new Queue<TextActionBase>();
-    public Queue<string> actionsTexts = new Queue<string>();
 
     [SerializeField]
     protected WriterMessage message;
@@ -47,15 +46,16 @@ public abstract class TextWriterBase : MonoBehaviour
     public event Action<TextActionBase> OnActionCallback;
     public event Action<TextActionBase> OnTextReplaceCallback;
 
-    protected virtual void Awake()
+    public virtual void Initialize()
     {
-        string[] typenames = GetType().Assembly.GetTypes().Where(i => i.BaseType != null && i.BaseType.Name == "TextActionBase").
-                                                                    Select(i => i.Name).ToArray();
+        string[] typenames = GetType().Assembly.GetTypes()
+                                      .Where(i => i.BaseType != null && i.BaseType.Name == "TextActionBase")
+                                      .Select(i => i.Name)
+                                      .ToArray();
 
         foreach (string typename in typenames)
         {
             TextActionBase actionBase = GetType().Assembly.CreateInstance(typename) as TextActionBase;
-            actionBase.TextWriter = this;
 
             allActions.Add(actionBase);
         }
@@ -100,27 +100,34 @@ public abstract class TextWriterBase : MonoBehaviour
 
                 string inner = text.Substring(i + 1, count);
 
-                foreach (var act in allActions)
+                foreach (TextActionBase item in allActions)
                 {
-                    if (act.MatchRegex(inner))
+                    if (item.MatchRegex(inner))
                     {
+                        TextActionBase action = (TextActionBase)Activator.CreateInstance(item.GetType());
+
+                        action.TextWriter = this;
+
                         text = text.Remove(i, count + 2);
 
-                        if (act.ActType == TextActionBase.ActionType.TextReplace)
+                        action.ParseText(inner);
+
+                        switch (item.Type)
                         {
-                            act.CalculateText(inner);
+                            case TextActionBase.ActionType.TextReplace:
+                                {
+                                    text = text.Insert(i, action.GetText(inner));
 
-                            text = text.Insert(i, act.ResultText);
+                                    OnTextReplaceCallback?.Invoke(action);
+                                }
+                                break;
+                            case TextActionBase.ActionType.TextAction:
+                                {
+                                    text = text.Insert(i, ActionPoint.ToString());
 
-                            
-                            OnTextReplaceCallback?.Invoke(act);
-                        }
-                        else
-                        {
-                            text = text.Insert(i, ActionPoint.ToString());
-
-                            actions.Enqueue(act);
-                            actionsTexts.Enqueue(inner);
+                                    actions.Enqueue(action);
+                                }
+                                break;
                         }
 
                         break;
@@ -153,7 +160,9 @@ public abstract class TextWriterBase : MonoBehaviour
             if (SkipCanExecute())
             {
                 isSkiped = true;
+
                 OnSkipedCallback?.Invoke();
+
                 break;
             }
 
@@ -208,15 +217,13 @@ public abstract class TextWriterBase : MonoBehaviour
             if (isSkiped)
             {
                 textMeshPro.text = previewText + outcomeText.Replace(ActionPoint.ToString(), string.Empty);
+
                 break;
             }
 
             if (outcomeText[i] == ActionPoint)
             {
                 TextActionBase act = actions.Dequeue();
-                string text = actionsTexts.Dequeue();
-
-                act.CalculateText(text);
 
                 yield return act.Invoke(this);
 
@@ -248,6 +255,8 @@ public abstract class TextWriterBase : MonoBehaviour
             yield return new WaitUntil(() => ContinueCanExecute());
             OnEndWait();
         }
+
+        actions.Clear();
 
         writeCoroutine = null;
 

@@ -23,6 +23,7 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
     public BattleDescription description;
     public BattlePatternManager pattern;
     public BattleVisualTransmitionManager visualTransmition;
+    public BattleUIShake Shaker;
 
     public static BattleUtility Utility => Instance.utility;
     public static BattleData Data => Instance.data;

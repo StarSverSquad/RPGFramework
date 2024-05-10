@@ -18,8 +18,8 @@ public class PlayerExplorerInteraction : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (ExplorerManager.Instance.playerManager.movement.CanWalk 
-            && !ExplorerManager.Instance.eventHandler.EventRuning
+        if (ExplorerManager.Instance.PlayerManager.movement.CanWalk 
+            && !ExplorerManager.Instance.EventHandler.EventRuning
             && !LocalManager.Instance.GameUI.IsOpen)
         {
             if (Input.GetKey(KeyCode.RightArrow))

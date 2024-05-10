@@ -21,13 +21,13 @@ public class BattlePlayerMovement : MonoBehaviour
         {
             Vector2 direction = Vector2.zero;
 
-            if (Input.GetKey(GameManager.Instance.GameConfig.MoveUp))
+            if (Input.GetKey(GameManager.Instance.BaseOptions.MoveUp))
                 direction += Vector2.up;
-            if (Input.GetKey(GameManager.Instance.GameConfig.MoveDown))
+            if (Input.GetKey(GameManager.Instance.BaseOptions.MoveDown))
                 direction += Vector2.down;
-            if (Input.GetKey(GameManager.Instance.GameConfig.MoveLeft))
+            if (Input.GetKey(GameManager.Instance.BaseOptions.MoveLeft))
                 direction += Vector2.left;
-            if (Input.GetKey(GameManager.Instance.GameConfig.MoveRight))
+            if (Input.GetKey(GameManager.Instance.BaseOptions.MoveRight))
                 direction += Vector2.right;
 
             rb.velocity = direction.normalized * MoveSpeed;

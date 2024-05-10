@@ -14,7 +14,7 @@ public class EnemyModelsManager : MonoBehaviour, IDisposable
 
     private List<ModelInfo> models = new List<ModelInfo>();
 
-    public bool IsAnyAnimating => models.Any(i => i.model.IsAnimating);
+    public bool IsAnyAnimating => models.Any(i => i.model.IsAnimatingEffect);
 
     public void AddModel(BattleEnemyInfo enemy, Vector2 anposition)
     {

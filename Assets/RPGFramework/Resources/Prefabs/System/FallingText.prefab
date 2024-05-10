@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &8966395915459527373
+--- !u!1 &550057715141318390
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,50 +8,50 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1182599821736201794}
-  - component: {fileID: 3035797505659486940}
-  - component: {fileID: 7343530523543060539}
+  - component: {fileID: 2383014659335289265}
+  - component: {fileID: 7933929187838459932}
+  - component: {fileID: 3624501484668895468}
   m_Layer: 0
-  m_Name: txt
+  m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &1182599821736201794
+--- !u!224 &2383014659335289265
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8966395915459527373}
+  m_GameObject: {fileID: 550057715141318390}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 5537409783896925414}
+  m_Father: {fileID: 2357440187071886130}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000046015, y: 0.00014925003}
-  m_SizeDelta: {x: 214.68, y: 70.069}
+  m_AnchoredPosition: {x: -0.000042439, y: 0}
+  m_SizeDelta: {x: 624.94, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &3035797505659486940
+--- !u!222 &7933929187838459932
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8966395915459527373}
+  m_GameObject: {fileID: 550057715141318390}
   m_CullTransparentMesh: 1
---- !u!114 &7343530523543060539
+--- !u!114 &3624501484668895468
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8966395915459527373}
+  m_GameObject: {fileID: 550057715141318390}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: b2fcef54b27017b4592deeaf74e4b6b0, type: 2}
-  m_sharedMaterial: {fileID: 9178984594030202155, guid: b2fcef54b27017b4592deeaf74e4b6b0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 622dc5b2e0da8c34fb2a8f187c735281, type: 2}
+  m_sharedMaterial: {fileID: 9178984594030202155, guid: 622dc5b2e0da8c34fb2a8f187c735281, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -92,13 +92,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 67.81
-  m_fontSizeBase: 67.81
+  m_fontSize: 60
+  m_fontSizeBase: 60
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -134,7 +134,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!1 &9064565651074151605
+--- !u!1 &6150082249223539256
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -142,8 +142,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5537409783896925414}
-  - component: {fileID: 3373732433180698502}
+  - component: {fileID: 2357440187071886130}
+  - component: {fileID: 8448606485995851385}
   m_Layer: 0
   m_Name: FallingText
   m_TagString: Untagged
@@ -151,43 +151,74 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &5537409783896925414
+--- !u!224 &2357440187071886130
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9064565651074151605}
+  m_GameObject: {fileID: 6150082249223539256}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1182599821736201794}
+  - {fileID: 2383014659335289265}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 124.34, y: -42.80857}
-  m_SizeDelta: {x: 214.68, y: 70.069}
+  m_AnchoredPosition: {x: 607, y: 115.77}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &3373732433180698502
+--- !u!114 &8448606485995851385
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9064565651074151605}
+  m_GameObject: {fileID: 6150082249223539256}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e8f089f8ca842a43a723ea190f43c6a, type: 3}
+  m_Script: {fileID: 11500000, guid: be7d9c0db4656ec41bfb72298b88869c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 7343530523543060539}
-  rt: {fileID: 1182599821736201794}
-  upDistance: 8
-  fallingDistance: 16
-  fallingTime: 0.5
-  gradientIn: {r: 1, g: 0, b: 0, a: 1}
-  gradientOut: {r: 1, g: 1, b: 1, a: 1}
-  isFalling: 0
+  textMesh: {fileID: 3624501484668895468}
+  fallingCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1.0000055
+      inSlope: 2.261229
+      outSlope: 2.261229
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.25652933
+      value: 1.580077
+      inSlope: -0.80669165
+      outSlope: -0.80669165
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.13795604
+    - serializedVersion: 3
+      time: 1
+      value: 0.0007164993
+      inSlope: -2.4878435
+      outSlope: -2.4878435
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.13826321
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  DeleteOnEnd: 1
+  DeletionDelay: 1
+  FallDelay: 0.075
+  FallSpeed: 6
+  Distance: 25

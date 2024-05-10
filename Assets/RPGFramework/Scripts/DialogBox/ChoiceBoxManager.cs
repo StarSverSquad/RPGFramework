@@ -148,18 +148,18 @@ public class ChoiceBoxManager : ChoiceBase<string>
 
     public override bool ConfirmCanExecuted()
     {
-        return Input.GetKeyDown(GameManager.Instance.GameConfig.Accept);
+        return Input.GetKeyDown(GameManager.Instance.BaseOptions.Accept);
     }
 
     public override int SellectionChanging()
     {
-        if (Input.GetKeyDown(GameManager.Instance.GameConfig.MoveRight))
+        if (Input.GetKeyDown(GameManager.Instance.BaseOptions.MoveRight))
         {
             rightArrow.Shake();
 
             return 1;
         }           
-        else if (Input.GetKeyDown(GameManager.Instance.GameConfig.MoveLeft))
+        else if (Input.GetKeyDown(GameManager.Instance.BaseOptions.MoveLeft))
         {
             leftArrow.Shake();
 

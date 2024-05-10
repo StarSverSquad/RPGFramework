@@ -38,6 +38,9 @@ public class ExplorerEventEditor : Editor
         if (oe.Event != null && GUILayout.Button("Открыть редактор"))
             EventGraphWindow.Initialize(oe.Event);
 
+        if (GUILayout.Button("Пересоздать"))
+            oe.Event = CreateInstance<GraphEvent>();
+
         if (GUI.changed)
             EditorUtility.SetDirty(oe);
     }

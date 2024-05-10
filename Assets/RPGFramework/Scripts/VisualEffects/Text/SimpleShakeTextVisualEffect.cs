@@ -14,53 +14,21 @@ public class SimpleShakeTextVisualEffect : TextVisualEffectBase
 
     protected override IEnumerator EffectCoroutine(TextMeshProUGUI textMesh)
     {
+        TransformTextMeshService transformText = new TransformTextMeshService(textMesh);
+
         while (true)
         {
-            textMesh.ForceMeshUpdate();
+            transformText.ResetMesh();
 
-            TMP_TextInfo textInfo = textMesh.textInfo;
-
-            if (textInfo == null)
+            for (int i = 0; i < transformText.CharactersCount; i++)
             {
-                yield return new WaitForFixedUpdate();
-                continue;
+                float randX = UnityEngine.Random.Range(-3f, 3f);
+                float randY = UnityEngine.Random.Range(-3f, 3f);
+
+                transformText.SetCharacterRelativePosition(i, new Vector2(randX, randY));
             }
 
-            for (int i = 0; i < textInfo.characterCount; i++)
-            {
-                var characterInfo = textInfo.characterInfo[i];
-
-                if (!characterInfo.isVisible)
-                {
-                    yield return new WaitForFixedUpdate();
-                    continue;
-                }
-
-                var vertexes = textInfo.meshInfo[characterInfo.materialReferenceIndex].vertices;
-
-
-                float randX = UnityEngine.Random.Range(-5f, 5f);
-                float randY = UnityEngine.Random.Range(-5f, 5f);
-
-                for (int j = 0; j < 4; j++)
-                {
-                    vertexes[characterInfo.vertexIndex + j] = new Vector3(
-                        vertexes[characterInfo.vertexIndex + j].x + randX,
-                        vertexes[characterInfo.vertexIndex + j].y + randY,
-                        vertexes[characterInfo.vertexIndex + j].z);
-                }
-            }
-
-            for (int i = 0; i < textInfo.meshInfo.Length; i++)
-            {
-                TMP_MeshInfo meshInfo = textInfo.meshInfo[i];
-
-                meshInfo.mesh.vertices = meshInfo.vertices;
-
-                textMesh.UpdateGeometry(meshInfo.mesh, i);
-            }
-
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.03f);
         }
     }
 }

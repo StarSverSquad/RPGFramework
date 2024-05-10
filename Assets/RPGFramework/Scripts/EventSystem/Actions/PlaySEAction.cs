@@ -24,4 +24,13 @@ public class PlaySEAction : GraphActionBase
     {
         return "Запуск SE";
     }
+
+    public override object Clone()
+    {
+        return new PlaySEAction()
+        {
+            clip = clip,
+            volume = volume
+        };
+    }
 }

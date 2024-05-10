@@ -31,6 +31,6 @@ public class MenuManager_Demo : UIManagerBase
 
     public void LoadGame()
     {
-        GameManager.Instance.LoadGame(1);
+        GameManager.Instance.LoadGame(0);
     }
 }

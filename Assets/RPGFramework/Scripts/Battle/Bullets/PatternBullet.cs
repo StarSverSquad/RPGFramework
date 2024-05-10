@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 
 public class PatternBullet : MonoBehaviour
@@ -33,4 +34,10 @@ public class PatternBullet : MonoBehaviour
     /// Вызывается при попадании в бордер (Не работает для тех пуль где !IsCanHitBorder)
     /// </summary>
     public virtual void OnHitBorder() { }
+
+    private void OnDestroy()
+    {
+        foreach (var item in GetComponents<Component>())
+            item.DOKill(false);
+    }
 }

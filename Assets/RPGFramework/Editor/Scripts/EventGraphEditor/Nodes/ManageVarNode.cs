@@ -122,7 +122,7 @@ public class ManageVarNode : ActionNodeBase
                 break;
             case ManageVarAction.VarType.String:
 
-                Toggle toggle0 = new Toggle();
+                Label label = new Label("Set");
 
                 TextField stringField = new TextField();
 
@@ -134,8 +134,34 @@ public class ManageVarNode : ActionNodeBase
                     MakeDirty();
                 });
 
-                hor1.Add(toggle0);
+                hor1.Add(label);
                 hor1.Add(stringField);
+                break;
+            case ManageVarAction.VarType.PlayerPrefs:
+
+                EnumField opField2 = new EnumField(ManageVarAction.OperationType.Set);
+
+                opField2.SetValueWithoutNotify(mv.Operation);
+                opField2.RegisterValueChangedCallback(i =>
+                {
+                    mv.Operation = (ManageVarAction.OperationType)i.newValue;
+
+                    MakeDirty();
+                });
+
+                IntegerField prefField = new IntegerField();
+
+                prefField.SetValueWithoutNotify(mv.IntBuffer);
+                prefField.RegisterValueChangedCallback(i =>
+                {
+                    mv.IntBuffer = i.newValue;
+
+                    MakeDirty();
+                });
+
+                hor1.Add(opField2);
+
+                hor1.Add(prefField);
                 break;
         }
 

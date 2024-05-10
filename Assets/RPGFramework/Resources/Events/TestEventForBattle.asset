@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a07e43a344a4a5f438c0481d93a21355, type: 3}
   m_Name: TestEventForBattle
   m_EditorClassIdentifier: 
-  listener: {fileID: 0}
   Actions:
   - rid: 5403063373393035264
   - rid: 5403063373393035265
@@ -30,13 +29,13 @@ MonoBehaviour:
     nodes:
     - guid: 4bb9720dfffab32428d91fe42fcc64ba
       actionIndex: 0
-      position: {x: 250, y: 250}
+      position: {x: 250.4, y: 250.4}
     - guid: 8c769d4f8de52d64e800ceea1d06bf75
       actionIndex: 1
       position: {x: 808, y: 212}
     - guid: 6a4f6c4e57af4b24184afd8c2aadf99c
       actionIndex: 2
-      position: {x: 434, y: 173}
+      position: {x: 434.4, y: 172.8}
   references:
     version: 2
     RefIds:
@@ -65,3 +64,4 @@ MonoBehaviour:
           letterSound: {fileID: 0}
           image: {fileID: 0}
           position: 0
+          textEffectTypeName: None

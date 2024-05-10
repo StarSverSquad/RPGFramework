@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public class ManageVarAction : GraphActionBase
 {
     public enum VarType
     {
-        Bool, Int, Float, String
+        Bool, Int, Float, String, PlayerPrefs
     }
 
     public enum OperationType
@@ -71,6 +72,17 @@ public class ManageVarAction : GraphActionBase
                     GameManager.Instance.GameData.IntValues[VarName] = IntBuffer;
                 else
                     GameManager.Instance.GameData.IntValues[VarName] += IntBuffer;
+                break;
+            case VarType.PlayerPrefs:
+                if (!PlayerPrefs.HasKey(VarName))
+                    PlayerPrefs.SetInt(VarName, 0);
+
+                if (Operation == OperationType.Set)
+                    PlayerPrefs.SetInt(VarName, IntBuffer);
+                else
+                    PlayerPrefs.SetInt(VarName, PlayerPrefs.GetInt(VarName) + IntBuffer);
+
+                PlayerPrefs.Save();
                 break;
         }
 

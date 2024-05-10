@@ -18,11 +18,12 @@ MonoBehaviour:
   CanFlee: 0
   ShowStartMessage: 1
   ShowEndMessage: 1
+  ShowDeadMessage: 0
   BattleMusic: {fileID: 8300000, guid: 1ad37fe0ef58a7048b97789f0cb7fc68, type: 3}
   MusicVolume: 1
   StopGlobalMusic: 1
   Background: {fileID: 4620171788711976551, guid: 3495ec4abfb68ce48a3cfbb87b0ac269, type: 3}
-  BattleEnterEffect: {fileID: 0}
+  BattleEnterEffect: {fileID: 8048879357101289308, guid: 2c4b29ec3925b274b8eaf00e981094b9, type: 3}
   BattleExitEffect: {fileID: 0}
   Events: []
   references:

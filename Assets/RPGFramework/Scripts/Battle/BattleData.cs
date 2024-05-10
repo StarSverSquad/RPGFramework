@@ -18,7 +18,7 @@ public class BattleData : MonoBehaviour, IDisposable
     [Header("Ссылки")]
     public VisualAttackEffect DefaultEffect;
 
-    public DamageText DmgText;
+    public FallingText DmgText;
 
     public Canvas BattleCanvas;
 

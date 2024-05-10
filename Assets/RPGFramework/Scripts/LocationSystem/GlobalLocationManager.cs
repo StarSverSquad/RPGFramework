@@ -19,6 +19,15 @@ public class GlobalLocationManager : MonoBehaviour
 
         public Vector2 Position;
         public CommonDirection Direction;
+
+        public TransimitionMessage()
+        {
+            Location = null;
+            Point = string.Empty;
+            TeleportToPoint = true;
+            Position = Vector2.zero;
+            Direction = CommonDirection.Down;
+        }
     }
 
     public event Action<LocationInfo> OnLocationChanged;
@@ -125,15 +134,15 @@ public class GlobalLocationManager : MonoBehaviour
                 LocationSpawnPoint spawnPoint = obj.SpawnPoints.FirstOrDefault(obj => obj.Name == message.Point)
                                                 ?? obj.SpawnPoints[0];
 
-                ExplorerManager.Instance.playerManager.TeleportToVector(spawnPoint.transform.position);
+                ExplorerManager.Instance.PlayerManager.TeleportToVector(spawnPoint.transform.position);
 
-                ExplorerManager.Instance.playerManager.movement.RotateTo(spawnPoint.SpawnDirection);
+                ExplorerManager.Instance.PlayerManager.movement.RotateTo(spawnPoint.SpawnDirection);
             }
             else
             {
-                ExplorerManager.Instance.playerManager.TeleportToVector(message.Position);
+                ExplorerManager.Instance.PlayerManager.TeleportToVector(message.Position);
 
-                ExplorerManager.Instance.playerManager.movement.RotateTo(message.Direction);
+                ExplorerManager.Instance.PlayerManager.movement.RotateTo(message.Direction);
             }
 
             LocalManager.Instance.Character.UpdateModels();

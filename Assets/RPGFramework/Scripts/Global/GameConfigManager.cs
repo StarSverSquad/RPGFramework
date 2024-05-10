@@ -73,7 +73,7 @@ public class GameConfigManager
             MEVolume = 1,
 
             Language = localization,
-            Resolution = Screen.resolutions.OrderBy(i => i.width).First(),
+            Resolution = Screen.resolutions.OrderByDescending(i => i.width).First(),
             Fullscreen = true
         };
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class InsertLocaleAction : TextActionBase
 {
-    public InsertLocaleAction() : base(new Regex(@"%(\w|_)+"), ActionType.TextReplace)
+    public InsertLocaleAction() : base(new Regex(@"^%(\w|_)+$"), ActionType.TextReplace)
     {
         
     }

@@ -263,9 +263,12 @@ MonoBehaviour:
   - rid: 1550235838276435971
   - rid: 1550235838276435972
   - rid: 1550235838276435974
+  - rid: 1550235857142153232
+  - rid: 1550235857142153231
+  - rid: 1550235857142153233
   - rid: 1550235838276435975
   - rid: 1550235838276435976
-  - rid: 1550235838276435973
+  - rid: 1550235857142153234
   Meta:
     edges:
     - inputPortName: Input
@@ -273,21 +276,33 @@ MonoBehaviour:
       outputPortName: Output
       outputNodeGUID: 3fa6aefcdd2a9a147ac7b727c563a23f
     - inputPortName: Input
-      inputNodeGUID: 6203c670d1d43184592a5edae33ab3a5
+      inputNodeGUID: d2466ff077e398f4eb61bc3db73ea9cd
       outputPortName: Output
       outputNodeGUID: 5541312bfe6e40140b2154f9f87fc04c
     - inputPortName: Input
-      inputNodeGUID: e478f8a4aac24844f86232b336516344
+      inputNodeGUID: 7af57a8dd4efd62418cba8478378fdab
       outputPortName: Output
       outputNodeGUID: d2466ff077e398f4eb61bc3db73ea9cd
     - inputPortName: Input
-      inputNodeGUID: 3e7cd9825a83c3147a0fc52161ab1e33
+      inputNodeGUID: 78def5e059690db4981063b4e2a6e8e9
+      outputPortName: Output
+      outputNodeGUID: 7af57a8dd4efd62418cba8478378fdab
+    - inputPortName: Input
+      inputNodeGUID: 85fad4307757922449f1d56a6266bb77
+      outputPortName: Output
+      outputNodeGUID: 5afe2197cf462ca47a9967fa2b441cd0
+    - inputPortName: Input
+      inputNodeGUID: e478f8a4aac24844f86232b336516344
+      outputPortName: Output
+      outputNodeGUID: 78def5e059690db4981063b4e2a6e8e9
+    - inputPortName: Input
+      inputNodeGUID: 5afe2197cf462ca47a9967fa2b441cd0
       outputPortName: Output
       outputNodeGUID: e478f8a4aac24844f86232b336516344
     - inputPortName: Input
-      inputNodeGUID: d2466ff077e398f4eb61bc3db73ea9cd
+      inputNodeGUID: 3e7cd9825a83c3147a0fc52161ab1e33
       outputPortName: Output
-      outputNodeGUID: 6203c670d1d43184592a5edae33ab3a5
+      outputNodeGUID: 85fad4307757922449f1d56a6266bb77
     nodes:
     - guid: 3fa6aefcdd2a9a147ac7b727c563a23f
       actionIndex: 0
@@ -297,16 +312,25 @@ MonoBehaviour:
       position: {x: 460.8, y: 138.4}
     - guid: d2466ff077e398f4eb61bc3db73ea9cd
       actionIndex: 2
-      position: {x: 1156, y: 132.8}
-    - guid: e478f8a4aac24844f86232b336516344
+      position: {x: 874.4, y: 123.2}
+    - guid: 7af57a8dd4efd62418cba8478378fdab
       actionIndex: 3
-      position: {x: 1504.8, y: 128}
-    - guid: 3e7cd9825a83c3147a0fc52161ab1e33
+      position: {x: 1229.6, y: 196}
+    - guid: 5afe2197cf462ca47a9967fa2b441cd0
       actionIndex: 4
-      position: {x: 1912.8, y: 204}
-    - guid: 6203c670d1d43184592a5edae33ab3a5
+      position: {x: 2448, y: 128.8}
+    - guid: 78def5e059690db4981063b4e2a6e8e9
       actionIndex: 5
-      position: {x: 801.6, y: 124.8}
+      position: {x: 1628.8, y: 148}
+    - guid: e478f8a4aac24844f86232b336516344
+      actionIndex: 6
+      position: {x: 2017.6, y: 148.8}
+    - guid: 3e7cd9825a83c3147a0fc52161ab1e33
+      actionIndex: 7
+      position: {x: 3348.8, y: 264.8}
+    - guid: 85fad4307757922449f1d56a6266bb77
+      actionIndex: 8
+      position: {x: 2951.2, y: 285.6}
   references:
     version: 2
     RefIds:
@@ -316,22 +340,6 @@ MonoBehaviour:
         NextActions:
         - rid: 1550235838276435972
     - rid: 1550235838276435972
-      type: {class: MessageAction, ns: , asm: Assembly-CSharp}
-      data:
-        NextActions:
-        - rid: 1550235838276435973
-        message:
-          text: '* TEST TEST <color=#FF0000>TEST test</color>'
-          speed: 0
-          clear: 1
-          wait: 1
-          name: 
-          closeWindow: 0
-          letterSound: {fileID: 0}
-          image: {fileID: 0}
-          position: 0
-          textEffectTypeName: None
-    - rid: 1550235838276435973
       type: {class: MessageAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions:
@@ -351,10 +359,13 @@ MonoBehaviour:
       type: {class: MessageAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions:
-        - rid: 1550235838276435975
+        - rid: 1550235857142153232
         message:
-          text: '* TEST <\!>TEST<\!> <color=#FF0000>TEST test</color>'
-          speed: 0
+          text: '* TEST<!> TEST<!> <color=#FF0000>TEST</color>
+
+            * TEST<!>
+            TEST<!> TEXT<!> TEXT<\:> TEXT'
+          speed: 12
           clear: 1
           wait: 1
           name: 
@@ -367,16 +378,14 @@ MonoBehaviour:
       type: {class: MessageAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions:
-        - rid: 1550235838276435976
+        - rid: 1550235857142153231
         message:
-          text: "* TEST TEST <color=#FF0000>TEST test</color> asd asd asd asd\nasdasdasdas
-            das asd asd asd asd\n as asudj asdJGH SdjGH SDj SGHD SD jsGH dSJ dsDJd
-            s"
+          text: '* SHAKED TEST'
           speed: 0
           clear: 1
           wait: 1
           name: 
-          closeWindow: 1
+          closeWindow: 0
           letterSound: {fileID: 0}
           image: {fileID: 0}
           position: 0
@@ -385,6 +394,84 @@ MonoBehaviour:
       type: {class: EndAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions: []
+    - rid: 1550235857142153231
+      type: {class: MessageAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 1550235857142153234
+        message:
+          text: '* BIG SHAKED TEST -> AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+            *
+            AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+            * AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+            *
+            AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+            * END'
+          speed: 0
+          clear: 1
+          wait: 1
+          name: 
+          closeWindow: 0
+          letterSound: {fileID: 0}
+          image: {fileID: 0}
+          position: 0
+          textEffectTypeName: SimpleShakeTextVisualEffect
+    - rid: 1550235857142153232
+      type: {class: MessageAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 1550235857142153233
+        message:
+          text: '* Partion text'
+          speed: 0
+          clear: 1
+          wait: 1
+          name: 
+          closeWindow: 0
+          letterSound: {fileID: 0}
+          image: {fileID: 0}
+          position: 0
+          textEffectTypeName: None
+    - rid: 1550235857142153233
+      type: {class: MessageAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 1550235838276435975
+        message:
+          text: '
+
+            * Part two'
+          speed: 0
+          clear: 0
+          wait: 1
+          name: 
+          closeWindow: 0
+          letterSound: {fileID: 0}
+          image: {fileID: 0}
+          position: 0
+          textEffectTypeName: None
+    - rid: 1550235857142153234
+      type: {class: MessageAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 1550235838276435976
+        message:
+          text: 'Localization test:
+
+            <%Test_Tree>'
+          speed: 0
+          clear: 1
+          wait: 1
+          name: 
+          closeWindow: 1
+          letterSound: {fileID: 0}
+          image: {fileID: 0}
+          position: 0
+          textEffectTypeName: None
 --- !u!1001 &284992406
 PrefabInstance:
   m_ObjectHideFlags: 0

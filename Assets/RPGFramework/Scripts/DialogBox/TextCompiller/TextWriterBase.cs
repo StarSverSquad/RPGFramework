@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
 {
@@ -77,67 +79,65 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
 
     private void Compilate()
     {
-        string text = message.text.Clone() as string;
+        string rawText = message.text.Clone() as string;
 
-        for (int i = 0; i < text.Length; i++)
+        for (int index = 0, realIndex = 0; index < rawText.Length; index++)
         {
-            if (text[i] == '<')
+            if (rawText[index] == '<')
             {
-                bool haveBreak = false;
-                int count = 0;
-                for (int j = i + 1; j < text.Length; j++)
-                {
-                    if (text[j] == '>')
-                    {
-                        haveBreak = true;
-                        break;
-                    }  
+                int actionRegexLength = 0;
 
-                    count++;
+                for (int j = index + 1; j < rawText.Length; j++)
+                {
+                    if (rawText[j] == '>')
+                        break;
+                        
+                    actionRegexLength++;
                 }
 
-                if (!haveBreak)
-                    continue;
+                int actionLength = actionRegexLength + 2; 
 
-                string inner = text.Substring(i + 1, count);
+                string actionRegex = rawText.Substring(index + 1, actionRegexLength);
 
-                foreach (TextActionBase item in allActions)
+                TextActionBase action = allActions.Find(act => act.MatchRegex(actionRegex));
+
+                if (action != null)
                 {
-                    if (item.MatchRegex(inner))
+                    var actionInstance = (TextActionBase)Activator.CreateInstance(action.GetType());
+
+                    actionInstance.TextWriter = this;
+
+                    rawText = rawText.Remove(index, actionLength);
+
+                    actionInstance.ParseText(actionRegex);
+
+                    switch (action.Type)
                     {
-                        TextActionBase action = (TextActionBase)Activator.CreateInstance(item.GetType());
+                        case TextActionBase.ActionType.TextReplace:
+                            {
+                                rawText = rawText.Insert(index, actionInstance.GetText(actionRegex));
 
-                        action.TextWriter = this;
-
-                        text = text.Remove(i, count + 2);
-
-                        action.ParseText(inner);
-
-                        switch (item.Type)
-                        {
-                            case TextActionBase.ActionType.TextReplace:
-                                {
-                                    text = text.Insert(i, action.GetText(inner));
-
-                                    OnTextReplaceCallback?.Invoke(action);
-                                }
-                                break;
-                            case TextActionBase.ActionType.TextAction:
-                                {
-                                    //text = text.Insert(i, ActionPoint.ToString());
-                                    actionsIndex.Enqueue(i);
-                                    actions.Enqueue(action);
-                                }
-                                break;
-                        }
-
-                        break;
+                                OnTextReplaceCallback?.Invoke(actionInstance);
+                            }
+                            break;
+                        case TextActionBase.ActionType.TextAction:
+                            {
+                                actionsIndex.Enqueue(realIndex);
+                                actions.Enqueue(actionInstance);
+                            }
+                            break;
                     }
                 }
+                else
+                {
+                    index += actionLength;
+                }
             }
+
+            realIndex++;
         }
 
-        outcomeText = text;
+        outcomeText = rawText;
     }
 
     public void PauseWrite() => isPause = true;
@@ -176,67 +176,44 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
         OnStartWriting();
         OnStartWritingCallback?.Invoke();
 
-        previewText = textMeshPro.text;
+        int startIndex = textMeshPro.GetParsedText().Length - 1;
 
         if (message.clear)
         {
             textMeshPro.text = outcomeText;
             textMeshPro.maxVisibleCharacters = 0;
+            startIndex = 0;
         }
         else
         {
-            textMeshPro.text = previewText + outcomeText;
-            textMeshPro.maxVisibleCharacters = previewText.Length;
-        }
+            Debug.Log("NOT CLEAR");
 
-        isSkiped = false;
+            textMeshPro.text += outcomeText;
+            textMeshPro.maxVisibleCharacters = startIndex + 1;
+        }
 
         float letterDelay = 1f / (message.speed <= 0 ? defaultTextSpeed : message.speed);
 
-        for (int i = 0; i < outcomeText.Length; i++)
+        yield return null;
+
+        string parsedText = textMeshPro.GetParsedText();
+
+        Debug.Log(startIndex);
+        Debug.Log(parsedText);
+
+        for (int index = startIndex; index < parsedText.Length; index++)
         {
-            if (outcomeText[i] == '<')
-            {
-                string txt = string.Empty;
 
-                for (int j = i; j < outcomeText.Length; j++)
-                {
-                    txt += outcomeText[j];
-
-                    if (outcomeText[j] == '>')
-                        break;
-                }
-
-                i += txt.Length - 1;
-
-                //textMeshPro.text += txt;
-                //textMeshPro.maxVisibleCharacters += txt.Length;
-
-                continue;
-            }
-
-            if (outcomeText[i] == ' ')
-            {
-                //textMeshPro.text += outcomeText[i];
-
-                textMeshPro.maxVisibleCharacters++;
-
+            if (parsedText[index] == ' ')
                 OnSpaceCallback?.Invoke();
-
-                continue;
-            }
-                
 
             if (isSkiped)
             {
-                //textMeshPro.text = previewText + outcomeText.Replace(ActionPoint.ToString(), string.Empty);
-
-                textMeshPro.maxVisibleCharacters = textMeshPro.text.Length;
-
+                textMeshPro.maxVisibleCharacters = parsedText.Length;
                 break;
             }
 
-            if (actionsIndex.Count > 0 && i == actionsIndex.First())
+            if (actionsIndex.Count > 0 && index == actionsIndex.Peek())
             {
                 TextActionBase act = actions.Dequeue();
 
@@ -247,17 +224,6 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
 
                 actionsIndex.Dequeue();
             }
-            else
-            {
-                //textMeshPro.text += outcomeText[i];
-
-                textMeshPro.maxVisibleCharacters++;
-
-                OnEveryLetter(outcomeText[i]);
-                OnEveryLetterCallback?.Invoke(outcomeText[i]);
-
-                yield return new WaitForSeconds(letterDelay);
-            }
 
             if (isPause)
             {
@@ -266,6 +232,13 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
                 isPause = false;
                 OnEndWait();
             }
+
+            textMeshPro.maxVisibleCharacters++;
+
+            OnEveryLetter(parsedText[index]);
+            OnEveryLetterCallback?.Invoke(parsedText[index]);
+
+            yield return new WaitForSeconds(letterDelay);
         }
 
         if (message.wait)
@@ -275,7 +248,10 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
             OnEndWait();
         }
 
+        isSkiped = false;
+
         actions.Clear();
+        actionsIndex.Clear();
 
         writeCoroutine = null;
 

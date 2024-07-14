@@ -7,7 +7,7 @@ public class WaitTextAction : TextActionBase
 {
     float waitTime;
 
-    public WaitTextAction() : base(new Regex(@"\\(\.|:|\|)"), ActionType.TextAction)
+    public WaitTextAction() : base(new Regex(@"^\\(\.|:|\|)$"), ActionType.TextAction)
     {
         waitTime = 0;
     }

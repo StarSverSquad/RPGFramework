@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -12,21 +13,41 @@ public class SimpleShakeTextVisualEffect : TextVisualEffectBase
     {
         var transformText = new TransformTextMeshService(textMesh);
 
+        DateTime cur, prev = DateTime.Now;
+
+        yield return null;
+
+        transformText.ResetMesh();
+
         while (true)
         {
-            transformText.ResetMesh();
+            cur = DateTime.Now;
 
-            for (int i = 0; i < transformText.CharactersCount; i++)
+            if ((cur - prev).TotalMilliseconds > 40)
             {
-                float randX = Random.Range(-3f, 3f);
-                float randY = Random.Range(-3f, 3f);
+                transformText.ResetMesh();
 
-                transformText.SetCharacterRelativePosition(i, new Vector2(randX, randY));
+                for (int i = 0; i < transformText.CharactersCount; i++)
+                {
+                    float randX = UnityEngine.Random.Range(-3f, 3f);
+                    float randY = UnityEngine.Random.Range(-3f, 3f);
+
+                    transformText.SetCharacterPosition(i, new Vector2(randX, randY));
+                }
+
+                prev = cur;
             }
+            else
+                transformText.PartialResetMesh();
 
             transformText.UpdateMesh();
 
             yield return null;
         }
+    }
+
+    public override string GetTittle()
+    {
+        return "Тряска текста";
     }
 }

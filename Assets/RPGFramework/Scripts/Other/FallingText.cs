@@ -59,7 +59,7 @@ public class FallingText : MonoBehaviour
         for (int i = 0; i < transformText.CharactersCount; i++)
         {
             transformText.SetCharacterColor(i, startColor);
-            transformText.SetCharacterRelativePosition(i, new Vector2(0, fallingCurve.Evaluate(0) * Distance));
+            transformText.SetCharacterPosition(i, new Vector2(0, fallingCurve.Evaluate(0) * Distance));
         }
 
         for (int i = 0; i < transformText.CharactersCount; i++)
@@ -92,7 +92,7 @@ public class FallingText : MonoBehaviour
             Color32 current = Color.Lerp(startColor, endColor, time);
 
             transformText.SetCharacterColor(index, current);
-            transformText.SetCharacterRelativePosition(index, new Vector2(0, fallingCurve.Evaluate(time) * Distance));
+            transformText.SetCharacterPosition(index, new Vector2(0, fallingCurve.Evaluate(time) * Distance));
 
             yield return new WaitForFixedUpdate();
 

@@ -51,14 +51,16 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
 
     public virtual void Initialize()
     {
-        string[] typenames = GetType().Assembly.GetTypes()
-                                      .Where(i => i.BaseType != null && i.BaseType.Name == "TextActionBase")
-                                      .Select(i => i.Name)
-                                      .ToArray();
+        string[] typenames = GetType()
+            .Assembly.GetTypes()
+            .Where(i => i.BaseType != null && i.BaseType.Name == "TextActionBase")
+            .Select(i => i.Name)
+            .ToArray();
 
         foreach (string typename in typenames)
         {
-            TextActionBase actionBase = GetType().Assembly.CreateInstance(typename) as TextActionBase;
+            TextActionBase actionBase =
+                GetType().Assembly.CreateInstance(typename) as TextActionBase;
 
             allActions.Add(actionBase);
         }
@@ -81,9 +83,9 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
     {
         string rawText = message.text.Clone() as string;
 
-        for (int index = 0, realIndex = 0; index < rawText.Length; index++)
+        for (int index = 0, realIndex = 0; index < rawText.Length; index++, realIndex++)
         {
-            if (rawText[index] == '<')
+            while (index < rawText.Length - 1 && rawText[index] == '<')
             {
                 int actionRegexLength = 0;
 
@@ -91,11 +93,11 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
                 {
                     if (rawText[j] == '>')
                         break;
-                        
+
                     actionRegexLength++;
                 }
 
-                int actionLength = actionRegexLength + 2; 
+                int actionLength = actionRegexLength + 2;
 
                 string actionRegex = rawText.Substring(index + 1, actionRegexLength);
 
@@ -115,7 +117,10 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
                     {
                         case TextActionBase.ActionType.TextReplace:
                             {
-                                rawText = rawText.Insert(index, actionInstance.GetText(actionRegex));
+                                rawText = rawText.Insert(
+                                    index,
+                                    actionInstance.GetText(actionRegex)
+                                );
 
                                 OnTextReplaceCallback?.Invoke(actionInstance);
                             }
@@ -129,12 +134,11 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
                     }
                 }
                 else
-                {
                     index += actionLength;
-                }
-            }
 
-            realIndex++;
+                if (index < rawText.Length - 1)
+                    Debug.Log(rawText[index]);
+            }
         }
 
         outcomeText = rawText;
@@ -143,12 +147,19 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
     public void PauseWrite() => isPause = true;
 
     public virtual void OnEveryLetter(char letter) { }
+
     public virtual void OnStartWriting() { }
+
     public virtual void OnEndWriting() { }
+
     public virtual void OnSpace() { }
+
     public virtual void OnTextReplace(TextActionBase act) { }
+
     public virtual void OnAction(TextActionBase act) { }
+
     public virtual void OnWait() { }
+
     public virtual void OnEndWait() { }
 
     public abstract bool ContinueCanExecute();
@@ -186,8 +197,6 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
         }
         else
         {
-            Debug.Log("NOT CLEAR");
-
             textMeshPro.text += outcomeText;
             textMeshPro.maxVisibleCharacters = startIndex + 1;
         }
@@ -198,12 +207,8 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
 
         string parsedText = textMeshPro.GetParsedText();
 
-        Debug.Log(startIndex);
-        Debug.Log(parsedText);
-
         for (int index = startIndex; index < parsedText.Length; index++)
         {
-
             if (parsedText[index] == ' ')
                 OnSpaceCallback?.Invoke();
 
@@ -213,16 +218,26 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
                 break;
             }
 
-            if (actionsIndex.Count > 0 && index == actionsIndex.Peek())
+            if (actionsIndex.Count > 0)
             {
-                TextActionBase act = actions.Dequeue();
+                int activeCount = 0;
+                foreach (var item in actionsIndex.Where(i => index == i))
+                {
+                    TextActionBase act = actions.ToArray()[activeCount];
 
-                yield return act.Invoke(this);
+                    yield return act.Invoke(this);
 
-                OnAction(act);
-                OnActionCallback?.Invoke(act);
+                    OnAction(act);
+                    OnActionCallback?.Invoke(act);
 
-                actionsIndex.Dequeue();
+                    activeCount++;
+                }
+
+                for (int i = 0; i < activeCount; i++)
+                {
+                    actions.Dequeue();
+                    actionsIndex.Dequeue();
+                }
             }
 
             if (isPause)
@@ -273,7 +288,7 @@ public class WriterMessage
     public WriterMessage()
     {
         text = string.Empty;
-        speed = 0; 
+        speed = 0;
 
         clear = true;
         wait = true;

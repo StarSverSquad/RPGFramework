@@ -263,12 +263,11 @@ MonoBehaviour:
   - rid: 1550235838276435971
   - rid: 1550235838276435972
   - rid: 1550235838276435974
-  - rid: 1550235857142153232
   - rid: 1550235857142153231
-  - rid: 1550235857142153233
-  - rid: 1550235838276435975
   - rid: 1550235838276435976
   - rid: 1550235857142153234
+  - rid: 1550235838276435975
+  - rid: 1550235857142153235
   Meta:
     edges:
     - inputPortName: Input
@@ -280,29 +279,25 @@ MonoBehaviour:
       outputPortName: Output
       outputNodeGUID: 5541312bfe6e40140b2154f9f87fc04c
     - inputPortName: Input
-      inputNodeGUID: 7af57a8dd4efd62418cba8478378fdab
+      inputNodeGUID: 7f62103d2f0271042928b712050a3d96
       outputPortName: Output
       outputNodeGUID: d2466ff077e398f4eb61bc3db73ea9cd
-    - inputPortName: Input
-      inputNodeGUID: 78def5e059690db4981063b4e2a6e8e9
-      outputPortName: Output
-      outputNodeGUID: 7af57a8dd4efd62418cba8478378fdab
     - inputPortName: Input
       inputNodeGUID: 85fad4307757922449f1d56a6266bb77
       outputPortName: Output
       outputNodeGUID: 5afe2197cf462ca47a9967fa2b441cd0
     - inputPortName: Input
-      inputNodeGUID: e478f8a4aac24844f86232b336516344
+      inputNodeGUID: 3e7cd9825a83c3147a0fc52161ab1e33
       outputPortName: Output
-      outputNodeGUID: 78def5e059690db4981063b4e2a6e8e9
+      outputNodeGUID: 85fad4307757922449f1d56a6266bb77
     - inputPortName: Input
       inputNodeGUID: 5afe2197cf462ca47a9967fa2b441cd0
       outputPortName: Output
       outputNodeGUID: e478f8a4aac24844f86232b336516344
     - inputPortName: Input
-      inputNodeGUID: 3e7cd9825a83c3147a0fc52161ab1e33
+      inputNodeGUID: e478f8a4aac24844f86232b336516344
       outputPortName: Output
-      outputNodeGUID: 85fad4307757922449f1d56a6266bb77
+      outputNodeGUID: 7f62103d2f0271042928b712050a3d96
     nodes:
     - guid: 3fa6aefcdd2a9a147ac7b727c563a23f
       actionIndex: 0
@@ -313,24 +308,21 @@ MonoBehaviour:
     - guid: d2466ff077e398f4eb61bc3db73ea9cd
       actionIndex: 2
       position: {x: 874.4, y: 123.2}
-    - guid: 7af57a8dd4efd62418cba8478378fdab
-      actionIndex: 3
-      position: {x: 1229.6, y: 196}
     - guid: 5afe2197cf462ca47a9967fa2b441cd0
-      actionIndex: 4
+      actionIndex: 3
       position: {x: 2448, y: 128.8}
-    - guid: 78def5e059690db4981063b4e2a6e8e9
+    - guid: 3e7cd9825a83c3147a0fc52161ab1e33
+      actionIndex: 4
+      position: {x: 3348.8, y: 264.8}
+    - guid: 85fad4307757922449f1d56a6266bb77
       actionIndex: 5
-      position: {x: 1628.8, y: 148}
+      position: {x: 2951.2, y: 285.6}
     - guid: e478f8a4aac24844f86232b336516344
       actionIndex: 6
       position: {x: 2017.6, y: 148.8}
-    - guid: 3e7cd9825a83c3147a0fc52161ab1e33
+    - guid: 7f62103d2f0271042928b712050a3d96
       actionIndex: 7
-      position: {x: 3348.8, y: 264.8}
-    - guid: 85fad4307757922449f1d56a6266bb77
-      actionIndex: 8
-      position: {x: 2951.2, y: 285.6}
+      position: {x: 1376.8, y: 174.4}
   references:
     version: 2
     RefIds:
@@ -359,7 +351,7 @@ MonoBehaviour:
       type: {class: MessageAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions:
-        - rid: 1550235857142153232
+        - rid: 1550235857142153235
         message:
           text: '* TEST<!> TEST<!> <color=#FF0000>TEST</color>
 
@@ -380,7 +372,14 @@ MonoBehaviour:
         NextActions:
         - rid: 1550235857142153231
         message:
-          text: '* SHAKED TEST'
+          text: '* WOOOBLE TEXT AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+            * AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+            *
+            AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+            * AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa'
           speed: 0
           clear: 1
           wait: 1
@@ -389,7 +388,7 @@ MonoBehaviour:
           letterSound: {fileID: 0}
           image: {fileID: 0}
           position: 0
-          textEffectTypeName: SimpleShakeTextVisualEffect
+          textEffectTypeName: WoobleTextVisualEffect
     - rid: 1550235838276435976
       type: {class: EndAction, ns: , asm: Assembly-CSharp}
       data:
@@ -411,7 +410,7 @@ MonoBehaviour:
             AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 
             * END'
-          speed: 0
+          speed: 12
           clear: 1
           wait: 1
           name: 
@@ -419,41 +418,7 @@ MonoBehaviour:
           letterSound: {fileID: 0}
           image: {fileID: 0}
           position: 0
-          textEffectTypeName: WoobleTextVisualEffect
-    - rid: 1550235857142153232
-      type: {class: MessageAction, ns: , asm: Assembly-CSharp}
-      data:
-        NextActions:
-        - rid: 1550235857142153233
-        message:
-          text: '* Partion text'
-          speed: 0
-          clear: 1
-          wait: 1
-          name: 
-          closeWindow: 0
-          letterSound: {fileID: 0}
-          image: {fileID: 0}
-          position: 0
-          textEffectTypeName: None
-    - rid: 1550235857142153233
-      type: {class: MessageAction, ns: , asm: Assembly-CSharp}
-      data:
-        NextActions:
-        - rid: 1550235838276435975
-        message:
-          text: '
-
-            * Part two'
-          speed: 0
-          clear: 0
-          wait: 1
-          name: 
-          closeWindow: 0
-          letterSound: {fileID: 0}
-          image: {fileID: 0}
-          position: 0
-          textEffectTypeName: None
+          textEffectTypeName: SimpleShakeTextVisualEffect
     - rid: 1550235857142153234
       type: {class: MessageAction, ns: , asm: Assembly-CSharp}
       data:
@@ -468,6 +433,22 @@ MonoBehaviour:
           wait: 1
           name: 
           closeWindow: 1
+          letterSound: {fileID: 0}
+          image: {fileID: 0}
+          position: 0
+          textEffectTypeName: None
+    - rid: 1550235857142153235
+      type: {class: MessageAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 1550235838276435975
+        message:
+          text: '* MULTI<\:><!><color=#FF0000>ACTION</color>'
+          speed: 0
+          clear: 1
+          wait: 1
+          name: 
+          closeWindow: 0
           letterSound: {fileID: 0}
           image: {fileID: 0}
           position: 0

@@ -1,14 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class MessageNode : ActionNodeBase
 {
-    public MessageNode(MessageAction action) : base(action)
+    private List<TextVisualEffectBase> effectTypes;
+
+    public MessageNode(MessageAction action)
+        : base(action)
     {
+        effectTypes = action
+            .GetType()
+            .Assembly.GetTypes()
+            .Where(i => i.BaseType != null && i.BaseType.Name == "TextVisualEffectBase")
+            .Select(i =>
+                Activator.CreateInstance(i, new object[] { null, null }) as TextVisualEffectBase
+            )
+            .ToList();
     }
 
     public override void UIContructor()
@@ -20,12 +32,13 @@ public class MessageNode : ActionNodeBase
         TextField textField = new TextField()
         {
             multiline = true,
-            tooltip = "Комманды:\n" +
-                      "< color=[HEXCOLOR] >[...]< /color > - установка цвета\n" +
-                      "< size=[%] >[...]< /size > - установка размера\n" +
-                      "< \\(., :, |) > - ждать 0.25с, 0.5с, 1с\n" +
-                      "< ! > - пауза\n" +
-                      "< %[LOCALE TAG] > - локализация"
+            tooltip =
+                "Комманды:\n"
+                + "< color=[HEXCOLOR] >[...]< /color > - установка цвета\n"
+                + "< size=[%] >[...]< /size > - установка размера\n"
+                + "< \\(., :, |) > - ждать 0.25с, 0.5с, 1с\n"
+                + "< ! > - пауза\n"
+                + "< %[LOCALE TAG] > - локализация"
         };
 
         textField.SetValueWithoutNotify(dialog.message.text);
@@ -48,8 +61,7 @@ public class MessageNode : ActionNodeBase
 
         FloatField speedField = new FloatField("Скорость текста")
         {
-            tooltip = "Символов в секунду\n" +
-                      "Если 0 то будет выставленно стандартное значение"
+            tooltip = "Символов в секунду\n" + "Если 0 то будет выставленно стандартное значение"
         };
 
         speedField.SetValueWithoutNotify(dialog.message.speed);
@@ -115,12 +127,17 @@ public class MessageNode : ActionNodeBase
             MakeDirty();
         });
 
-        EnumField positionField = new EnumField("Позиция", MessageBoxManager.DialogBoxPosition.Bottom);
+        EnumField positionField = new EnumField(
+            "Позиция",
+            MessageBoxManager.DialogBoxPosition.Bottom
+        );
 
         positionField.SetValueWithoutNotify(dialog.message.position);
         positionField.RegisterValueChangedCallback(position =>
         {
-            dialog.message.position = Enum.Parse<MessageBoxManager.DialogBoxPosition>(position.newValue.ToString());
+            dialog.message.position = Enum.Parse<MessageBoxManager.DialogBoxPosition>(
+                position.newValue.ToString()
+            );
 
             MakeDirty();
         });
@@ -131,15 +148,24 @@ public class MessageNode : ActionNodeBase
             objectType = typeof(TextVisualEffectBase)
         };
 
-        List<string> types = new List<string>() { "None" };
+        Debug.Log(effectTypes[0].GetType().Name);
+        Debug.Log(effectTypes[1].GetType().Name);
+        Debug.Log(dialog.message.textEffectTypeName);
 
-        types.AddRange(action.GetType().Assembly.GetTypes()
-            .Where(i => i.BaseType != null && i.BaseType.Name == "TextVisualEffectBase")
-            .Select(i => i.Name));
+        int defaultVal = 0;
+        if (dialog.message.textEffectTypeName != "None")
+            defaultVal =
+                effectTypes.FindIndex(i => i.GetType().Name == dialog.message.textEffectTypeName)+1;
 
-        int index = types.IndexOf(dialog.message.textEffectTypeName);
-
-        PopupField<string> effectPopup = new PopupField<string>("Эффект", types, index < 0 ? 0 : index);
+        PopupField<string> effectPopup = new PopupField<string>(
+            "Эффект",
+            new List<string>() { "None" }
+                .Concat(effectTypes.Select(i => i.GetType().Name))
+                .ToList(),
+            defaultVal,
+            FormatEffectText,
+            FormatEffectText
+        );
 
         effectPopup.RegisterValueChangedCallback(effect =>
         {
@@ -159,5 +185,13 @@ public class MessageNode : ActionNodeBase
         extensionContainer.Add(clipField);
         extensionContainer.Add(positionField);
         extensionContainer.Add(effectPopup);
+    }
+
+    private string FormatEffectText(string str)
+    {
+        if (str == "None")
+            return "Нет";
+        else
+            return effectTypes.Find(i => i.GetType().Name == str).GetTittle();
     }
 }

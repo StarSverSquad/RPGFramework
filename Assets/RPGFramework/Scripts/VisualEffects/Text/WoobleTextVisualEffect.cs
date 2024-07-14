@@ -11,24 +11,20 @@ public class WoobleTextVisualEffect : TextVisualEffectBase
 
     protected override IEnumerator EffectCoroutine(TextMeshProUGUI textMesh)
     {
-        Mesh mesh;
-        Vector3[] vertices;
+        var transformMesh = new TransformTextMeshService(textMesh);
 
         while (true)
         {
-            textMesh.ForceMeshUpdate();
-            mesh = textMesh.mesh;
-            vertices = mesh.vertices;
+            transformMesh.ResetMesh();
 
-            for (int i = 0; i < vertices.Length; i++)
+            for (int i = 0; i < transformMesh.VerticesCount; i++)
             {
                 Vector3 offset = Wobble(Time.time + i);
 
-                vertices[i] = vertices[i] + offset;
+                transformMesh.SetVertexPosition(i, offset);
             }
 
-            mesh.vertices = vertices;
-            textMesh.canvasRenderer.SetMesh(mesh);
+            transformMesh.UpdateMesh();
 
             yield return null;
         }
@@ -37,5 +33,10 @@ public class WoobleTextVisualEffect : TextVisualEffectBase
     private Vector2 Wobble(float time)
     {
         return new Vector2(Mathf.Sin(time * 3.3f), Mathf.Cos(time * 2.5f));
+    }
+
+    public override string GetTittle()
+    {
+        return "Плавающий текст";
     }
 }

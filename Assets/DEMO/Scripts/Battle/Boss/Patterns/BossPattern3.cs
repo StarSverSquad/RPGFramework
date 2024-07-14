@@ -35,7 +35,7 @@ public class BossPattern3 : RPGAttackPattern
 
         yield return new WaitForSeconds(1.5f);
 
-        for (int j = 0; j < 8; j++)
+        for (int j = 0; j < 7; j++)
         {
             int direction = Random.Range(1, 5);
 

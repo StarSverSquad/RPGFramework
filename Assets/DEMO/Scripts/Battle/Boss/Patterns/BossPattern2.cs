@@ -26,7 +26,7 @@ public class BossPattern2 : RPGAttackPattern
             bullet.transform.rotation = Quaternion.Euler(0f, 0f, angle + 180);
             bullet.Direction = new Vector2(0f, 1f) * bulletSpeed;
 
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSeconds(0.32f);
         }
     }
 }

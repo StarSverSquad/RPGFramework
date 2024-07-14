@@ -1,114 +1,116 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 
 public class TransformTextMeshService
 {
-    private TextMeshProUGUI textMesh;
-
-    private List<Vector3[]> charaterVertexes;
-
-    private TMP_CharacterInfo[] GetVisibles
-    {
-        get => textInfo != null ? textInfo.characterInfo.Where(c => c.isVisible).ToArray() : new TMP_CharacterInfo[0];
-    }
-
+    private readonly TextMeshProUGUI textMesh;
     private TMP_TextInfo textInfo => textMesh.textInfo;
 
-    public int CharactersCount => GetVisibles.Length;
+    private Color[] colors;
+    private Vector3[] vertices;
+    private Mesh mesh;
+
+    private TMP_CharacterInfo[] visibles;
+
+    // Даааа, я три года думал что делать, по итогу это свойство высчитывалось по пять раз
+    public TMP_CharacterInfo[] Visibles => visibles;
+
+    public int CharactersCount => Visibles.Length;
+    public int VerticesCount => vertices.Length;
+    public int ColorsCount => colors.Length;
 
     public TransformTextMeshService(TextMeshProUGUI textMesh)
     {
         this.textMesh = textMesh;
 
-        charaterVertexes = new List<Vector3[]>();
-
-        this.textMesh.OnPreRenderText += (txt) => {
-            UpdateCharacterVertexes();
-        };
+        ResetMesh();
     }
 
-    public void SetCharacterRelativePosition(int index, Vector2 position)
+    public void SetCharacterPosition(int index, Vector3 position)
     {
-        if (textInfo == null || GetVisibles.Length == 0)
+        if (textInfo == null || Visibles.Length == 0)
             return;
 
-        TMP_CharacterInfo characterInfo = GetVisibles[index];
-
-        var vertexes = textInfo.meshInfo[characterInfo.materialReferenceIndex].vertices;
-
-        Vector3[] defaultVertexes = charaterVertexes[index];
+        TMP_CharacterInfo characterInfo = Visibles[index];
 
         for (int i = 0; i < 4; i++)
         {
-            vertexes[characterInfo.vertexIndex + i] = new Vector3(
-                    defaultVertexes[i].x + position.x,
-                    defaultVertexes[i].y + position.y,
-                    defaultVertexes[i].z);
+            vertices[characterInfo.vertexIndex + i].x += position.x;
+            vertices[characterInfo.vertexIndex + i].y += position.y;
+            vertices[characterInfo.vertexIndex + i].z += position.z;
         }
+    }
 
-        UpdateMesh();
+    public void SetVertexPosition(int index, Vector3 position)
+    {
+        if (textInfo == null)
+            return;
+
+        vertices[index].x += position.x;
+        vertices[index].y += position.y;
+        vertices[index].z += position.z;
+    }
+
+    public void SetCharacterVertecesPosition(int index, Func<Vector3[], Vector3[]> vertecesCallback)
+    {
+        if (textInfo == null || Visibles.Length == 0)
+            return;
+
+        TMP_CharacterInfo characterInfo = Visibles[index];
+
+        Vector3[] cur = vertices.Skip(characterInfo.vertexIndex).Take(4).ToArray();
+        Vector3[] modified = vertecesCallback(cur);
+
+        for (int i = 0; i < 4; i++)
+            vertices[characterInfo.vertexIndex + i] = modified[i];
     }
 
     public void SetCharacterColor(int index, Color32 color)
     {
-        if (textInfo == null || GetVisibles.Length == 0)
+        if (textInfo == null || Visibles.Length == 0)
             return;
 
-        TMP_CharacterInfo characterInfo = GetVisibles[index];
+        TMP_CharacterInfo characterInfo = Visibles[index];
 
-        var colors = textInfo.meshInfo[characterInfo.materialReferenceIndex].colors32;
-
-        for (int i = 0; i < 4;i ++)
+        for (int i = 0; i < 4; i++)
         {
             colors[characterInfo.vertexIndex + i] = color;
         }
-
-        UpdateMesh();
     }
 
     public void ResetMesh()
     {
         textMesh.ForceMeshUpdate();
 
-        UpdateCharacterVertexes();
+        visibles = textInfo.characterInfo.Where(c => c.isVisible).ToArray();
+
+        mesh = textMesh.mesh;
+        vertices = mesh.vertices;
+        colors = mesh.colors;
     }
 
-    private void UpdateMesh()
+    public void PartialResetMesh()
     {
-        if (textInfo == null) 
-            return;
+        textMesh.ForceMeshUpdate();
 
-        for (int i = 0; i < textInfo.meshInfo.Length; i++)
-        {
-            TMP_MeshInfo meshInfo = textInfo.meshInfo[i];
+        visibles = textInfo.characterInfo.Where(c => c.isVisible).ToArray();
 
-            meshInfo.mesh.vertices = meshInfo.vertices;
-            meshInfo.mesh.colors32 = meshInfo.colors32;
+        mesh = textMesh.mesh;
 
-            textMesh.UpdateGeometry(meshInfo.mesh, i);
-        }
+        if (mesh.vertices.Length > vertices.Length)
+            vertices = vertices.Concat(mesh.vertices.Skip(vertices.Length)).ToArray();
+
+        if (mesh.colors.Length > colors.Length)
+            colors = colors.Concat(mesh.colors.Skip(colors.Length)).ToArray();
     }
 
-    private void UpdateCharacterVertexes()
+    public void UpdateMesh()
     {
-        if (textInfo == null)
-            return;
+        mesh.vertices = vertices;
+        mesh.colors = colors;
 
-        charaterVertexes.Clear();
-        foreach (var item in GetVisibles)
-        {
-            Vector3[] vertexes = new Vector3[4];
-
-            var vertexesRaw = textInfo.meshInfo[item.materialReferenceIndex].vertices;
-
-            vertexes[0] = vertexesRaw[item.vertexIndex];
-            vertexes[1] = vertexesRaw[item.vertexIndex + 1];
-            vertexes[2] = vertexesRaw[item.vertexIndex + 2];
-            vertexes[3] = vertexesRaw[item.vertexIndex + 3];
-
-            charaterVertexes.Add(vertexes);
-        }
+        textMesh.canvasRenderer.SetMesh(mesh);
     }
 }

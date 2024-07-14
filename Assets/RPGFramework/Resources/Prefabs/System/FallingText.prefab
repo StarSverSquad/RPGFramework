@@ -184,41 +184,67 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textMesh: {fileID: 3624501484668895468}
-  fallingCurve:
+  topDownCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1.0000055
-      inSlope: 2.261229
-      outSlope: 2.261229
+      value: 0.49752045
+      inSlope: 1.588468
+      outSlope: 1.588468
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.25652933
-      value: 1.580077
-      inSlope: -0.80669165
-      outSlope: -0.80669165
+      time: 0.30000684
+      value: 0.9740717
+      inSlope: -1.2273794
+      outSlope: -1.2273794
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.13795604
+      outWeight: 0.049245797
     - serializedVersion: 3
       time: 1
-      value: 0.0007164993
-      inSlope: -2.4878435
-      outSlope: -2.4878435
+      value: 0.13978493
+      inSlope: 0.08948954
+      outSlope: 0.08948954
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.13826321
+      inWeight: 0.09903094
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  upCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.00330846
+      inSlope: 3.104761
+      outSlope: 3.104761
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.029304769
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0.3671623
+      outSlope: 0.3671623
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.08447862
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   DeleteOnEnd: 1
+  StartTransparency: 0
   DeletionDelay: 1
-  FallDelay: 0.075
-  FallSpeed: 6
-  Distance: 25
+  Delay: 0.075
+  Speed: 6
+  Effect: 0
+  Distance: 32

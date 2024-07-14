@@ -1,32 +1,44 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
 public class FallingText : MonoBehaviour
 {
+    public enum EffectType
+    {
+        TopDown,
+        Up
+    }
+
     [SerializeField]
     private TextMeshProUGUI textMesh;
 
     [SerializeField]
-    private AnimationCurve fallingCurve;
+    private AnimationCurve topDownCurve;
+
+    [SerializeField]
+    private AnimationCurve upCurve;
 
     public bool DeleteOnEnd = true;
-    public float DeletionDelay = 1f;
 
-    public float FallDelay = 0.1f;
-    public float FallSpeed = 1f;
+    public float DeletionDelay = 1f;
+    public float Delay = 0.1f;
+    public float Speed = 1f;
+
+    public EffectType Effect = EffectType.TopDown;
 
     public float Distance = 20f;
 
     private Coroutine animationCoroutine;
+    private Coroutine meshDrawCoroutine;
     public bool IsAnimate => animationCoroutine != null;
 
     private Color32 startColor;
     private Color32 endColor;
 
-    private List<int> indexes;
+    private int maxCharacters;
 
     public void Invoke(string text, Color32 startColor, Color32 endColor)
     {
@@ -41,10 +53,11 @@ public class FallingText : MonoBehaviour
         this.endColor = endColor;
         this.endColor.a = 255;
 
-        indexes = new List<int>();
+        maxCharacters = 1;
 
         animationCoroutine = StartCoroutine(Animation());
     }
+
     public void Invoke(string text)
     {
         Invoke(text, Color.white, Color.white);
@@ -59,17 +72,24 @@ public class FallingText : MonoBehaviour
         for (int i = 0; i < transformText.CharactersCount; i++)
         {
             transformText.SetCharacterColor(i, startColor);
-            transformText.SetCharacterRelativePosition(i, new Vector2(0, fallingCurve.Evaluate(0) * Distance));
+            transformText.SetCharacterPosition(
+                i,
+                new Vector2(0, topDownCurve.Evaluate(0) * Distance)
+            );
         }
 
-        for (int i = 0; i < transformText.CharactersCount; i++)
+        transformText.UpdateMesh();
+
+        meshDrawCoroutine = StartCoroutine(MeshDraw(transformText));
+
+        for (int i = 1; i < transformText.CharactersCount; i++)
         {
-            StartCoroutine(CharacterFall(transformText, i));
+            yield return new WaitForSeconds(Delay);
 
-            yield return new WaitForSeconds(FallDelay);
+            maxCharacters++;
         }
 
-        yield return new WaitWhile(() => indexes.Count > 0);
+        yield return new WaitWhile(() => meshDrawCoroutine != null);
 
         animationCoroutine = null;
 
@@ -81,24 +101,71 @@ public class FallingText : MonoBehaviour
         }
     }
 
-    private IEnumerator CharacterFall(TransformTextMeshService transformText, int index)
+    private IEnumerator MeshDraw(TransformTextMeshService transformText)
     {
-        indexes.Add(index);
+        List<float> times = new() { 0 };
 
-        float time = 0;
-
-        while (time < 1)
+        while (times.Any(i => i < 1))
         {
-            Color32 current = Color.Lerp(startColor, endColor, time);
+            transformText.ResetMesh();
 
-            transformText.SetCharacterColor(index, current);
-            transformText.SetCharacterRelativePosition(index, new Vector2(0, fallingCurve.Evaluate(time) * Distance));
+            for (int i = 0; i < maxCharacters; i++)
+            {
+                if (times.Count - 1 < i)
+                    times.Add(0);
 
-            yield return new WaitForFixedUpdate();
+                switch (Effect)
+                {
+                    default:
+                    case EffectType.TopDown:
+                        TopDownEffect(transformText, i, times[i]);
+                        break;
+                    case EffectType.Up:
+                        UpEffect(transformText, i, times[i]);
+                        break;
+                }
+            }
 
-            time += Time.fixedDeltaTime * FallSpeed;
+            for (int i = maxCharacters; i < transformText.CharactersCount; i++)
+            {       
+                Color32 clr = Color.white; clr.a = 0;
+
+                transformText.SetCharacterColor(i, clr);
+                transformText.SetCharacterPosition(i, new Vector2(0, 0));
+            }
+
+            transformText.UpdateMesh();
+
+            yield return null;
+
+            for (int i = 0; i < times.Count; i++)
+            {
+                times[i] += Time.deltaTime * Speed;
+            }
         }
 
-        indexes.Remove(index);
+        meshDrawCoroutine = null;
+    }
+
+    private void TopDownEffect(TransformTextMeshService transformText, int index, float time)
+    {
+        Color32 current = Color.Lerp(startColor, endColor, time);
+
+        transformText.SetCharacterColor(index, current);
+        transformText.SetCharacterPosition(
+            index,
+            new Vector2(0, topDownCurve.Evaluate(time) * Distance)
+        );
+    }
+
+    private void UpEffect(TransformTextMeshService transformText, int index, float time)
+    {
+        Color32 current = Color.Lerp(startColor, endColor, time);
+
+        transformText.SetCharacterColor(index, current);
+        transformText.SetCharacterPosition(
+            index,
+            new Vector2(0, upCurve.Evaluate(time) * Distance)
+        );
     }
 }

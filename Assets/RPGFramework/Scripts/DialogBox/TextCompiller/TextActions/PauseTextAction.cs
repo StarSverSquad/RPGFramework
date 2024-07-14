@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PauseTextAction : TextActionBase
 {
-    public PauseTextAction() : base(new Regex(@"!"), ActionType.TextAction) { }
+    public PauseTextAction() : base(new Regex(@"^!$"), ActionType.TextAction) { }
 
     protected override IEnumerator Action()
     {

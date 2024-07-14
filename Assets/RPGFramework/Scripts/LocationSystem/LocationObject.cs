@@ -14,7 +14,7 @@ public class LocationObject : MonoBehaviour
     public List<LocationSpawnPoint> SpawnPoints = new List<LocationSpawnPoint>();
 
     public Transform CameraPoint;
-
+    
     public GameObject MapContainer;
 
     private void Awake()

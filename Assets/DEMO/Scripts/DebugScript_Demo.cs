@@ -15,5 +15,13 @@ public class DebugScript_Demo : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.L))
             GameManager.Instance.SaveLoad.Load(0);
+
+        if (Input.GetKeyDown(KeyCode.R))
+            GameManager.Instance.NewGame();
+    }
+
+    public void AddChar()
+    {
+        GameManager.Instance.Character.AddCharacter(Character);
     }
 }

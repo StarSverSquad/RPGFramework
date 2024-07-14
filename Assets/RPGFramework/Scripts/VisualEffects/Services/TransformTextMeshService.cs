@@ -31,7 +31,7 @@ public class TransformTextMeshService
 
     public void SetCharacterRelativePosition(int index, Vector2 position)
     {
-        if (textInfo == null || GetVisibles.Length == 0)
+        if (textInfo == null || GetVisibles.Length == 0 || charaterVertexes.Count - 1 < index)
             return;
 
         TMP_CharacterInfo characterInfo = GetVisibles[index];
@@ -72,6 +72,11 @@ public class TransformTextMeshService
     {
         textMesh.ForceMeshUpdate();
 
+        UpdateCharacterVertexes();
+    }
+
+    public void MemoryMesh()
+    {
         UpdateCharacterVertexes();
     }
 

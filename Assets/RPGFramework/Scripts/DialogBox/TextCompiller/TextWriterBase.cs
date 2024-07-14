@@ -12,6 +12,7 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
     public List<TextActionBase> allActions = new List<TextActionBase>();
 
     public Queue<TextActionBase> actions = new Queue<TextActionBase>();
+    public Queue<int> actionsIndex = new Queue<int>();
 
     [SerializeField]
     protected WriterMessage message;
@@ -123,8 +124,8 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
                                 break;
                             case TextActionBase.ActionType.TextAction:
                                 {
-                                    text = text.Insert(i, ActionPoint.ToString());
-
+                                    //text = text.Insert(i, ActionPoint.ToString());
+                                    actionsIndex.Enqueue(i);
                                     actions.Enqueue(action);
                                 }
                                 break;
@@ -175,10 +176,18 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
         OnStartWriting();
         OnStartWritingCallback?.Invoke();
 
-        if (message.clear)
-            textMeshPro.text = string.Empty;
-
         previewText = textMeshPro.text;
+
+        if (message.clear)
+        {
+            textMeshPro.text = outcomeText;
+            textMeshPro.maxVisibleCharacters = 0;
+        }
+        else
+        {
+            textMeshPro.text = previewText + outcomeText;
+            textMeshPro.maxVisibleCharacters = previewText.Length;
+        }
 
         isSkiped = false;
 
@@ -199,14 +208,18 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
                 }
 
                 i += txt.Length - 1;
-                textMeshPro.text += txt;
+
+                //textMeshPro.text += txt;
+                //textMeshPro.maxVisibleCharacters += txt.Length;
 
                 continue;
             }
 
             if (outcomeText[i] == ' ')
             {
-                textMeshPro.text += outcomeText[i];
+                //textMeshPro.text += outcomeText[i];
+
+                textMeshPro.maxVisibleCharacters++;
 
                 OnSpaceCallback?.Invoke();
 
@@ -216,12 +229,14 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
 
             if (isSkiped)
             {
-                textMeshPro.text = previewText + outcomeText.Replace(ActionPoint.ToString(), string.Empty);
+                //textMeshPro.text = previewText + outcomeText.Replace(ActionPoint.ToString(), string.Empty);
+
+                textMeshPro.maxVisibleCharacters = textMeshPro.text.Length;
 
                 break;
             }
 
-            if (outcomeText[i] == ActionPoint)
+            if (actionsIndex.Count > 0 && i == actionsIndex.First())
             {
                 TextActionBase act = actions.Dequeue();
 
@@ -229,10 +244,14 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
 
                 OnAction(act);
                 OnActionCallback?.Invoke(act);
+
+                actionsIndex.Dequeue();
             }
             else
             {
-                textMeshPro.text += outcomeText[i];
+                //textMeshPro.text += outcomeText[i];
+
+                textMeshPro.maxVisibleCharacters++;
 
                 OnEveryLetter(outcomeText[i]);
                 OnEveryLetterCallback?.Invoke(outcomeText[i]);

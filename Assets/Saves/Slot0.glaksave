@@ -1,6 +1,6 @@
 {
     "Id": 0,
-    "LocationName": "Город",
+    "LocationName": "TET_Loc",
     "IntValues": {
         "data": [
             {
@@ -16,15 +16,15 @@
         "data": [
             {
                 "Key": "SityFirst",
-                "Value": true
+                "Value": false
             },
             {
                 "Key": "WeirdGrip",
-                "Value": true
+                "Value": false
             },
             {
                 "Key": "StelBread",
-                "Value": true
+                "Value": false
             },
             {
                 "Key": "ValodyaCantDefence",
@@ -33,22 +33,6 @@
             {
                 "Key": "ValodyaScared",
                 "Value": false
-            },
-            {
-                "Key": "DimasHomeCatscene",
-                "Value": true
-            },
-            {
-                "Key": "BongPickuped",
-                "Value": true
-            },
-            {
-                "Key": "apohmel",
-                "Value": true
-            },
-            {
-                "Key": "KeparicBattle",
-                "Value": true
             }
         ]
     },
@@ -56,51 +40,12 @@
         "data": []
     },
     "InventoryItems": {
-        "data": [
-            {
-                "Key": "Bong",
-                "Value": 1
-            },
-            {
-                "Key": "PoisonGrip",
-                "Value": 1
-            },
-            {
-                "Key": "Bread",
-                "Value": 2
-            }
-        ]
+        "data": []
     },
     "PlayerPosition": {
-        "x": 50.559959411621097,
-        "y": 14.134942054748536
+        "x": -16.121971130371095,
+        "y": 1.9344432353973389
     },
-    "PlayerDirection": 1,
-    "SavedCharacters": [
-        {
-            "Tag": "Dimas_DEMO",
-            "Heal": 145,
-            "Mana": 68,
-            "Level": 2,
-            "Expirience": 0,
-            "ExpirienceBorder": 36,
-            "InParty": true,
-            "PositionInParty": 0,
-            "DefaultHeal": 145,
-            "DefaultMana": 68,
-            "DefaultDamage": 12,
-            "DefaultDefence": 4,
-            "DefaultAgility": 5,
-            "Abilities": [
-                "RepForLove",
-                "RepForKampchatka"
-            ],
-            "States": [],
-            "WeaponTag": "NozikPotato",
-            "HeadTag": "",
-            "BodyTag": "",
-            "ShieldTag": "",
-            "TalismanTag": ""
-        }
-    ]
+    "PlayerDirection": 2,
+    "SavedCharacters": []
 }

@@ -16,9 +16,10 @@ public class SimpleShakeTextVisualEffect : TextVisualEffectBase
     {
         TransformTextMeshService transformText = new TransformTextMeshService(textMesh);
 
+
         while (true)
         {
-            transformText.ResetMesh();
+            //transformText.ResetMesh();
 
             for (int i = 0; i < transformText.CharactersCount; i++)
             {

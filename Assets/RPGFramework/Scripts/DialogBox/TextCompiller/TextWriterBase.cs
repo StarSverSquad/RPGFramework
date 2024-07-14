@@ -12,6 +12,7 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
     public List<TextActionBase> allActions = new List<TextActionBase>();
 
     public Queue<TextActionBase> actions = new Queue<TextActionBase>();
+    public Queue<int> actionsIndex = new Queue<int>();
 
     [SerializeField]
     protected WriterMessage message;
@@ -48,14 +49,16 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
 
     public virtual void Initialize()
     {
-        string[] typenames = GetType().Assembly.GetTypes()
-                                      .Where(i => i.BaseType != null && i.BaseType.Name == "TextActionBase")
-                                      .Select(i => i.Name)
-                                      .ToArray();
+        string[] typenames = GetType()
+            .Assembly.GetTypes()
+            .Where(i => i.BaseType != null && i.BaseType.Name == "TextActionBase")
+            .Select(i => i.Name)
+            .ToArray();
 
         foreach (string typename in typenames)
         {
-            TextActionBase actionBase = GetType().Assembly.CreateInstance(typename) as TextActionBase;
+            TextActionBase actionBase =
+                GetType().Assembly.CreateInstance(typename) as TextActionBase;
 
             allActions.Add(actionBase);
         }
@@ -76,78 +79,82 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
 
     private void Compilate()
     {
-        string text = message.text.Clone() as string;
+        string rawText = message.text.Clone() as string;
 
-        for (int i = 0; i < text.Length; i++)
+        for (int index = 0, realIndex = 0; index < rawText.Length; index++, realIndex++)
         {
-            if (text[i] == '<')
+            while (index < rawText.Length - 1 && rawText[index] == '<')
             {
-                bool haveBreak = false;
-                int count = 0;
-                for (int j = i + 1; j < text.Length; j++)
-                {
-                    if (text[j] == '>')
-                    {
-                        haveBreak = true;
-                        break;
-                    }  
+                int actionRegexLength = 0;
 
-                    count++;
+                for (int j = index + 1; j < rawText.Length; j++)
+                {
+                    if (rawText[j] == '>')
+                        break;
+
+                    actionRegexLength++;
                 }
 
-                if (!haveBreak)
-                    continue;
+                int actionLength = actionRegexLength + 2;
 
-                string inner = text.Substring(i + 1, count);
+                string actionRegex = rawText.Substring(index + 1, actionRegexLength);
 
-                foreach (TextActionBase item in allActions)
+                TextActionBase action = allActions.Find(act => act.MatchRegex(actionRegex));
+
+                if (action != null)
                 {
-                    if (item.MatchRegex(inner))
+                    var actionInstance = (TextActionBase)Activator.CreateInstance(action.GetType());
+
+                    actionInstance.TextWriter = this;
+
+                    rawText = rawText.Remove(index, actionLength);
+
+                    actionInstance.ParseText(actionRegex);
+
+                    switch (action.Type)
                     {
-                        TextActionBase action = (TextActionBase)Activator.CreateInstance(item.GetType());
+                        case TextActionBase.ActionType.TextReplace:
+                            {
+                                rawText = rawText.Insert(
+                                    index,
+                                    actionInstance.GetText(actionRegex)
+                                );
 
-                        action.TextWriter = this;
-
-                        text = text.Remove(i, count + 2);
-
-                        action.ParseText(inner);
-
-                        switch (item.Type)
-                        {
-                            case TextActionBase.ActionType.TextReplace:
-                                {
-                                    text = text.Insert(i, action.GetText(inner));
-
-                                    OnTextReplaceCallback?.Invoke(action);
-                                }
-                                break;
-                            case TextActionBase.ActionType.TextAction:
-                                {
-                                    text = text.Insert(i, ActionPoint.ToString());
-
-                                    actions.Enqueue(action);
-                                }
-                                break;
-                        }
-
-                        break;
+                                OnTextReplaceCallback?.Invoke(actionInstance);
+                            }
+                            break;
+                        case TextActionBase.ActionType.TextAction:
+                            {
+                                actionsIndex.Enqueue(realIndex);
+                                actions.Enqueue(actionInstance);
+                            }
+                            break;
                     }
                 }
+                else
+                    index += actionLength;
             }
         }
 
-        outcomeText = text;
+        outcomeText = rawText;
     }
 
     public void PauseWrite() => isPause = true;
 
     public virtual void OnEveryLetter(char letter) { }
+
     public virtual void OnStartWriting() { }
+
     public virtual void OnEndWriting() { }
+
     public virtual void OnSpace() { }
+
     public virtual void OnTextReplace(TextActionBase act) { }
+
     public virtual void OnAction(TextActionBase act) { }
+
     public virtual void OnWait() { }
+
     public virtual void OnEndWait() { }
 
     public abstract bool ContinueCanExecute();
@@ -175,69 +182,57 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
         OnStartWriting();
         OnStartWritingCallback?.Invoke();
 
+        int startIndex = textMeshPro.GetParsedText().Length - 1;
+
         if (message.clear)
-            textMeshPro.text = string.Empty;
-
-        previewText = textMeshPro.text;
-
-        isSkiped = false;
+        {
+            textMeshPro.text = outcomeText;
+            textMeshPro.maxVisibleCharacters = 0;
+            startIndex = 0;
+        }
+        else
+        {
+            textMeshPro.text += outcomeText;
+            textMeshPro.maxVisibleCharacters = startIndex + 1;
+        }
 
         float letterDelay = 1f / (message.speed <= 0 ? defaultTextSpeed : message.speed);
 
-        for (int i = 0; i < outcomeText.Length; i++)
+        yield return null;
+
+        string parsedText = textMeshPro.GetParsedText();
+
+        for (int index = startIndex; index < parsedText.Length; index++)
         {
-            if (outcomeText[i] == '<')
-            {
-                string txt = string.Empty;
-
-                for (int j = i; j < outcomeText.Length; j++)
-                {
-                    txt += outcomeText[j];
-
-                    if (outcomeText[j] == '>')
-                        break;
-                }
-
-                i += txt.Length - 1;
-                textMeshPro.text += txt;
-
-                continue;
-            }
-
-            if (outcomeText[i] == ' ')
-            {
-                textMeshPro.text += outcomeText[i];
-
+            if (parsedText[index] == ' ')
                 OnSpaceCallback?.Invoke();
-
-                continue;
-            }
-                
 
             if (isSkiped)
             {
-                textMeshPro.text = previewText + outcomeText.Replace(ActionPoint.ToString(), string.Empty);
-
+                textMeshPro.maxVisibleCharacters = parsedText.Length;
                 break;
             }
 
-            if (outcomeText[i] == ActionPoint)
+            if (actionsIndex.Count > 0)
             {
-                TextActionBase act = actions.Dequeue();
+                int activeCount = 0;
+                foreach (var item in actionsIndex.Where(i => index == i))
+                {
+                    TextActionBase act = actions.ToArray()[activeCount];
 
-                yield return act.Invoke(this);
+                    yield return act.Invoke(this);
 
-                OnAction(act);
-                OnActionCallback?.Invoke(act);
-            }
-            else
-            {
-                textMeshPro.text += outcomeText[i];
+                    OnAction(act);
+                    OnActionCallback?.Invoke(act);
 
-                OnEveryLetter(outcomeText[i]);
-                OnEveryLetterCallback?.Invoke(outcomeText[i]);
+                    activeCount++;
+                }
 
-                yield return new WaitForSeconds(letterDelay);
+                for (int i = 0; i < activeCount; i++)
+                {
+                    actions.Dequeue();
+                    actionsIndex.Dequeue();
+                }
             }
 
             if (isPause)
@@ -247,6 +242,13 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
                 isPause = false;
                 OnEndWait();
             }
+
+            textMeshPro.maxVisibleCharacters++;
+
+            OnEveryLetter(parsedText[index]);
+            OnEveryLetterCallback?.Invoke(parsedText[index]);
+
+            yield return new WaitForSeconds(letterDelay);
         }
 
         if (message.wait)
@@ -256,7 +258,10 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
             OnEndWait();
         }
 
+        isSkiped = false;
+
         actions.Clear();
+        actionsIndex.Clear();
 
         writeCoroutine = null;
 
@@ -278,7 +283,7 @@ public class WriterMessage
     public WriterMessage()
     {
         text = string.Empty;
-        speed = 0; 
+        speed = 0;
 
         clear = true;
         wait = true;

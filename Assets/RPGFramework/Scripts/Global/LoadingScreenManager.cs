@@ -35,8 +35,6 @@ public class LoadingScreenManager : MonoBehaviour
     {
         partOneContainer.SetActive(false);
         partTwoContainer.SetActive(false);
-
-
     }
 
     private void Update()

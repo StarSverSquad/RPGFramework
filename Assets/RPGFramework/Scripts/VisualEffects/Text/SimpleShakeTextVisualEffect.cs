@@ -1,8 +1,5 @@
-﻿using DG.Tweening;
-using DG.Tweening.Core;
-using System;
+﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -14,21 +11,43 @@ public class SimpleShakeTextVisualEffect : TextVisualEffectBase
 
     protected override IEnumerator EffectCoroutine(TextMeshProUGUI textMesh)
     {
-        TransformTextMeshService transformText = new TransformTextMeshService(textMesh);
+        var transformText = new TransformTextMeshService(textMesh);
+
+        DateTime cur, prev = DateTime.Now;
+
+        yield return null;
+
+        transformText.ResetMesh();
 
         while (true)
         {
-            transformText.ResetMesh();
+            cur = DateTime.Now;
 
-            for (int i = 0; i < transformText.CharactersCount; i++)
+            if ((cur - prev).TotalMilliseconds > 40)
             {
-                float randX = UnityEngine.Random.Range(-3f, 3f);
-                float randY = UnityEngine.Random.Range(-3f, 3f);
+                transformText.ResetMesh();
 
-                transformText.SetCharacterRelativePosition(i, new Vector2(randX, randY));
+                for (int i = 0; i < transformText.CharactersCount; i++)
+                {
+                    float randX = UnityEngine.Random.Range(-3f, 3f);
+                    float randY = UnityEngine.Random.Range(-3f, 3f);
+
+                    transformText.SetCharacterPosition(i, new Vector2(randX, randY));
+                }
+
+                prev = cur;
             }
+            else
+                transformText.PartialResetMesh();
 
-            yield return new WaitForSeconds(0.03f);
+            transformText.UpdateMesh();
+
+            yield return null;
         }
+    }
+
+    public override string GetTittle()
+    {
+        return "Тряска текста";
     }
 }

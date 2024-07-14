@@ -1,8 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public abstract class TextVisualEffectBase
 {
@@ -46,5 +44,8 @@ public abstract class TextVisualEffectBase
     protected abstract IEnumerator EffectCoroutine(TextMeshProUGUI textMesh);
 
     public virtual void OnStartEffect() { }
+
     public virtual void OnEndEffect() { }
+
+    public virtual string GetTittle() => GetType().Name;
 }

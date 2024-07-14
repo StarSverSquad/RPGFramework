@@ -148,10 +148,6 @@ public class MessageNode : ActionNodeBase
             objectType = typeof(TextVisualEffectBase)
         };
 
-        Debug.Log(effectTypes[0].GetType().Name);
-        Debug.Log(effectTypes[1].GetType().Name);
-        Debug.Log(dialog.message.textEffectTypeName);
-
         int defaultVal = 0;
         if (dialog.message.textEffectTypeName != "None")
             defaultVal =

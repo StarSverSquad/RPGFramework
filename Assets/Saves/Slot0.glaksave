@@ -1,6 +1,6 @@
 {
     "Id": 0,
-    "LocationName": "TET_Loc",
+    "LocationName": "DimaHome",
     "IntValues": {
         "data": [
             {
@@ -33,6 +33,10 @@
             {
                 "Key": "ValodyaScared",
                 "Value": false
+            },
+            {
+                "Key": "DimasHomeCatscene",
+                "Value": true
             }
         ]
     },
@@ -43,26 +47,29 @@
         "data": []
     },
     "PlayerPosition": {
-        "x": -3.594763994216919,
-        "y": 1.244592547416687
+        "x": 0.14948245882987977,
+        "y": -0.24948261678218842
     },
-    "PlayerDirection": 2,
+    "PlayerDirection": 3,
     "SavedCharacters": [
         {
-            "Tag": "",
-            "Heal": 50,
+            "Tag": "Dimas_DEMO",
+            "Heal": 60,
             "Mana": 50,
             "Level": 1,
             "Expirience": 0,
-            "ExpirienceBorder": 30,
+            "ExpirienceBorder": 20,
             "InParty": true,
             "PositionInParty": 0,
-            "DefaultHeal": 50,
+            "DefaultHeal": 60,
             "DefaultMana": 50,
-            "DefaultDamage": 15,
-            "DefaultDefence": 5,
-            "DefaultAgility": 5,
-            "Abilities": [],
+            "DefaultDamage": 10,
+            "DefaultDefence": 3,
+            "DefaultAgility": 3,
+            "Abilities": [
+                "RepForLove",
+                "RepForKampchatka"
+            ],
             "States": [],
             "WeaponTag": "",
             "HeadTag": "",

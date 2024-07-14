@@ -140,7 +140,6 @@ public class FallingText : MonoBehaviour
 
             for (int i = 0; i < times.Count; i++)
             {
-                Debug.Log(times[i]);
                 times[i] += Time.deltaTime * Speed;
             }
         }

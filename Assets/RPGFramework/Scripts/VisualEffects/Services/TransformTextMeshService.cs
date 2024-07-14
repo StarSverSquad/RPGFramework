@@ -26,11 +26,6 @@ public class TransformTextMeshService
         this.textMesh = textMesh;
 
         ResetMesh();
-
-        //textMesh.OnPreRenderText += (str) =>
-        //{
-        //    PartialResetMesh();
-        //};
     }
 
     public void SetCharacterPosition(int index, Vector3 position)

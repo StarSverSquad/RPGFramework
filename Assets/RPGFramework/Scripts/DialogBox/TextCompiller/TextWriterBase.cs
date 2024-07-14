@@ -3,9 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
 {
@@ -135,9 +133,6 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
                 }
                 else
                     index += actionLength;
-
-                if (index < rawText.Length - 1)
-                    Debug.Log(rawText[index]);
             }
         }
 

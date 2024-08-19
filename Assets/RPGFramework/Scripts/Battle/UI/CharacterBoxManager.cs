@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine;
 public class CharacterBoxManager : MonoBehaviour, IDisposable, IActive
 {
     [SerializeField]
-    private GameObject container;
+    private RectTransform container;
 
     [SerializeField]
     private CharacterBox[] boxes = new CharacterBox[4];
@@ -14,8 +15,8 @@ public class CharacterBoxManager : MonoBehaviour, IDisposable, IActive
 
     public Vector2[] BoxesGlobalPositions => boxes.Select(i => (Vector2)i.transform.position).ToArray();
 
-    [SerializeField]
-    private Animator animator;
+    public float TraslateContainerTime => 1f;
+    public float TraslateBoxTime => 0.25f;
 
     private void Start()
     {
@@ -36,9 +37,39 @@ public class CharacterBoxManager : MonoBehaviour, IDisposable, IActive
 
     public CharacterBox GetBox(BattleCharacterInfo character) => boxes.First(i => i.Character == character);
 
-    public void ChangePosition(bool top)
+    public void Show()
     {
-        animator.SetBool("Top", top);
+        container.DOAnchorPosY(100, TraslateContainerTime).SetLoops(0).SetEase(Ease.OutSine).Play();
+    }
+    public void Hide()
+    {
+        container.DOAnchorPosY(-166, TraslateContainerTime).SetLoops(0).SetEase(Ease.InSine).Play();
+    }
+
+    public void FocusBox(int index)
+    {
+        RectTransform rect = boxes[index].GetComponent<RectTransform>();
+
+        rect.DOAnchorPosY(150, TraslateBoxTime).SetLoops(0).SetEase(Ease.OutSine).Play();
+    }
+    public void UnfocusBox(int index)
+    {
+        RectTransform rect = boxes[index].GetComponent<RectTransform>();
+
+        rect.DOAnchorPosY(108, TraslateBoxTime).SetLoops(0).SetEase(Ease.OutSine).Play();
+    }
+
+    public void FocusBox(BattleCharacterInfo character)
+    {
+        RectTransform rect = boxes.First(i => i.Character == character).GetComponent<RectTransform>();
+
+        rect.DOAnchorPosY(150, TraslateBoxTime).SetLoops(0).SetEase(Ease.OutSine).Play();
+    }
+    public void UnfocusBox(BattleCharacterInfo character)
+    {
+        RectTransform rect = boxes.First(i => i.Character == character).GetComponent<RectTransform>();
+
+        rect.DOAnchorPosY(108, TraslateBoxTime).SetLoops(0).SetEase(Ease.OutSine).Play();
     }
 
     public void Dispose()
@@ -52,5 +83,5 @@ public class CharacterBoxManager : MonoBehaviour, IDisposable, IActive
         SetActive(false);
     }
 
-    public void SetActive(bool active) => container.SetActive(active);
+    public void SetActive(bool active) => container.gameObject.SetActive(active);
 }

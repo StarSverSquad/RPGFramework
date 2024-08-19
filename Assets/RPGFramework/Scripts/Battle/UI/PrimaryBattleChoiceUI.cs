@@ -5,12 +5,10 @@ using UnityEngine;
 public class PrimaryBattleChoiceUI : MonoBehaviour, IActive
 {
     [SerializeField]
-    private BattleButton[] buttons = new BattleButton[4];
+    private BattleChoiceButton[] buttons = new BattleChoiceButton[4];
 
     [SerializeField]
     private GameObject buttonsContainer;
-    [SerializeField]
-    private GameObject box;
 
     [SerializeField]
     private int choice;
@@ -33,7 +31,6 @@ public class PrimaryBattleChoiceUI : MonoBehaviour, IActive
     public void SetActive(bool active)
     {
         buttonsContainer.SetActive(active);
-        box.SetActive(active);
     }
 
     public void InvokeChoice(int startChoice = 0)
@@ -45,13 +42,13 @@ public class PrimaryBattleChoiceUI : MonoBehaviour, IActive
         {
             if (choice == i)
             {
-                if (!buttons[i].IsShow)
-                    buttons[i].Show();
+                if (!buttons[i].IsFocused)
+                    buttons[i].SetFocus(true);
             }
             else
             {
-                if (buttons[i].IsShow)
-                    buttons[i].Hide();
+                if (buttons[i].IsFocused)
+                    buttons[i].SetFocus(false);
             }
         }
 
@@ -75,8 +72,8 @@ public class PrimaryBattleChoiceUI : MonoBehaviour, IActive
 
             if (newchoice != choice)
             {
-                buttons[choice].Hide();
-                buttons[newchoice].Show();
+                buttons[choice].SetFocus(false);
+                buttons[newchoice].SetFocus(true);
 
                 choice = newchoice;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BattleChoiceUI : IndependenceChoiceUI
+public class BattleChoiceUI : CommonChoiceUI
 {
     [Header("Scroll settings")]
     [SerializeField]
@@ -26,7 +26,7 @@ public class BattleChoiceUI : IndependenceChoiceUI
     }
 
     private void OnDestroy()
-    {       
+    {
         OnStart -= BattleChoiceUI_OnStartChoice;
         OnEnd -= BattleChoiceUI_OnEndChoice;
     }

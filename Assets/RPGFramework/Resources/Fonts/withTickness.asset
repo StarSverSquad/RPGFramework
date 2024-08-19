@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 71c1514a6bd24e1e882cebbe1904ce04, type: 3}
-  m_Name: defaultFondTMP
+  m_Name: withTickness
   m_EditorClassIdentifier: 
-  hashCode: 866916577
+  hashCode: 233513180
   material: {fileID: 9178984594030202155}
-  materialHashCode: -1003212383
+  materialHashCode: 1434386044
   m_Version: 1.1.0
   m_SourceFontFileGUID: dc910c14dce5d89439d0070f7705c95b
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: dc910c14dce5d89439d0070f7705c95b, type: 3}
@@ -4061,7 +4061,7 @@ Material:
     - _OutlineSoftness: 0
     - _OutlineUVSpeedX: 0
     - _OutlineUVSpeedY: 0
-    - _OutlineWidth: 0
+    - _OutlineWidth: 0.306
     - _PerspectiveFilter: 0.875
     - _Reflectivity: 10
     - _ScaleRatioA: 0.9

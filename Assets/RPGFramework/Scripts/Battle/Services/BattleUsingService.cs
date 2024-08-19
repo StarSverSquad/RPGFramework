@@ -107,7 +107,7 @@ public class BattleUsingService
             else if (target is BattleCharacterInfo character)
             {
 
-                CharacterBox box = BattleManager.Instance.characterBox.GetBox(character);
+                CharacterBox box = BattleManager.Instance.UI.CharacterBox.GetBox(character);
 
                 if (healDif < 0)
                     battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
@@ -237,7 +237,7 @@ public class BattleUsingService
             else if (target is BattleCharacterInfo character)
             {
 
-                CharacterBox box = BattleManager.Instance.characterBox.GetBox(character);
+                CharacterBox box = BattleManager.Instance.UI.CharacterBox.GetBox(character);
 
                 if (healDif < 0)
                     battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),

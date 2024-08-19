@@ -20,6 +20,7 @@ public class BattlePipeline : MonoBehaviour
     public BattleChoiceManager Choice => BattleManager.Instance.choice;
     public BattleUtility Utility => BattleManager.Instance.utility;
     public BattleVisualTransmitionManager VisualTransmition => BattleManager.Instance.visualTransmition;
+    public BattleUIManager UI => BattleManager.Instance.UI;
 
     public bool MainIsWorking => main != null;
 
@@ -189,14 +190,14 @@ public class BattlePipeline : MonoBehaviour
 
         yield return new WaitForFixedUpdate();
 
-        BattleManager.Instance.characterBox.Initialize(Data.Characters.ToArray());
-        BattleManager.Instance.characterBox.ChangePosition(false);
+        BattleManager.Instance.UI.CharacterBox.Initialize(Data.Characters.ToArray());
+        //BattleManager.Instance.UI.CharacterBox.ChangePosition(false);
 
         Choice.PrimaryChoice.SetActive(false);
 
-        BattleManager.Instance.description.SetActive(false);
+        BattleManager.Instance.UI.Description.SetActive(false);
 
-        BattleManager.Instance.concentrationBar.UpdateValue();
+        BattleManager.Instance.UI.Concentration.SetConcentration(0);
 
         BattleManager.Instance.background.CreateBackground(Data.BattleInfo.Background);
 
@@ -246,7 +247,7 @@ public class BattlePipeline : MonoBehaviour
 
         BattleManager.Instance.SetActive(false);
 
-        BattleManager.Instance.characterBox.Dispose();
+        BattleManager.Instance.UI.CharacterBox.Dispose();
 
         BattleManager.Instance.enemyModels.Dispose();
 
@@ -266,8 +267,9 @@ public class BattlePipeline : MonoBehaviour
 
         currentCharacterChoiceIndex = 0;
 
-        // Установление позиции character box-сов
-        BattleManager.Instance.characterBox.ChangePosition(true);
+        UI.CharacterSide.Show();
+        UI.PlayerTurnSide.Show();
+
         // Активация первичного выбора
         Choice.PrimaryChoice.SetActive(true);
 
@@ -275,7 +277,7 @@ public class BattlePipeline : MonoBehaviour
 
         // Установление иконки действия
         for (int i = 0; i < Data.Characters.Count; i++)
-            BattleManager.Instance.characterBox.Boxes[i].ChangeAct(BattleCharacterAction.None);
+            BattleManager.Instance.UI.CharacterBox.Boxes[i].ChangeAct(BattleCharacterAction.None);
 
         /// ОБЩИЙ ЦИКЛ ВЫБОРА
         while (currentCharacterChoiceIndex < Data.Characters.Count)
@@ -306,10 +308,8 @@ public class BattlePipeline : MonoBehaviour
             {
                 // Для первичного действия
                 case ChoiceAction.Primary:
-                    // Вкличение показа персонажа
-                    BattleManager.Instance.characterPreview.SetActive(true);
-                    // Установка текущего персонажа на показ
-                    BattleManager.Instance.characterPreview.SetData(currentCharacter.Entity as RPGCharacter);
+
+                    UI.CharacterSide.Setup(currentCharacter);
 
                     currentCharacter.CleanUp();
 
@@ -322,7 +322,7 @@ public class BattlePipeline : MonoBehaviour
                     if (Choice.IsPrimaryCanceled)
                     {
                         currentCharacterChoiceIndex = currentCharacterChoiceIndex == 0 ? 0 : currentCharacterChoiceIndex - 1;
-                        BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.None);
+                        BattleManager.Instance.UI.CharacterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.None);
                     } 
                     else
                     {
@@ -361,7 +361,7 @@ public class BattlePipeline : MonoBehaviour
                         }
                     }
 
-                    BattleManager.Instance.characterPreview.SetActive(false);
+                    //BattleManager.Instance.characterPreview.SetActive(false);
 
                     break;
                 // Выбор между взаимодействием и способностью 
@@ -409,7 +409,7 @@ public class BattlePipeline : MonoBehaviour
                         currentCharacter.InteractionAct = (RPGEnemy.EnemyAct)Choice.CurrentItem.value;
                         currentCharacter.IsAbility = false;
 
-                        BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
+                        BattleManager.Instance.UI.CharacterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
 
                         NextCharacter();
                     }
@@ -439,7 +439,7 @@ public class BattlePipeline : MonoBehaviour
                             case RPGAbility.AbilityDirection.All:
                             case RPGAbility.AbilityDirection.AllEnemys:
                             case RPGAbility.AbilityDirection.AllTeam:
-                                BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Spell);
+                                BattleManager.Instance.UI.CharacterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Spell);
 
                                 currentCharacter.ReservedConcentration = -currentCharacter.Ability.ConcentrationCost;
                                 Utility.AddConcetration(-currentCharacter.Ability.ConcentrationCost);
@@ -483,7 +483,7 @@ public class BattlePipeline : MonoBehaviour
                         {
                             if (choiceActions[choiceActions.Count - 2] == ChoiceAction.Ability)
                             {
-                                BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
+                                BattleManager.Instance.UI.CharacterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
 
                                 currentCharacter.ReservedConcentration = -currentCharacter.Ability.ConcentrationCost;
                                 Utility.AddConcetration(-currentCharacter.Ability.ConcentrationCost);
@@ -498,7 +498,7 @@ public class BattlePipeline : MonoBehaviour
                         else
                         {
                             // Утанавливаем соотвествующую иконку действия
-                            BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(currentCharacter.BattleAction);
+                            BattleManager.Instance.UI.CharacterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(currentCharacter.BattleAction);
 
                             NextCharacter();
                         }
@@ -527,13 +527,13 @@ public class BattlePipeline : MonoBehaviour
                         switch (currentCharacter.BattleAction)
                         {
                             case BattleCharacterAction.Act:
-                                BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
+                                BattleManager.Instance.UI.CharacterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
 
                                 currentCharacter.ReservedConcentration = -currentCharacter.Ability.ConcentrationCost;
                                 Utility.AddConcetration(-currentCharacter.Ability.ConcentrationCost);
                                 break;
                             case BattleCharacterAction.Item:
-                                BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
+                                BattleManager.Instance.UI.CharacterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
                                 break;
                         }
 
@@ -568,7 +568,7 @@ public class BattlePipeline : MonoBehaviour
                         {
                             if (choiceActions[choiceActions.Count - 2] == ChoiceAction.Ability)
                             {
-                                BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
+                                BattleManager.Instance.UI.CharacterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
 
                                 currentCharacter.ReservedConcentration = -currentCharacter.Ability.ConcentrationCost;
                                 Utility.AddConcetration(-currentCharacter.Ability.ConcentrationCost);
@@ -583,7 +583,7 @@ public class BattlePipeline : MonoBehaviour
                         else
                         {
                             // Утанавливаем соотвествующую иконку действия
-                            BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(currentCharacter.BattleAction);
+                            BattleManager.Instance.UI.CharacterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(currentCharacter.BattleAction);
 
                             NextCharacter();
                         }
@@ -619,7 +619,7 @@ public class BattlePipeline : MonoBehaviour
                                     case RPGConsumed.ConsumingDirection.AllEnemys:
                                     case RPGConsumed.ConsumingDirection.AllTeam:
                                     case RPGConsumed.ConsumingDirection.All:
-                                        BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
+                                        BattleManager.Instance.UI.CharacterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
 
                                         NextCharacter();
                                         break;
@@ -636,7 +636,7 @@ public class BattlePipeline : MonoBehaviour
                             }
                             else
                             {
-                                BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
+                                BattleManager.Instance.UI.CharacterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Item);
 
                                 NextCharacter();
                             }
@@ -671,7 +671,7 @@ public class BattlePipeline : MonoBehaviour
                         }
 
                         // Утанавливаем соотвествующую иконку действия
-                        BattleManager.Instance.characterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Defence);
+                        BattleManager.Instance.UI.CharacterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Defence);
 
                         NextCharacter();
                     }
@@ -684,10 +684,19 @@ public class BattlePipeline : MonoBehaviour
             yield return null;
         }
 
-        // Изменение позиции character box-сов
-        BattleManager.Instance.characterBox.ChangePosition(false);
+        UI.CharacterSide.Hide();
+        UI.PlayerTurnSide.Hide();
+
+        yield return new WaitForSeconds(.5f);
+
+        UI.CharacterBox.Show();
+
+        yield return new WaitForSeconds(.5f);
+
         // Выключение первичного выбора
         Choice.PrimaryChoice.SetActive(false);
+
+        bool saveQTE = false;
 
         /// ЦИКЛ ПОСЛЕДСВИЙ ВЫБОРА
         foreach (var characterInfo in Data.Characters)
@@ -695,6 +704,15 @@ public class BattlePipeline : MonoBehaviour
             bool flee = false;
 
             RPGCharacter character = characterInfo.Entity as RPGCharacter;
+
+            if (saveQTE && characterInfo.BattleAction != BattleCharacterAction.Fight)
+            {
+                saveQTE = false;
+
+                BattleManager.Instance.attackQTE.Hide();
+            }
+
+            UI.CharacterBox.FocusBox(characterInfo);
 
             // Если персонаж пал или пропускает ход или не может ничего делать в битве, то его надо пропустить 
             if (characterInfo.IsDead || characterInfo.States.Any(i => i.SkipTurn) || !character.CanMoveInBattle)
@@ -717,8 +735,14 @@ public class BattlePipeline : MonoBehaviour
                                 continue;
                         }
 
+                        saveQTE = true;
+
                         // Запуск QTE атаки
-                        BattleManager.Instance.attackQTE.InvokeQTE((AttackQTEManager.Positions)Data.Characters.IndexOf(characterInfo));
+                        BattleManager.Instance.attackQTE.Show();
+
+                        yield return new WaitForSeconds(0.5f);
+
+                        BattleManager.Instance.attackQTE.Invoke();
 
                         yield return new WaitWhile(() => BattleManager.Instance.attackQTE.QTE.IsWorking);
 
@@ -744,7 +768,7 @@ public class BattlePipeline : MonoBehaviour
                         Destroy(effect.gameObject);
 
                         // Убрать QTE
-                        BattleManager.Instance.attackQTE.DropQTE();
+                        BattleManager.Instance.attackQTE.Hide();
 
                         // Нанесение урона врагу
                         BattleManager.Utility.DamageEnemy(characterInfo, characterInfo.EnemyBuffer, BattleManager.Instance.attackQTE.QTE.DamageFactor);
@@ -922,6 +946,9 @@ public class BattlePipeline : MonoBehaviour
                     break;
             }
 
+            UI.CharacterBox.UnfocusBox(characterInfo);
+
+
             if (Data.Enemys.Any(i => i.Heal <= 0))
             {
                 BattleEnemyInfo[] deads = Data.Enemys.Where(i => i.Heal <= 0).ToArray();
@@ -1006,7 +1033,7 @@ public class BattlePipeline : MonoBehaviour
 
             character.Entity.UpdateAllStates();
 
-            CharacterBox box = BattleManager.Instance.characterBox.GetBox(character);
+            CharacterBox box = BattleManager.Instance.UI.CharacterBox.GetBox(character);
 
             if (character.Entity.Heal < oldHeal)
             {
@@ -1080,7 +1107,7 @@ public class BattlePipeline : MonoBehaviour
 
             characterInfo.IsTarget = true;
 
-            BattleManager.Instance.characterBox.GetBox(characterInfo).MarkTarget(true);
+            BattleManager.Instance.UI.CharacterBox.GetBox(characterInfo).MarkTarget(true);
 
             targets.Add(characterInfo);
         }
@@ -1098,7 +1125,7 @@ public class BattlePipeline : MonoBehaviour
         foreach (var item in targets)
         {
             item.IsTarget = false;
-            BattleManager.Instance.characterBox.GetBox(item).MarkTarget(false);
+            BattleManager.Instance.UI.CharacterBox.GetBox(item).MarkTarget(false);
         }
 
         BattleManager.Instance.player.SetActive(false);
@@ -1121,7 +1148,7 @@ public class BattlePipeline : MonoBehaviour
         {
             BattleManager.Instance.battleAudio.PlaySound(Data.Lose);
 
-            BattleManager.Instance.characterBox.SetActive(false);
+            BattleManager.Instance.UI.CharacterBox.SetActive(false);
 
             CommonManager.Instance.MessageBox.Write(new MessageInfo()
             {
@@ -1239,7 +1266,7 @@ public class BattlePipeline : MonoBehaviour
             }
         }
 
-        BattleManager.Instance.characterBox.SetActive(false);
+        BattleManager.Instance.UI.CharacterBox.SetActive(false);
 
     }
 

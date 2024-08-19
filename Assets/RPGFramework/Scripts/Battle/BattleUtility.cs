@@ -121,7 +121,7 @@ public class BattleUtility : MonoBehaviour
     /// <param name="bullet">Пуля</param>
     public void DamageCharacterByBullet(BattleCharacterInfo character, PatternBullet bullet)
     {
-        CharacterBox box = BattleManager.Instance.characterBox.GetBox(character);
+        CharacterBox box = BattleManager.Instance.UI.CharacterBox.GetBox(character);
 
         int realDamage = character.Entity.GiveDamage(Mathf.RoundToInt(bullet.enemy.Damage * bullet.DamageModifier * (character.IsDefence ? .5f : 1f)));
 
@@ -144,7 +144,7 @@ public class BattleUtility : MonoBehaviour
                 Data.Characters.Where(i => i.IsDead == false).ToList().ForEach(item =>
                 {
                     item.IsTarget = true;
-                    BattleManager.Instance.characterBox.GetBox(item).MarkTarget(true);
+                    BattleManager.Instance.UI.CharacterBox.GetBox(item).MarkTarget(true);
                 });
             }
 
@@ -165,7 +165,7 @@ public class BattleUtility : MonoBehaviour
 
     public void FallCharacter(BattleCharacterInfo character)
     {
-        CharacterBox box = BattleManager.Instance.characterBox.GetBox(character);
+        CharacterBox box = BattleManager.Instance.UI.CharacterBox.GetBox(character);
 
         SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f), "ПАЛ");
 
@@ -187,6 +187,6 @@ public class BattleUtility : MonoBehaviour
     {
         Data.Concentration = Mathf.Clamp(Data.Concentration + value, 0, Data.MaxConcentration);
 
-        BattleManager.Instance.concentrationBar.UpdateValue();
+        BattleManager.Instance.UI.Concentration.SetConcentration(Data.Concentration);
     }
 }

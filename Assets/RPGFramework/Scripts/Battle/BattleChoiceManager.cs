@@ -88,7 +88,7 @@ public class BattleChoiceManager : MonoBehaviour
 
     private void Choice_OnEndChoice()
     {
-        //BattleManager.Instance.description.SetActive(false);
+        BattleManager.Instance.UI.Description.SetActive(false);
     }
 
     private void Choice_OnCanceled()
@@ -372,7 +372,7 @@ public class BattleChoiceManager : MonoBehaviour
 
     private void ShowDescriptionFor(CommonChoiceUI.ElementInfo element)
     {
-        //BattleManager.Instance.description.SetActive(true);
-        //BattleManager.Instance.description.SetText(element.description);
+        BattleManager.Instance.UI.Description.SetActive(true);
+        BattleManager.Instance.UI.Description.Text = element.description;
     }
 }

@@ -6,15 +6,15 @@ public class BattleUIPlayerTurnSide : MonoBehaviour
     [SerializeField]
     private RectTransform rect;
 
-    public float TraslationTime => 1f;
+    public float TraslationTime => 0.7f;
 
     public void Show()
     {
-        rect.DOAnchorPosY(165, TraslationTime).SetLoops(0).SetEase(Ease.OutSine).Play();
+        rect.DOAnchorPosY(165, TraslationTime).SetEase(Ease.OutExpo).Play();
     }
 
     public void Hide()
     {
-        rect.DOAnchorPosY(-521, TraslationTime).SetLoops(0).SetEase(Ease.InSine).Play();             
+        rect.DOAnchorPosY(-521, TraslationTime).SetEase(Ease.OutExpo).Play();             
     }
 }

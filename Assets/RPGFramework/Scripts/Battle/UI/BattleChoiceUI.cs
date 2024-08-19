@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -15,14 +16,47 @@ public class BattleChoiceUI : CommonChoiceUI
 
     private Coroutine scrollCoroutine = null;
 
+    private Tween scrollTween;
+    private Dictionary<ElementInfo, float> elementsDefaultAbsY;
+
     public bool IsCrolling => scrollCoroutine != null;
 
     private void Start()
     {
         OnStart += BattleChoiceUI_OnStartChoice;
         OnEnd += BattleChoiceUI_OnEndChoice;
+        OnSellectionChanged += BattleChoiceUI_OnSellectionChanged;
 
         CleanUp();
+    }
+
+    private void BattleChoiceUI_OnSellectionChanged()
+    {
+        if (!canScroll)
+            return;
+
+        scrollTween.Kill();
+
+        Vector3[] rectCorners = new Vector3[4];
+        Vector3[] itemCorners = new Vector3[4];
+        Vector3[] contentCorners = new Vector3[4];
+
+        rect.GetWorldCorners(rectCorners);
+        CurrentItem.element.GetComponent<RectTransform>().GetWorldCorners(itemCorners);
+        content.GetWorldCorners(contentCorners);
+
+        float contentToElementTop = Mathf.Abs(itemCorners[1].y - contentCorners[1].y);
+        float contentToElementBottom = Mathf.Abs(itemCorners[0].y - contentCorners[0].y);
+
+        if (itemCorners[1].y > rectCorners[1].y)
+        {
+            scrollTween = content.DOMoveY(content.position.y - Mathf.Abs(itemCorners[1].y - rectCorners[1].y) - Margin.y / 48, 0.25f).SetEase(Ease.OutQuint).Play();
+        }
+
+        if (itemCorners[0].y < rectCorners[0].y)
+        {
+            scrollTween = content.DOMoveY(content.position.y + Mathf.Abs(itemCorners[0].y - rectCorners[0].y) + Margin.w / 48, 0.25f).SetEase(Ease.OutQuint).Play();
+        }
     }
 
     private void OnDestroy()
@@ -33,7 +67,15 @@ public class BattleChoiceUI : CommonChoiceUI
 
     private void BattleChoiceUI_OnStartChoice()
     {
-        scrollCoroutine = StartCoroutine(ScrollCoroutine());
+        elementsDefaultAbsY = new Dictionary<ElementInfo, float>();
+
+        foreach (var lst in elementLists)
+        {
+            foreach (var item in lst)
+            {
+                elementsDefaultAbsY.Add(item, item.element.transform.position.y);
+            }
+        }
     }
 
     private void BattleChoiceUI_OnEndChoice()
@@ -50,60 +92,5 @@ public class BattleChoiceUI : CommonChoiceUI
 
         if (scrollCoroutine != null)
             StopCoroutine(scrollCoroutine);
-    }
-
-    private IEnumerator ScrollCoroutine()
-    {
-        if (!canScroll)
-        {
-            scrollCoroutine = null;
-            yield break;
-        }
-
-        Vector3[] mainCornets = new Vector3[4];
-        Vector3[] contentCornets = new Vector3[4];
-        Vector3[] itemCornets = new Vector3[4];
-
-        rect.GetWorldCorners(mainCornets);
-        elementPrefab.GetComponent<RectTransform>().GetWorldCorners(itemCornets);
-
-        float elOffset = (itemCornets[0].y - itemCornets[1].y) / 2f;
-
-        Vector2 mltop = mainCornets[1];
-        Vector2 mlbottom = mainCornets[0];
-
-        Vector2 mlcenter = mltop + ((mlbottom - mltop) / 2);
-
-        while (true)
-        {
-            yield return new WaitForFixedUpdate();
-
-            content.GetWorldCorners(contentCornets);
-
-            Vector2 cltop = contentCornets[1];
-            Vector2 clbottom = contentCornets[0];
-            Vector2 cldif = clbottom - cltop;
-
-            Vector2 offset = CurrentItem.element.transform.position - content.transform.position;
-
-            Vector2 result = content.transform.position;
-
-            if (cldif.magnitude <= (mlbottom - mltop).magnitude)
-                break;
-
-            if (canScroll)
-            {
-                result.y = Mathf.Lerp(content.transform.position.y, mlcenter.y - offset.y - elOffset, scrollSpeed * Time.fixedDeltaTime);
-
-                if (result.y < mltop.y)
-                    result.y = Mathf.MoveTowards(content.transform.position.y, mltop.y, scrollSpeed * Time.fixedDeltaTime);
-                else if (result.y + cldif.y > mlbottom.y)
-                    result.y = Mathf.MoveTowards(content.transform.position.y, mlbottom.y - cldif.y, scrollSpeed * Time.fixedDeltaTime);
-            }
-
-            content.transform.position = result;
-        }
-
-        scrollCoroutine = null;
     }
 }

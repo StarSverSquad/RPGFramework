@@ -53,8 +53,8 @@ public class CommonChoiceUI : MonoBehaviour
 
     #region Not unity serialize
 
-    private List<List<ElementInfo>> elementLists = new List<List<ElementInfo>>();
-    private List<GameObject> objBuffer = new List<GameObject>();
+    protected List<List<ElementInfo>> elementLists = new List<List<ElementInfo>>();
+    protected List<GameObject> objBuffer = new List<GameObject>();
 
     private Vector2 cursor = Vector2.zero;
 
@@ -106,7 +106,7 @@ public class CommonChoiceUI : MonoBehaviour
 
             objElement.SetLock(cur.locked);
 
-            elRect.transform.position = transform.position;
+            elRect.anchoredPosition = Vector2.zero;
             elRect.anchoredPosition += cursor;
             elRect.sizeDelta = new Vector2(ElementSizeX, elRect.sizeDelta.y);
 
@@ -237,6 +237,8 @@ public class CommonChoiceUI : MonoBehaviour
         IsChoiced = false; IsCanceled = false;
 
         listIndex = Vector2Int.zero;
+
+        yield return null;
 
         if (elementLists.Count == 0)
             IsCanceled = true;

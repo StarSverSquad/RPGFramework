@@ -26,22 +26,35 @@ public class CommonChoiceUIElement : MonoBehaviour
 
     public void Setup(string text, Sprite iconSprite = null, string counter = "")
     {
+        Vector4 maintexMargin = Vector4.zero;
+
         if (iconSprite != null)
         {
             icon.sprite = iconSprite;
             icon.gameObject.SetActive(true);
+
+            maintexMargin.x = 62;
         }
         else
+        {
             icon.gameObject.SetActive(false);
 
-        if (counter != "")
+            maintexMargin.x = 12;
+        }
+
+        if (!string.IsNullOrEmpty(counter))
         {
             counterText.gameObject.SetActive(true);
             counterText.text = counter;
+
+            maintexMargin.z = 74;
         }
         else
+        {
             counterText.gameObject.SetActive(false);
+        }
 
+        mainText.margin = maintexMargin;
         mainText.text = text;
     }
 

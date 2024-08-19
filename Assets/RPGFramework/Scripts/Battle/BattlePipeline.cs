@@ -191,7 +191,6 @@ public class BattlePipeline : MonoBehaviour
         yield return new WaitForFixedUpdate();
 
         BattleManager.Instance.UI.CharacterBox.Initialize(Data.Characters.ToArray());
-        //BattleManager.Instance.UI.CharacterBox.ChangePosition(false);
 
         Choice.PrimaryChoice.SetActive(false);
 
@@ -269,6 +268,7 @@ public class BattlePipeline : MonoBehaviour
 
         UI.CharacterSide.Show();
         UI.PlayerTurnSide.Show();
+        UI.Concentration.Show();
 
         // Активация первичного выбора
         Choice.PrimaryChoice.SetActive(true);
@@ -690,8 +690,9 @@ public class BattlePipeline : MonoBehaviour
         yield return new WaitForSeconds(.5f);
 
         UI.CharacterBox.Show();
+        UI.Concentration.Upper();
 
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(UI.CharacterBox.TraslateContainerTime);
 
         // Выключение первичного выбора
         Choice.PrimaryChoice.SetActive(false);
@@ -705,6 +706,10 @@ public class BattlePipeline : MonoBehaviour
 
             RPGCharacter character = characterInfo.Entity as RPGCharacter;
 
+            // Если персонаж пал или пропускает ход или не может ничего делать в битве, то его надо пропустить 
+            if (characterInfo.IsDead || characterInfo.States.Any(i => i.SkipTurn) || !character.CanMoveInBattle)
+                continue;
+
             if (saveQTE && characterInfo.BattleAction != BattleCharacterAction.Fight)
             {
                 saveQTE = false;
@@ -714,11 +719,7 @@ public class BattlePipeline : MonoBehaviour
 
             UI.CharacterBox.FocusBox(characterInfo);
 
-            // Если персонаж пал или пропускает ход или не может ничего делать в битве, то его надо пропустить 
-            if (characterInfo.IsDead || characterInfo.States.Any(i => i.SkipTurn) || !character.CanMoveInBattle)
-                continue;
-
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(UI.CharacterBox.TraslateBoxTime);
 
             characterInfo.ReservedConcentration = 0;
 
@@ -735,14 +736,15 @@ public class BattlePipeline : MonoBehaviour
                                 continue;
                         }
 
-                        saveQTE = true;
-
                         // Запуск QTE атаки
                         BattleManager.Instance.attackQTE.Show();
 
-                        yield return new WaitForSeconds(0.5f);
+                        if (!saveQTE)
+                            yield return new WaitForSeconds(2f);
 
                         BattleManager.Instance.attackQTE.Invoke();
+
+                        saveQTE = true;
 
                         yield return new WaitWhile(() => BattleManager.Instance.attackQTE.QTE.IsWorking);
 
@@ -965,6 +967,8 @@ public class BattlePipeline : MonoBehaviour
                 break;
         }
 
+        BattleManager.Instance.attackQTE.Hide();
+
         IsPlayerTurn = false;
     }
 
@@ -1131,12 +1135,19 @@ public class BattlePipeline : MonoBehaviour
         BattleManager.Instance.player.SetActive(false);
         BattleManager.Instance.battleField.SetActive(false);
 
+        UI.CharacterBox.Hide();
+
         IsEnemyTurn = false;
     }
 
     private IEnumerator Lose()
     {
         IsLose = true;
+
+        UI.Concentration.Hide();
+        UI.CharacterSide.Hide();
+        UI.PlayerTurnSide.Hide();
+        UI.CharacterBox.Hide();
 
         PlayerPrefs.SetFloat("DeadX", BattleManager.Instance.player.transform.position.x - Camera.main.transform.position.x);
         PlayerPrefs.SetFloat("DeadY", BattleManager.Instance.player.transform.position.y - Camera.main.transform.position.y);
@@ -1166,6 +1177,11 @@ public class BattlePipeline : MonoBehaviour
     private IEnumerator Win()
     {
         IsWin = true;
+
+        UI.Concentration.Hide();
+        UI.CharacterSide.Hide();
+        UI.PlayerTurnSide.Hide();
+        UI.CharacterBox.Hide();
 
         BattleManager.Instance.battleAudio.StopMusic();
 

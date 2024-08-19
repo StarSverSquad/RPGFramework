@@ -178,6 +178,8 @@ public class AttackQTE : MonoBehaviour
             }
         }
 
+        slider.anchoredPosition = sliderRigthPosition;
+
         isWorking = false;
 
         OnEnd?.Invoke();

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a14ea40aa1be66b4281865508d377ae2, type: 3}
-  m_Name: Pivo05
+  m_Name: Pivo05 2
   m_EditorClassIdentifier: 
-  Tag: Pivo05
-  Name: "\u041F\u0438\u0432\u043E 0.5\u043B"
+  Tag: Pivo2
+  Name: "\u041F\u0438\u0432\u043E 2\u043B"
   Description: "\u041F\u0438\u0432\u0430 \u0431\u0430\u0445\u043D\u0443\u043B \u043C\u043E\u043B\u043E\u0434\u0435\u0446"
   Rare: 2
   Usage: 0
@@ -33,5 +33,5 @@ MonoBehaviour:
     - rid: 6865748019961135117
       type: {class: ChangeManaHealPercentEffect, ns: , asm: Assembly-CSharp}
       data:
-        Heal: 0.2
-        Mana: 0.25
+        Heal: 0.5
+        Mana: 0.5

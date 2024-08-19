@@ -15,7 +15,7 @@ public class CharacterBoxManager : MonoBehaviour, IDisposable, IActive
 
     public Vector2[] BoxesGlobalPositions => boxes.Select(i => (Vector2)i.transform.position).ToArray();
 
-    public float TraslateContainerTime => 1f;
+    public float TraslateContainerTime => 0.6f;
     public float TraslateBoxTime => 0.25f;
 
     private void Start()
@@ -39,24 +39,24 @@ public class CharacterBoxManager : MonoBehaviour, IDisposable, IActive
 
     public void Show()
     {
-        container.DOAnchorPosY(100, TraslateContainerTime).SetLoops(0).SetEase(Ease.OutSine).Play();
+        container.DOAnchorPosY(105, TraslateContainerTime).SetEase(Ease.OutCirc).Play();
     }
     public void Hide()
     {
-        container.DOAnchorPosY(-166, TraslateContainerTime).SetLoops(0).SetEase(Ease.InSine).Play();
+        container.DOAnchorPosY(-160, TraslateContainerTime).SetEase(Ease.InCirc).Play();
     }
 
     public void FocusBox(int index)
     {
         RectTransform rect = boxes[index].GetComponent<RectTransform>();
 
-        rect.DOAnchorPosY(150, TraslateBoxTime).SetLoops(0).SetEase(Ease.OutSine).Play();
+        rect.DOAnchorPosY(160, TraslateBoxTime).SetEase(Ease.Linear).Play();
     }
     public void UnfocusBox(int index)
     {
         RectTransform rect = boxes[index].GetComponent<RectTransform>();
 
-        rect.DOAnchorPosY(108, TraslateBoxTime).SetLoops(0).SetEase(Ease.OutSine).Play();
+        rect.DOAnchorPosY(108, TraslateBoxTime).SetEase(Ease.Linear).Play();
     }
 
     public void FocusBox(BattleCharacterInfo character)

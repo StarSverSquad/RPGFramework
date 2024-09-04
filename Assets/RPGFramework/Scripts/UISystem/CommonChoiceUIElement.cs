@@ -62,13 +62,17 @@ public class CommonChoiceUIElement : MonoBehaviour
     {
         IsFocused = focus;
 
+        if (IsLocked)
+            OnLocked?.Invoke();
+        else
+            OnUnlocked?.Invoke();
+
         if (focus)
+        {
             OnFocus?.Invoke();
+        }
         else
         {
-            //if (IsLocked)
-            //    OnLocked?.Invoke();
-
             OnLostFocus?.Invoke();
         }
 

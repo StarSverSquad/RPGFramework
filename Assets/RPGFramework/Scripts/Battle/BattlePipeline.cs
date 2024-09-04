@@ -140,6 +140,11 @@ public class BattlePipeline : MonoBehaviour
             TurnCounter++;
         }
 
+        UI.Concentration.Hide();
+        UI.CharacterSide.Hide();
+        UI.PlayerTurnSide.Hide();
+        UI.CharacterBox.Hide();
+
         if (fleeKey)
         {
             yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnFlee));
@@ -269,6 +274,7 @@ public class BattlePipeline : MonoBehaviour
         UI.CharacterSide.Show();
         UI.PlayerTurnSide.Show();
         UI.Concentration.Show();
+        UI.CharacterQuery.Show();
 
         // Активация первичного выбора
         Choice.PrimaryChoice.SetActive(true);
@@ -321,7 +327,11 @@ public class BattlePipeline : MonoBehaviour
                     // Если отмена то откат к предыдущему персонажу, либо игнор
                     if (Choice.IsPrimaryCanceled)
                     {
-                        currentCharacterChoiceIndex = currentCharacterChoiceIndex == 0 ? 0 : currentCharacterChoiceIndex - 1;
+                        if (currentCharacterChoiceIndex != 0)
+                        {
+                            UI.CharacterQuery.PreviouslyCharacter();
+                            currentCharacterChoiceIndex--;
+                        }
                         BattleManager.Instance.UI.CharacterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.None);
                     } 
                     else
@@ -483,7 +493,7 @@ public class BattlePipeline : MonoBehaviour
                         {
                             if (choiceActions[choiceActions.Count - 2] == ChoiceAction.Ability)
                             {
-                                BattleManager.Instance.UI.CharacterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
+                                BattleManager.Instance.UI.CharacterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Spell);
 
                                 currentCharacter.ReservedConcentration = -currentCharacter.Ability.ConcentrationCost;
                                 Utility.AddConcetration(-currentCharacter.Ability.ConcentrationCost);
@@ -527,7 +537,7 @@ public class BattlePipeline : MonoBehaviour
                         switch (currentCharacter.BattleAction)
                         {
                             case BattleCharacterAction.Act:
-                                BattleManager.Instance.UI.CharacterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Act);
+                                BattleManager.Instance.UI.CharacterBox.Boxes[currentCharacterChoiceIndex].ChangeAct(BattleCharacterAction.Spell);
 
                                 currentCharacter.ReservedConcentration = -currentCharacter.Ability.ConcentrationCost;
                                 Utility.AddConcetration(-currentCharacter.Ability.ConcentrationCost);
@@ -686,6 +696,7 @@ public class BattlePipeline : MonoBehaviour
 
         UI.CharacterSide.Hide();
         UI.PlayerTurnSide.Hide();
+        UI.CharacterQuery.Hide();
 
         yield return new WaitForSeconds(.5f);
 
@@ -1009,6 +1020,11 @@ public class BattlePipeline : MonoBehaviour
     {
         currentCharacterChoiceIndex++;
 
+        if (currentCharacterChoiceIndex < Data.Characters.Count)
+        {
+            UI.CharacterQuery.NextCharacter();
+        }
+
         choiceActions.Clear();
     }
     private void PreviewAction()
@@ -1177,11 +1193,6 @@ public class BattlePipeline : MonoBehaviour
     private IEnumerator Win()
     {
         IsWin = true;
-
-        UI.Concentration.Hide();
-        UI.CharacterSide.Hide();
-        UI.PlayerTurnSide.Hide();
-        UI.CharacterBox.Hide();
 
         BattleManager.Instance.battleAudio.StopMusic();
 

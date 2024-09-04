@@ -243,7 +243,7 @@ public class BattleChoiceManager : MonoBehaviour
         {
             new CommonChoiceUI.ElementInfo()
             {
-                name = "Взаимодействие",
+                name = "Действие",
                 value = 0
             },
             new CommonChoiceUI.ElementInfo()

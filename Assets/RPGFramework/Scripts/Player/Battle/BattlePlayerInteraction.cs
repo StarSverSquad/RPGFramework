@@ -1,5 +1,5 @@
+using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -8,13 +8,14 @@ public class BattlePlayerInteraction : MonoBehaviour
     public float HitCooldown = 1f;
 
     [SerializeField]
-    private Animator animator;
-    [SerializeField]
     private AudioSource audioSource;
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
 
     public bool IsHitCooldown => cooldownCorotine != null;
 
     private Coroutine cooldownCorotine;
+    private Sequence damageAnimation;
 
     private void OnEnable()
     {
@@ -43,7 +44,19 @@ public class BattlePlayerInteraction : MonoBehaviour
                 Destroy(bullet.gameObject);
 
             audioSource.Play();
-            animator.SetTrigger("DAMAGE");
+
+            damageAnimation?.Kill();
+
+            damageAnimation = DOTween.Sequence();
+
+            damageAnimation.Append(
+                spriteRenderer.DOColor(new Color(0.5f, 0, 0), 0.15f).From(Color.red));
+
+            damageAnimation.Append(
+                spriteRenderer.DOColor(Color.red, 0.15f));
+
+            damageAnimation.SetLoops(3).Play();
+
 
             if (!IsHitCooldown)
                 cooldownCorotine = StartCoroutine(CooldownCoroutine());

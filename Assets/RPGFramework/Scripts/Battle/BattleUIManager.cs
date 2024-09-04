@@ -8,4 +8,5 @@ public class BattleUIManager : MonoBehaviour
     public BattleUIPlayerTurnSide PlayerTurnSide;
     public BattleUICharacterSide CharacterSide;
     public BattleUIConcentration Concentration;
+    public CharacterQueryManager CharacterQuery;
 }

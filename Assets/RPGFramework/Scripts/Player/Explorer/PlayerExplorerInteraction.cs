@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerExplorerInteraction : MonoBehaviour
@@ -13,14 +11,15 @@ public class PlayerExplorerInteraction : MonoBehaviour
 
     public float InteractionDistance = 2.5f;
 
+    public bool CanInteract = true;
+
     [SerializeField]
     private Collider2D raycastHit;
 
     private void FixedUpdate()
     {
         if (ExplorerManager.Instance.PlayerManager.movement.CanWalk 
-            && !ExplorerManager.Instance.EventHandler.EventRuning
-            && !LocalManager.Instance.GameUI.IsOpen)
+            && !ExplorerManager.Instance.EventHandler.EventRuning)
         {
             if (Input.GetKey(KeyCode.RightArrow))
             {
@@ -52,8 +51,7 @@ public class PlayerExplorerInteraction : MonoBehaviour
 
         if (@event != null)
         {
-            if (Input.GetKeyDown(KeyCode.Z) && @event.Interaction == ExplorerEvent.InteractionType.OnClick
-                && !LocalManager.Instance.GameUI.IsOpen)
+            if (Input.GetKeyDown(KeyCode.Z) && CanInteract && @event.Interaction == ExplorerEvent.InteractionType.OnClick)
             {
                 @event.InvokeEvent();
             }
@@ -67,7 +65,7 @@ public class PlayerExplorerInteraction : MonoBehaviour
 
         if (@event != null)
         {
-            if (@event.Interaction == ExplorerEvent.InteractionType.OnStep)
+            if (@event.Interaction == ExplorerEvent.InteractionType.OnStep && CanInteract)
             {
                 @event.InvokeEvent();
             }
@@ -80,8 +78,7 @@ public class PlayerExplorerInteraction : MonoBehaviour
 
         if (@event != null)
         {
-            if (Input.GetKeyDown(KeyCode.Z) && @event.Interaction == ExplorerEvent.InteractionType.OnClick
-                && !LocalManager.Instance.GameUI.IsOpen)
+            if (Input.GetKeyDown(KeyCode.Z) && CanInteract && @event.Interaction == ExplorerEvent.InteractionType.OnClick)
             {
                 @event.InvokeEvent();
             }

@@ -99,7 +99,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upIdle: {fileID: 1699889596, guid: a00aea4ca374fe84bb4631c9615727f4, type: 3}
   downIdle: {fileID: 42101826, guid: a00aea4ca374fe84bb4631c9615727f4, type: 3}
-  leftIdle: {fileID: 98661920, guid: a00aea4ca374fe84bb4631c9615727f4, type: 3}
+  leftIdle: {fileID: 1753169398, guid: a00aea4ca374fe84bb4631c9615727f4, type: 3}
   rightIdle: {fileID: -194943981, guid: a00aea4ca374fe84bb4631c9615727f4, type: 3}
   upFrames:
   - {fileID: -1371776894, guid: a00aea4ca374fe84bb4631c9615727f4, type: 3}
@@ -114,5 +114,6 @@ MonoBehaviour:
   - {fileID: -1367273303, guid: a00aea4ca374fe84bb4631c9615727f4, type: 3}
   - {fileID: -1915526797, guid: a00aea4ca374fe84bb4631c9615727f4, type: 3}
   DefaultDirection: 2
+  reactedEvent: {fileID: 0}
   animationSpeed: 4
   speedFactor: 1

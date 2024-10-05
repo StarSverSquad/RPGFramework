@@ -10,6 +10,10 @@ public class RPGCharacter : RPGEntity
     public string Class;
 
     public Sprite Icon;
+    public Sprite BigIcon;
+    public Sprite BattleIcon;
+
+    public Color Color;
 
     public DynamicExplorerObject Model;
 

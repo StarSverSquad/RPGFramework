@@ -1,36 +1,35 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using UnityEngine;
 
 public class AttackQTEManager : MonoBehaviour
 {
-    public enum Positions
-    {
-        Default = -1, Box0, Box1, Box2, Box3
-    }
+    [SerializeField]
+    private RectTransform qteContainer; 
 
     [SerializeField]
     private AttackQTE qte;
     public AttackQTE QTE => qte;
 
     [SerializeField]
-    private RectTransform qteTransform;
-
-    [Tooltip("Default, CharBox0..3")]
+    private Vector2 hidenRectPosition;
     [SerializeField]
-    private Vector2[] positions = new Vector2[5];
+    private Vector2 showedRectPosition;
 
-    public void InvokeQTE(Positions position)
+    public float TransmitionTime => 0.75f;
+        
+    public void Invoke()
     {
-        if (position == Positions.Default)
-            return;
-
-        qteTransform.anchoredPosition = positions[(int)position + 1];
-
         qte.Invoke();
     }
 
-    public void DropQTE()
+    public void Show()
     {
-        qteTransform.anchoredPosition = positions[0];
+        qteContainer.DOAnchorPos(showedRectPosition, TransmitionTime).SetEase(Ease.OutCirc).Play();
+    }
+
+    public void Hide()
+    {
+        qteContainer.DOAnchorPos(hidenRectPosition, TransmitionTime).SetEase(Ease.InCirc).Play();
     }
 }

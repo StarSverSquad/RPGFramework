@@ -11,14 +11,14 @@ public class AttackQTE : MonoBehaviour
     [SerializeField]
     private RectTransform slider;
     [SerializeField] 
-    private RectTransform sliderStartPoint;
+    private Vector2 sliderRigthPosition;
     [SerializeField]
-    private RectTransform sliderEndPoint;
+    private Vector2 sliderLeftPosition;
     [SerializeField]
     private Image sliderImage;
 
     [SerializeField]
-    private Sprite[] sliderSprites = new Sprite[3];
+    private Color[] sliderColors = new Color[3];
 
     [SerializeField]
     private float damageFactor = 0;
@@ -84,8 +84,8 @@ public class AttackQTE : MonoBehaviour
 
         isSkip = false;
 
-        slider.anchoredPosition = sliderStartPoint.anchoredPosition;
-        sliderImage.sprite = sliderSprites[0];
+        slider.anchoredPosition = sliderRigthPosition;
+        sliderImage.color = sliderColors[0];
 
         bool slide = true;
 
@@ -93,12 +93,12 @@ public class AttackQTE : MonoBehaviour
 
         Coroutine slideCoroutine = StartCoroutine(AnimationPack.MoveByCurve(sliderCurve, value =>
         {
-            slider.anchoredPosition = new Vector2(sliderStartPoint.anchoredPosition.x + (sliderEndPoint.anchoredPosition.x - sliderStartPoint.anchoredPosition.x) * value, slider.anchoredPosition.y);
+            slider.anchoredPosition = new Vector2(sliderRigthPosition.x + (sliderLeftPosition.x - sliderRigthPosition.x) * value, slider.anchoredPosition.y);
 
             load = value;
         }, () => slide = false));
 
-        bool click = false;
+        bool click = false; 
 
         while (!click && slide)
         {
@@ -127,56 +127,58 @@ public class AttackQTE : MonoBehaviour
 
             if (load < FirstVeryBadBorder)
             {
-                sliderImage.sprite = sliderSprites[1];
+                sliderImage.color = sliderColors[1];
                 damageFactor = MissFactor;
 
                 OnMiss?.Invoke();
             }
             else if (load >= MissBorder)
             {
-                sliderImage.sprite = sliderSprites[1];
+                sliderImage.color = sliderColors[1];
                 damageFactor = MissFactor;
 
                 OnMiss?.Invoke();
             }
             else if (load >= SecoundVeryBadBorder)
             {
-                sliderImage.sprite = sliderSprites[1];
+                sliderImage.color = sliderColors[1];
                 damageFactor = VeryBadFactor;
             }
             else if (load >= SecoundGoodBorder)
             {
-                sliderImage.sprite = sliderSprites[1];
+                sliderImage.color = sliderColors[1];
                 damageFactor = GoodFactor;
             }
             else if (load >= CritBorder)
             {
-                sliderImage.sprite = sliderSprites[2];
+                sliderImage.color = sliderColors[2];
                 damageFactor = CritFactor;
 
                 OnCrit?.Invoke();
             }
             else if (load >= FirstGoodBorder)
             {
-                sliderImage.sprite = sliderSprites[1];
+                sliderImage.color = sliderColors[1];
                 damageFactor = GoodFactor;
             }
             else if (load >= MediumBorder)
             {
-                sliderImage.sprite = sliderSprites[1];
+                sliderImage.color = sliderColors[1];
                 damageFactor = MediumFactor;
             }
             else if (load >= BadBorder)
             {
-                sliderImage.sprite = sliderSprites[1];
+                sliderImage.color = sliderColors[1];
                 damageFactor = BadFactor;
             }
             else if (load >= FirstVeryBadBorder)
             {
-                sliderImage.sprite = sliderSprites[1];
+                sliderImage.color = sliderColors[1];
                 damageFactor = VeryBadFactor;
             }
         }
+
+        slider.anchoredPosition = sliderRigthPosition;
 
         isWorking = false;
 

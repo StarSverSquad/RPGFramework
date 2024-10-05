@@ -12,20 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fa69f607e8d1464da177f131bcaf235, type: 3}
   m_Name: EngryKepka
   m_EditorClassIdentifier: 
+  Tag: 
   Name: "<color=#FF0000>\u0417\u043B\u0430\u044F \u043A\u0435\u043F\u043A\u0430</color>"
   Description: "\u041E\u043E\u043E\u043E\u043E\u043E\u0447\u0435\u043D\u044C \u0437\u043B\u0430\u044F"
   DefaultHeal: 100
   DefaultMana: 0
-  DefaultDamage: 20
+  DefaultDamage: 12
   DefaultDefence: 2
   DefaultAgility: 3
   DefaultLuck: 3
   Patterns:
   - {fileID: 4869993089437226105, guid: df5e4ea55872b2840a69542afd50538e, type: 3}
   - {fileID: 3581836680113462952, guid: cae5c9089092f6246ac7c41fd677b08d, type: 3}
-  Acts:
-  - Name: "\u041F\u043E\u0433\u043E\u0432\u043E\u0440\u0438\u0442\u044C"
-    Description: ...
-    Event: {fileID: 11400000, guid: daee208ea70e6084c96c3ff4ad76bfe2, type: 2}
-    OnlyOne: 1
+  Acts: []
   EnemyModel: {fileID: 6372225342885846398, guid: d6038442376efda4aa728ada49fb12a8, type: 3}

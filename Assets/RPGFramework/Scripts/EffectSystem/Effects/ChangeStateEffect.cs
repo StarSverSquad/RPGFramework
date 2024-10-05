@@ -8,19 +8,19 @@ public class ChangeStateEffect : EffectBase
 
     public RPGEntityState State;
 
-    public override IEnumerator BattleInvoke(BattleEntityInfo user, BattleEntityInfo target)
+    public override IEnumerator Invoke(BattleEntityInfo user, BattleEntityInfo target)
     {
         if (target is BattleCharacterInfo characterInfo && characterInfo.IsDead)
             yield break;
 
         if (IsAddState)
         {
-            AddInfo("AddState", State);
+            //AddInfo("AddState", State);
             target.Entity.AddState(State);
         }
         else
         {
-            AddInfo("RemoveState", State);
+            //AddInfo("RemoveState", State);
             target.Entity.RemoveState(State);
         }
 

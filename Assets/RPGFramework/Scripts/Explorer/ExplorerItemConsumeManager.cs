@@ -33,7 +33,7 @@ public class ExplorerItemConsumeManager : MonoBehaviour
 
         foreach (EffectBase effect in item.Effects)
         {
-            yield return StartCoroutine(effect.ExplorerInvoke(who, target));
+            yield return StartCoroutine(effect.Invoke(new BattleEntityInfo(who), new BattleEntityInfo(target)));
         }
 
         who.Heal = who.Heal == 0 ? 1 : who.Heal;

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RemoveAllStatesEffect : EffectBase
 {
-    public override IEnumerator BattleInvoke(BattleEntityInfo user, BattleEntityInfo target)
+    public override IEnumerator Invoke(BattleEntityInfo user, BattleEntityInfo target)
     {
         target.Entity.RemoveAllStates();
 

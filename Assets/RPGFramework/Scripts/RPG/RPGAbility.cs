@@ -15,23 +15,26 @@ public class RPGAbility : ScriptableObject
     [Multiline()]
     public string Destription;
     public Sprite icon;
-
+    [Space]
     public AbilityDirection Direction;
-
+    [Space]
     public int ManaCost;
     public int ConcentrationCost;
-
+    [Space]
     public bool ForDeath;
     public bool ForAlive;
 
-    public int Damage;
-
+    [Tooltip("Если положительный значит лечит, если отрцатльный значит наносит урон. Учитывает все внешние факторы.")]
+    public int Formula;
+    [Space]
     public bool WakeupCharacter;
-
+    [Space]
     public GraphEvent StartEvent;
     public GraphEvent EndEvent;
-
+    [Space]
     public VisualAttackEffect VisualEffect;
+    [Space]
+    public MinigameBase Minigame;
 
     [HideInInspector]
     [SerializeReference]

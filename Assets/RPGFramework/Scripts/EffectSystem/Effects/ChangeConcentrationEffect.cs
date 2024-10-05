@@ -6,7 +6,7 @@ public class ChangeConcentrationEffect : EffectBase
 {
     public int AddConcentration;
 
-    public override IEnumerator BattleInvoke(BattleEntityInfo user, BattleEntityInfo target)
+    public override IEnumerator Invoke(BattleEntityInfo user, BattleEntityInfo target)
     {
         BattleManager.Utility.AddConcetration(AddConcentration);
 

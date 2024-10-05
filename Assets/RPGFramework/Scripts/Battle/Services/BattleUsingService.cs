@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -16,6 +15,8 @@ public class BattleUsingService
 
     public IEnumerator UseAbility(RPGAbility ability, BattleEntityInfo user, params BattleEntityInfo[] targets) 
     {
+        float minigameFactor = 1f;
+
         if (targets.Any(i => i is BattleEnemyInfo) && ability.VisualEffect != null)
         {
             EnemyModel model = BattleManager.Instance.enemyModels.GetModel(targets.Where(i => i is BattleEnemyInfo).First() as BattleEnemyInfo);
@@ -46,27 +47,22 @@ public class BattleUsingService
                 }
             }
 
-            List<RPGEntityState> states = new List<RPGEntityState>();
-            int healDif = 0, manaDif = 0;
-
-            if (ability.Damage > 0)
-            {
-                healDif = target.Entity.GiveDamage(ability.Damage + Mathf.RoundToInt(user.Entity.Damage * 0.25f));
-            }
+            int oldHp = target.Heal;
+            int oldMp = target.Mana;
+            string[] oldStates = target.States.Select(x => x.Tag).ToArray();
 
             foreach (var effect in ability.Effects)
-            {
-                yield return battleManager.pipeline.StartCoroutine(effect.BattleInvoke(user, target));
+                yield return battleManager.pipeline.StartCoroutine(effect.Invoke(user, target));
 
-                if (effect.InfoIsExists("AddState"))
-                    states.Add(effect["AddState"] as RPGEntityState);
+            RPGEntityState[] states = target.States.Where(i => oldStates.All(y => i.Tag != y)).ToArray();
+            int healDif = target.Heal - oldHp, manaDif = target.Mana - oldMp;
 
-                if (effect.InfoIsExists("Heal"))
-                    healDif += (int)effect["Heal"];
-
-                if (effect.InfoIsExists("Mana"))
-                    manaDif += (int)effect["Mana"];
-            }
+            Debug.Log(ability.Formula);
+            
+            if (ability.Formula >= 0)
+                target.Heal += Mathf.RoundToInt(ability.Formula * minigameFactor);
+            else
+                healDif -= target.Entity.GiveDamage(Mathf.RoundToInt((Mathf.Abs(ability.Formula) + user.Entity.Damage * 0.25f) * minigameFactor));
 
             if (target is BattleEnemyInfo enemy)
             {
@@ -87,7 +83,7 @@ public class BattleUsingService
                     battleManager.utility.SpawnFallingText((Vector2)model.transform.position + new Vector2(0, 0.5f),
                                     healDif.ToString(), Color.white, Color.green);
 
-                for (int i = 0; i < states.Count; i++)
+                for (int i = 0; i < states.Length; i++)
                 {
                     battleManager.utility.SpawnFallingText(model.AttackGlobalPoint + new Vector2(0, 0.2f + (0.2f * i)), states[i].Name,
                         Color.white, states[i].Color);
@@ -120,7 +116,7 @@ public class BattleUsingService
                     battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f),
                                     manaDif.ToString(), Color.white, Color.cyan);
 
-                for (int i = 0; i < states.Count; i++)
+                for (int i = 0; i < states.Length; i++)
                 {
                     battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 2f + (0.2f * i)), states[i].Name,
                                                             Color.white, states[i].Color);
@@ -181,22 +177,15 @@ public class BattleUsingService
                 }
             }
 
-            List<RPGEntityState> states = new List<RPGEntityState>();
-            int healDif = 0, manaDif = 0;
+            int oldHp = target.Heal;
+            int oldMp = target.Mana;
+            string[] oldStates = target.States.Select(x => x.Tag).ToArray();
 
             foreach (var effect in item.Effects)
-            {
-                yield return battleManager.pipeline.StartCoroutine(effect.BattleInvoke(user, target));
+                yield return battleManager.pipeline.StartCoroutine(effect.Invoke(user, target));
 
-                if (effect.InfoIsExists("AddState"))
-                    states.Add(effect["AddState"] as RPGEntityState);
-
-                if (effect.InfoIsExists("Heal"))
-                    healDif += (int)effect["Heal"];
-
-                if (effect.InfoIsExists("Mana"))
-                    manaDif += (int)effect["Mana"];
-            }
+            RPGEntityState[] states = target.States.Where(i => oldStates.All(y => i.Tag != y)).ToArray();
+            int healDif = target.Heal - oldHp, manaDif = target.Mana - oldMp;
 
             if (target is BattleEnemyInfo enemy)
             {
@@ -217,7 +206,7 @@ public class BattleUsingService
                     battleManager.utility.SpawnFallingText((Vector2)model.transform.position + new Vector2(0, 0.5f),
                                     healDif.ToString(), Color.white, Color.green);
 
-                for (int i = 0; i < states.Count; i++)
+                for (int i = 0; i < states.Length; i++)
                 {
                     battleManager.utility.SpawnFallingText(model.AttackGlobalPoint + new Vector2(0, 0.2f + (0.2f * i)), states[i].Name,
                         Color.white, states[i].Color);
@@ -250,7 +239,7 @@ public class BattleUsingService
                     battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f),
                                     manaDif.ToString(), Color.white, Color.cyan);
 
-                for (int i = 0; i < states.Count; i++)
+                for (int i = 0; i < states.Length; i++)
                 {
                     battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 2f + (0.2f * i)), states[i].Name,
                                                             Color.white, states[i].Color);

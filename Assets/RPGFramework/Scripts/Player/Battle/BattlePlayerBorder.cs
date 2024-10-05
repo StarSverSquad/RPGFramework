@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DG.Tweening;
 using UnityEngine;
 
 public class BattlePlayerBorder : MonoBehaviour
 {
     [SerializeField]
-    private Animator animator;
+    private SpriteRenderer spriteRenderer;
     [SerializeField]
     private AudioSource audioSource;
 
@@ -26,9 +22,8 @@ public class BattlePlayerBorder : MonoBehaviour
             bullet.OnHitBorder();
 
             audioSource.Play();
-            animator.SetTrigger("BLINK");
 
-            /// TODO
+            spriteRenderer.DOColor(new Color(1, 1, 1, 0), 0.5f).From(Color.white).Play();
 
             BattleManager.Utility.AddConcetration(bullet.AdditionConcentration);
         }

@@ -9,9 +9,6 @@ using UnityEngine.UI;
 public class CharacterBox : MonoBehaviour, IDisposable
 {
     [SerializeField]
-    private Animator iconsAnimator;
-
-    [SerializeField]
     private IconList iconList;
 
     [SerializeField]
@@ -79,9 +76,6 @@ public class CharacterBox : MonoBehaviour, IDisposable
 
         switch (action)
         {
-            case BattleCharacterAction.None:
-                actImage.enabled = false;
-                break;
             case BattleCharacterAction.Fight:
                 actImage.sprite = actIcons[0];
                 break;
@@ -97,8 +91,9 @@ public class CharacterBox : MonoBehaviour, IDisposable
             case BattleCharacterAction.Spell:
                 actImage.sprite = actIcons[4];
                 break;
+            case BattleCharacterAction.None:
             default:
-                actImage.enabled = false;
+            actImage.enabled = false;
                 break;
         }
     }
@@ -135,7 +130,7 @@ public class CharacterBox : MonoBehaviour, IDisposable
     {
         iconList.UpdateIcons(Character.States.Select(i => i.Icon).ToArray());
 
-        SetStatesVisibility(iconList.HasIcons);
+        //SetStatesVisibility(iconList.HasIcons);
     }
 
     /// <summary>
@@ -145,12 +140,7 @@ public class CharacterBox : MonoBehaviour, IDisposable
     {
         iconList.UpdateIcons(character.States.Select(i => i.Icon).ToArray());
 
-        SetStatesVisibility(iconList.HasIcons);
-    }
-
-    private void SetStatesVisibility(bool visibility)
-    {
-        iconsAnimator.SetBool("IsShow", visibility);
+        //SetStatesVisibility(iconList.HasIcons);
     }
 
     private void OnDestroy()

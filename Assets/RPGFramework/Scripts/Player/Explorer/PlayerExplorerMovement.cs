@@ -44,8 +44,7 @@ public class PlayerExplorerMovement : MonoBehaviour
 
         CommonDirection newViewDirection = CommonDirection.None;
 
-        if (CanWalk && !ExplorerManager.Instance.EventHandler.EventRuning
-            && !LocalManager.Instance.GameUI.IsOpen)
+        if (CanWalk && !ExplorerManager.Instance.EventHandler.EventRuning)
         {
 
             if (Input.GetKey(GameManager.Instance.BaseOptions.MoveRight))
@@ -110,6 +109,13 @@ public class PlayerExplorerMovement : MonoBehaviour
         Velocity = ResultSpeed * Velocity.normalized;
 
         rb.velocity = Velocity;
+    }
+
+    public void SetMovementAccess(bool active)
+    {
+        CanRun = active;
+        CanWalk = active;
+        CanRotate = active;
     }
 
     public void TranslateBySpeed(Vector2 vec, float speed)

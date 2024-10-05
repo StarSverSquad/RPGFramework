@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe97e40a44dd7654c9407e220512335a, type: 3}
   m_Name: Dimas
   m_EditorClassIdentifier: 
+  Tag: Dima
   Name: "\u0414\u0438\u043C\u0430\u0441"
   Description: "\u0420\u0435\u043F\u0435\u0440"
   DefaultHeal: 50
@@ -22,7 +23,10 @@ MonoBehaviour:
   DefaultLuck: 5
   Class: "\u0420\u0435\u043F\u0435\u0440"
   Icon: {fileID: 365996475, guid: e4547c401ed1aaf45906d594afcf674d, type: 3}
-  Model: {fileID: 1350965949823805979, guid: f066e5cc3633b2b4f9debc832f5f9934, type: 3}
+  BigIcon: {fileID: 0}
+  BattleIcon: {fileID: 0}
+  Color: {r: 0, g: 1, b: 0, a: 0.101960786}
+  Model: {fileID: 1350965949823805979, guid: 46157b4d9ad9cf7408617fd9aa8623c7, type: 3}
   ParticipateInBattle: 1
   CanMoveInBattle: 1
   Level: 1

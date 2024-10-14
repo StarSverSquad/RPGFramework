@@ -22,12 +22,12 @@ public class ChangeEnemyModelAnimationAction : GraphActionBase
         {
             if (BattleManager.IsBattle)
             {
-                BattleEnemyInfo enemy = BattleManager.Instance.data.Enemys.First(i => i.Entity.Tag == EnemyTag);
+                RPGEnemy enemy = BattleManager.Instance.data.Enemys.First(i => i.Tag == EnemyTag);
 
                 if (enemy == null)
                     throw new ApplicationException("Enemy not found!");
 
-                EnemyModel model = BattleManager.Instance.enemyModels.GetModel(enemy);
+                EnemyModel model = BattleManager.Instance.EnemyModels.GetModel(enemy);
 
                 if (model == null)
                     throw new ApplicationException("Enemy model not found!");

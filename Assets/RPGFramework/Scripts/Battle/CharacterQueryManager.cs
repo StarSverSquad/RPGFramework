@@ -18,16 +18,18 @@ public class CharacterQueryManager : MonoBehaviour
     [SerializeField]
     private float offset;
 
+    private Tween contentTw;
+
     public void Show()
     {
         float currentOffset = offset;
 
-        foreach (var character in BattleManager.Data.Characters.Skip(1))
+        foreach (var turnsData in BattleManager.Data.TurnsData.Skip(1))
         {
             GameObject instance = Instantiate(ElementPrefab, transform);
 
             var element = instance.GetComponent<CharacterQueryElement>();
-            element.Initialize(character);
+            element.Initialize(turnsData.Character);
 
             var rectTransform = instance.GetComponent<RectTransform>();
             rectTransform.anchoredPosition = new Vector2(0, currentOffset);
@@ -39,7 +41,7 @@ public class CharacterQueryManager : MonoBehaviour
 
         StartCoroutine(QueryCoroutine());
 
-        content.DOAnchorPosY(0, 0.5f).SetEase(Ease.OutCirc).Play();
+        contentTw = content.DOAnchorPosY(0, 0.5f).SetEase(Ease.OutCirc).Play();
     }
 
     public void Hide()
@@ -51,7 +53,7 @@ public class CharacterQueryManager : MonoBehaviour
         }
         elements.Clear();
 
-        content.DOAnchorPosY(-content.sizeDelta.y, 0.5f).SetEase(Ease.OutCirc).Play();
+        contentTw = content.DOAnchorPosY(-content.sizeDelta.y, 0.5f).SetEase(Ease.OutCirc).Play();
     }
 
     public void NextCharacter()
@@ -60,7 +62,7 @@ public class CharacterQueryManager : MonoBehaviour
         {
             var rect = item.GetComponent<RectTransform>();
 
-            rect.DOAnchorPosY(-(offset + rect.sizeDelta.y), 0.25f).SetRelative().SetEase(Ease.OutCirc).Play();
+             rect.DOAnchorPosY(-(offset + rect.sizeDelta.y), 0.25f).SetRelative().SetEase(Ease.OutCirc).Play();
         }
     }
 
@@ -84,5 +86,10 @@ public class CharacterQueryManager : MonoBehaviour
 
             yield return new WaitForSeconds(.25f);
         }
+    }
+
+    private void OnDestroy()
+    {
+        contentTw.Kill();
     }
 }

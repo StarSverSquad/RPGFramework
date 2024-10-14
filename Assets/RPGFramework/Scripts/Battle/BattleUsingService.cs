@@ -13,17 +13,17 @@ public class BattleUsingService
         this.gameManager = gameManager;
     }
 
-    public IEnumerator UseAbility(RPGAbility ability, BattleEntityInfo user, params BattleEntityInfo[] targets) 
+    public IEnumerator UseAbility(RPGAbility ability, RPGEntity user, params RPGEntity[] targets) 
     {
         float minigameFactor = 1f;
 
-        if (targets.Any(i => i is BattleEnemyInfo) && ability.VisualEffect != null)
+        if (targets.Any(i => i is RPGEnemy) && ability.VisualEffect != null)
         {
-            EnemyModel model = BattleManager.Instance.enemyModels.GetModel(targets.Where(i => i is BattleEnemyInfo).First() as BattleEnemyInfo);
+            EnemyModel model = BattleManager.Instance.EnemyModels.GetModel(targets.Where(i => i is RPGEnemy).First() as RPGEnemy);
 
             VisualAttackEffect effect;
 
-            if (targets.Where(i => i is BattleEnemyInfo).Count() == 1)
+            if (targets.Where(i => i is RPGEnemy).Count() == 1)
                 effect = battleManager.utility.SpawnAttackEffect(ability.VisualEffect);
             else 
                 effect = battleManager.utility.SpawnAttackEffect(ability.VisualEffect, model.AttackGlobalPoint);
@@ -37,11 +37,13 @@ public class BattleUsingService
             Object.Destroy(effect.gameObject);
         }
 
-        foreach (BattleEntityInfo target in targets)
+        foreach (var target in targets)
         {
-            if (target is BattleCharacterInfo chr)
+            if (target is RPGCharacter chr)
             {
-                if ((chr.IsDead && !ability.ForDeath) || (!chr.IsDead && !ability.ForAlive))
+                var turnData = BattleManager.Instance.data.TurnsData.First(i => i.Character == chr);
+
+                if ((turnData.IsDead && !ability.ForDeath) || (!turnData.IsDead && !ability.ForAlive))
                 {
                     continue;
                 }
@@ -52,7 +54,7 @@ public class BattleUsingService
             string[] oldStates = target.States.Select(x => x.Tag).ToArray();
 
             foreach (var effect in ability.Effects)
-                yield return battleManager.pipeline.StartCoroutine(effect.Invoke(user, target));
+                yield return BattleManager.Instance.Pipeline.StartCoroutine(effect.Invoke(user, target));
 
             RPGEntityState[] states = target.States.Where(i => oldStates.All(y => i.Tag != y)).ToArray();
             int healDif = target.Heal - oldHp, manaDif = target.Mana - oldMp;
@@ -62,14 +64,14 @@ public class BattleUsingService
             if (ability.Formula >= 0)
                 target.Heal += Mathf.RoundToInt(ability.Formula * minigameFactor);
             else
-                healDif -= target.Entity.GiveDamage(Mathf.RoundToInt((Mathf.Abs(ability.Formula) + user.Entity.Damage * 0.25f) * minigameFactor));
+                healDif -= target.GiveDamage(Mathf.RoundToInt((Mathf.Abs(ability.Formula) + user.Damage * 0.25f) * minigameFactor));
 
-            if (target is BattleEnemyInfo enemy)
+            if (target is RPGEnemy enemy)
             {
-                if (!battleManager.data.Enemys.Contains(enemy))
+                if (!BattleManager.Instance.data.Enemys.Contains(enemy))
                     continue;
 
-                EnemyModel model = BattleManager.Instance.enemyModels.GetModel(enemy);
+                EnemyModel model = BattleManager.Instance.EnemyModels.GetModel(enemy);
 
                 if (healDif < 0)
                 {
@@ -92,16 +94,17 @@ public class BattleUsingService
 
                 if (enemy.Heal <= 0)
                 {
-                    BattleManager.Instance.battleAudio.PlaySound(battleManager.data.EnemyDeath);
+                    BattleManager.Instance.BattleAudio.PlaySound(battleManager.data.EnemyDeath);
                     model.Death();
                 }
                 else if (healDif < 0)
-                    battleManager.battleAudio.PlaySound(battleManager.data.EnemyDamage);
+                    battleManager.BattleAudio.PlaySound(battleManager.data.EnemyDamage);
                 else
-                    battleManager.battleAudio.PlaySound(battleManager.data.Heal);
+                    battleManager.BattleAudio.PlaySound(battleManager.data.Heal);
             }
-            else if (target is BattleCharacterInfo character)
+            else if (target is RPGCharacter character)
             {
+                var turnData = battleManager.data.TurnsData.First(i => i.Character == character);
 
                 CharacterBox box = BattleManager.Instance.UI.CharacterBox.GetBox(character);
 
@@ -125,35 +128,35 @@ public class BattleUsingService
                 if (character.Heal <= 0)
                     character.Heal = 1;
 
-                if (ability.WakeupCharacter && character.IsDead)
+                if (ability.WakeupCharacter && turnData.IsDead)
                 {
                     box.SetDead(false);
 
-                    character.IsDead = false;
+                    turnData.IsDead = false;
 
                     if (character.Heal <= 0)
                         character.Heal = 1;
                 }
 
                 if (healDif < 0)
-                    battleManager.battleAudio.PlaySound(battleManager.data.Hurt);
+                    battleManager.BattleAudio.PlaySound(battleManager.data.Hurt);
                 else
-                    battleManager.battleAudio.PlaySound(battleManager.data.Heal);
+                    battleManager.BattleAudio.PlaySound(battleManager.data.Heal);
             }
 
             yield return new WaitForSeconds(.5f);
         }
     }
 
-    public IEnumerator UseItem(RPGConsumed item, BattleEntityInfo user, params BattleEntityInfo[] targets)
+    public IEnumerator UseItem(RPGConsumed item, RPGEntity user, params RPGEntity[] targets)
     {
-        if (targets.Any(i => i is BattleEnemyInfo) && item.VisualEffect != null)
+        if (targets.Any(i => i is RPGEnemy) && item.VisualEffect != null)
         {
-            EnemyModel model = BattleManager.Instance.enemyModels.GetModel(targets.Where(i => i is BattleEnemyInfo).First() as BattleEnemyInfo);
+            EnemyModel model = BattleManager.Instance.EnemyModels.GetModel(targets.Where(i => i is RPGEnemy).First() as RPGEnemy);
 
             VisualAttackEffect effect;
 
-            if (targets.Where(i => i is BattleEnemyInfo).Count() == 1)
+            if (targets.Where(i => i is RPGEnemy).Count() == 1)
                 effect = battleManager.utility.SpawnAttackEffect(item.VisualEffect);
             else
                 effect = battleManager.utility.SpawnAttackEffect(item.VisualEffect, model.AttackGlobalPoint);
@@ -167,11 +170,13 @@ public class BattleUsingService
             Object.Destroy(effect.gameObject);
         }
 
-        foreach (BattleEntityInfo target in targets)
+        foreach (var target in targets)
         {
-            if (target is BattleCharacterInfo chr)
+            if (target is RPGCharacter chr)
             {
-                if ((chr.IsDead && !item.ForDeath) || (!chr.IsDead && !item.ForAlive))
+                var turnData = battleManager.data.TurnsData.First(i => i.Character == chr);
+
+                if ((turnData.IsDead && !item.ForDeath) || (!turnData.IsDead && !item.ForAlive))
                 {
                     continue;
                 }
@@ -182,17 +187,17 @@ public class BattleUsingService
             string[] oldStates = target.States.Select(x => x.Tag).ToArray();
 
             foreach (var effect in item.Effects)
-                yield return battleManager.pipeline.StartCoroutine(effect.Invoke(user, target));
+                yield return battleManager.Pipeline.StartCoroutine(effect.Invoke(user, target));
 
             RPGEntityState[] states = target.States.Where(i => oldStates.All(y => i.Tag != y)).ToArray();
             int healDif = target.Heal - oldHp, manaDif = target.Mana - oldMp;
 
-            if (target is BattleEnemyInfo enemy)
+            if (target is RPGEnemy enemy)
             {
                 if (!battleManager.data.Enemys.Contains(enemy))
                     continue;
 
-                EnemyModel model = BattleManager.Instance.enemyModels.GetModel(enemy);
+                EnemyModel model = BattleManager.Instance.EnemyModels.GetModel(enemy);
 
                 if (healDif < 0)
                 {
@@ -215,18 +220,19 @@ public class BattleUsingService
 
                 if (enemy.Heal <= 0)
                 {
-                    BattleManager.Instance.battleAudio.PlaySound(battleManager.data.EnemyDeath);
+                    BattleManager.Instance.BattleAudio.PlaySound(battleManager.data.EnemyDeath);
                     model.Death();
                 }
                 else if (healDif < 0)
-                    battleManager.battleAudio.PlaySound(battleManager.data.EnemyDamage);
+                    battleManager.BattleAudio.PlaySound(battleManager.data.EnemyDamage);
                 else
-                    battleManager.battleAudio.PlaySound(battleManager.data.Heal);
+                    battleManager.BattleAudio.PlaySound(battleManager.data.Heal);
             }
-            else if (target is BattleCharacterInfo character)
+            else if (target is RPGCharacter character)
             {
+                var turnData = battleManager.data.TurnsData.First(i => i.Character == character);
 
-                CharacterBox box = BattleManager.Instance.UI.CharacterBox.GetBox(character);
+                CharacterBox box = battleManager.UI.CharacterBox.GetBox(character);
 
                 if (healDif < 0)
                     battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
@@ -249,20 +255,20 @@ public class BattleUsingService
                     character.Heal = 1;
                     
 
-                if (item.WakeupCharacter && character.IsDead)
+                if (item.WakeupCharacter && turnData.IsDead)
                 {
                     box.SetDead(false);
 
-                    character.IsDead = false;
+                    turnData.IsDead = false;
 
                     if (character.Heal <= 0)
                         character.Heal = 1;
                 }
 
                 if (healDif < 0)
-                    battleManager.battleAudio.PlaySound(battleManager.data.Hurt);
+                    battleManager.BattleAudio.PlaySound(battleManager.data.Hurt);
                 else
-                    battleManager.battleAudio.PlaySound(battleManager.data.Heal);
+                    battleManager.BattleAudio.PlaySound(battleManager.data.Heal);
             }
 
             yield return new WaitForSeconds(.5f);

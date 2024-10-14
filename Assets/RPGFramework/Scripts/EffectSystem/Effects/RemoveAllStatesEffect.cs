@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
+﻿using System.Collections;
 
 public class RemoveAllStatesEffect : EffectBase
 {
-    public override IEnumerator Invoke(BattleEntityInfo user, BattleEntityInfo target)
+    public override IEnumerator Invoke(RPGEntity user, RPGEntity target)
     {
-        target.Entity.RemoveAllStates();
+        target.RemoveAllStates();
 
         yield break;
     }

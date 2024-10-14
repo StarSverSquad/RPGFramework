@@ -23,7 +23,7 @@ public class CharacterBoxManager : MonoBehaviour, IDisposable, IActive
         Dispose();
     }
 
-    public void Initialize(params BattleCharacterInfo[] characters)
+    public void Initialize(params RPGCharacter[] characters)
     {
         SetActive(true);
 
@@ -35,7 +35,7 @@ public class CharacterBoxManager : MonoBehaviour, IDisposable, IActive
         }
     }
 
-    public CharacterBox GetBox(BattleCharacterInfo character) => boxes.First(i => i.Character == character);
+    public CharacterBox GetBox(RPGCharacter character) => boxes.First(i => i.Character == character);
 
     public void Show()
     {
@@ -59,13 +59,13 @@ public class CharacterBoxManager : MonoBehaviour, IDisposable, IActive
         rect.DOAnchorPosY(108, TraslateBoxTime).SetEase(Ease.Linear).Play();
     }
 
-    public void FocusBox(BattleCharacterInfo character)
+    public void FocusBox(RPGCharacter character)
     {
         RectTransform rect = boxes.First(i => i.Character == character).GetComponent<RectTransform>();
 
         rect.DOAnchorPosY(150, TraslateBoxTime).SetLoops(0).SetEase(Ease.OutSine).Play();
     }
-    public void UnfocusBox(BattleCharacterInfo character)
+    public void UnfocusBox(RPGCharacter character)
     {
         RectTransform rect = boxes.First(i => i.Character == character).GetComponent<RectTransform>();
 

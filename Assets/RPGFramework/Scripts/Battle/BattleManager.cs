@@ -7,25 +7,26 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
 {
     public static BattleManager Instance;
 
-    public BattlePipeline pipeline;
-    public BattleChoiceManager choice;
-    public BattleUtility utility;
-    public BattleData data;
-    public BattleFieldManager battleField;
-    public BattleBackground background;
-    public BattleAudioManager battleAudio;
-    public BattlePlayerManager player;
-    public AttackQTEManager attackQTE;
-    public EnemyModelsManager enemyModels;
-    public BattlePatternManager pattern;
-    public BattleVisualTransmitionManager visualTransmition;
+    public BattlePipeline Pipeline;
+    public BattleChoiceManager Choice;
+    public BattleFieldManager BattleField;
+    public BattleBackground Background;
+    public BattleAudioManager BattleAudio;
+    public BattlePlayerManager Player;
+    public AttackQTEManager AttackQTE;
+    public EnemyModelsManager EnemyModels;
+    public BattlePatternManager Pattern;
+    public BattleVisualTransmitionManager VisualTransmition;
     public BattleUIShake Shaker;
     public BattleUIManager UI;
 
+
+    public BattleUtility utility;
     public static BattleUtility Utility => Instance.utility;
+    public BattleData data;
     public static BattleData Data => Instance.data;
 
-    public static bool IsBattle => Instance.pipeline.MainIsWorking;
+    public static bool IsBattle => Instance.Pipeline.MainIsWorking;
 
     public static void StartBattle(RPGBattleInfo info) => Utility.StartBattle(info); 
 
@@ -38,6 +39,6 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
 
     public override void InitializeChild()
     {
-        player.SetActive(false);
+        Player.SetActive(false);
     }
 }

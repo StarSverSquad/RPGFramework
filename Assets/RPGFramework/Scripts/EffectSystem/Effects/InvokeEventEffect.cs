@@ -6,13 +6,13 @@ public class InvokeEventEffect : EffectBase
 {
     public GraphEvent @event;
 
-    public override IEnumerator Invoke(BattleEntityInfo user, BattleEntityInfo target)
+    public override IEnumerator Invoke(RPGEntity user, RPGEntity target)
     {
         if (BattleManager.IsBattle)
         {
             if (@event != null)
             {
-                @event.Invoke(BattleManager.Instance.pipeline);
+                @event.Invoke(BattleManager.Instance.Pipeline);
 
                 yield return new WaitWhile(() => @event.IsPlaying);
             }

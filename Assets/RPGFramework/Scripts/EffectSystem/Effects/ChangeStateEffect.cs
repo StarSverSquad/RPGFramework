@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public class ChangeStateEffect : EffectBase
@@ -8,20 +9,20 @@ public class ChangeStateEffect : EffectBase
 
     public RPGEntityState State;
 
-    public override IEnumerator Invoke(BattleEntityInfo user, BattleEntityInfo target)
+    public override IEnumerator Invoke(RPGEntity user, RPGEntity target)
     {
-        if (target is BattleCharacterInfo characterInfo && characterInfo.IsDead)
+        if (BattleManager.IsBattle 
+            && target is RPGCharacter character
+            && BattleManager.Data.TurnsData.First(i => i.Character == character).IsDead)
             yield break;
 
         if (IsAddState)
         {
-            //AddInfo("AddState", State);
-            target.Entity.AddState(State);
+            target.AddState(State);
         }
         else
         {
-            //AddInfo("RemoveState", State);
-            target.Entity.RemoveState(State);
+            target.RemoveState(State);
         }
 
         yield break;

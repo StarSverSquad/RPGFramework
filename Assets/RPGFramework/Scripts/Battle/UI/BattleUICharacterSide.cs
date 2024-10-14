@@ -29,17 +29,17 @@ public class BattleUICharacterSide : MonoBehaviour
 
     public float TraslationTime => 0.7f;
 
-    public void Setup(BattleCharacterInfo battleCharacterInfo)
+    public void Setup(RPGCharacter battleCharacterInfo)
     {
-        charName.text = battleCharacterInfo.Character.Name;
+        charName.text = battleCharacterInfo.Name;
 
-        hpBar.SetValue((float)battleCharacterInfo.Heal / (float)battleCharacterInfo.Character.MaxHeal);
-        mnBar.SetValue((float)battleCharacterInfo.Mana / (float)battleCharacterInfo.Character.MaxMana);
+        hpBar.SetValue((float)battleCharacterInfo.Heal / (float)battleCharacterInfo.MaxHeal);
+        mnBar.SetValue((float)battleCharacterInfo.Mana / (float)battleCharacterInfo.MaxMana);
 
-        hpCounter.text = $"{battleCharacterInfo.Heal} / {battleCharacterInfo.Character.MaxHeal}";
-        mnCounter.text = $"{battleCharacterInfo.Mana} / {battleCharacterInfo.Character.MaxMana}";
+        hpCounter.text = $"{battleCharacterInfo.Heal} / {battleCharacterInfo.MaxHeal}";
+        mnCounter.text = $"{battleCharacterInfo.Mana} / {battleCharacterInfo.MaxMana}";
 
-        icon.sprite = battleCharacterInfo.Character.Icon;
+        icon.sprite = battleCharacterInfo.Icon;
 
         effectList.UpdateIcons(battleCharacterInfo.States.Select(i => i.Icon).ToArray());
     }

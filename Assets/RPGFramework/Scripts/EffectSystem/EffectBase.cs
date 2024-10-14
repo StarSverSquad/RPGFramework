@@ -4,7 +4,7 @@ using System.Collections;
 [Serializable]
 public abstract class EffectBase
 {
-    public virtual IEnumerator Invoke(BattleEntityInfo user, BattleEntityInfo target)
+    public virtual IEnumerator Invoke(RPGEntity user, RPGEntity target)
     {
         yield break;
     }

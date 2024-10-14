@@ -39,15 +39,15 @@ public class EnemyModel : MonoBehaviour
 
     public bool IsAnimatingEffect => damageEffect.IsAnimating || deathEffect.IsAnimating;
 
-    private BattleEnemyInfo enemy;
+    private RPGEnemy enemy;
 
     private bool isInit = false;
 
-    public void Initialize(BattleEnemyInfo enemy)
+    public void Initialize(RPGEnemy enemy)
     {
         this.enemy = enemy;
 
-        enemy.Entity.OnStateChanged += UpdateStats;
+        enemy.OnStateChanged += UpdateStats;
 
         UpdateStats(null);
 
@@ -61,14 +61,12 @@ public class EnemyModel : MonoBehaviour
 
     public void Damage()
     {
-        if (damageEffect != null) 
-            damageEffect.Invoke();
+        damageEffect?.Invoke();
     }
 
     public void Death()
     {
-        if (deathEffect != null) 
-            deathEffect.Invoke();
+        deathEffect?.Invoke();
     }
 
     public void Cleanup()
@@ -86,7 +84,7 @@ public class EnemyModel : MonoBehaviour
     {
         if (isInit)
         {
-            enemy.Entity.OnStateChanged -= UpdateStats;
+            enemy.OnStateChanged -= UpdateStats;
             isInit = false;
         }
     }

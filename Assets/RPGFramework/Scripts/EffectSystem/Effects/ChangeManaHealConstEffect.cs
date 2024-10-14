@@ -7,7 +7,7 @@ public class ChangeManaHealConstEffect : EffectBase
     public int Heal;
     public int Mana;
 
-    public override IEnumerator Invoke(BattleEntityInfo user, BattleEntityInfo target)
+    public override IEnumerator Invoke(RPGEntity user, RPGEntity target)
     {
         target.Heal += Heal;
         target.Mana += Mana;

@@ -26,17 +26,17 @@ public class ChangeEnemyStatsAction : GraphActionBase
         {
             if (BattleManager.IsBattle)
             {
-                BattleEnemyInfo enemy = BattleManager.Instance.data.Enemys.First(i => i.Entity.Tag == EnemyTag);
+                RPGEnemy enemy = BattleManager.Instance.data.Enemys.First(i => i.Tag == EnemyTag);
 
                 if (enemy == null)
                     throw new ApplicationException("Enemy not found!");
 
-                enemy.Entity.DefaultDamage = newDamage;
-                enemy.Entity.DefaultDefence = newDefance;
-                enemy.Entity.DefaultAgility = newAgility;
-                enemy.Entity.DefaultLuck = newLuck;
+                enemy.DefaultDamage = newDamage;
+                enemy.DefaultDefence = newDefance;
+                enemy.DefaultAgility = newAgility;
+                enemy.DefaultLuck = newLuck;
 
-                enemy.Entity.UpdateStats();
+                enemy.UpdateStats();
             }
         }
         catch (ApplicationException error)

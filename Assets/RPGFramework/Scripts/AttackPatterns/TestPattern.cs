@@ -47,18 +47,18 @@ public class TestPattern : RPGAttackPattern
 
         while (true)
         {
-            if (!BattleManager.Instance.battleField.IsRotating)
+            if (!BattleManager.Instance.BattleField.IsRotating)
             {
-                BattleManager.Instance.battleField.Rotate(0);
-                BattleManager.Instance.battleField.Rotate(360, 16);
+                BattleManager.Instance.BattleField.Rotate(0);
+                BattleManager.Instance.BattleField.Rotate(360, 16);
             }
 
-            if (!BattleManager.Instance.battleField.IsTransforming)
+            if (!BattleManager.Instance.BattleField.IsTransforming)
             {
                 if (moveKey)
-                    BattleManager.Instance.battleField.Transform(new Vector2(-2, 0), 1);
+                    BattleManager.Instance.BattleField.Transform(new Vector2(-2, 0), 1);
                 else
-                    BattleManager.Instance.battleField.Transform(new Vector2(2, 0), 1);
+                    BattleManager.Instance.BattleField.Transform(new Vector2(2, 0), 1);
 
                 moveKey = !moveKey;
             }

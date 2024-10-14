@@ -237,7 +237,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0.000061035, y: -504.00003}
+  m_AnchoredPosition: {x: 0.000061035, y: -504}
   m_SizeDelta: {x: 1920, y: 310.33}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &117458847
@@ -2580,7 +2580,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 277.76, y: -323.23}
+  m_AnchoredPosition: {x: 277.76, y: -323.22998}
   m_SizeDelta: {x: 555.51, y: 323.23}
   m_Pivot: {x: 0.49999997, y: -0.000000011175871}
 --- !u!114 &1339664197
@@ -4132,7 +4132,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -0.0012321, y: -340.99997}
+  m_AnchoredPosition: {x: -0.0012321, y: -340.99994}
   m_SizeDelta: {x: 118.65, y: 646.58}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1788350987
@@ -5268,6 +5268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97eb467407640444e9b7c531b7348d68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Enemys: []
   DefaultEffect: {fileID: 2429433655878315730, guid: 65fcf45a9d4420542a3cc46fa519c398, type: 3}
   DmgText: {fileID: 8448606485995851385, guid: 9a20811517bb5bb43b6c618854a6d20b, type: 3}
   BattleCanvas: {fileID: 3325345367658189386}
@@ -10835,20 +10836,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   container: {fileID: 3682675498232469491}
-  pipeline: {fileID: 4038830115268760207}
-  choice: {fileID: 5251217747942147456}
-  utility: {fileID: 567874435024230449}
-  data: {fileID: 564830677788912069}
-  battleField: {fileID: 5380663372262276409}
-  background: {fileID: 7802616619640831309}
-  battleAudio: {fileID: 3558051729771292401}
-  player: {fileID: 6660501666278162833}
-  attackQTE: {fileID: 2030222420}
-  enemyModels: {fileID: 335039284}
-  pattern: {fileID: 5924241070070259089}
-  visualTransmition: {fileID: 543801728653999458}
+  Pipeline: {fileID: 4038830115268760207}
+  Choice: {fileID: 5251217747942147456}
+  BattleField: {fileID: 5380663372262276409}
+  Background: {fileID: 7802616619640831309}
+  BattleAudio: {fileID: 3558051729771292401}
+  Player: {fileID: 6660501666278162833}
+  AttackQTE: {fileID: 2030222420}
+  EnemyModels: {fileID: 335039284}
+  Pattern: {fileID: 5924241070070259089}
+  VisualTransmition: {fileID: 543801728653999458}
   Shaker: {fileID: 2152882704842844521}
   UI: {fileID: 1907094964}
+  utility: {fileID: 567874435024230449}
+  data: {fileID: 564830677788912069}
 --- !u!114 &7771991213937679269
 MonoBehaviour:
   m_ObjectHideFlags: 0

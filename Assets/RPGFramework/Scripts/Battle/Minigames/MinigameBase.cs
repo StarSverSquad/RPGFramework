@@ -1,10 +1,10 @@
 using System.Collections;
 using UnityEngine;
 
-public abstract class MinigameBase : MonoBehaviour
+public abstract class MinigameBase : RPGFrameworkBehaviour
 {
     [SerializeField]
-    protected GameObject content;
+    protected GameObject Content;
 
     private Coroutine coroutine = null;
     public bool IsRuning => coroutine != null;

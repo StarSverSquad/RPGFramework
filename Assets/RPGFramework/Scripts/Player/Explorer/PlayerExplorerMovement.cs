@@ -108,7 +108,7 @@ public class PlayerExplorerMovement : MonoBehaviour
 
         Velocity = ResultSpeed * Velocity.normalized;
 
-        rb.velocity = Velocity;
+        rb.linearVelocity = Velocity;
     }
 
     public void SetMovementAccess(bool active)

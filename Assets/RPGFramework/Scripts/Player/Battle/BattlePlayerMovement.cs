@@ -30,9 +30,9 @@ public class BattlePlayerMovement : MonoBehaviour
             if (Input.GetKey(GameManager.Instance.BaseOptions.MoveRight))
                 direction += Vector2.right;
 
-            rb.velocity = direction.normalized * MoveSpeed;
+            rb.linearVelocity = direction.normalized * MoveSpeed;
         }
         else
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
     }
 }

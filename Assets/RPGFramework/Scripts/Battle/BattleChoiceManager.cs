@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class BattleChoiceManager : MonoBehaviour
+public class BattleChoiceManager : RPGFrameworkBehaviour
 {
     public BattleData Data => BattleManager.Data;
-    public BattleAudioManager BattleAudio => BattleManager.Instance.battleAudio;
-    public BattlePipeline Pipeline => BattleManager.Instance.pipeline;
+    public BattleAudioManager BattleAudio => BattleManager.Instance.BattleAudio;
+    public BattlePipeline Pipeline => BattleManager.Instance.Pipeline;
 
     [SerializeField]
     private BattleChoiceUI battleChoice;
@@ -133,12 +133,12 @@ public class BattleChoiceManager : MonoBehaviour
 
         List<CommonChoiceUI.ElementInfo> choices = new List<CommonChoiceUI.ElementInfo>();
 
-        foreach (var item in Data.Characters)
+        foreach (var item in Data.TurnsData)
         {
             choices.Add(new CommonChoiceUI.ElementInfo()
             {
-                name = item.Entity.Name,
-                value = item
+                name = item.Character.Name,
+                value = item.Character
             });
         }
 
@@ -151,9 +151,9 @@ public class BattleChoiceManager : MonoBehaviour
 
         foreach (var item in Data.Enemys)
         {
-            choices0.Add(new    CommonChoiceUI.ElementInfo()
+            choices0.Add(new CommonChoiceUI.ElementInfo()
             {
-                name = item.Entity.Name,
+                name = item.Name,
                 value = item
             });
         }
@@ -171,7 +171,7 @@ public class BattleChoiceManager : MonoBehaviour
         {
             choiceElements.Add(new CommonChoiceUI.ElementInfo()
             {
-                name = enemy.Entity.Name,
+                name = enemy.Name,
                 value = enemy
             });
         }
@@ -185,27 +185,27 @@ public class BattleChoiceManager : MonoBehaviour
     {
         List<CommonChoiceUI.ElementInfo> choices = new List<CommonChoiceUI.ElementInfo>();
 
-        BattleCharacterInfo current = BattleManager.Instance.pipeline.CurrentChoicingCharacter;
+        BattleTurnData current = Battle.Pipeline.CurrentTurnData;
 
         RPGConsumed consumed = current.Item as RPGConsumed;
         
-        foreach (var character in Data.Characters)
+        foreach (var turnData in Data.TurnsData)
         {
             CommonChoiceUI.ElementInfo info = new CommonChoiceUI.ElementInfo()
             {
-                name = character.Entity.Name,
-                value = character,
+                name = turnData.Character.Name,
+                value = turnData.Character,
                 locked = false
             };
 
-            if (current.BattleAction == BattleCharacterAction.Item)
+            if (current.BattleAction == TurnAction.Item)
             {
                 info.locked = !current.IsConsumed &&
-                    (character.IsDead && !consumed.ForDeath) || (!character.IsDead == !consumed.ForAlive);
+                    (turnData.IsDead && !consumed.ForDeath) || (!turnData.IsDead == !consumed.ForAlive);
             }
-            else if (current.BattleAction == BattleCharacterAction.Act)
+            else if (current.BattleAction == TurnAction.Act)
             {
-                info.locked = character.IsDead;
+                info.locked = turnData.IsDead;
             }
 
             choices.Add(info);
@@ -220,14 +220,14 @@ public class BattleChoiceManager : MonoBehaviour
     {
         List<CommonChoiceUI.ElementInfo> choices = new List<CommonChoiceUI.ElementInfo>();
 
-        foreach (var item in Pipeline.CurrentChoicingCharacter.Character.Abilities)
+        foreach (var item in Pipeline.CurrentTurnData.Character.Abilities)
         {
             choices.Add(new CommonChoiceUI.ElementInfo()
             {
                 name = item.Name,
                 description = item.Destription + "\n" + (item.ManaCost > 0 ? $"[<color=#0081FF>Мана: {item.ManaCost}</color>] " : "") + (item.ConcentrationCost > 0 ? $"[<color=#06C100>Конц.: {item.ConcentrationCost}</color>]" : ""),
                 value = item,
-                locked = Pipeline.CurrentChoicingCharacter.Character.Mana < item.ManaCost || Data.Concentration < item.ConcentrationCost,
+                locked = Pipeline.CurrentTurnData.Character.Mana < item.ManaCost || Data.Concentration < item.ConcentrationCost,
                 icon = item.icon
             });
         }
@@ -250,7 +250,7 @@ public class BattleChoiceManager : MonoBehaviour
             {
                 name = "Способность",
                 value = 1,
-                locked = Pipeline.CurrentChoicingCharacter.Character.Abilities.Count == 0
+                locked = Pipeline.CurrentTurnData.Character.Abilities.Count == 0
             }
         };
 
@@ -297,7 +297,7 @@ public class BattleChoiceManager : MonoBehaviour
             int alreadyUsing = 0;
             if (slot.Item is RPGConsumed)
             {
-                foreach (var item in Data.Characters)
+                foreach (var item in Data.TurnsData)
                     alreadyUsing += item.Item == slot.Item ? 1 : 0;
             }
 
@@ -334,9 +334,9 @@ public class BattleChoiceManager : MonoBehaviour
             }
         };
 
-        BattleCharacterInfo currentCharacter = BattleManager.Instance.pipeline.CurrentChoicingCharacter;
+        BattleTurnData currentCharacter = Battle.Pipeline.CurrentTurnData;
 
-        foreach (var act in currentCharacter.EnemyBuffer.Enemy.Acts)
+        foreach (var act in currentCharacter.EnemyBuffer.Acts)
         {
 
             CommonChoiceUI.ElementInfo elementInfo = new CommonChoiceUI.ElementInfo()
@@ -347,7 +347,7 @@ public class BattleChoiceManager : MonoBehaviour
                 locked = false
             };
 
-            foreach (var character in Data.Characters)
+            foreach (var character in Data.TurnsData)
             {
                 if (character.EnemyBuffer == currentCharacter.EnemyBuffer
                     && character.InteractionAct.Name == act.Name && act.OnlyOne)

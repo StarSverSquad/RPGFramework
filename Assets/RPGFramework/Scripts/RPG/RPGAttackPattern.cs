@@ -16,7 +16,7 @@ public abstract class RPGAttackPattern : MonoBehaviour
     /// </summary>
     public bool IsWorking => isWorking;
 
-    protected Vector2 BattleFieldPosition => BattleManager.Instance.battleField.transform.position;
+    protected Vector2 BattleFieldPosition => BattleManager.Instance.BattleField.transform.position;
 
     [HideInInspector]
     public RPGEnemy enemy;
@@ -35,27 +35,27 @@ public abstract class RPGAttackPattern : MonoBehaviour
         PatternBullet pb;
 
         if (obj.TryGetComponent(out pb))
-            pb.enemy = enemy ?? BattleManager.Data.Enemys[0].Enemy;
+            pb.enemy = enemy ?? BattleManager.Data.Enemys[0];
 
-        return BattleManager.Instance.pattern.CreateObjectRelativeCenter(obj, offset);
+        return BattleManager.Instance.Pattern.CreateObjectRelativeCenter(obj, offset);
     }
     protected GameObject CreateObjectRelativeBattleField(GameObject obj, Vector2 offset)
     {
         PatternBullet pb;
 
         if (obj.TryGetComponent(out pb))
-            pb.enemy = enemy ?? BattleManager.Data.Enemys[0].Enemy;
+            pb.enemy = enemy ?? BattleManager.Data.Enemys[0];
 
-        return BattleManager.Instance.pattern.CreateObjectRelativeBattleField(obj, offset);
+        return BattleManager.Instance.Pattern.CreateObjectRelativeBattleField(obj, offset);
     }
     protected GameObject CreateObjectInWorldSpace(GameObject obj, Vector2 position)
     {
         PatternBullet pb;
 
         if (obj.TryGetComponent(out pb))
-            pb.enemy = enemy ?? BattleManager.Data.Enemys[0].Enemy;
+            pb.enemy = enemy ?? BattleManager.Data.Enemys[0];
 
-        return BattleManager.Instance.pattern.CreateObjectInWorldSpace(obj, position);
+        return BattleManager.Instance.Pattern.CreateObjectInWorldSpace(obj, position);
     }
 
 

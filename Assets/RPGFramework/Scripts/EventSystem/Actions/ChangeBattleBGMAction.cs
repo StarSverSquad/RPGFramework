@@ -15,7 +15,7 @@ public class ChangeBattleBGMAction : GraphActionBase
     public override IEnumerator ActionCoroutine()
     {
         if (BattleManager.IsBattle)
-            BattleManager.Instance.battleAudio.PlayMusic(Clip, Volume);
+            BattleManager.Instance.BattleAudio.PlayMusic(Clip, Volume);
 
         yield break;
     }

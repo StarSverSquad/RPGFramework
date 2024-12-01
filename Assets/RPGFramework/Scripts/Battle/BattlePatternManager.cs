@@ -67,7 +67,7 @@ public class BattlePatternManager : MonoBehaviour
     }
     public GameObject CreateObjectRelativeBattleField(GameObject obj, Vector2 offset)
     {
-        GameObject o = Instantiate(obj, (Vector2)BattleManager.Instance.battleField.transform.position + offset, Quaternion.identity, transform);
+        GameObject o = Instantiate(obj, (Vector2)BattleManager.Instance.BattleField.transform.position + offset, Quaternion.identity, transform);
 
         patternObjects.Add(o);
 

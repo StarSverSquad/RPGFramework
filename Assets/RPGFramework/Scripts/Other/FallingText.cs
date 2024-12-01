@@ -48,7 +48,7 @@ public class FallingText : MonoBehaviour
         textMesh.text = text;
 
         this.startColor = startColor;
-        this.startColor.a = 0;
+        this.startColor.a = 255;
 
         this.endColor = endColor;
         this.endColor.a = 255;

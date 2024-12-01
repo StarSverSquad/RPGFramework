@@ -9,21 +9,19 @@ public class EnemyModelsManager : MonoBehaviour, IDisposable
     public struct ModelInfo
     {
         public EnemyModel model;
-        public BattleEnemyInfo enemy;
+        public RPGEnemy enemy;
     }
 
     private List<ModelInfo> models = new List<ModelInfo>();
 
     public bool IsAnyAnimating => models.Any(i => i.model.IsAnimatingEffect);
 
-    public void AddModel(BattleEnemyInfo enemy, Vector2 anposition)
+    public void AddModel(RPGEnemy enemy, Vector2 anposition)
     {
         if (HasModel(enemy))
             return;
 
-        RPGEnemy rpg = enemy.Entity as RPGEnemy;
-
-        GameObject obj = Instantiate(rpg.EnemyModel, transform, false);
+        GameObject obj = Instantiate(enemy.EnemyModel, transform, false);
 
         RectTransform rect = obj.GetComponent<RectTransform>();
         EnemyModel mod = obj.GetComponent<EnemyModel>();
@@ -35,7 +33,7 @@ public class EnemyModelsManager : MonoBehaviour, IDisposable
         models.Add(new ModelInfo { model = mod, enemy = enemy });
     }
 
-    public void DeleteModel(BattleEnemyInfo enemy)
+    public void DeleteModel(RPGEnemy enemy)
     {
         if (!HasModel(enemy)) 
             return; 
@@ -46,7 +44,7 @@ public class EnemyModelsManager : MonoBehaviour, IDisposable
         Destroy(info.model.gameObject);
     }
 
-    public bool HasModel(BattleEnemyInfo enemy)
+    public bool HasModel(RPGEnemy enemy)
     {
         foreach (var item in models)
         {
@@ -57,7 +55,7 @@ public class EnemyModelsManager : MonoBehaviour, IDisposable
         return false;
     }
 
-    public EnemyModel GetModel(BattleEnemyInfo enemy)
+    public EnemyModel GetModel(RPGEnemy enemy)
     {
         if (!HasModel(enemy))
             return null;

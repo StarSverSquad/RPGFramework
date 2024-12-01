@@ -11,9 +11,9 @@ public class BattleData : MonoBehaviour, IDisposable
     public RPGBattleInfo BattleInfo { get; set; } = null;
 
     [HideInInspector]
-    public List<BattleEnemyInfo> Enemys = new List<BattleEnemyInfo>();
+    public List<RPGEnemy> Enemys = new List<RPGEnemy>();
     [HideInInspector]
-    public List<BattleCharacterInfo> Characters = new List<BattleCharacterInfo>();
+    public List<BattleTurnData> TurnsData = new List<BattleTurnData>();
 
     [Header("Ссылки")]
     public VisualAttackEffect DefaultEffect;
@@ -48,7 +48,7 @@ public class BattleData : MonoBehaviour, IDisposable
     public void Dispose()
     {
         Enemys.Clear();
-        Characters.Clear();
+        TurnsData.Clear();
         BattleInfo = null;
 
         Concentration = 0;

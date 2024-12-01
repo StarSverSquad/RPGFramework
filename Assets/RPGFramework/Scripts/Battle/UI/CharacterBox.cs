@@ -34,8 +34,8 @@ public class CharacterBox : MonoBehaviour, IDisposable
     private LineBar manaBar;
 
     [SerializeField]
-    private BattleCharacterInfo character;
-    public BattleCharacterInfo Character => character;
+    private RPGCharacter character;
+    public RPGCharacter Character => character;
 
     [SerializeField]
     private bool isDead = false;
@@ -43,23 +43,23 @@ public class CharacterBox : MonoBehaviour, IDisposable
 
     private bool initialized = false;
 
-    public void Initialize(BattleCharacterInfo ch)
+    public void Initialize(RPGCharacter character)
     {
-        character = ch;
+        this.character = character;
 
-        ch.Entity.OnManaChanged += UpdateMana;
-        ch.Entity.OnHealChanged += UpdateHeal;
-        ch.Entity.OnStateChanged += UpdateStates;
+        character.OnManaChanged += UpdateMana;
+        character.OnHealChanged += UpdateHeal;
+        character.OnStateChanged += UpdateStates;
 
         UpdateHeal();
         UpdateMana();
 
-        characterImage.sprite = ch.Character.Icon;
-        nameText.text = ch.Entity.Name;
+        characterImage.sprite = character.Icon;
+        nameText.text = character.Name;
 
         SetDead(false);
         MarkTarget(false);
-        ChangeAct(BattleCharacterAction.None);
+        ChangeAct(TurnAction.None);
         UpdateStates();
 
         initialized = true;
@@ -69,29 +69,29 @@ public class CharacterBox : MonoBehaviour, IDisposable
     /// <summary>
     /// Смена значка действия
     /// </summary>
-    public void ChangeAct(BattleCharacterAction action)
+    public void ChangeAct(TurnAction action)
     {
         actImage.enabled = true;
 
 
         switch (action)
         {
-            case BattleCharacterAction.Fight:
+            case TurnAction.Fight:
                 actImage.sprite = actIcons[0];
                 break;
-            case BattleCharacterAction.Act:
+            case TurnAction.Act:
                 actImage.sprite = actIcons[1];
                 break;
-            case BattleCharacterAction.Item:
+            case TurnAction.Item:
                 actImage.sprite = actIcons[2];
                 break;
-            case BattleCharacterAction.Defence:
+            case TurnAction.Defence:
                 actImage.sprite = actIcons[3];
                 break;
-            case BattleCharacterAction.Spell:
+            case TurnAction.Spell:
                 actImage.sprite = actIcons[4];
                 break;
-            case BattleCharacterAction.None:
+            case TurnAction.None:
             default:
             actImage.enabled = false;
                 break;
@@ -114,12 +114,12 @@ public class CharacterBox : MonoBehaviour, IDisposable
 
     private void UpdateHeal()
     {
-        healBar.SetValue((float)character.Entity.Heal / (float)character.Entity.MaxHeal);
+        healBar.SetValue((float)character.Heal / (float)character.MaxHeal);
     }
 
     private void UpdateMana()
     {
-        manaBar.SetValue((float)character.Entity.Mana / (float)character.Entity.MaxMana);
+        manaBar.SetValue((float)character.Mana / (float)character.MaxMana);
     }
 
     /// <summary>
@@ -152,9 +152,9 @@ public class CharacterBox : MonoBehaviour, IDisposable
     {
         if (initialized)
         {
-            character.Entity.OnManaChanged -= UpdateMana;
-            character.Entity.OnHealChanged -= UpdateHeal;
-            character.Entity.OnAllStatesChanged -= UpdateStates;
+            character.OnManaChanged -= UpdateMana;
+            character.OnHealChanged -= UpdateHeal;
+            character.OnAllStatesChanged -= UpdateStates;
 
             character = null;
 

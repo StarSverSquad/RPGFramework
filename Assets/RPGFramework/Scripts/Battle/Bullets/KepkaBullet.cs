@@ -30,7 +30,7 @@ public class KepkaBullet : PatternBullet
     private void FixedUpdate()
     {
         if (look)
-            moveDir = (BattleManager.Instance.player.transform.position - transform.position).normalized;
+            moveDir = (BattleManager.Instance.Player.transform.position - transform.position).normalized;
 
         if (move)
             transform.Translate(moveDir * Speed * Time.fixedDeltaTime);

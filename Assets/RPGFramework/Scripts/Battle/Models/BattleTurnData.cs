@@ -1,17 +1,17 @@
-﻿public class BattleCharacterInfo : BattleEntityInfo
+﻿public class BattleTurnData
 {
-    public BattleCharacterAction BattleAction { get; set; }
+    public TurnAction BattleAction { get; set; }
 
-    public RPGCharacter Character => Entity as RPGCharacter;
+    public RPGCharacter Character { get; private set; }
 
     public bool IsTarget;
     public bool IsDead;
 
     public int ReservedConcentration;
 
-    public BattleEnemyInfo EnemyBuffer;
-    public BattleCharacterInfo CharacterBuffer;
-    public BattleEntityInfo EntityBuffer;
+    public RPGEnemy EnemyBuffer;
+    public RPGCharacter CharacterBuffer;
+    public RPGEntity EntityBuffer;
 
     #region ACT INFO
 
@@ -37,10 +37,12 @@
 
     #endregion
 
-    public BattleCharacterInfo(RPGCharacter entity) : base(entity)
+    public BattleTurnData(RPGCharacter entity)
     {
         IsDead = false;
         CleanUp();
+
+        Character = entity;
 
         Character.OnAllStatesChanged += BattleCharacterInfo_OnStatesUpdated;
     }
@@ -53,13 +55,13 @@
 
     public void CleanUp()
     {
-        BattleAction = BattleCharacterAction.None;
+        BattleAction = TurnAction.None;
 
         IsTarget = false;
         IsAbility = false;
         IsConsumed = false;
         IsDefence = false;
-       
+
         Ability = null;
         InteractionAct = RPGEnemy.EnemyAct.NullAct;
 
@@ -73,7 +75,7 @@
     }
 }
 
-public enum BattleCharacterAction
+public enum TurnAction
 {
     None, Fight, Act, Item, Defence, Spell
 }

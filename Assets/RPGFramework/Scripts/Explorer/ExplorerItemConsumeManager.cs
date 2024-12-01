@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 using UnityEngine;
 
 public class ExplorerItemConsumeManager : MonoBehaviour
@@ -33,7 +30,7 @@ public class ExplorerItemConsumeManager : MonoBehaviour
 
         foreach (EffectBase effect in item.Effects)
         {
-            yield return StartCoroutine(effect.ExplorerInvoke(who, target));
+            yield return StartCoroutine(effect.Invoke(who, target));
         }
 
         who.Heal = who.Heal == 0 ? 1 : who.Heal;

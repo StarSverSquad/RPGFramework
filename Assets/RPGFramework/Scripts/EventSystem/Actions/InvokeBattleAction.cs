@@ -18,11 +18,11 @@ public class InvokeBattleAction : GraphActionBase
 
         yield return new WaitWhile(() => BattleManager.IsBattle);
 
-        if (fleePort && BattleManager.Instance.pipeline.IsFlee)
+        if (fleePort && BattleManager.Instance.Pipeline.IsFlee)
         {
             nextIndex = 1;
         }
-        else if (BattleManager.Instance.pipeline.IsLose)
+        else if (BattleManager.Instance.Pipeline.IsLose)
         {
             nextIndex = fleePort ? 2 : 1;
         }

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
+﻿using System.Collections;
 
 public class ChangeConcentrationEffect : EffectBase
 {
     public int AddConcentration;
 
-    public override IEnumerator BattleInvoke(BattleEntityInfo user, BattleEntityInfo target)
+    public override IEnumerator Invoke(RPGEntity user, RPGEntity target)
     {
         BattleManager.Utility.AddConcetration(AddConcentration);
 

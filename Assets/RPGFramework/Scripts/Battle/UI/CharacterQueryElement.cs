@@ -32,18 +32,18 @@ public class CharacterQueryElement : MonoBehaviour
     // <-- -->
     private Sequence animation0;
 
-    public void Initialize(BattleCharacterInfo character)
+    public void Initialize(RPGCharacter character)
     {
-        gradient.color = character.Character.Color;
-        icon.sprite = character.Character.Icon;
+        gradient.color = character.Color;
+        icon.sprite = character.Icon;
 
-        characterNameTxt.text = character.Character.Name;
+        characterNameTxt.text = character.Name;
 
-        healCounter.text = $"{character.Heal} / {character.Character.MaxHeal}";
-        manaCounter.text = $"{character.Mana} / {character.Character.MaxMana}";
+        healCounter.text = $"{character.Heal} / {character.MaxHeal}";
+        manaCounter.text = $"{character.Mana} / {character.MaxMana}";
 
-        healBar.SetValue((float)character.Heal / (float)character.Character.MaxHeal);
-        manaBar.SetValue((float)character.Mana / (float)character.Character.MaxMana);
+        healBar.SetValue((float)character.Heal / (float)character.MaxHeal);
+        manaBar.SetValue((float)character.Mana / (float)character.MaxMana);
     }
 
     public void StartAnimation()
@@ -62,5 +62,10 @@ public class CharacterQueryElement : MonoBehaviour
     public void StopAnimation()
     {
         animation0.Kill(true);
+    }
+
+    private void OnDestroy()
+    {
+        animation0.Kill();
     }
 }

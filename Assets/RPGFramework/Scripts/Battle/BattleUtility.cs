@@ -1,10 +1,7 @@
-﻿using System.Collections;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using UnityEngine.UIElements;
 
-public class BattleUtility : MonoBehaviour
+public class BattleUtility : RPGFrameworkBehaviour
 {
     public BattleData Data => BattleManager.Data;
 
@@ -15,36 +12,39 @@ public class BattleUtility : MonoBehaviour
         foreach (var item in info.enemySquad.Enemies)
             AddEnemy(item.Enemy, item.ScreenPosition);
 
-        BattleManager.Instance.pipeline.InvokeMainPipeline();
+        BattleManager.Instance.Pipeline.InvokeMainPipeline();
     }
 
     public void StopBattle()
     {
-        BattleManager.Instance.pipeline.InvokeBreak();
+        BattleManager.Instance.Pipeline.InvokeBreak();
     }
 
     public void AddEnemy(RPGEnemy enemy, Vector2 position)
     {
-        enemy.InitializeEntity();
-        Data.Enemys.Add(new BattleEnemyInfo(enemy));
-        BattleManager.Instance.enemyModels.AddModel(Data.Enemys.Last(), position);
+        var entity = Instantiate(enemy);
+        entity.InitializeEntity();
+
+        Data.Enemys.Add(entity);
+
+        Battle.EnemyModels.AddModel(Data.Enemys.Last(), position);
     }
 
-    public void RemoveEnemy(BattleEnemyInfo enemy)
+    public void RemoveEnemy(RPGEnemy enemy)
     {
         if (!Data.Enemys.Contains(enemy))
             return;
 
-        BattleManager.Instance.enemyModels.DeleteModel(enemy);
+        BattleManager.Instance.EnemyModels.DeleteModel(enemy);
 
         Data.Enemys.Remove(enemy);
     }
 
-    public void DamageEnemy(BattleCharacterInfo who, BattleEnemyInfo enemy, float damageFactor = 1f)
+    public void DamageEnemy(RPGCharacter who, RPGEnemy enemy, float damageFactor = 1f)
     {
-        EnemyModel model = BattleManager.Instance.enemyModels.GetModel(enemy);
+        EnemyModel model = BattleManager.Instance.EnemyModels.GetModel(enemy);
 
-        int dmg = enemy.Entity.GiveDamage(who.Entity, damageFactor, true);
+        int dmg = enemy.GiveDamage(who, damageFactor, true);
 
         enemy.Heal -= dmg;
 
@@ -53,19 +53,19 @@ public class BattleUtility : MonoBehaviour
             if (enemy.Heal <= 0)
             {
                 model.Death();
-                BattleManager.Instance.battleAudio.PlaySound(Data.EnemyDeath);
+                BattleManager.Instance.BattleAudio.PlaySound(Data.EnemyDeath);
             }
             else
             {
                 model.Damage();
-                BattleManager.Instance.battleAudio.PlaySound(Data.EnemyDamage);
+                BattleManager.Instance.BattleAudio.PlaySound(Data.EnemyDamage);
             }
 
             SpawnFallingText(model.DamageTextGlobalPoint, dmg.ToString(), Color.white, Color.red);
         }
         else
         {
-            BattleManager.Instance.battleAudio.PlaySound(Data.Miss);
+            BattleManager.Instance.BattleAudio.PlaySound(Data.Miss);
             SpawnFallingText(model.DamageTextGlobalPoint, "ПРОМАХ");
         }
     }
@@ -117,40 +117,40 @@ public class BattleUtility : MonoBehaviour
     /// <summary>
     /// Даёт урон персонажу взависимости от пули
     /// </summary>
-    /// <param name="character">Персонаж</param>
+    /// <param name="data">Данный хода</param>
     /// <param name="bullet">Пуля</param>
-    public void DamageCharacterByBullet(BattleCharacterInfo character, PatternBullet bullet)
+    public void DamageCharacterByBullet(BattleTurnData data, PatternBullet bullet)
     {
-        CharacterBox box = BattleManager.Instance.UI.CharacterBox.GetBox(character);
+        CharacterBox box = BattleManager.Instance.UI.CharacterBox.GetBox(data.Character);
 
-        int realDamage = character.Entity.GiveDamage(Mathf.RoundToInt(bullet.enemy.Damage * bullet.DamageModifier * (character.IsDefence ? .5f : 1f)));
+        int realDamage = data.Character.GiveDamage(Mathf.RoundToInt(bullet.enemy.Damage * bullet.DamageModifier * (data.IsDefence ? .5f : 1f)));
 
         BattleManager.Instance.Shaker.Shake(2);
 
         if (bullet.State != null)
         {
-            character.Entity.AddState(bullet.State);
+            data.Character.AddState(bullet.State);
             SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 2f), bullet.State.Name,
                 bullet.State.Color, Color.white);
         }       
 
-        if (character.Entity.Heal <= 0)
+        if (data.Character.Heal <= 0)
         {
-            FallCharacter(character);
+            FallCharacter(data);
 
-            if (BattleManager.Instance.pipeline.IsEnemyTurn 
-                && Data.Characters.Where(i => i.IsTarget == true).Count() == 0)
+            if (BattleManager.Instance.Pipeline.IsEnemyTurn 
+                && Data.TurnsData.Where(i => i.IsTarget == true).Count() == 0)
             {
-                Data.Characters.Where(i => i.IsDead == false).ToList().ForEach(item =>
+                Data.TurnsData.Where(i => i.IsDead == false).ToList().ForEach(item =>
                 {
                     item.IsTarget = true;
-                    BattleManager.Instance.UI.CharacterBox.GetBox(item).MarkTarget(true);
+                    BattleManager.Instance.UI.CharacterBox.GetBox(item.Character).MarkTarget(true);
                 });
             }
 
-            if (Data.Characters.Where(i => i.IsDead == false).Count() == 0)
+            if (Data.TurnsData.Where(i => i.IsDead == false).Count() == 0)
             {
-                BattleManager.Instance.pipeline.InvokeLose();
+                BattleManager.Instance.Pipeline.InvokeLose();
             }
         }
         else
@@ -163,21 +163,21 @@ public class BattleUtility : MonoBehaviour
             
     }
 
-    public void FallCharacter(BattleCharacterInfo character)
+    public void FallCharacter(BattleTurnData data)
     {
-        CharacterBox box = BattleManager.Instance.UI.CharacterBox.GetBox(character);
+        CharacterBox box = BattleManager.Instance.UI.CharacterBox.GetBox(data.Character);
 
         SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f), "ПАЛ");
 
         box.SetDead(true);
         box.MarkTarget(false);
 
-        character.IsDead = true;
-        character.IsTarget = false;
+        data.IsDead = true;
+        data.IsTarget = false;
 
-        character.Entity.RemoveAllStates();
+        data.Character.RemoveAllStates();
 
-        character.Entity.Heal = 0;
+        data.Character.Heal = 0;
     }
 
     /// <summary>

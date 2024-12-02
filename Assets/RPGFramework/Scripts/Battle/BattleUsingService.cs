@@ -17,6 +17,11 @@ public class BattleUsingService
     {
         float minigameFactor = 1f;
 
+        if (ability.Minigame != null)
+        {
+
+        }
+
         if (targets.Any(i => i is RPGEnemy) && ability.VisualEffect != null)
         {
             EnemyModel model = BattleManager.Instance.EnemyModels.GetModel(targets.Where(i => i is RPGEnemy).First() as RPGEnemy);
@@ -58,8 +63,6 @@ public class BattleUsingService
 
             RPGEntityState[] states = target.States.Where(i => oldStates.All(y => i.Tag != y)).ToArray();
             int healDif = target.Heal - oldHp, manaDif = target.Mana - oldMp;
-
-            Debug.Log(ability.Formula);
             
             if (ability.Formula >= 0)
                 target.Heal += Mathf.RoundToInt(ability.Formula * minigameFactor);

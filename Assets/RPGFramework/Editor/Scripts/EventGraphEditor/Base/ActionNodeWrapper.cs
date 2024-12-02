@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEditor.UIElements;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 public class ActionNodeWrapper<T> : ActionNode 
@@ -71,6 +72,52 @@ public class ActionNodeWrapper<T> : ActionNode
         string tooltip = "", bool updateUI = false, bool makeDirty = true)
     {
         FloatField field = new FloatField(label)
+        {
+            tooltip = tooltip
+        };
+
+        field.SetValueWithoutNotify(defaultValue);
+        field.RegisterValueChangedCallback(val =>
+        {
+            onChangedCallback.Invoke(val.newValue);
+
+            if (updateUI)
+                UpdateUI();
+
+            if (makeDirty)
+                MakeDirty();
+        });
+
+        return field;
+    }
+
+    protected Vector2Field BuildVector2Field(Vector2 defaultValue, Action<Vector2> onChangedCallback, string label = "",
+        string tooltip = "", bool updateUI = false, bool makeDirty = true)
+    {
+        Vector2Field field = new Vector2Field(label)
+        {
+            tooltip = tooltip
+        };
+
+        field.SetValueWithoutNotify(defaultValue);
+        field.RegisterValueChangedCallback(val =>
+        {
+            onChangedCallback.Invoke(val.newValue);
+
+            if (updateUI)
+                UpdateUI();
+
+            if (makeDirty)
+                MakeDirty();
+        });
+
+        return field;
+    }
+
+    protected Vector3Field BuildVector3Field(Vector3 defaultValue, Action<Vector3> onChangedCallback, string label = "",
+        string tooltip = "", bool updateUI = false, bool makeDirty = true)
+    {
+        Vector3Field field = new Vector3Field(label)
         {
             tooltip = tooltip
         };

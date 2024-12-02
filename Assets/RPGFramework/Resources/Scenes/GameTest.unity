@@ -5424,12 +5424,14 @@ MonoBehaviour:
   - rid: 5872027670300065868
   - rid: 5872027670300065869
   - rid: 5872027670300065870
-  - rid: 5872027670300065871
+  - rid: 2550103975595343938
+  - rid: 2550103975595343939
   - rid: 5872027670300065872
+  - rid: 5872027670300065876
   - rid: 5872027670300065873
   - rid: 5872027670300065874
-  - rid: 5872027670300065875
-  - rid: 5872027670300065876
+  - rid: 2550103975595343940
+  - rid: 2550103975595343944
   Meta:
     edges:
     - inputPortName: Input
@@ -5453,15 +5455,19 @@ MonoBehaviour:
       outputPortName: Output
       outputNodeGUID: ab3afd178b9f651499b401aeda016495
     - inputPortName: Input
-      inputNodeGUID: a90228d2678238842ad2e6034a97bbc2
+      inputNodeGUID: 8902b84267de49f45a6843cc68735f6d
       outputPortName: Output
       outputNodeGUID: 0ca3e6f29b65ecf4b8f4e89dfd3d2eb9
     - inputPortName: Input
-      inputNodeGUID: 9cbb33453d0090b448425277ca2ad16e
+      inputNodeGUID: 59919c3e6a9c852478457fb10af51904
       outputPortName: Output
-      outputNodeGUID: a90228d2678238842ad2e6034a97bbc2
+      outputNodeGUID: 8902b84267de49f45a6843cc68735f6d
     - inputPortName: Input
-      inputNodeGUID: 7ace33bbced99cc45b2dd8892ca04492
+      inputNodeGUID: 415e4c0a9c85a4e4f97a518261c64593
+      outputPortName: Output
+      outputNodeGUID: 59919c3e6a9c852478457fb10af51904
+    - inputPortName: Input
+      inputNodeGUID: d696b82ddda14ef409e91dac1e9b419d
       outputPortName: Output
       outputNodeGUID: 9cbb33453d0090b448425277ca2ad16e
     - inputPortName: Input
@@ -5469,53 +5475,120 @@ MonoBehaviour:
       outputPortName: Output
       outputNodeGUID: 7ace33bbced99cc45b2dd8892ca04492
     - inputPortName: Input
-      inputNodeGUID: d6422788f290a2949b453284d967cec2
+      inputNodeGUID: dbd7bce4801fbb540ac699ceb53e19f9
       outputPortName: Output
       outputNodeGUID: 2d8e6cdad635b2146a7d40c1f7d488a8
     - inputPortName: Input
-      inputNodeGUID: dbd7bce4801fbb540ac699ceb53e19f9
-      outputPortName: Then
-      outputNodeGUID: d6422788f290a2949b453284d967cec2
+      inputNodeGUID: 9cbb33453d0090b448425277ca2ad16e
+      outputPortName: Output
+      outputNodeGUID: 415e4c0a9c85a4e4f97a518261c64593
+    - inputPortName: Input
+      inputNodeGUID: 7ace33bbced99cc45b2dd8892ca04492
+      outputPortName: Output
+      outputNodeGUID: d696b82ddda14ef409e91dac1e9b419d
     nodes:
     - guid: 24e85d59be6e2564698431b2d57d23ed
       actionIndex: 0
-      position: {x: 250, y: 250}
+      position: {x: -404.8, y: 273.6}
     - guid: ed7d4f95040a3b14f8ab2824a5baf1e1
       actionIndex: 1
-      position: {x: 404, y: 116}
+      position: {x: -251.2, y: 139.2}
     - guid: 7fb4e564d93807c41ada7866ca927387
       actionIndex: 2
-      position: {x: 680, y: 116}
+      position: {x: 24.8, y: 139.2}
     - guid: d536c98198aea9b48a29fbe1eb9ecac8
       actionIndex: 3
-      position: {x: 967, y: 116}
+      position: {x: 312, y: 139.2}
     - guid: ab3afd178b9f651499b401aeda016495
       actionIndex: 4
-      position: {x: 1257, y: 116}
+      position: {x: 601.6, y: 139.2}
     - guid: 0ca3e6f29b65ecf4b8f4e89dfd3d2eb9
       actionIndex: 5
-      position: {x: 1543, y: 116}
-    - guid: a90228d2678238842ad2e6034a97bbc2
+      position: {x: 888, y: 139.2}
+    - guid: 8902b84267de49f45a6843cc68735f6d
       actionIndex: 6
-      position: {x: 1875, y: 116}
-    - guid: 9cbb33453d0090b448425277ca2ad16e
+      position: {x: 1514.4, y: 168}
+    - guid: 59919c3e6a9c852478457fb10af51904
       actionIndex: 7
-      position: {x: 2305, y: 154}
-    - guid: 7ace33bbced99cc45b2dd8892ca04492
+      position: {x: 2134.4, y: 196.8}
+    - guid: 9cbb33453d0090b448425277ca2ad16e
       actionIndex: 8
-      position: {x: 2515, y: 43}
-    - guid: 2d8e6cdad635b2146a7d40c1f7d488a8
-      actionIndex: 9
-      position: {x: 2824, y: 43}
-    - guid: d6422788f290a2949b453284d967cec2
-      actionIndex: 10
-      position: {x: 3122, y: 56}
+      position: {x: 2888, y: 244}
     - guid: dbd7bce4801fbb540ac699ceb53e19f9
+      actionIndex: 9
+      position: {x: 4095.2, y: 132.8}
+    - guid: 7ace33bbced99cc45b2dd8892ca04492
+      actionIndex: 10
+      position: {x: 3488, y: 122.4}
+    - guid: 2d8e6cdad635b2146a7d40c1f7d488a8
       actionIndex: 11
-      position: {x: 3487, y: 72}
+      position: {x: 3796.8, y: 122.4}
+    - guid: 415e4c0a9c85a4e4f97a518261c64593
+      actionIndex: 12
+      position: {x: 2573.6, y: 202.4}
+    - guid: d696b82ddda14ef409e91dac1e9b419d
+      actionIndex: 13
+      position: {x: 3088, y: 178.4}
   references:
     version: 2
     RefIds:
+    - rid: 2550103975595343938
+      type: {class: PlayerTranslateAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 2550103975595343939
+        Direction: 0
+        Type: 0
+        Speed: 2
+        ReplaceInstance: 0
+        Wait: 1
+        MovePoint: {fileID: 1955454483}
+        Offset: {x: 0, y: 0}
+    - rid: 2550103975595343939
+      type: {class: TranslateCharacterAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 2550103975595343940
+        InParty: 1
+        CharacterTag: Dima
+        CharacterInScene: {fileID: 0}
+        ReplaceInstance: 1
+        Wait: 0
+        Speed: 2
+        Offset: {x: -1, y: 0}
+        Point: {fileID: 0}
+        Direction: 0
+        Type: 1
+    - rid: 2550103975595343940
+      type: {class: TranslateCharacterAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 5872027670300065872
+        InParty: 1
+        CharacterTag: Nikita
+        CharacterInScene: {fileID: 0}
+        ReplaceInstance: 1
+        Wait: 0
+        Speed: 2
+        Offset: {x: 0, y: 1}
+        Point: {fileID: 0}
+        Direction: 0
+        Type: 1
+    - rid: 2550103975595343944
+      type: {class: TranslateCharacterAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 5872027670300065873
+        InParty: 1
+        CharacterTag: Dima
+        CharacterInScene: {fileID: 0}
+        ReplaceInstance: 0
+        Wait: 0
+        Speed: 0
+        Offset: {x: 0, y: 0}
+        Point: {fileID: 0}
+        Direction: 4
+        Type: 2
     - rid: 5872027670300065865
       type: {class: StartAction, ns: , asm: Assembly-CSharp}
       data:
@@ -5585,39 +5658,24 @@ MonoBehaviour:
       type: {class: MessageAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions:
-        - rid: 5872027670300065871
+        - rid: 2550103975595343938
         message:
           text: "\u041D\u0443 \u0433\u043E."
           speed: 0
           clear: 1
           wait: 1
           name: 
-          closeWindow: 0
+          closeWindow: 1
           letterSound: {fileID: 0}
           image: {fileID: -574080388, guid: e4547c401ed1aaf45906d594afcf674d, type: 3}
           position: 0
           textEffectTypeName: None
-    - rid: 5872027670300065871
-      type: {class: TranslateCharacterAction, ns: , asm: Assembly-CSharp}
-      data:
-        NextActions:
-        - rid: 5872027670300065872
-        InParty: 1
-        CharacterTag: Dima
-        CharacterInScene: {fileID: 0}
-        ReplaceInstance: 0
-        Wait: 1
-        Speed: 1
-        Offset: {x: 0, y: 0}
-        Point: {fileID: 1955454483}
-        Direction: 0
-        Type: 0
     - rid: 5872027670300065872
       type: {class: WaitAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions:
-        - rid: 5872027670300065873
-        time: 2
+        - rid: 2550103975595343944
+        time: 3
     - rid: 5872027670300065873
       type: {class: MessageAction, ns: , asm: Assembly-CSharp}
       data:
@@ -5638,25 +5696,18 @@ MonoBehaviour:
       type: {class: MessageAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions:
-        - rid: 5872027670300065875
+        - rid: 5872027670300065876
         message:
           text: "\u041E \u041D\u0415\u0422!!! \u0412 \u0421\u0423\u041F\u0415 \u041A\u0415\u041F\u041A\u0410!!!"
           speed: 0
           clear: 1
           wait: 1
           name: "\u041D\u0418\u041A\u0418\u0422\u0410"
-          closeWindow: 0
+          closeWindow: 1
           letterSound: {fileID: 0}
           image: {fileID: -574080388, guid: e4547c401ed1aaf45906d594afcf674d, type: 3}
           position: 0
           textEffectTypeName: SimpleShakeTextVisualEffect
-    - rid: 5872027670300065875
-      type: {class: InvokeBattleAction, ns: , asm: Assembly-CSharp}
-      data:
-        NextActions:
-        - rid: 5872027670300065876
-        battle: {fileID: 11400000, guid: 7e0441e48b282044f95477f6733bbcbd, type: 2}
-        fleePort: 0
     - rid: 5872027670300065876
       type: {class: EndAction, ns: , asm: Assembly-CSharp}
       data:
@@ -11798,7 +11849,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &3694757269594554842
 SpriteRenderer:
   m_ObjectHideFlags: 0

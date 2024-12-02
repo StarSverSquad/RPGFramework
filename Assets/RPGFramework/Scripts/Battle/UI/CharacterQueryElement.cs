@@ -35,7 +35,7 @@ public class CharacterQueryElement : MonoBehaviour
     public void Initialize(RPGCharacter character)
     {
         gradient.color = character.Color;
-        icon.sprite = character.Icon;
+        icon.sprite = character.BattleImage;
 
         characterNameTxt.text = character.Name;
 

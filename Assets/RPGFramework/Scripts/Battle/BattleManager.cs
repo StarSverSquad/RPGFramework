@@ -19,6 +19,7 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
     public BattleVisualTransmitionManager VisualTransmition;
     public BattleUIShake Shaker;
     public BattleUIManager UI;
+    public MinigameManager Minigame;
 
 
     public BattleUtility utility;
@@ -40,5 +41,7 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
     public override void InitializeChild()
     {
         Player.SetActive(false);
+
+        Minigame.Initialize();
     }
 }

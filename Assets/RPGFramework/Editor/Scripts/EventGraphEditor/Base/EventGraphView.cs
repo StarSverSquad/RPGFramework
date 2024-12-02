@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static TextActionBase;
 
 public class EventGraphView : GraphView
 {
@@ -15,6 +16,8 @@ public class EventGraphView : GraphView
 
     public event Action OnMakeDirty;
     public event Action OnSaved;
+
+    private Type[] actionNodeTypes;
 
     public EventGraphView(GraphEvent gEvent)
     {
@@ -27,6 +30,11 @@ public class EventGraphView : GraphView
 
         var grid = new GridBackground();
         styleSheets.Add(Resources.Load<StyleSheet>("EventGraphViewStyle"));
+
+        actionNodeTypes = typeof(ActionNode).Assembly
+                            .GetTypes()
+                            .Where(type => type.GetCustomAttribute<UseActionNode>() != null && type.BaseType.Name == "ActionNodeWrapper`1")
+                            .ToArray();
 
         Insert(0, grid);
 
@@ -56,21 +64,14 @@ public class EventGraphView : GraphView
 
     public void CreateNode(GraphActionBase action, Vector2 position, string guid = null)
     {
-        /// Начальное название ноды должно полностью сответсвовать названию действия ActAction = ActNode
+        ActionNode node;
 
-        ActionNodeBase node;
-
-        Assembly editorAssembly = typeof(ActionNodeBase).Assembly;
-
-
-        string name = action.GetType().Name.Split("Action")[0];
-
-        Type nodeType = editorAssembly.GetTypes()
-            .FirstOrDefault(i => i.BaseType == typeof(ActionNodeBase) && i.Name.StartsWith(name));
+        Type nodeType = actionNodeTypes
+                        .FirstOrDefault(type => type.BaseType.GetGenericArguments()[0] == action.GetType());
 
         if (nodeType != null)
         {
-            node = (ActionNodeBase)Activator.CreateInstance(nodeType, new object[] { action });
+            node = (ActionNode)Activator.CreateInstance(nodeType, new object[] { action });
         }
         else
         {
@@ -114,7 +115,7 @@ public class EventGraphView : GraphView
 
         Vector2 mousePosition = this.ChangeCoordinatesTo(contentViewContainer, evt.localMousePosition);
 
-        if (evt.target is ActionNodeBase node)
+        if (evt.target is ActionNode node)
         {
             if (node is not StartNode)
             {
@@ -131,7 +132,22 @@ public class EventGraphView : GraphView
             }
         }
 
-        evt.menu.AppendAction("Диалог/Сообщение", i => CreateNode(new MessageAction(), mousePosition));
+        foreach (var actionNodeType in actionNodeTypes)
+        {
+            string menuPath = actionNodeType.GetCustomAttribute<UseActionNode>().ContextualMenuPath;
+            Type actionType = actionNodeType.BaseType.GetGenericArguments()[0];
+
+
+            if (!string.IsNullOrEmpty(menuPath))
+            {
+                evt.menu.AppendAction(
+                        menuPath,
+                        i => CreateNode(Activator.CreateInstance(actionType) as GraphActionBase,
+                        mousePosition));
+            }
+        }
+
+        /// Legacy code
         evt.menu.AppendAction("Диалог/Выбор", i => CreateNode(new ChoiceAction(), mousePosition));
 
         evt.menu.AppendAction("Ветвление/Условие", i => CreateNode(new ConditionAction(), mousePosition));
@@ -144,14 +160,12 @@ public class EventGraphView : GraphView
 
         evt.menu.AppendAction("Партия/Изменить состав команды", i => CreateNode(new AddRemoveCharacterAction(), mousePosition));
         evt.menu.AppendAction("Партия/Изменить количетво предмета", i => CreateNode(new ChangeItemCountAction(), mousePosition));
-        //evt.menu.AppendAction("Партия/Двигать персонажа из партии", i => CreateNode(new MoveCharacterAction(), mousePosition));
 
         evt.menu.AppendAction("Аудио/Управление BGM", i => CreateNode(new ManageBGMAction(), mousePosition));
         evt.menu.AppendAction("Аудио/Управление BGS", i => CreateNode(new ManageBGSAction(), mousePosition));
         evt.menu.AppendAction("Аудио/Запуск SE", i => CreateNode(new PlaySEAction(), mousePosition));
         evt.menu.AppendAction("Аудио/Запуск ME", i => CreateNode(new PlayMEAction(), mousePosition));
 
-        //evt.menu.AppendAction("События исследования/Двигать персонажа на сцене", i => CreateNode(new MoveDEOAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Настройка солнечного света", i => CreateNode(new SetupSunLightAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Смена локации", i => CreateNode(new LocationTrasmitionAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Сохранение игры", i => CreateNode(new SaveAction(), mousePosition));
@@ -172,6 +186,7 @@ public class EventGraphView : GraphView
         evt.menu.AppendAction("Конец", i => CreateNode(new EndAction(), mousePosition));
         
         evt.menu.AppendAction("Отладочное событие", i => CreateNode(new DebugAction(), mousePosition));
+        ///
     }
 
     public void MakeDirty()
@@ -187,14 +202,14 @@ public class EventGraphView : GraphView
 
         foreach (var item in nodes)
         {
-            ActionNodeBase ban = item as ActionNodeBase;
+            ActionNode ban = item as ActionNode;
 
             GEvent.Actions.Add(ban.action);
         }
 
         foreach (var item in nodes)
         {
-            ActionNodeBase ban = item as ActionNodeBase;
+            ActionNode ban = item as ActionNode;
 
             ban.ApplyPorts();
 
@@ -208,8 +223,8 @@ public class EventGraphView : GraphView
 
         foreach (var item in edges)
         {
-            ActionNodeBase left = item.output.node as ActionNodeBase;
-            ActionNodeBase right = item.input.node as ActionNodeBase;
+            ActionNode left = item.output.node as ActionNode;
+            ActionNode right = item.input.node as ActionNode;
 
             if (item.input == null || item.output == null ||
                 left == null || right == null)
@@ -238,7 +253,7 @@ public class EventGraphView : GraphView
 
         foreach (var item in nodes)
         {
-            ActionNodeBase ban = item as ActionNodeBase;
+            ActionNode ban = item as ActionNode;
 
             List<GraphEventMeta.EdgeMeta> tedges = GEvent.Meta.edges.Where(i => i.outputNodeGUID == ban.GUID).ToList();
 
@@ -253,7 +268,7 @@ public class EventGraphView : GraphView
 
                     Node ohter = nodes.First(i =>
                     {
-                        ActionNodeBase ban0 = i as ActionNodeBase;
+                        ActionNode ban0 = i as ActionNode;
 
                         return edge.inputNodeGUID == ban0.GUID;
                     });

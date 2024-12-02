@@ -1,50 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEditor.UIElements;
+﻿using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-public class ShowColorNode : ActionNodeBase
+[UseActionNode]
+public class ShowColorNode : ActionNodeWrapper<ShowColorAction>
 {
-    public ShowColorNode(ShowColorAction action) : base(action)
+    public ShowColorNode(ShowColorAction Action) : base(Action)
     {
     }
 
     public override void UIContructor()
     {
-        ShowColorAction act = action as ShowColorAction;
+        ColorField colorField = new ColorField();
 
-        ColorField colorField = new ColorField("Цвет");
-
-        colorField.SetValueWithoutNotify(act.Color);
+        colorField.SetValueWithoutNotify(Action.Color);
         colorField.RegisterValueChangedCallback(value =>
         {
-            act.Color = value.newValue;
+            Action.Color = value.newValue;
 
             MakeDirty();
         });
 
         FloatField fadeTimeField = new FloatField("Время появления");
 
-        fadeTimeField.SetValueWithoutNotify(act.FadeTime);
+        fadeTimeField.SetValueWithoutNotify(Action.FadeTime);
         fadeTimeField.RegisterValueChangedCallback(value =>
         {
             if (value.newValue < 0)
             {
                 fadeTimeField.SetValueWithoutNotify(0);
-                act.FadeTime = 0;
+                Action.FadeTime = 0;
             }
             else
-                act.FadeTime = value.newValue;
+                Action.FadeTime = value.newValue;
 
             MakeDirty();
         });
 
         Toggle isWaitToggle = new Toggle("Ждать?");
 
-        isWaitToggle.SetValueWithoutNotify(act.IsWait);
+        isWaitToggle.SetValueWithoutNotify(Action.IsWait);
         isWaitToggle.RegisterValueChangedCallback(value =>
         {
-            act.IsWait = value.newValue;
+            Action.IsWait = value.newValue;
 
             MakeDirty();
         });

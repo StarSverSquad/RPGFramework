@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine.UIElements;
+﻿using UnityEngine.UIElements;
 
-public class WaitNode : ActionNodeBase
+[UseActionNode]
+public class WaitNode : ActionNodeWrapper<WaitAction>
 {
-    public WaitNode(WaitAction action) : base(action)
+    public WaitNode(WaitAction Action) : base(Action)
     {
     }
 
     public override void UIContructor()
     {
-        WaitAction wait = action as WaitAction;
+        FloatField timeField = new FloatField("Время (сек.):");
 
-        FloatField timeField = new FloatField("Время");
-
-        timeField.SetValueWithoutNotify(wait.time);
+        timeField.SetValueWithoutNotify(Action.time);
         timeField.RegisterValueChangedCallback(time =>
         {
-            wait.time = time.newValue;
+            Action.time = time.newValue;
 
             MakeDirty();
         });

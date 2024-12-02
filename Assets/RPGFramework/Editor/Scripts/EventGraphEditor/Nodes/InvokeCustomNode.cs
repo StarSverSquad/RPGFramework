@@ -4,26 +4,25 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class InvokeCustomNode : ActionNodeBase
+[UseActionNode]
+public class InvokeCustomNode : ActionNodeWrapper<InvokeCustomAction>
 {
-    public InvokeCustomNode(InvokeCustomAction action) : base(action)
+    public InvokeCustomNode(InvokeCustomAction Action) : base(Action)
     {
     }
 
     public override void UIContructor()
     {
-        InvokeCustomAction ic = action as InvokeCustomAction;
-
         ObjectField objectField = new ObjectField("Событие")
         {
             allowSceneObjects = true,
             objectType = typeof(CustomActionBase)
         };
 
-        objectField.SetValueWithoutNotify(ic.act);
+        objectField.SetValueWithoutNotify(Action.act);
         objectField.RegisterValueChangedCallback(i =>
         {
-            ic.act = i.newValue as CustomActionBase;
+            Action.act = i.newValue as CustomActionBase;
 
             MakeDirty();
         });

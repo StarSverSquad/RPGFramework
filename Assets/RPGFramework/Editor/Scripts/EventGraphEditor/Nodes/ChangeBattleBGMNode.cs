@@ -4,36 +4,35 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ChangeBattleBGMNode : ActionNodeBase
+[UseActionNode]
+public class ChangeBattleBGMNode : ActionNodeWrapper<ChangeBattleBGMAction>
 {
-    public ChangeBattleBGMNode(ChangeBattleBGMAction action) : base(action)
+    public ChangeBattleBGMNode(ChangeBattleBGMAction Action) : base(Action)
     {
     }
 
     public override void UIContructor()
     {
-        ChangeBattleBGMAction se = action as ChangeBattleBGMAction;
-
         ObjectField clipField = new ObjectField("Трек")
         {
             allowSceneObjects = false,
             objectType = typeof(AudioClip)
         };
 
-        clipField.SetValueWithoutNotify(se.Clip);
+        clipField.SetValueWithoutNotify(Action.Clip);
         clipField.RegisterValueChangedCallback(i =>
         {
-            se.Clip = i.newValue as AudioClip;
+            Action.Clip = i.newValue as AudioClip;
 
             MakeDirty();
         });
 
         Slider slider = new Slider("Громкость", 0f, 1f);
 
-        slider.SetValueWithoutNotify(se.Volume);
+        slider.SetValueWithoutNotify(Action.Volume);
         slider.RegisterValueChangedCallback(i =>
         {
-            se.Volume = i.newValue;
+            Action.Volume = i.newValue;
 
             MakeDirty();
         });

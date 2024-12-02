@@ -1,42 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEditor.UIElements;
+﻿using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PlaySENode : ActionNodeBase
+[UseActionNode]
+public class PlaySENode : ActionNodeWrapper<PlaySEAction>
 {
-    public PlaySENode(PlaySEAction action) : base(action)
+    public PlaySENode(PlaySEAction Action) : base(Action)
     {
     }
 
     public override void UIContructor()
     {
-        PlaySEAction se = action as PlaySEAction;
-
         ObjectField clipField = new ObjectField("Аудио")
         {
             allowSceneObjects = true,
             objectType = typeof(AudioClip)
         };
 
-        clipField.SetValueWithoutNotify(se.clip);
+        clipField.SetValueWithoutNotify(Action.clip);
         clipField.RegisterValueChangedCallback(clip =>
         {
-            se.clip = clip.newValue as AudioClip;
+            Action.clip = clip.newValue as AudioClip;
 
             MakeDirty();
         });
 
         FloatField volField = new FloatField("Громкость");
 
-        volField.SetValueWithoutNotify(se.volume);
+        volField.SetValueWithoutNotify(Action.volume);
         volField.RegisterValueChangedCallback(vol =>
         {
-            se.volume = vol.newValue;
+            Action.volume = vol.newValue;
 
             MakeDirty();
         });

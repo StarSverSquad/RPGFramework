@@ -25,7 +25,7 @@ public class EventGraphWindow : EditorWindow
 
     public void Init()
     {
-        saveChangesMessage = "sad";
+        saveChangesMessage = "save me";
 
         rootVisualElement.Clear();
 

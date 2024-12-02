@@ -195,6 +195,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 35182848}
   m_CullTransparentMesh: 1
+--- !u!1 &71837036
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 71837037}
+  m_Layer: 0
+  m_Name: Locations
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &71837037
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71837036}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.3281736, y: 0.43974233, z: -49.884323}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5125654499283723096}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &117458845
 GameObject:
   m_ObjectHideFlags: 0
@@ -2822,13 +2854,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Actions:
   - rid: 5872027651667394641
-  - rid: 5872027651667394642
-  - rid: 5872027651667394644
-  - rid: 5872027651667394645
-  - rid: 5872027651667394646
-  - rid: 5872027651667394647
-  - rid: 5872027651667394643
   - rid: 5872027651667394648
+  - rid: 5872027651667394642
+  - rid: 2550103966965825536
+  - rid: 2550103966965825537
   Meta:
     edges:
     - inputPortName: Input
@@ -2836,57 +2865,61 @@ MonoBehaviour:
       outputPortName: Output
       outputNodeGUID: 25c51d2e11e7b9e4882ae5728552f148
     - inputPortName: Input
-      inputNodeGUID: eb7704c8c9e913845ae59c9234874aa1
-      outputPortName: Output
-      outputNodeGUID: 25a0017ab3724b242b5cf71cffa2d49f
-    - inputPortName: Input
-      inputNodeGUID: 4c2c56a85d1ad674a98f1c760c20be2a
-      outputPortName: Output
-      outputNodeGUID: eb7704c8c9e913845ae59c9234874aa1
-    - inputPortName: Input
-      inputNodeGUID: 5a53e08f16fbc72438de71c424b5f1b8
-      outputPortName: Then
-      outputNodeGUID: 4c2c56a85d1ad674a98f1c760c20be2a
-    - inputPortName: Input
-      inputNodeGUID: 6139e717af11cf94abb35ea1b8337ae9
-      outputPortName: Flee
-      outputNodeGUID: 4c2c56a85d1ad674a98f1c760c20be2a
-    - inputPortName: Input
       inputNodeGUID: be17e43c142845e4e8f7e855f44206b8
       outputPortName: Output
       outputNodeGUID: a45401fc43722d448baed7f63c16a12a
     - inputPortName: Input
-      inputNodeGUID: 25a0017ab3724b242b5cf71cffa2d49f
+      inputNodeGUID: 13dd0f36032e8734f9c0ce13b14c0957
       outputPortName: Output
       outputNodeGUID: be17e43c142845e4e8f7e855f44206b8
+    - inputPortName: Input
+      inputNodeGUID: b5d65c29c464d7c489748d99967b5451
+      outputPortName: Choice 0
+      outputNodeGUID: 13dd0f36032e8734f9c0ce13b14c0957
+    - inputPortName: Input
+      inputNodeGUID: b5d65c29c464d7c489748d99967b5451
+      outputPortName: Choice 1
+      outputNodeGUID: 13dd0f36032e8734f9c0ce13b14c0957
+    - inputPortName: Input
+      inputNodeGUID: b5d65c29c464d7c489748d99967b5451
+      outputPortName: Choice 2
+      outputNodeGUID: 13dd0f36032e8734f9c0ce13b14c0957
     nodes:
     - guid: 25c51d2e11e7b9e4882ae5728552f148
       actionIndex: 0
-      position: {x: 250, y: 250}
-    - guid: a45401fc43722d448baed7f63c16a12a
-      actionIndex: 1
-      position: {x: 410, y: 184}
-    - guid: eb7704c8c9e913845ae59c9234874aa1
-      actionIndex: 2
-      position: {x: 901, y: 135}
-    - guid: 4c2c56a85d1ad674a98f1c760c20be2a
-      actionIndex: 3
-      position: {x: 1245, y: 153}
-    - guid: 5a53e08f16fbc72438de71c424b5f1b8
-      actionIndex: 4
-      position: {x: 1666, y: -80}
-    - guid: 6139e717af11cf94abb35ea1b8337ae9
-      actionIndex: 5
-      position: {x: 1666, y: 226}
-    - guid: 25a0017ab3724b242b5cf71cffa2d49f
-      actionIndex: 6
-      position: {x: 820, y: 317}
+      position: {x: 250.4, y: 250.4}
     - guid: be17e43c142845e4e8f7e855f44206b8
-      actionIndex: 7
-      position: {x: 631, y: 154}
+      actionIndex: 1
+      position: {x: 631.2, y: 154.4}
+    - guid: a45401fc43722d448baed7f63c16a12a
+      actionIndex: 2
+      position: {x: 410.4, y: 184}
+    - guid: 13dd0f36032e8734f9c0ce13b14c0957
+      actionIndex: 3
+      position: {x: 863.2, y: 165.6}
+    - guid: b5d65c29c464d7c489748d99967b5451
+      actionIndex: 4
+      position: {x: 1156, y: 247.2}
   references:
     version: 2
     RefIds:
+    - rid: 2550103966965825536
+      type: {class: ChoiceAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 2550103966965825537
+        - rid: 2550103966965825537
+        - rid: 2550103966965825537
+        Choices:
+        - index 1
+        - index 2
+        - index 3
+        Position: 1
+        CustomPosition: {x: 0, y: 0}
+    - rid: 2550103966965825537
+      type: {class: EndAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions: []
     - rid: 5872027651667394641
       type: {class: StartAction, ns: , asm: Assembly-CSharp}
       data:
@@ -2900,65 +2933,11 @@ MonoBehaviour:
         Color: {r: 1, g: 0, b: 0, a: 1}
         FadeTime: 5
         IsWait: 1
-    - rid: 5872027651667394643
-      type: {class: PlaySEAction, ns: , asm: Assembly-CSharp}
-      data:
-        NextActions:
-        - rid: 5872027651667394644
-        clip: {fileID: 8300000, guid: 358f8b758c9e7954284cb8d352048071, type: 3}
-        volume: 99
-    - rid: 5872027651667394644
-      type: {class: AddRemoveCharacterAction, ns: , asm: Assembly-CSharp}
-      data:
-        NextActions:
-        - rid: 5872027651667394645
-        isAdd: 0
-        updateModels: 1
-        character: {fileID: 11400000, guid: 97eeedaec2ce55542b6b2769cb383d54, type: 2}
-        existentObject: {fileID: 0}
-    - rid: 5872027651667394645
-      type: {class: InvokeBattleAction, ns: , asm: Assembly-CSharp}
-      data:
-        NextActions:
-        - rid: 5872027651667394646
-        - rid: 5872027651667394647
-        battle: {fileID: 11400000, guid: 7e0441e48b282044f95477f6733bbcbd, type: 2}
-        fleePort: 1
-    - rid: 5872027651667394646
-      type: {class: MessageAction, ns: , asm: Assembly-CSharp}
-      data:
-        NextActions: []
-        message:
-          text: "\u043F\u0438\u0437\u0434\u0435\u0446 \u043F\u043E\u0431\u0435\u0434\u0438\u043B\u0438"
-          speed: 0
-          clear: 1
-          wait: 1
-          name: 
-          closeWindow: 0
-          letterSound: {fileID: 0}
-          image: {fileID: 928695062, guid: 14a080794ebe3f844a6e8e03d008540c, type: 3}
-          position: 0
-          textEffectTypeName: None
-    - rid: 5872027651667394647
-      type: {class: MessageAction, ns: , asm: Assembly-CSharp}
-      data:
-        NextActions: []
-        message:
-          text: "\u043F\u0438\u0437\u0434\u0435\u0446 \u0443\u0431\u0435\u0436\u0430\u043B\u0438"
-          speed: 0
-          clear: 1
-          wait: 1
-          name: 
-          closeWindow: 0
-          letterSound: {fileID: 0}
-          image: {fileID: 192190412, guid: 14a080794ebe3f844a6e8e03d008540c, type: 3}
-          position: 0
-          textEffectTypeName: None
     - rid: 5872027651667394648
       type: {class: CloseMediaAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions:
-        - rid: 5872027651667394643
+        - rid: 2550103966965825536
         FadeTime: 0
         IsWait: 1
 --- !u!1 &1392928290
@@ -9661,14 +9640,14 @@ Transform:
   m_GameObject: {fileID: 6691272761900589634}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 3.3281736, y: -0.43974233, z: 49.884323}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 899882478665643308}
   - {fileID: 4541639996532272930}
   - {fileID: 3546345097719447082}
-  m_Father: {fileID: 8226566746815127207}
+  m_Father: {fileID: 71837037}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &5232975984006170386
 RectTransform:
@@ -11463,7 +11442,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2565698822659538422}
-  - {fileID: 5125654499283723096}
   m_Father: {fileID: 7814260048328474958}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8231300223234688588
@@ -12814,5 +12792,6 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 3495416511854955271}
-  - {fileID: 1182782050}
+  - {fileID: 71837037}
   - {fileID: 1428878191}
+  - {fileID: 1182782050}

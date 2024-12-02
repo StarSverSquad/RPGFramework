@@ -85,31 +85,7 @@ public class ChoiceBoxManager : ChoiceBase<string>
 
     public override void OnStart()
     {
-        float offsetx = 0;
-
-        foreach (string item in choices)
-        {
-            GameObject ci = Instantiate(choiceItemPrefab, content.position, Quaternion.identity, content);
-
-            RectTransform itemtrans = ci.GetComponent<RectTransform>();
-
-            itemtrans.anchoredPosition = new Vector2 (offsetx, 0);
-
-            ChoiceItem choiceitem = ci.GetComponent<ChoiceItem>();
-
-            choiceitem.Init(item);
-
-            offsetx += choiceitem.XSize;
-
-            items.Add(choiceitem);
-        }
-
-        content.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, offsetx);
-        choiceBox.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, offsetx);
-
-        OnSellectChanged();
-
-        choiceBox.gameObject.SetActive(true);
+        StartCoroutine(InitializeCoroutine());
     }
 
     public override void OnEnd()
@@ -200,5 +176,45 @@ public class ChoiceBoxManager : ChoiceBase<string>
         }
 
         animatedTranslate = null;
+    }
+
+    private IEnumerator InitializeCoroutine()
+    {
+        float offsetx = 0;
+
+        List<ChoiceItem> items = new List<ChoiceItem>();
+
+        foreach (string choice in choices)
+        {
+            GameObject ci = Instantiate(choiceItemPrefab, content.position, Quaternion.identity, content);
+
+            RectTransform itemtrans = ci.GetComponent<RectTransform>();
+
+            itemtrans.anchoredPosition = new Vector2(offsetx, 0);
+
+            ChoiceItem choiceitem = ci.GetComponent<ChoiceItem>();
+
+            choiceitem.Initialize();
+
+            choiceitem.Title = choice;
+
+            items.Add(choiceitem);
+        }
+
+        yield return null;
+
+        foreach (ChoiceItem item in items)
+        {
+            offsetx += item.XSize;
+
+            items.Add(item);
+        }
+
+        content.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, offsetx);
+        choiceBox.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, offsetx);
+
+        OnSellectChanged();
+
+        choiceBox.gameObject.SetActive(true);
     }
 }

@@ -2,9 +2,10 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!78 &1
 TagManager:
-  serializedVersion: 2
+  serializedVersion: 3
   tags:
   - PatternBullet
+  - LocationsContainer
   layers:
   - Default
   - TransparentFX
@@ -45,3 +46,5 @@ TagManager:
   - name: BattleField
     uniqueID: 3276311751
     locked: 0
+  m_RenderingLayers:
+  - Default

@@ -13,8 +13,6 @@ public class RPGCharacter : RPGEntity
     public Sprite BattleImage;
     public Sprite BattleSmallImage;
 
-    public Sprite BattleIcon;
-
     public Color Color;
 
     public DynamicExplorerObject Model;

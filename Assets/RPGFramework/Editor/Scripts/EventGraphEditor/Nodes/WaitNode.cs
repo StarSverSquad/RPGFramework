@@ -1,5 +1,6 @@
 ﻿using UnityEngine.UIElements;
 
+[UseActionNode]
 public class WaitNode : ActionNodeWrapper<WaitAction>
 {
     public WaitNode(WaitAction Action) : base(Action)

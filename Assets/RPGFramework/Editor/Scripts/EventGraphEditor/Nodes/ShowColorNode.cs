@@ -1,6 +1,7 @@
 ﻿using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class ShowColorNode : ActionNodeWrapper<ShowColorAction>
 {
     public ShowColorNode(ShowColorAction Action) : base(Action)

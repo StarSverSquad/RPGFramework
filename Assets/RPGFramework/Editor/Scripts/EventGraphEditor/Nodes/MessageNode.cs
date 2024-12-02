@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class MessageNode : ActionNodeWrapper<MessageAction>
 {
     private List<TextVisualEffectBase> effectTypes;

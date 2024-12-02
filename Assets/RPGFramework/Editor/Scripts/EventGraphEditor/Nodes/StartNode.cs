@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[UseActionNode]
 public class StartNode : ActionNodeWrapper<StartAction>
 {
     public StartNode(StartAction Action) : base(Action)

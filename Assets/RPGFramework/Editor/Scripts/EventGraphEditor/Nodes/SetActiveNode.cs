@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class SetActiveNode : ActionNodeWrapper<SetActiveAction>
 {
     public SetActiveNode(SetActiveAction Action) : base(Action)

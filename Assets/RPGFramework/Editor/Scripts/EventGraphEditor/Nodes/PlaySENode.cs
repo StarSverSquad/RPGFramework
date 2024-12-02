@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class PlaySENode : ActionNodeWrapper<PlaySEAction>
 {
     public PlaySENode(PlaySEAction Action) : base(Action)

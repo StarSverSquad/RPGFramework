@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class DebugNode : ActionNodeWrapper<DebugAction>
 {
     public DebugNode(DebugAction Action) : base(Action)

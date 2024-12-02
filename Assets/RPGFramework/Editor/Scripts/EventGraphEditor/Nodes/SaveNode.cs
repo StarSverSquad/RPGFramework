@@ -1,5 +1,6 @@
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class SaveNode : ActionNodeWrapper<SaveAction>
 {
     public SaveNode(SaveAction Action) : base(Action)

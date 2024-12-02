@@ -4,6 +4,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class TranslateCharacterNode : ActionNodeWrapper<TranslateCharacterAction>
 {
     public TranslateCharacterNode(TranslateCharacterAction Action) : base(Action)

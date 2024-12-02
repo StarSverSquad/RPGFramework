@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 using UnityEngine;
 using UnityEditor.UIElements;
 
+[UseActionNode]
 public class InvokeBattleNode : ActionNodeWrapper<InvokeBattleAction>
 {
     public InvokeBattleNode(InvokeBattleAction Action) : base(Action)

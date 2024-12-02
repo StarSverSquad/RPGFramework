@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class ManageVarNode : ActionNodeWrapper<ManageVarAction>
 {
     public ManageVarNode(ManageVarAction Action) : base(Action)

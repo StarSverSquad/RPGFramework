@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.UIElements;
+﻿using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class LocationTrasmitionNode : ActionNodeWrapper<LocationTrasmitionAction>
 {
     public LocationTrasmitionNode(LocationTrasmitionAction Action) : base(Action)

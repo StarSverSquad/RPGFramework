@@ -4,6 +4,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class ChangeEnemyModelAnimationNode : ActionNodeWrapper<ChangeEnemyModelAnimationAction>
 {
     public ChangeEnemyModelAnimationNode(ChangeEnemyModelAnimationAction Action) : base(Action)

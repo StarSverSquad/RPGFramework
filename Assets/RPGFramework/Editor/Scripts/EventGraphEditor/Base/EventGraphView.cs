@@ -1,4 +1,3 @@
-using Codice.CM.WorkspaceServer.DataStore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +16,8 @@ public class EventGraphView : GraphView
     public event Action OnMakeDirty;
     public event Action OnSaved;
 
+    private Type[] actionsNodesTypes;
+
     public EventGraphView(GraphEvent gEvent)
     {
         SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
@@ -28,6 +29,16 @@ public class EventGraphView : GraphView
 
         var grid = new GridBackground();
         styleSheets.Add(Resources.Load<StyleSheet>("EventGraphViewStyle"));
+
+        actionsNodesTypes = typeof(ActionNode).Assembly
+                            .GetTypes()
+                            .Where(type => type.GetCustomAttribute<UseActionNode>() != null && type.BaseType.Name == "ActionNodeWrapper`1")
+                            .ToArray();
+
+        foreach (var item in actionsNodesTypes)
+        {
+            Debug.Log(item.Name);
+        }
 
         Insert(0, grid);
 
@@ -59,19 +70,10 @@ public class EventGraphView : GraphView
     {
         ActionNode node;
 
-        Assembly editorAssembly = typeof(ActionNode).Assembly;
-
-
         string name = action.GetType().Name.Split("Action")[0];
 
-        Type nodeType = editorAssembly.GetTypes()
-                        .FirstOrDefault(type =>
-                        {
-                            if (!type.BaseType.IsGenericType)
-                                return false;
-
-                            return type.BaseType.Name == "ActionNodeWrapper`1" && type.BaseType.GetGenericArguments()[0] == action.GetType();
-                        });
+        Type nodeType = actionsNodesTypes
+                        .FirstOrDefault(type => type.BaseType.GetGenericArguments()[0] == action.GetType());
 
         if (nodeType != null)
         {

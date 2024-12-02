@@ -4,6 +4,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class ChangeBattleBGMNode : ActionNodeWrapper<ChangeBattleBGMAction>
 {
     public ChangeBattleBGMNode(ChangeBattleBGMAction Action) : base(Action)

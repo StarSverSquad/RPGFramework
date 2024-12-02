@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class RandomNode : ActionNodeWrapper<RandomAction>
 {
     public RandomNode(RandomAction Action) : base(Action)

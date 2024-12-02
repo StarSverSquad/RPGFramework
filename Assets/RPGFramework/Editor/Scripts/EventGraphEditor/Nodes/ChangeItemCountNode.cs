@@ -4,6 +4,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class ChangeItemCountNode : ActionNodeWrapper<ChangeItemCountAction>
 {
     public ChangeItemCountNode(ChangeItemCountAction Action) : base(Action)

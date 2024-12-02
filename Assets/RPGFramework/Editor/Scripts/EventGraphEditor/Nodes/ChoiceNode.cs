@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class ChoiceNode : ActionNodeWrapper<ChoiceAction>
 {
     private List<Port> outports;

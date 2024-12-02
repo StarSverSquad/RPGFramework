@@ -1,5 +1,6 @@
 ﻿using UnityEngine.UIElements;
 
+[UseActionNode]
 public class CloseMediaNode : ActionNodeWrapper<CloseMediaAction>
 {
     public CloseMediaNode(CloseMediaAction Action) : base(Action)

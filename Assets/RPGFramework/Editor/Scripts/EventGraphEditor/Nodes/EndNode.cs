@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[UseActionNode]
 public class EndNode : ActionNodeWrapper<EndAction>
 {
     public EndNode(EndAction Action) : base(Action)

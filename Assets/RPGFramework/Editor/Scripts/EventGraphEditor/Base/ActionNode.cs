@@ -4,9 +4,6 @@ using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-/// <summary>
-/// Начальное название ноды должно полностью сответсвовать названию действия ActAction = ActNode
-/// </summary>
 public abstract class ActionNode : Node
 {
     public string GUID;

@@ -4,6 +4,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class InvokeCustomNode : ActionNodeWrapper<InvokeCustomAction>
 {
     public InvokeCustomNode(InvokeCustomAction Action) : base(Action)

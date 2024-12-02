@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class ShowImageNode : ActionNodeWrapper<ShowImageAction>
 {
     public ShowImageNode(ShowImageAction Action) : base(Action)

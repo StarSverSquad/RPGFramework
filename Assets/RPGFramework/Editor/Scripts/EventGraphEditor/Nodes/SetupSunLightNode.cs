@@ -1,6 +1,7 @@
 ﻿using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class SetupSunLightNode : ActionNodeWrapper<SetupSunLightAction>
 {
     public SetupSunLightNode(SetupSunLightAction Action) : base(Action)

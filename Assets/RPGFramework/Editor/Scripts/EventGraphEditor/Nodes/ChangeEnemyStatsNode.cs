@@ -1,5 +1,6 @@
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class ChangeEnemyStatsNode : ActionNodeWrapper<ChangeEnemyStatsAction>
 {
     public ChangeEnemyStatsNode(ChangeEnemyStatsAction Action) : base(Action)

@@ -3,6 +3,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class ManageBGMNode : ActionNodeWrapper<ManageBGMAction>
 {
     public ManageBGMNode(ManageBGMAction Action) : base(Action)

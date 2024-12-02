@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class PlayMENode : ActionNodeWrapper<PlayMEAction>
 {
     public PlayMENode(PlayMEAction Action) : base(Action)

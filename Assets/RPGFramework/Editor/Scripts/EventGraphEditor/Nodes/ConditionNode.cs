@@ -6,6 +6,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class ConditionNode : ActionNodeWrapper<ConditionAction>
 {
     public enum ConditionType

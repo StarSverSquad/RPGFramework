@@ -4,6 +4,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class InvokeEventNode : ActionNodeWrapper<InvokeEventAction>
 {
     public InvokeEventNode(InvokeEventAction Action) : base(Action)

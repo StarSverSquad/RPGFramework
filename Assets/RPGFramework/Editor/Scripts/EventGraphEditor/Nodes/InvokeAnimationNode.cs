@@ -4,6 +4,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
+[UseActionNode]
 public class InvokeAnimationNode : ActionNodeWrapper<InvokeAnimationAction>
 {
     public InvokeAnimationNode(InvokeAnimationAction Action) : base(Action)

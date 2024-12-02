@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 71837037}
   m_Layer: 0
   m_Name: Locations
-  m_TagString: Untagged
+  m_TagString: LocationsContainer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2854,24 +2854,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Actions:
   - rid: 5872027651667394641
-  - rid: 5872027651667394648
-  - rid: 5872027651667394642
   - rid: 2550103966965825536
   - rid: 2550103966965825537
   Meta:
     edges:
-    - inputPortName: Input
-      inputNodeGUID: a45401fc43722d448baed7f63c16a12a
-      outputPortName: Output
-      outputNodeGUID: 25c51d2e11e7b9e4882ae5728552f148
-    - inputPortName: Input
-      inputNodeGUID: be17e43c142845e4e8f7e855f44206b8
-      outputPortName: Output
-      outputNodeGUID: a45401fc43722d448baed7f63c16a12a
-    - inputPortName: Input
-      inputNodeGUID: 13dd0f36032e8734f9c0ce13b14c0957
-      outputPortName: Output
-      outputNodeGUID: be17e43c142845e4e8f7e855f44206b8
     - inputPortName: Input
       inputNodeGUID: b5d65c29c464d7c489748d99967b5451
       outputPortName: Choice 0
@@ -2884,22 +2870,20 @@ MonoBehaviour:
       inputNodeGUID: b5d65c29c464d7c489748d99967b5451
       outputPortName: Choice 2
       outputNodeGUID: 13dd0f36032e8734f9c0ce13b14c0957
+    - inputPortName: Input
+      inputNodeGUID: 13dd0f36032e8734f9c0ce13b14c0957
+      outputPortName: Output
+      outputNodeGUID: 25c51d2e11e7b9e4882ae5728552f148
     nodes:
     - guid: 25c51d2e11e7b9e4882ae5728552f148
       actionIndex: 0
       position: {x: 250.4, y: 250.4}
-    - guid: be17e43c142845e4e8f7e855f44206b8
-      actionIndex: 1
-      position: {x: 631.2, y: 154.4}
-    - guid: a45401fc43722d448baed7f63c16a12a
-      actionIndex: 2
-      position: {x: 410.4, y: 184}
     - guid: 13dd0f36032e8734f9c0ce13b14c0957
-      actionIndex: 3
-      position: {x: 863.2, y: 165.6}
+      actionIndex: 1
+      position: {x: 472, y: 184.8}
     - guid: b5d65c29c464d7c489748d99967b5451
-      actionIndex: 4
-      position: {x: 1156, y: 247.2}
+      actionIndex: 2
+      position: {x: 764.8, y: 266.4}
   references:
     version: 2
     RefIds:
@@ -2924,22 +2908,7 @@ MonoBehaviour:
       type: {class: StartAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions:
-        - rid: 5872027651667394642
-    - rid: 5872027651667394642
-      type: {class: ShowColorAction, ns: , asm: Assembly-CSharp}
-      data:
-        NextActions:
-        - rid: 5872027651667394648
-        Color: {r: 1, g: 0, b: 0, a: 1}
-        FadeTime: 5
-        IsWait: 1
-    - rid: 5872027651667394648
-      type: {class: CloseMediaAction, ns: , asm: Assembly-CSharp}
-      data:
-        NextActions:
         - rid: 2550103966965825536
-        FadeTime: 0
-        IsWait: 1
 --- !u!1 &1392928290
 GameObject:
   m_ObjectHideFlags: 0
@@ -9028,7 +8997,7 @@ MonoBehaviour:
   animationSpeed: 5
   leftArrow: {fileID: 757540856}
   rightArrow: {fileID: 863283518}
-  Margin: {x: 16, y: 0}
+  Margin: {x: 8, y: 16}
   InBattleOffset: 125
   choiceBox: {fileID: 5673585624514798705}
   mask: {fileID: 9210726969337613912}

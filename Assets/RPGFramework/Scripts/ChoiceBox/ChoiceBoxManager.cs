@@ -180,17 +180,9 @@ public class ChoiceBoxManager : ChoiceBase<string>
 
     private IEnumerator InitializeCoroutine()
     {
-        float offsetx = 0;
-
-        List<ChoiceItem> items = new List<ChoiceItem>();
-
         foreach (string choice in choices)
         {
             GameObject ci = Instantiate(choiceItemPrefab, content.position, Quaternion.identity, content);
-
-            RectTransform itemtrans = ci.GetComponent<RectTransform>();
-
-            itemtrans.anchoredPosition = new Vector2(offsetx, 0);
 
             ChoiceItem choiceitem = ci.GetComponent<ChoiceItem>();
 
@@ -203,11 +195,14 @@ public class ChoiceBoxManager : ChoiceBase<string>
 
         yield return null;
 
+        float offsetx = 0;
         foreach (ChoiceItem item in items)
         {
-            offsetx += item.XSize;
+            RectTransform itemtrans = item.gameObject.GetComponent<RectTransform>();
 
-            items.Add(item);
+            itemtrans.anchoredPosition = new Vector2(offsetx, 0);
+
+            offsetx += item.XSize;
         }
 
         content.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, offsetx);

@@ -5928,6 +5928,7 @@ GameObject:
   - component: {fileID: 564830677788912069}
   - component: {fileID: 4038830115268760207}
   - component: {fileID: 2152882704842844521}
+  - component: {fileID: 7679855971596295356}
   m_Layer: 0
   m_Name: BattleContent
   m_TagString: Untagged
@@ -11114,8 +11115,21 @@ MonoBehaviour:
   VisualTransmition: {fileID: 543801728653999458}
   Shaker: {fileID: 2152882704842844521}
   UI: {fileID: 1907094964}
+  Minigame: {fileID: 7679855971596295356}
   utility: {fileID: 567874435024230449}
   data: {fileID: 564830677788912069}
+--- !u!114 &7679855971596295356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1015552031520672723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa5f16a8c2fc4f14da1e27ce38e6103f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7771991213937679269
 MonoBehaviour:
   m_ObjectHideFlags: 0

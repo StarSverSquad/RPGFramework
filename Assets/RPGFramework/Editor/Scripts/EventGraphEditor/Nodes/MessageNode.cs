@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor.UIElements;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 [UseActionNode(contextualMenuPath: "Диалог/Сообщение")]
@@ -27,158 +26,85 @@ public class MessageNode : ActionNodeWrapper<MessageAction>
     {
         Label txtLabel = new Label("Сообщение");
 
-        TextField textField = new TextField()
-        {
-            multiline = true,
-            tooltip =
-                "Комманды:\n"
+        TextField textField = BuildTextField(
+            Action.message.text, 
+            newVal => Action.message.text = newVal,
+            multiline: true,
+            tooltip: 
+                  "Комманды:\n"
                 + "< color=[HEXCOLOR] >[...]< /color > - установка цвета\n"
                 + "< size=[%] >[...]< /size > - установка размера\n"
                 + "< \\(., :, |) > - ждать 0.25с, 0.5с, 1с\n"
                 + "< ! > - пауза\n"
                 + "< %[LOCALE TAG] > - локализация"
-        };
-
-        textField.SetValueWithoutNotify(Action.message.text);
-        textField.RegisterValueChangedCallback(text =>
-        {
-            Action.message.text = text.newValue;
-
-            MakeDirty();
-        });
-
-        TextField nameField = new TextField("Имя");
-
-        nameField.SetValueWithoutNotify(Action.message.name);
-        nameField.RegisterValueChangedCallback(name =>
-        {
-            Action.message.name = name.newValue;
-
-            MakeDirty();
-        });
-
-        FloatField speedField = new FloatField("Скорость текста")
-        {
-            tooltip = "Символов в секунду\n" + "Если 0 то будет выставленно стандартное значение"
-        };
-
-        speedField.SetValueWithoutNotify(Action.message.speed);
-        speedField.RegisterValueChangedCallback(speed =>
-        {
-            Action.message.speed = speed.newValue;
-
-            MakeDirty();
-        });
-
-        Toggle waitToggle = new Toggle("Ждать?");
-        Toggle clearToggle = new Toggle("Очистить?");
-        Toggle closeToggle = new Toggle("Закрыть?");
-
-        waitToggle.SetValueWithoutNotify(Action.message.wait);
-        waitToggle.RegisterValueChangedCallback(wait =>
-        {
-            Action.message.wait = wait.newValue;
-
-            MakeDirty();
-        });
-
-        clearToggle.SetValueWithoutNotify(Action.message.clear);
-        clearToggle.RegisterValueChangedCallback(clear =>
-        {
-            Action.message.clear = clear.newValue;
-
-            MakeDirty();
-        });
-
-        closeToggle.SetValueWithoutNotify(Action.message.closeWindow);
-        closeToggle.RegisterValueChangedCallback(close =>
-        {
-            Action.message.closeWindow = close.newValue;
-
-            MakeDirty();
-        });
-
-        ObjectField spriteField = new ObjectField("Изображение")
-        {
-            allowSceneObjects = true,
-            objectType = typeof(Sprite)
-        };
-        ObjectField clipField = new ObjectField("Звук букв")
-        {
-            allowSceneObjects = true,
-            objectType = typeof(AudioClip)
-        };
-
-        spriteField.SetValueWithoutNotify(Action.message.image);
-        spriteField.RegisterValueChangedCallback(sprite =>
-        {
-            Action.message.image = sprite.newValue as Sprite;
-
-            MakeDirty();
-        });
-
-        clipField.SetValueWithoutNotify(Action.message.letterSound);
-        clipField.RegisterValueChangedCallback(sound =>
-        {
-            Action.message.letterSound = sound.newValue as AudioClip;
-
-            MakeDirty();
-        });
-
-        EnumField positionField = new EnumField(
-            "Позиция",
-            MessageBoxManager.DialogBoxPosition.Bottom
         );
 
-        positionField.SetValueWithoutNotify(Action.message.position);
-        positionField.RegisterValueChangedCallback(position =>
-        {
-            Action.message.position = Enum.Parse<MessageBoxManager.DialogBoxPosition>(
-                position.newValue.ToString()
-            );
+        TextField nameField = BuildTextField(
+            Action.message.name, 
+            val => Action.message.name = val, 
+            label: "Имя");
 
-            MakeDirty();
-        });
+        FloatField speedField = BuildFloatField(
+            Action.message.speed,
+            val => Action.message.speed = val,
+            tooltip: "Символов в секунду\n" + "Если 0 то будет выставленно стандартное значение",
+            label: "Скорость текста");
 
-        ObjectField textEffectField = new ObjectField("Эффект текста")
-        {
-            allowSceneObjects = true,
-            objectType = typeof(TextVisualEffectBase)
-        };
+        Toggle waitToggle = BuildToggle(
+            Action.message.wait, 
+            val => Action.message.wait = val, 
+            label: "Ждать?");
+
+        Toggle clearToggle = BuildToggle(
+            Action.message.wait,
+            val => Action.message.clear = val,
+            label: "Очистить?");
+
+        Toggle closeToggle = BuildToggle(
+            Action.message.wait,
+            val => Action.message.closeWindow = val,
+            label: "Закрыть?");
+
+        ObjectField spriteField = BuildObjectField(
+            Action.message.image, 
+            val => Action.message.image = val,
+            label: "Изображение");
+
+        ObjectField clipField = BuildObjectField(
+            Action.message.letterSound,
+            val => Action.message.letterSound = val,
+            label: "Звук букв");
+
+        EnumField positionField = BuildEnumField(
+            MessageBoxManager.DialogBoxPosition.Bottom,
+            val => Action.message.position = val,
+            label: "Позиция");
 
         int defaultVal = 0;
         if (Action.message.textEffectTypeName != "None")
             defaultVal =
                 effectTypes.FindIndex(i => i.GetType().Name == Action.message.textEffectTypeName)+1;
 
-        PopupField<string> effectPopup = new PopupField<string>(
-            "Эффект",
+        PopupField<string> effectPopup = BuildPopupField(
+            defaultVal,
             new List<string>() { "None" }
                 .Concat(effectTypes.Select(i => i.GetType().Name))
                 .ToList(),
-            defaultVal,
+            val => Action.message.textEffectTypeName = val,
             FormatEffectText,
-            FormatEffectText
-        );
+            label: "Текстовый эффект");
 
-        effectPopup.RegisterValueChangedCallback(effect =>
-        {
-            Action.message.textEffectTypeName = effect.newValue;
-
-            MakeDirty();
-        });
-
-        extensionContainer.Add(txtLabel);
-        extensionContainer.Add(textField);
-        extensionContainer.Add(nameField);
-        extensionContainer.Add(speedField);
-        extensionContainer.Add(waitToggle);
-        extensionContainer.Add(clearToggle);
-        extensionContainer.Add(closeToggle);
-        extensionContainer.Add(spriteField);
-        extensionContainer.Add(clipField);
-        extensionContainer.Add(positionField);
-        extensionContainer.Add(effectPopup);
+        AddToExtensionContainer(txtLabel);
+        AddToExtensionContainer(textField);
+        AddToExtensionContainer(nameField);
+        AddToExtensionContainer(speedField);
+        AddToExtensionContainer(waitToggle);
+        AddToExtensionContainer(clearToggle);
+        AddToExtensionContainer(closeToggle);
+        AddToExtensionContainer(spriteField);
+        AddToExtensionContainer(clipField);
+        AddToExtensionContainer(positionField);
+        AddToExtensionContainer(effectPopup);
     }
 
     private string FormatEffectText(string str)

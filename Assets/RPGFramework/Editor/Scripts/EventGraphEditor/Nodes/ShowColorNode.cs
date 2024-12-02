@@ -10,9 +10,7 @@ public class ShowColorNode : ActionNodeWrapper<ShowColorAction>
 
     public override void UIContructor()
     {
-        ColorField colorField = new ColorField("Цвет");
-
-        colorField.style.width = new StyleLength(10);
+        ColorField colorField = new ColorField();
 
         colorField.SetValueWithoutNotify(Action.Color);
         colorField.RegisterValueChangedCallback(value =>

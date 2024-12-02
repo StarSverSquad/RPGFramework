@@ -4,22 +4,20 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class TranslateCharacterNode : ActionNodeBase
+public class TranslateCharacterNode : ActionNodeWrapper<TranslateCharacterAction>
 {
-    public TranslateCharacterNode(TranslateCharacterAction action) : base(action)
+    public TranslateCharacterNode(TranslateCharacterAction Action) : base(Action)
     {
     }
 
     public override void UIContructor()
     {
-        TranslateCharacterAction act = action as TranslateCharacterAction;
+        EnumField TypeEnum = new EnumField(Action.Type);
 
-        EnumField TypeEnum = new EnumField(act.Type);
-
-        TypeEnum.SetValueWithoutNotify(act.Type);
+        TypeEnum.SetValueWithoutNotify(Action.Type);
         TypeEnum.RegisterValueChangedCallback(i =>
         {
-            act.Type = (TranslateCharacterAction.TranslateType)i.newValue;
+            Action.Type = (TranslateCharacterAction.TranslateType)i.newValue;
 
             MakeDirty();
             UpdateUI();
@@ -29,10 +27,10 @@ public class TranslateCharacterNode : ActionNodeBase
 
         Toggle InpartyToggle = new Toggle("Персонаж в партии");
 
-        InpartyToggle.SetValueWithoutNotify(act.InParty);
+        InpartyToggle.SetValueWithoutNotify(Action.InParty);
         InpartyToggle.RegisterValueChangedCallback(i =>
         {
-            act.InParty = i.newValue;
+            Action.InParty = i.newValue;
 
             MakeDirty();
             UpdateUI();
@@ -40,14 +38,14 @@ public class TranslateCharacterNode : ActionNodeBase
 
         extensionContainer.Add(InpartyToggle);
 
-        if (act.InParty)
+        if (Action.InParty)
         {
             TextField TagField = new TextField("Тег персонажа");
 
-            TagField.SetValueWithoutNotify(act.CharacterTag);
+            TagField.SetValueWithoutNotify(Action.CharacterTag);
             TagField.RegisterValueChangedCallback(i =>
             {
-                act.CharacterTag = i.newValue;
+                Action.CharacterTag = i.newValue;
 
                 MakeDirty();
             });
@@ -62,10 +60,10 @@ public class TranslateCharacterNode : ActionNodeBase
                 objectType = typeof(DynamicExplorerObject)
             };
 
-            CharacterField.SetValueWithoutNotify(act.CharacterInScene);
+            CharacterField.SetValueWithoutNotify(Action.CharacterInScene);
             CharacterField.RegisterValueChangedCallback(i =>
             {
-                act.CharacterInScene = (DynamicExplorerObject)i.newValue;
+                Action.CharacterInScene = (DynamicExplorerObject)i.newValue;
 
                 MakeDirty();
             });
@@ -73,17 +71,17 @@ public class TranslateCharacterNode : ActionNodeBase
             extensionContainer.Add(CharacterField);
         }
 
-        switch (act.Type)
+        switch (Action.Type)
         {
             case TranslateCharacterAction.TranslateType.Move:
             case TranslateCharacterAction.TranslateType.MoveRelative:
                 {
                     Toggle ReplaceInstanceToggle = new Toggle("Резко?");
 
-                    ReplaceInstanceToggle.SetValueWithoutNotify(act.ReplaceInstance);
+                    ReplaceInstanceToggle.SetValueWithoutNotify(Action.ReplaceInstance);
                     ReplaceInstanceToggle.RegisterValueChangedCallback(i =>
                     {
-                        act.ReplaceInstance = i.newValue;
+                        Action.ReplaceInstance = i.newValue;
 
                         MakeDirty();
                         UpdateUI();
@@ -91,14 +89,14 @@ public class TranslateCharacterNode : ActionNodeBase
 
                     extensionContainer.Add(ReplaceInstanceToggle);
 
-                    if (!act.ReplaceInstance)
+                    if (!Action.ReplaceInstance)
                     {
                         FloatField SpeedField = new FloatField("Скорость");
 
-                        SpeedField.SetValueWithoutNotify(act.Speed);
+                        SpeedField.SetValueWithoutNotify(Action.Speed);
                         SpeedField.RegisterValueChangedCallback(i =>
                         {
-                            act.Speed = i.newValue;
+                            Action.Speed = i.newValue;
 
                             MakeDirty();
                             UpdateUI();
@@ -108,10 +106,10 @@ public class TranslateCharacterNode : ActionNodeBase
 
                         Toggle WaitToggle = new Toggle("Ждать?");
 
-                        WaitToggle.SetValueWithoutNotify(act.Wait);
+                        WaitToggle.SetValueWithoutNotify(Action.Wait);
                         WaitToggle.RegisterValueChangedCallback(i =>
                         {
-                            act.Wait = i.newValue;
+                            Action.Wait = i.newValue;
 
                             MakeDirty();
                         });
@@ -119,7 +117,7 @@ public class TranslateCharacterNode : ActionNodeBase
                         extensionContainer.Add(WaitToggle);
                     }
 
-                    if (act.Type == TranslateCharacterAction.TranslateType.MoveRelative)
+                    if (Action.Type == TranslateCharacterAction.TranslateType.MoveRelative)
                     {
                         Label OffsetLabel = new Label("Перемещение");
 
@@ -127,10 +125,10 @@ public class TranslateCharacterNode : ActionNodeBase
 
                         Vector2Field OffsetField = new Vector2Field();
 
-                        OffsetField.SetValueWithoutNotify(act.Offset);
+                        OffsetField.SetValueWithoutNotify(Action.Offset);
                         OffsetField.RegisterValueChangedCallback(i =>
                         {
-                            act.Offset = i.newValue;
+                            Action.Offset = i.newValue;
 
                             MakeDirty();
                         });
@@ -145,10 +143,10 @@ public class TranslateCharacterNode : ActionNodeBase
                             objectType = typeof(Transform)
                         };
 
-                        TransofrmField.SetValueWithoutNotify(act.Point);
+                        TransofrmField.SetValueWithoutNotify(Action.Point);
                         TransofrmField.RegisterValueChangedCallback(i =>
                         {
-                            act.Point = (Transform)i.newValue;
+                            Action.Point = (Transform)i.newValue;
 
                             MakeDirty();
                         });
@@ -159,12 +157,12 @@ public class TranslateCharacterNode : ActionNodeBase
                 break;
             case TranslateCharacterAction.TranslateType.Rotate:
                 {
-                    EnumField DiretionEnum = new EnumField("Сторона", act.Direction);
+                    EnumField DiretionEnum = new EnumField("Сторона", Action.Direction);
 
-                    DiretionEnum.SetValueWithoutNotify(act.Direction);
+                    DiretionEnum.SetValueWithoutNotify(Action.Direction);
                     DiretionEnum.RegisterValueChangedCallback(i =>
                     {
-                        act.Direction = (CommonDirection)i.newValue;
+                        Action.Direction = (CommonDirection)i.newValue;
 
                         MakeDirty();
                     });

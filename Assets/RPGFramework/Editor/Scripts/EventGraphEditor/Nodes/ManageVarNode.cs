@@ -1,22 +1,20 @@
 ﻿using System;
 using UnityEngine.UIElements;
 
-public class ManageVarNode : ActionNodeBase
+public class ManageVarNode : ActionNodeWrapper<ManageVarAction>
 {
-    public ManageVarNode(ManageVarAction action) : base(action)
+    public ManageVarNode(ManageVarAction Action) : base(Action)
     {
     }
 
     public override void UIContructor()
     {
-        ManageVarAction mv = action as ManageVarAction;
-
         EnumField varField = new EnumField("Тип переменной", ManageVarAction.VarType.Bool);
 
-        varField.SetValueWithoutNotify(mv.Var);
+        varField.SetValueWithoutNotify(Action.Var);
         varField.RegisterValueChangedCallback(i =>
         {
-            mv.Var = (ManageVarAction.VarType)i.newValue;
+            Action.Var = (ManageVarAction.VarType)i.newValue;
 
             MakeDirty();
 
@@ -44,27 +42,27 @@ public class ManageVarNode : ActionNodeBase
 
         TextField nameField = new TextField();
 
-        nameField.SetValueWithoutNotify(mv.VarName);
+        nameField.SetValueWithoutNotify(Action.VarName);
         nameField.RegisterValueChangedCallback(i =>
         {
-            mv.VarName = i.newValue;
+            Action.VarName = i.newValue;
 
             MakeDirty();
         });
 
         hor1.Add(nameField);
 
-        switch (mv.Var)
+        switch (Action.Var)
         {
             case ManageVarAction.VarType.Bool:
                 Label bset = new Label("Set");
 
                 Toggle toggle = new Toggle();
 
-                toggle.SetValueWithoutNotify(mv.BoolBuffer);
+                toggle.SetValueWithoutNotify(Action.BoolBuffer);
                 toggle.RegisterValueChangedCallback(i =>
                 {
-                    mv.BoolBuffer = i.newValue;
+                    Action.BoolBuffer = i.newValue;
 
                     MakeDirty();
                 });
@@ -75,20 +73,20 @@ public class ManageVarNode : ActionNodeBase
             case ManageVarAction.VarType.Int:
                 EnumField opField0 = new EnumField(ManageVarAction.OperationType.Set);
 
-                opField0.SetValueWithoutNotify(mv.Operation);
+                opField0.SetValueWithoutNotify(Action.Operation);
                 opField0.RegisterValueChangedCallback(i =>
                 {
-                    mv.Operation = (ManageVarAction.OperationType)i.newValue;
+                    Action.Operation = (ManageVarAction.OperationType)i.newValue;
 
                     MakeDirty();
                 });
 
                 IntegerField intField = new IntegerField();
 
-                intField.SetValueWithoutNotify(mv.IntBuffer);
+                intField.SetValueWithoutNotify(Action.IntBuffer);
                 intField.RegisterValueChangedCallback(i =>
                 {
-                    mv.IntBuffer = i.newValue;
+                    Action.IntBuffer = i.newValue;
 
                     MakeDirty();
                 });
@@ -99,20 +97,20 @@ public class ManageVarNode : ActionNodeBase
             case ManageVarAction.VarType.Float:
                 EnumField opField1 = new EnumField(ManageVarAction.OperationType.Set);
 
-                opField1.SetValueWithoutNotify(mv.Operation);
+                opField1.SetValueWithoutNotify(Action.Operation);
                 opField1.RegisterValueChangedCallback(i =>
                 {
-                    mv.Operation = (ManageVarAction.OperationType)i.newValue;
+                    Action.Operation = (ManageVarAction.OperationType)i.newValue;
 
                     MakeDirty();
                 });
 
                 FloatField floatField = new FloatField();
 
-                floatField.SetValueWithoutNotify(mv.FloatBuffer);
+                floatField.SetValueWithoutNotify(Action.FloatBuffer);
                 floatField.RegisterValueChangedCallback(i =>
                 {
-                    mv.FloatBuffer = i.newValue;
+                    Action.FloatBuffer = i.newValue;
 
                     MakeDirty();
                 });
@@ -126,10 +124,10 @@ public class ManageVarNode : ActionNodeBase
 
                 TextField stringField = new TextField();
 
-                stringField.SetValueWithoutNotify(mv.StringBuffer);
+                stringField.SetValueWithoutNotify(Action.StringBuffer);
                 stringField.RegisterValueChangedCallback(i =>
                 {
-                    mv.StringBuffer = i.newValue;
+                    Action.StringBuffer = i.newValue;
 
                     MakeDirty();
                 });
@@ -141,20 +139,20 @@ public class ManageVarNode : ActionNodeBase
 
                 EnumField opField2 = new EnumField(ManageVarAction.OperationType.Set);
 
-                opField2.SetValueWithoutNotify(mv.Operation);
+                opField2.SetValueWithoutNotify(Action.Operation);
                 opField2.RegisterValueChangedCallback(i =>
                 {
-                    mv.Operation = (ManageVarAction.OperationType)i.newValue;
+                    Action.Operation = (ManageVarAction.OperationType)i.newValue;
 
                     MakeDirty();
                 });
 
                 IntegerField prefField = new IntegerField();
 
-                prefField.SetValueWithoutNotify(mv.IntBuffer);
+                prefField.SetValueWithoutNotify(Action.IntBuffer);
                 prefField.RegisterValueChangedCallback(i =>
                 {
-                    mv.IntBuffer = i.newValue;
+                    Action.IntBuffer = i.newValue;
 
                     MakeDirty();
                 });

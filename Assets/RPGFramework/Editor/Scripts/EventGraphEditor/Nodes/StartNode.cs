@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class StartNode : ActionNodeBase
+public class StartNode : ActionNodeWrapper<StartAction>
 {
-    public StartNode(StartAction action) : base(action)
+    public StartNode(StartAction Action) : base(Action)
     {
     }
 

@@ -2,36 +2,34 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PlayMENode : ActionNodeBase
+public class PlayMENode : ActionNodeWrapper<PlayMEAction>
 {
-    public PlayMENode(PlayMEAction action) : base(action)
+    public PlayMENode(PlayMEAction Action) : base(Action)
     {
     }
 
     public override void UIContructor()
     {
-        PlayMEAction se = action as PlayMEAction;
-
         ObjectField clipField = new ObjectField("Аудио")
         {
             allowSceneObjects = true,
             objectType = typeof(AudioClip)
         };
 
-        clipField.SetValueWithoutNotify(se.clip);
+        clipField.SetValueWithoutNotify(Action.clip);
         clipField.RegisterValueChangedCallback(clip =>
         {
-            se.clip = clip.newValue as AudioClip;
+            Action.clip = clip.newValue as AudioClip;
 
             MakeDirty();
         });
 
         FloatField volField = new FloatField("Громкость");
 
-        volField.SetValueWithoutNotify(se.volume);
+        volField.SetValueWithoutNotify(Action.volume);
         volField.RegisterValueChangedCallback(vol =>
         {
-            se.volume = vol.newValue;
+            Action.volume = vol.newValue;
 
             MakeDirty();
         });

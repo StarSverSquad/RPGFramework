@@ -1,3 +1,4 @@
+using Codice.CM.WorkspaceServer.DataStore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,21 +57,25 @@ public class EventGraphView : GraphView
 
     public void CreateNode(GraphActionBase action, Vector2 position, string guid = null)
     {
-        /// Начальное название ноды должно полностью сответсвовать названию действия ActAction = ActNode
+        ActionNode node;
 
-        ActionNodeBase node;
-
-        Assembly editorAssembly = typeof(ActionNodeBase).Assembly;
+        Assembly editorAssembly = typeof(ActionNode).Assembly;
 
 
         string name = action.GetType().Name.Split("Action")[0];
 
         Type nodeType = editorAssembly.GetTypes()
-            .FirstOrDefault(i => i.BaseType == typeof(ActionNodeBase) && i.Name.StartsWith(name));
+                        .FirstOrDefault(type =>
+                        {
+                            if (!type.BaseType.IsGenericType)
+                                return false;
+
+                            return type.BaseType.Name == "ActionNodeWrapper`1" && type.BaseType.GetGenericArguments()[0] == action.GetType();
+                        });
 
         if (nodeType != null)
         {
-            node = (ActionNodeBase)Activator.CreateInstance(nodeType, new object[] { action });
+            node = (ActionNode)Activator.CreateInstance(nodeType, new object[] { action });
         }
         else
         {
@@ -114,7 +119,7 @@ public class EventGraphView : GraphView
 
         Vector2 mousePosition = this.ChangeCoordinatesTo(contentViewContainer, evt.localMousePosition);
 
-        if (evt.target is ActionNodeBase node)
+        if (evt.target is ActionNode node)
         {
             if (node is not StartNode)
             {
@@ -187,14 +192,14 @@ public class EventGraphView : GraphView
 
         foreach (var item in nodes)
         {
-            ActionNodeBase ban = item as ActionNodeBase;
+            ActionNode ban = item as ActionNode;
 
             GEvent.Actions.Add(ban.action);
         }
 
         foreach (var item in nodes)
         {
-            ActionNodeBase ban = item as ActionNodeBase;
+            ActionNode ban = item as ActionNode;
 
             ban.ApplyPorts();
 
@@ -208,8 +213,8 @@ public class EventGraphView : GraphView
 
         foreach (var item in edges)
         {
-            ActionNodeBase left = item.output.node as ActionNodeBase;
-            ActionNodeBase right = item.input.node as ActionNodeBase;
+            ActionNode left = item.output.node as ActionNode;
+            ActionNode right = item.input.node as ActionNode;
 
             if (item.input == null || item.output == null ||
                 left == null || right == null)
@@ -238,7 +243,7 @@ public class EventGraphView : GraphView
 
         foreach (var item in nodes)
         {
-            ActionNodeBase ban = item as ActionNodeBase;
+            ActionNode ban = item as ActionNode;
 
             List<GraphEventMeta.EdgeMeta> tedges = GEvent.Meta.edges.Where(i => i.outputNodeGUID == ban.GUID).ToList();
 
@@ -253,7 +258,7 @@ public class EventGraphView : GraphView
 
                     Node ohter = nodes.First(i =>
                     {
-                        ActionNodeBase ban0 = i as ActionNodeBase;
+                        ActionNode ban0 = i as ActionNode;
 
                         return edge.inputNodeGUID == ban0.GUID;
                     });

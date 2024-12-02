@@ -1,16 +1,12 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
-public class ConditionNode : ActionNodeBase
+public class ConditionNode : ActionNodeWrapper<ConditionAction>
 {
     public enum ConditionType
     {
@@ -19,7 +15,7 @@ public class ConditionNode : ActionNodeBase
 
     private int lastConditionListIndex = 0;
 
-    public ConditionNode(ConditionAction action) : base(action)
+    public ConditionNode(ConditionAction Action) : base(Action)
     {
         extensionContainer.style.backgroundColor = (Color)(new Color32(77, 77, 77, 255));
         extensionContainer.style.minWidth = 200;
@@ -49,9 +45,7 @@ public class ConditionNode : ActionNodeBase
 
     public override void UIContructor()
     {
-        ConditionAction ca = action as ConditionAction;
-
-        List<string> contypes = ca.GetType().Assembly.GetTypes()
+        List<string> contypes = Action.GetType().Assembly.GetTypes()
             .Where(i => i.BaseType != null && i.BaseType.Name == "ConditionBase")
             .Select(i => i.Name)
             .ToList();
@@ -61,7 +55,7 @@ public class ConditionNode : ActionNodeBase
 
         Button addButton = new Button(() =>
         {
-            ca.Conditions.Add(ca.GetType().Assembly.CreateInstance(typePopup.value) as ConditionBase);
+            Action.Conditions.Add(Action.GetType().Assembly.CreateInstance(typePopup.value) as ConditionBase);
 
             lastConditionListIndex = typePopup.index;
 
@@ -76,7 +70,7 @@ public class ConditionNode : ActionNodeBase
         extensionContainer.Add(typePopup);
         extensionContainer.Add(addButton);
 
-        foreach (ConditionBase item in ca.Conditions)
+        foreach (ConditionBase item in Action.Conditions)
         {
             VisualElement conditionBlock = new VisualElement();
             
@@ -496,11 +490,11 @@ public class ConditionNode : ActionNodeBase
             extensionContainer.Add(conditionBlock);
         }
 
-        if (ca.Conditions.Count > 0)
+        if (Action.Conditions.Count > 0)
         {
             Button removeButton = new Button(() =>
             {
-                ca.Conditions.Remove(ca.Conditions.Last());
+                Action.Conditions.Remove(Action.Conditions.Last());
 
                 UpdateUI();
 
@@ -516,7 +510,7 @@ public class ConditionNode : ActionNodeBase
 
     private string LabelFormater(string typeName)
     {
-        Type item = action.GetType().Assembly.GetTypes()
+        Type item = Action.GetType().Assembly.GetTypes()
                         .Where(i => i.BaseType != null && i.BaseType.Name == "ConditionBase" && i.Name == typeName)
                         .FirstOrDefault();
 

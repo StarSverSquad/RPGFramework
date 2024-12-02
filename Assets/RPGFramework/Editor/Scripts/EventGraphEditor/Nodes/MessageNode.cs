@@ -6,14 +6,14 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class MessageNode : ActionNodeBase
+public class MessageNode : ActionNodeWrapper<MessageAction>
 {
     private List<TextVisualEffectBase> effectTypes;
 
-    public MessageNode(MessageAction action)
-        : base(action)
+    public MessageNode(MessageAction Action)
+        : base(Action)
     {
-        effectTypes = action
+        effectTypes = Action
             .GetType()
             .Assembly.GetTypes()
             .Where(i => i.BaseType != null && i.BaseType.Name == "TextVisualEffectBase")
@@ -25,8 +25,6 @@ public class MessageNode : ActionNodeBase
 
     public override void UIContructor()
     {
-        MessageAction dialog = action as MessageAction;
-
         Label txtLabel = new Label("Сообщение");
 
         TextField textField = new TextField()
@@ -41,20 +39,20 @@ public class MessageNode : ActionNodeBase
                 + "< %[LOCALE TAG] > - локализация"
         };
 
-        textField.SetValueWithoutNotify(dialog.message.text);
+        textField.SetValueWithoutNotify(Action.message.text);
         textField.RegisterValueChangedCallback(text =>
         {
-            dialog.message.text = text.newValue;
+            Action.message.text = text.newValue;
 
             MakeDirty();
         });
 
         TextField nameField = new TextField("Имя");
 
-        nameField.SetValueWithoutNotify(dialog.message.name);
+        nameField.SetValueWithoutNotify(Action.message.name);
         nameField.RegisterValueChangedCallback(name =>
         {
-            dialog.message.name = name.newValue;
+            Action.message.name = name.newValue;
 
             MakeDirty();
         });
@@ -64,10 +62,10 @@ public class MessageNode : ActionNodeBase
             tooltip = "Символов в секунду\n" + "Если 0 то будет выставленно стандартное значение"
         };
 
-        speedField.SetValueWithoutNotify(dialog.message.speed);
+        speedField.SetValueWithoutNotify(Action.message.speed);
         speedField.RegisterValueChangedCallback(speed =>
         {
-            dialog.message.speed = speed.newValue;
+            Action.message.speed = speed.newValue;
 
             MakeDirty();
         });
@@ -76,26 +74,26 @@ public class MessageNode : ActionNodeBase
         Toggle clearToggle = new Toggle("Очистить?");
         Toggle closeToggle = new Toggle("Закрыть?");
 
-        waitToggle.SetValueWithoutNotify(dialog.message.wait);
+        waitToggle.SetValueWithoutNotify(Action.message.wait);
         waitToggle.RegisterValueChangedCallback(wait =>
         {
-            dialog.message.wait = wait.newValue;
+            Action.message.wait = wait.newValue;
 
             MakeDirty();
         });
 
-        clearToggle.SetValueWithoutNotify(dialog.message.clear);
+        clearToggle.SetValueWithoutNotify(Action.message.clear);
         clearToggle.RegisterValueChangedCallback(clear =>
         {
-            dialog.message.clear = clear.newValue;
+            Action.message.clear = clear.newValue;
 
             MakeDirty();
         });
 
-        closeToggle.SetValueWithoutNotify(dialog.message.closeWindow);
+        closeToggle.SetValueWithoutNotify(Action.message.closeWindow);
         closeToggle.RegisterValueChangedCallback(close =>
         {
-            dialog.message.closeWindow = close.newValue;
+            Action.message.closeWindow = close.newValue;
 
             MakeDirty();
         });
@@ -111,18 +109,18 @@ public class MessageNode : ActionNodeBase
             objectType = typeof(AudioClip)
         };
 
-        spriteField.SetValueWithoutNotify(dialog.message.image);
+        spriteField.SetValueWithoutNotify(Action.message.image);
         spriteField.RegisterValueChangedCallback(sprite =>
         {
-            dialog.message.image = sprite.newValue as Sprite;
+            Action.message.image = sprite.newValue as Sprite;
 
             MakeDirty();
         });
 
-        clipField.SetValueWithoutNotify(dialog.message.letterSound);
+        clipField.SetValueWithoutNotify(Action.message.letterSound);
         clipField.RegisterValueChangedCallback(sound =>
         {
-            dialog.message.letterSound = sound.newValue as AudioClip;
+            Action.message.letterSound = sound.newValue as AudioClip;
 
             MakeDirty();
         });
@@ -132,10 +130,10 @@ public class MessageNode : ActionNodeBase
             MessageBoxManager.DialogBoxPosition.Bottom
         );
 
-        positionField.SetValueWithoutNotify(dialog.message.position);
+        positionField.SetValueWithoutNotify(Action.message.position);
         positionField.RegisterValueChangedCallback(position =>
         {
-            dialog.message.position = Enum.Parse<MessageBoxManager.DialogBoxPosition>(
+            Action.message.position = Enum.Parse<MessageBoxManager.DialogBoxPosition>(
                 position.newValue.ToString()
             );
 
@@ -149,9 +147,9 @@ public class MessageNode : ActionNodeBase
         };
 
         int defaultVal = 0;
-        if (dialog.message.textEffectTypeName != "None")
+        if (Action.message.textEffectTypeName != "None")
             defaultVal =
-                effectTypes.FindIndex(i => i.GetType().Name == dialog.message.textEffectTypeName)+1;
+                effectTypes.FindIndex(i => i.GetType().Name == Action.message.textEffectTypeName)+1;
 
         PopupField<string> effectPopup = new PopupField<string>(
             "Эффект",
@@ -165,7 +163,7 @@ public class MessageNode : ActionNodeBase
 
         effectPopup.RegisterValueChangedCallback(effect =>
         {
-            dialog.message.textEffectTypeName = effect.newValue;
+            Action.message.textEffectTypeName = effect.newValue;
 
             MakeDirty();
         });

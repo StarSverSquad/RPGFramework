@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ManageBGSNode : ActionNodeBase
+public class ManageBGMNode : ActionNodeWrapper<ManageBGMAction>
 {
-    public ManageBGSNode(ManageBGSAction action) : base(action)
+    public ManageBGMNode(ManageBGMAction Action) : base(Action)
     {
     }
 
@@ -28,18 +24,16 @@ public class ManageBGSNode : ActionNodeBase
 
     public override void UIContructor()
     {
-        ManageBGSAction ma = action as ManageBGSAction;
-
         Label lbl = new Label("Тип операции");
 
         extensionContainer.Add(lbl);
 
         PopupField<int> popupField = new PopupField<int>(new List<int> { 0, 1, 2, 3, 4 }, 0, Formater, Formater);
 
-        popupField.SetValueWithoutNotify((int)ma.Operation);
+        popupField.SetValueWithoutNotify((int)Action.Operation);
         popupField.RegisterValueChangedCallback(i =>
         {
-            ma.Operation = (ManageBGSAction.OperationType)i.newValue;
+            Action.Operation = (ManageBGMAction.OperationType)i.newValue;
 
             UpdateUI();
 
@@ -50,20 +44,20 @@ public class ManageBGSNode : ActionNodeBase
 
         FloatField volumeField = new FloatField("Громкость");
 
-        volumeField.SetValueWithoutNotify(ma.Volume);
+        volumeField.SetValueWithoutNotify(Action.Volume);
         volumeField.RegisterValueChangedCallback(i =>
         {
-            ma.Volume = i.newValue;
+            Action.Volume = i.newValue;
 
             MakeDirty();
         });
 
         Toggle fadeToggle = new Toggle("Использовать затухание/появление?");
 
-        fadeToggle.SetValueWithoutNotify(ma.UseFade);
+        fadeToggle.SetValueWithoutNotify(Action.UseFade);
         fadeToggle.RegisterValueChangedCallback(i =>
         {
-            ma.UseFade = i.newValue;
+            Action.UseFade = i.newValue;
 
             UpdateUI();
 
@@ -72,27 +66,27 @@ public class ManageBGSNode : ActionNodeBase
 
         Toggle waitFadeToggle = new Toggle("Ждать затухание/появление?");
 
-        waitFadeToggle.SetValueWithoutNotify(ma.WaitFade);
+        waitFadeToggle.SetValueWithoutNotify(Action.WaitFade);
         waitFadeToggle.RegisterValueChangedCallback(i =>
         {
-            ma.WaitFade = i.newValue;
+            Action.WaitFade = i.newValue;
 
             MakeDirty();
         });
 
         FloatField fadeTimeField = new FloatField("Время появления/затухания");
 
-        fadeTimeField.SetValueWithoutNotify(ma.FadeTime);
+        fadeTimeField.SetValueWithoutNotify(Action.FadeTime);
         fadeTimeField.RegisterValueChangedCallback(i =>
         {
-            ma.FadeTime = i.newValue;
+            Action.FadeTime = i.newValue;
 
             MakeDirty();
         });
 
-        switch (ma.Operation)
+        switch (Action.Operation)
         {
-            case ManageBGSAction.OperationType.Play:
+            case ManageBGMAction.OperationType.Play:
 
                 ObjectField clipField = new ObjectField("Аудио")
                 {
@@ -100,20 +94,20 @@ public class ManageBGSNode : ActionNodeBase
                     allowSceneObjects = true
                 };
 
-                clipField.SetValueWithoutNotify(ma.clip);
+                clipField.SetValueWithoutNotify(Action.clip);
                 clipField.RegisterValueChangedCallback(i =>
                 {
-                    ma.clip = (AudioClip)i.newValue;
+                    Action.clip = (AudioClip)i.newValue;
 
                     MakeDirty();
                 });
 
                 Toggle ingoreToggle = new Toggle("Пропуск если запущет то же аудио?");
 
-                ingoreToggle.SetValueWithoutNotify(ma.IngoreIfThisClip);
+                ingoreToggle.SetValueWithoutNotify(Action.IngoreIfThisClip);
                 ingoreToggle.RegisterValueChangedCallback(i =>
                 {
-                    ma.IngoreIfThisClip = i.newValue;
+                    Action.IngoreIfThisClip = i.newValue;
 
                     MakeDirty();
                 });
@@ -123,45 +117,45 @@ public class ManageBGSNode : ActionNodeBase
                 extensionContainer.Add(ingoreToggle);
                 extensionContainer.Add(fadeToggle);
 
-                if (ma.UseFade)
+                if (Action.UseFade)
                 {
                     extensionContainer.Add(fadeTimeField);
                     extensionContainer.Add(waitFadeToggle);
                 }                   
                 break;
-            case ManageBGSAction.OperationType.Pause:
+            case ManageBGMAction.OperationType.Pause:
                 extensionContainer.Add(fadeToggle);
 
-                if (ma.UseFade)
+                if (Action.UseFade)
                 {
                     extensionContainer.Add(fadeTimeField);
                     extensionContainer.Add(waitFadeToggle);
                 }
                 break;
-            case ManageBGSAction.OperationType.Stop:
+            case ManageBGMAction.OperationType.Stop:
                 extensionContainer.Add(fadeToggle);
 
-                if (ma.UseFade)
+                if (Action.UseFade)
                 {
                     extensionContainer.Add(fadeTimeField);
                     extensionContainer.Add(waitFadeToggle);
                 }
                 break;
-            case ManageBGSAction.OperationType.VolumeChange:
+            case ManageBGMAction.OperationType.VolumeChange:
                 extensionContainer.Add(volumeField);
                 extensionContainer.Add(fadeToggle);
 
-                if (ma.UseFade)
+                if (Action.UseFade)
                 {
                     extensionContainer.Add(fadeTimeField);
                     extensionContainer.Add(waitFadeToggle);
                 }
                 break;
-            case ManageBGSAction.OperationType.Resume:
+            case ManageBGMAction.OperationType.Resume:
                 extensionContainer.Add(volumeField);
                 extensionContainer.Add(fadeToggle);
 
-                if (ma.UseFade)
+                if (Action.UseFade)
                 {
                     extensionContainer.Add(fadeTimeField);
                     extensionContainer.Add(waitFadeToggle);

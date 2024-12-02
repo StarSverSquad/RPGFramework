@@ -1,17 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class RandomNode : ActionNodeBase
+public class RandomNode : ActionNodeWrapper<RandomAction>
 {
-    public RandomNode(RandomAction action) : base(action)
+    public RandomNode(RandomAction Action) : base(Action)
     {
         extensionContainer.style.backgroundColor = (Color)(new Color32(77, 77, 77, 255));
         extensionContainer.style.minWidth = 200;
@@ -27,14 +19,12 @@ public class RandomNode : ActionNodeBase
 
     public override void UIContructor()
     {
-        RandomAction ca = action as RandomAction;
-
         Slider ChanceSlider = new Slider("Шанс", 0f, 1f);
 
-        ChanceSlider.SetValueWithoutNotify(ca.Chance);
+        ChanceSlider.SetValueWithoutNotify(Action.Chance);
         ChanceSlider.RegisterValueChangedCallback(i =>
         {
-            ca.Chance = i.newValue;
+            Action.Chance = i.newValue;
 
             MakeDirty();
         });

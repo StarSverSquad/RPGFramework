@@ -5,9 +5,9 @@ using UnityEngine.UIElements;
 using UnityEngine;
 using UnityEditor.UIElements;
 
-public class InvokeBattleNode : ActionNodeBase
+public class InvokeBattleNode : ActionNodeWrapper<InvokeBattleAction>
 {
-    public InvokeBattleNode(InvokeBattleAction action) : base(action)
+    public InvokeBattleNode(InvokeBattleAction Action) : base(Action)
     {
 
     }
@@ -18,14 +18,12 @@ public class InvokeBattleNode : ActionNodeBase
 
         CreateOutputPort("Then");
 
-        InvokeBattleAction ib = (InvokeBattleAction)action;
-
-        if (ib.fleePort)
+        if (Action.fleePort)
         {
             CreateOutputPort("Flee", Color.yellow);
         }
 
-        if (ib.battle != null && ib.battle.CanLose)
+        if (Action.battle != null && Action.battle.CanLose)
         {
             CreateOutputPort("Lose", Color.red);
         }
@@ -33,18 +31,16 @@ public class InvokeBattleNode : ActionNodeBase
 
     public override void UIContructor()
     {
-        InvokeBattleAction ib = (InvokeBattleAction)action;
-
         ObjectField battleField = new ObjectField("Битва")
         {
             objectType = typeof(RPGBattleInfo),
             allowSceneObjects = false
         };
 
-        battleField.SetValueWithoutNotify(ib.battle);
+        battleField.SetValueWithoutNotify(Action.battle);
         battleField.RegisterValueChangedCallback(val =>
         {
-            ib.battle = (RPGBattleInfo)val.newValue;
+            Action.battle = (RPGBattleInfo)val.newValue;
 
             UpdatePorts();
 
@@ -55,10 +51,10 @@ public class InvokeBattleNode : ActionNodeBase
 
         Toggle fleeToggle = new Toggle("Считать побег?");
 
-        fleeToggle.SetValueWithoutNotify(ib.fleePort);
+        fleeToggle.SetValueWithoutNotify(Action.fleePort);
         fleeToggle.RegisterValueChangedCallback(val =>
         {
-            ib.fleePort = val.newValue;
+            Action.fleePort = val.newValue;
 
             UpdatePorts();
 

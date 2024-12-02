@@ -1,55 +1,51 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEditor.UIElements;
+﻿using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ShowImageNode : ActionNodeBase
+public class ShowImageNode : ActionNodeWrapper<ShowImageAction>
 {
-    public ShowImageNode(ShowImageAction action) : base(action)
+    public ShowImageNode(ShowImageAction Action) : base(Action)
     {
     }
 
     public override void UIContructor()
     {
-        ShowImageAction act = action as ShowImageAction;
-
         ObjectField spriteField = new ObjectField("Изображение")
         {
             allowSceneObjects = false,
             objectType = typeof(Sprite),
         };
 
-        spriteField.SetValueWithoutNotify(act.ImageSprite);
+        spriteField.SetValueWithoutNotify(Action.ImageSprite);
         spriteField.RegisterValueChangedCallback(value =>
         {
-            act.ImageSprite = (Sprite)value.newValue;
+            Action.ImageSprite = (Sprite)value.newValue;
 
             MakeDirty();
         });
 
         FloatField fadeTimeField = new FloatField("Время появления");
 
-        fadeTimeField.SetValueWithoutNotify(act.FadeTime);
+        fadeTimeField.SetValueWithoutNotify(Action.FadeTime);
         fadeTimeField.RegisterValueChangedCallback(value =>
         {
             if (value.newValue < 0)
             {
                 fadeTimeField.SetValueWithoutNotify(0);
-                act.FadeTime = 0;
+                Action.FadeTime = 0;
             }
             else
-                act.FadeTime = value.newValue;
+                Action.FadeTime = value.newValue;
 
             MakeDirty();
         });
 
         Toggle isWaitToggle = new Toggle("Ждать?");
 
-        isWaitToggle.SetValueWithoutNotify(act.IsWait);
+        isWaitToggle.SetValueWithoutNotify(Action.IsWait);
         isWaitToggle.RegisterValueChangedCallback(value =>
         {
-            act.IsWait = value.newValue;
+            Action.IsWait = value.newValue;
 
             MakeDirty();
         });

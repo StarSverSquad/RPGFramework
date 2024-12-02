@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class EndNode : ActionNodeBase
+public class EndNode : ActionNodeWrapper<EndAction>
 {
-    public EndNode(EndAction action) : base(action)
+    public EndNode(EndAction Action) : base(Action)
     {
     }
 

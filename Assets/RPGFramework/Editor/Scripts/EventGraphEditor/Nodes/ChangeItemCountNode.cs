@@ -4,26 +4,24 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ChangeItemCountNode : ActionNodeBase
+public class ChangeItemCountNode : ActionNodeWrapper<ChangeItemCountAction>
 {
-    public ChangeItemCountNode(ChangeItemCountAction action) : base(action)
+    public ChangeItemCountNode(ChangeItemCountAction Action) : base(Action)
     {
     }
 
     public override void UIContructor()
     {
-        ChangeItemCountAction act = (ChangeItemCountAction)action;
-
         ObjectField itemField = new ObjectField("Предмет")
         {
             allowSceneObjects = false,
             objectType = typeof(RPGCollectable),
         };
 
-        itemField.SetValueWithoutNotify(act.Item);
+        itemField.SetValueWithoutNotify(Action.Item);
         itemField.RegisterValueChangedCallback(value =>
         {
-            act.Item = (RPGCollectable)value.newValue;
+            Action.Item = (RPGCollectable)value.newValue;
 
             MakeDirty();
         });
@@ -56,20 +54,20 @@ public class ChangeItemCountNode : ActionNodeBase
                                                             };
                                                         });
 
-        enumField.SetValueWithoutNotify(act.IsSet ? 1 : 0);
+        enumField.SetValueWithoutNotify(Action.IsSet ? 1 : 0);
         enumField.RegisterValueChangedCallback(value =>
         {
-            act.IsSet = value.newValue != 0;
+            Action.IsSet = value.newValue != 0;
 
             MakeDirty();
         });
 
         IntegerField countField = new IntegerField();
 
-        countField.SetValueWithoutNotify(act.Count);
+        countField.SetValueWithoutNotify(Action.Count);
         countField.RegisterValueChangedCallback(value =>
         {
-            act.Count = value.newValue;
+            Action.Count = value.newValue;
 
             MakeDirty();
         });

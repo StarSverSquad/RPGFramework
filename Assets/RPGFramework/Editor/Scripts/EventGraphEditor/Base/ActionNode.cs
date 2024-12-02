@@ -7,7 +7,7 @@ using UnityEngine;
 /// <summary>
 /// Начальное название ноды должно полностью сответсвовать названию действия ActAction = ActNode
 /// </summary>
-public abstract class ActionNodeBase : Node
+public abstract class ActionNode : Node
 {
     public string GUID;
 
@@ -18,7 +18,7 @@ public abstract class ActionNodeBase : Node
 
     public EventGraphView view;
 
-    public ActionNodeBase(GraphActionBase action)
+    public ActionNode(GraphActionBase action)
     {
         this.action = action;
 
@@ -40,7 +40,7 @@ public abstract class ActionNodeBase : Node
 
     protected Port CreateInputPort(string name)
     {
-        Port port = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(ActionNodeBase));
+        Port port = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(ActionNode));
 
         port.portName = name;
         port.portColor = new Color32(16, 130, 119, 255);
@@ -52,7 +52,7 @@ public abstract class ActionNodeBase : Node
     }
     protected Port CreateInputPort(string name, Color color)
     {
-        Port port = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(ActionNodeBase));
+        Port port = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(ActionNode));
 
         port.portName = name;
         port.portColor = color;
@@ -65,7 +65,7 @@ public abstract class ActionNodeBase : Node
 
     protected Port CreateOutputPort(string name)
     {
-        Port port = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(ActionNodeBase));
+        Port port = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(ActionNode));
 
         port.portName = name;
         port.portColor = new Color32(20, 104, 156, 255); 
@@ -77,7 +77,7 @@ public abstract class ActionNodeBase : Node
     }
     protected Port CreateOutputPort(string name, Color color)
     {
-        Port port = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(ActionNodeBase));
+        Port port = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(ActionNode));
 
         port.portName = name;
         port.portColor = color;
@@ -170,7 +170,7 @@ public abstract class ActionNodeBase : Node
                 return;
             }
 
-            ActionNodeBase node = otherport.node as ActionNodeBase;
+            ActionNode node = otherport.node as ActionNode;
 
             action.NextActions.Add(node.action);
         }

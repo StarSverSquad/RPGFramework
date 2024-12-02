@@ -1,42 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEditor.UIElements;
+﻿using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-public class SetupSunLightNode : ActionNodeBase
+public class SetupSunLightNode : ActionNodeWrapper<SetupSunLightAction>
 {
-    public SetupSunLightNode(SetupSunLightAction action) : base(action)
+    public SetupSunLightNode(SetupSunLightAction Action) : base(Action)
     {
     }
 
     public override void UIContructor()
     {
-        SetupSunLightAction act = action as SetupSunLightAction;
-
         FloatField intensityField = new FloatField("Интенсивность");
 
-        intensityField.SetValueWithoutNotify(act.Intensity);
+        intensityField.SetValueWithoutNotify(Action.Intensity);
 
         intensityField.RegisterValueChangedCallback(value =>
         {
             if (value.newValue < 0)
             {
-                act.Intensity = 0;
+                Action.Intensity = 0;
                 intensityField.SetValueWithoutNotify(0);
             }  
             else
-                act.Intensity = value.newValue;
+                Action.Intensity = value.newValue;
 
             MakeDirty();
         });
 
         ColorField colorField = new ColorField("Цвет света");
 
-        colorField.SetValueWithoutNotify(act.Color);
+        colorField.SetValueWithoutNotify(Action.Color);
 
         colorField.RegisterValueChangedCallback(value =>
         {
-            act.Color = value.newValue;
+            Action.Color = value.newValue;
 
             MakeDirty();
         });

@@ -6,22 +6,20 @@ using System.Threading.Tasks;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-public class AddRemoveCharacterNode : ActionNodeBase
+public class AddRemoveCharacterNode : ActionNodeWrapper<AddRemoveCharacterAction>
 {
-    public AddRemoveCharacterNode(AddRemoveCharacterAction action) : base(action)
+    public AddRemoveCharacterNode(AddRemoveCharacterAction Action) : base(Action)
     {
     }
 
     public override void UIContructor()
     {
-        AddRemoveCharacterAction act = action as AddRemoveCharacterAction;
-
         Toggle isAddToggle = new Toggle("Добавить?");
 
-        isAddToggle.SetValueWithoutNotify(act.isAdd);
+        isAddToggle.SetValueWithoutNotify(Action.isAdd);
         isAddToggle.RegisterValueChangedCallback(data =>
         {
-            act.isAdd = data.newValue;
+            Action.isAdd = data.newValue;
 
             MakeDirty();
         });
@@ -30,10 +28,10 @@ public class AddRemoveCharacterNode : ActionNodeBase
 
         Toggle updateModelsToggle = new Toggle("Обнавить модели?");
 
-        updateModelsToggle.SetValueWithoutNotify(act.updateModels);
+        updateModelsToggle.SetValueWithoutNotify(Action.updateModels);
         updateModelsToggle.RegisterValueChangedCallback(data =>
         {
-            act.updateModels = data.newValue;
+            Action.updateModels = data.newValue;
 
             MakeDirty();
 
@@ -48,17 +46,17 @@ public class AddRemoveCharacterNode : ActionNodeBase
             allowSceneObjects = false
         };
 
-        characterField.SetValueWithoutNotify(act.character);
+        characterField.SetValueWithoutNotify(Action.character);
         characterField.RegisterValueChangedCallback(data =>
         {
-            act.character = data.newValue as RPGCharacter;
+            Action.character = data.newValue as RPGCharacter;
 
             MakeDirty();
         });
 
         extensionContainer.Add(characterField);
 
-        if (!act.updateModels)
+        if (!Action.updateModels)
         {
             ObjectField exitentObjectField = new ObjectField("Существующая модель")
             {
@@ -66,10 +64,10 @@ public class AddRemoveCharacterNode : ActionNodeBase
                 allowSceneObjects = true
             };
 
-            exitentObjectField.SetValueWithoutNotify(act.existentObject);
+            exitentObjectField.SetValueWithoutNotify(Action.existentObject);
             exitentObjectField.RegisterValueChangedCallback(data =>
             {
-                act.existentObject = data.newValue as DynamicExplorerObject;
+                Action.existentObject = data.newValue as DynamicExplorerObject;
 
                 MakeDirty();
             });

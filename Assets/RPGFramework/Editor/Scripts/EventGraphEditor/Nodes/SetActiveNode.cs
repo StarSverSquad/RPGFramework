@@ -2,22 +2,20 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class SetActiveNode : ActionNodeBase
+public class SetActiveNode : ActionNodeWrapper<SetActiveAction>
 {
-    public SetActiveNode(SetActiveAction action) : base(action)
+    public SetActiveNode(SetActiveAction Action) : base(Action)
     {
     }
 
     public override void UIContructor()
     {
-        SetActiveAction act = action as SetActiveAction;
-
         Toggle activeToggle = new Toggle("Включить?");
 
-        activeToggle.SetValueWithoutNotify(act.setActive);
+        activeToggle.SetValueWithoutNotify(Action.setActive);
         activeToggle.RegisterValueChangedCallback(data =>
         {
-            act.setActive = data.newValue;
+            Action.setActive = data.newValue;
 
             MakeDirty();
         });
@@ -31,10 +29,10 @@ public class SetActiveNode : ActionNodeBase
             allowSceneObjects = true
         };
 
-        gameObject.SetValueWithoutNotify(act.gameObject);
+        gameObject.SetValueWithoutNotify(Action.gameObject);
         gameObject.RegisterValueChangedCallback(data =>
         {
-            act.gameObject = data.newValue as GameObject;
+            Action.gameObject = data.newValue as GameObject;
 
             MakeDirty();
         });

@@ -1,39 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using UnityEngine.UIElements;
+﻿using UnityEngine.UIElements;
 
-public class CloseMediaNode : ActionNodeBase
+public class CloseMediaNode : ActionNodeWrapper<CloseMediaAction>
 {
-    public CloseMediaNode(CloseMediaAction action) : base(action)
+    public CloseMediaNode(CloseMediaAction Action) : base(Action)
     {
     }
 
     public override void UIContructor()
     {
-        CloseMediaAction act = action as CloseMediaAction;
-
         FloatField fadeTimeField = new FloatField("Время затухания");
 
-        fadeTimeField.SetValueWithoutNotify(act.FadeTime);
+        fadeTimeField.SetValueWithoutNotify(Action.FadeTime);
         fadeTimeField.RegisterValueChangedCallback(value =>
         {
             if (value.newValue < 0)
             {
                 fadeTimeField.SetValueWithoutNotify(0);
-                act.FadeTime = 0;
+                Action.FadeTime = 0;
             }
             else
-                act.FadeTime = value.newValue;
+                Action.FadeTime = value.newValue;
 
             MakeDirty();
         });
 
         Toggle isWaitToggle = new Toggle("Ждать?");
 
-        isWaitToggle.SetValueWithoutNotify(act.IsWait);
+        isWaitToggle.SetValueWithoutNotify(Action.IsWait);
         isWaitToggle.RegisterValueChangedCallback(value =>
         {
-            act.IsWait = value.newValue;
+            Action.IsWait = value.newValue;
 
             MakeDirty();
         });

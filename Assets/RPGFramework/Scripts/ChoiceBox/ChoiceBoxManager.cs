@@ -186,9 +186,9 @@ public class ChoiceBoxManager : ChoiceBase<string>
 
             ChoiceItem choiceitem = ci.GetComponent<ChoiceItem>();
 
-            choiceitem.Initialize();
-
             choiceitem.Title = choice;
+
+            choiceitem.Initialize();
 
             items.Add(choiceitem);
         }

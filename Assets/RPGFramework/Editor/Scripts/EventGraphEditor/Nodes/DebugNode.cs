@@ -4,23 +4,22 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class DebugNode : ActionNodeBase
+[UseActionNode]
+public class DebugNode : ActionNodeWrapper<DebugAction>
 {
-    public DebugNode(DebugAction action) : base(action)
+    public DebugNode(DebugAction Action) : base(Action)
     {
     }
 
     public override void UIContructor()
     {
-        DebugAction da = action as DebugAction;
-
         PopupField<string> popupField = new PopupField<string>("Тип", Enum.GetNames(typeof(DebugAction.WarningLevelType)).ToList(), 0);
 
-        popupField.SetValueWithoutNotify(da.WarningLevel.ToString());
+        popupField.SetValueWithoutNotify(Action.WarningLevel.ToString());
 
         popupField.RegisterValueChangedCallback(i =>
         {
-            da.WarningLevel = Enum.Parse<DebugAction.WarningLevelType>(i.newValue);
+            Action.WarningLevel = Enum.Parse<DebugAction.WarningLevelType>(i.newValue);
 
             MakeDirty();
         });
@@ -30,11 +29,11 @@ public class DebugNode : ActionNodeBase
             multiline = true,
         };
 
-        textField.SetValueWithoutNotify(da.ConsoleOutputText);
+        textField.SetValueWithoutNotify(Action.ConsoleOutputText);
 
         textField.RegisterValueChangedCallback(i =>
         {
-            da.ConsoleOutputText = i.newValue;
+            Action.ConsoleOutputText = i.newValue;
 
             MakeDirty();
         });

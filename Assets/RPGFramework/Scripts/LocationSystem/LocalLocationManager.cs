@@ -14,7 +14,9 @@ public class LocalLocationManager : MonoBehaviour, IManagerInitialize
 
     public void Initialize()
     {
-        LocationObject[] locations = ExplorerManager.Instance.GetComponentsInChildren<LocationObject>();
+        GameObject locationContainer = GameObject.FindGameObjectWithTag("LocationsContainer");
+
+        LocationObject[] locations = locationContainer.GetComponentsInChildren<LocationObject>();
 
         Locations.AddRange(locations);
     }

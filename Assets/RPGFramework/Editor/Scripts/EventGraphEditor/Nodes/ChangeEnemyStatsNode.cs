@@ -1,65 +1,60 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.UIElements;
-using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ChangeEnemyStatsNode : ActionNodeBase
+[UseActionNode]
+public class ChangeEnemyStatsNode : ActionNodeWrapper<ChangeEnemyStatsAction>
 {
-    public ChangeEnemyStatsNode(ChangeEnemyStatsAction action) : base(action)
+    public ChangeEnemyStatsNode(ChangeEnemyStatsAction Action) : base(Action)
     {
     }
 
     public override void UIContructor()
     {
-        ChangeEnemyStatsAction se = action as ChangeEnemyStatsAction;
-
         TextField enemyTagField = new TextField("Тег врага");
 
-        enemyTagField.SetValueWithoutNotify(se.EnemyTag);
+        enemyTagField.SetValueWithoutNotify(Action.EnemyTag);
         enemyTagField.RegisterValueChangedCallback(i =>
         {
-            se.EnemyTag = i.newValue;
+            Action.EnemyTag = i.newValue;
 
             MakeDirty();
         });
 
         IntegerField damageField = new IntegerField("Damage");
 
-        damageField.SetValueWithoutNotify(se.newDamage);
+        damageField.SetValueWithoutNotify(Action.newDamage);
         damageField.RegisterValueChangedCallback(i =>
         {
-            se.newDamage = i.newValue;
+            Action.newDamage = i.newValue;
 
             MakeDirty();
         });
 
         IntegerField defenceField = new IntegerField("Defence");
 
-        defenceField.SetValueWithoutNotify(se.newDefance);
+        defenceField.SetValueWithoutNotify(Action.newDefance);
         defenceField.RegisterValueChangedCallback(i =>
         {
-            se.newDefance = i.newValue;
+            Action.newDefance = i.newValue;
 
             MakeDirty();
         });
 
         IntegerField agilityField = new IntegerField("Agility");
 
-        agilityField.SetValueWithoutNotify(se.newAgility);
+        agilityField.SetValueWithoutNotify(Action.newAgility);
         agilityField.RegisterValueChangedCallback(i =>
         {
-            se.newAgility = i.newValue;
+            Action.newAgility = i.newValue;
 
             MakeDirty();
         });
 
         IntegerField luckField = new IntegerField("Luck");
 
-        luckField.SetValueWithoutNotify(se.newLuck);
+        luckField.SetValueWithoutNotify(Action.newLuck);
         luckField.RegisterValueChangedCallback(i =>
         {
-            se.newLuck = i.newValue;
+            Action.newLuck = i.newValue;
 
             MakeDirty();
         });

@@ -4,42 +4,41 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ChangeEnemyModelAnimationNode : ActionNodeBase
+[UseActionNode]
+public class ChangeEnemyModelAnimationNode : ActionNodeWrapper<ChangeEnemyModelAnimationAction>
 {
-    public ChangeEnemyModelAnimationNode(ChangeEnemyModelAnimationAction action) : base(action)
+    public ChangeEnemyModelAnimationNode(ChangeEnemyModelAnimationAction Action) : base(Action)
     {
     }
 
     public override void UIContructor()
     {
-        ChangeEnemyModelAnimationAction se = action as ChangeEnemyModelAnimationAction;
-
         TextField enemyTagField = new TextField("Тег врага");
 
-        enemyTagField.SetValueWithoutNotify(se.EnemyTag);
+        enemyTagField.SetValueWithoutNotify(Action.EnemyTag);
         enemyTagField.RegisterValueChangedCallback(i =>
         {
-            se.EnemyTag = i.newValue;
+            Action.EnemyTag = i.newValue;
 
             MakeDirty();
         });
 
         TextField animatorTagField = new TextField("Тег аниматора");
 
-        animatorTagField.SetValueWithoutNotify(se.AnimatorTag);
+        animatorTagField.SetValueWithoutNotify(Action.AnimatorTag);
         animatorTagField.RegisterValueChangedCallback(i =>
         {
-            se.AnimatorTag = i.newValue;
+            Action.AnimatorTag = i.newValue;
 
             MakeDirty();
         });
 
         TextField triggerField = new TextField("Триггер");
 
-        triggerField.SetValueWithoutNotify(se.Trigger);
+        triggerField.SetValueWithoutNotify(Action.Trigger);
         triggerField.RegisterValueChangedCallback(i =>
         {
-            se.Trigger = i.newValue;
+            Action.Trigger = i.newValue;
 
             MakeDirty();
         });

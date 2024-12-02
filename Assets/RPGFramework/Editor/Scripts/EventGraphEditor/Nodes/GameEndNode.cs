@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameEndNode : ActionNodeBase
+[UseActionNode]
+public class GameEndNode : ActionNodeWrapper<GameEndAction>
 {
-    public GameEndNode(GameEndAction action) : base(action)
+    public GameEndNode(GameEndAction Action) : base(Action)
     {
     }
 

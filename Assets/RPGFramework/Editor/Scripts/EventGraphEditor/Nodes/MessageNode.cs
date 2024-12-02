@@ -5,7 +5,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[UseActionNode]
+[UseActionNode(contextualMenuPath: "Диалог/Сообщение")]
 public class MessageNode : ActionNodeWrapper<MessageAction>
 {
     private List<TextVisualEffectBase> effectTypes;

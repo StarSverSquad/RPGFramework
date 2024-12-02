@@ -9,9 +9,4 @@ public class ActionNodeWrapper<T> : ActionNode
     {
         
     }
-
-    public virtual string GetContextualMenuPath()
-    {
-        return $"Разное/{GetType().Name}";
-    }
 }

@@ -2854,10 +2854,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Actions:
   - rid: 5872027651667394641
-  - rid: 2550103966965825536
   - rid: 2550103966965825537
+  - rid: 2550103966965825536
   Meta:
     edges:
+    - inputPortName: Input
+      inputNodeGUID: 13dd0f36032e8734f9c0ce13b14c0957
+      outputPortName: Output
+      outputNodeGUID: 25c51d2e11e7b9e4882ae5728552f148
     - inputPortName: Input
       inputNodeGUID: b5d65c29c464d7c489748d99967b5451
       outputPortName: Choice 0
@@ -2870,20 +2874,16 @@ MonoBehaviour:
       inputNodeGUID: b5d65c29c464d7c489748d99967b5451
       outputPortName: Choice 2
       outputNodeGUID: 13dd0f36032e8734f9c0ce13b14c0957
-    - inputPortName: Input
-      inputNodeGUID: 13dd0f36032e8734f9c0ce13b14c0957
-      outputPortName: Output
-      outputNodeGUID: 25c51d2e11e7b9e4882ae5728552f148
     nodes:
     - guid: 25c51d2e11e7b9e4882ae5728552f148
       actionIndex: 0
       position: {x: 250.4, y: 250.4}
-    - guid: 13dd0f36032e8734f9c0ce13b14c0957
-      actionIndex: 1
-      position: {x: 472, y: 184.8}
     - guid: b5d65c29c464d7c489748d99967b5451
-      actionIndex: 2
+      actionIndex: 1
       position: {x: 764.8, y: 266.4}
+    - guid: 13dd0f36032e8734f9c0ce13b14c0957
+      actionIndex: 2
+      position: {x: 509.6, y: 145.6}
   references:
     version: 2
     RefIds:

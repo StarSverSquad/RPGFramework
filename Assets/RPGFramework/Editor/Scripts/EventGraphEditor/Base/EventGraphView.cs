@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static TextActionBase;
 
 public class EventGraphView : GraphView
 {
@@ -16,7 +17,7 @@ public class EventGraphView : GraphView
     public event Action OnMakeDirty;
     public event Action OnSaved;
 
-    private Type[] actionsNodesTypes;
+    private Type[] actionNodeTypes;
 
     public EventGraphView(GraphEvent gEvent)
     {
@@ -30,15 +31,10 @@ public class EventGraphView : GraphView
         var grid = new GridBackground();
         styleSheets.Add(Resources.Load<StyleSheet>("EventGraphViewStyle"));
 
-        actionsNodesTypes = typeof(ActionNode).Assembly
+        actionNodeTypes = typeof(ActionNode).Assembly
                             .GetTypes()
                             .Where(type => type.GetCustomAttribute<UseActionNode>() != null && type.BaseType.Name == "ActionNodeWrapper`1")
                             .ToArray();
-
-        foreach (var item in actionsNodesTypes)
-        {
-            Debug.Log(item.Name);
-        }
 
         Insert(0, grid);
 
@@ -70,9 +66,7 @@ public class EventGraphView : GraphView
     {
         ActionNode node;
 
-        string name = action.GetType().Name.Split("Action")[0];
-
-        Type nodeType = actionsNodesTypes
+        Type nodeType = actionNodeTypes
                         .FirstOrDefault(type => type.BaseType.GetGenericArguments()[0] == action.GetType());
 
         if (nodeType != null)
@@ -138,7 +132,22 @@ public class EventGraphView : GraphView
             }
         }
 
-        evt.menu.AppendAction("Диалог/Сообщение", i => CreateNode(new MessageAction(), mousePosition));
+        foreach (var actionNodeType in actionNodeTypes)
+        {
+            string menuPath = actionNodeType.GetCustomAttribute<UseActionNode>().ContextualMenuPath;
+            Type actionType = actionNodeType.BaseType.GetGenericArguments()[0];
+
+
+            if (!string.IsNullOrEmpty(menuPath))
+            {
+                evt.menu.AppendAction(
+                        menuPath,
+                        i => CreateNode(Activator.CreateInstance(actionType) as GraphActionBase,
+                        mousePosition));
+            }
+        }
+
+        /// Legacy code
         evt.menu.AppendAction("Диалог/Выбор", i => CreateNode(new ChoiceAction(), mousePosition));
 
         evt.menu.AppendAction("Ветвление/Условие", i => CreateNode(new ConditionAction(), mousePosition));
@@ -151,14 +160,12 @@ public class EventGraphView : GraphView
 
         evt.menu.AppendAction("Партия/Изменить состав команды", i => CreateNode(new AddRemoveCharacterAction(), mousePosition));
         evt.menu.AppendAction("Партия/Изменить количетво предмета", i => CreateNode(new ChangeItemCountAction(), mousePosition));
-        //evt.menu.AppendAction("Партия/Двигать персонажа из партии", i => CreateNode(new MoveCharacterAction(), mousePosition));
 
         evt.menu.AppendAction("Аудио/Управление BGM", i => CreateNode(new ManageBGMAction(), mousePosition));
         evt.menu.AppendAction("Аудио/Управление BGS", i => CreateNode(new ManageBGSAction(), mousePosition));
         evt.menu.AppendAction("Аудио/Запуск SE", i => CreateNode(new PlaySEAction(), mousePosition));
         evt.menu.AppendAction("Аудио/Запуск ME", i => CreateNode(new PlayMEAction(), mousePosition));
 
-        //evt.menu.AppendAction("События исследования/Двигать персонажа на сцене", i => CreateNode(new MoveDEOAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Настройка солнечного света", i => CreateNode(new SetupSunLightAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Смена локации", i => CreateNode(new LocationTrasmitionAction(), mousePosition));
         evt.menu.AppendAction("События исследования/Сохранение игры", i => CreateNode(new SaveAction(), mousePosition));
@@ -179,6 +186,7 @@ public class EventGraphView : GraphView
         evt.menu.AppendAction("Конец", i => CreateNode(new EndAction(), mousePosition));
         
         evt.menu.AppendAction("Отладочное событие", i => CreateNode(new DebugAction(), mousePosition));
+        ///
     }
 
     public void MakeDirty()

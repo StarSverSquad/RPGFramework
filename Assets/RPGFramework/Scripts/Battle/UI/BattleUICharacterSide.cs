@@ -39,7 +39,7 @@ public class BattleUICharacterSide : MonoBehaviour
         hpCounter.text = $"{battleCharacterInfo.Heal} / {battleCharacterInfo.MaxHeal}";
         mnCounter.text = $"{battleCharacterInfo.Mana} / {battleCharacterInfo.MaxMana}";
 
-        icon.sprite = battleCharacterInfo.Icon;
+        icon.sprite = battleCharacterInfo.BattleImage;
 
         effectList.UpdateIcons(battleCharacterInfo.States.Select(i => i.Icon).ToArray());
     }

@@ -54,7 +54,7 @@ public class CharacterBox : MonoBehaviour, IDisposable
         UpdateHeal();
         UpdateMana();
 
-        characterImage.sprite = character.Icon;
+        characterImage.sprite = character.BattleImage;
         nameText.text = character.Name;
 
         SetDead(false);

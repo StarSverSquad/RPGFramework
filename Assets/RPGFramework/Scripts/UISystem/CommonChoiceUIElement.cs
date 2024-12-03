@@ -6,11 +6,11 @@ using UnityEngine.UI;
 public class CommonChoiceUIElement : MonoBehaviour
 {
     [SerializeField]
-    private TextMeshProUGUI mainText;
+    protected TextMeshProUGUI mainText;
     [SerializeField]
-    private TextMeshProUGUI counterText;
+    protected TextMeshProUGUI counterText;
     [SerializeField]
-    private Image icon;
+    protected Image icon;
 
     public RectTransform RectTransform => GetComponent<RectTransform>();
 

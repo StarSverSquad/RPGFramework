@@ -51,6 +51,6 @@ public class BattleUICharacterSide : MonoBehaviour
 
     public void Hide()
     {
-        rect.DOAnchorPosX(-200, TraslationTime).SetEase(Ease.OutExpo).Play();             
+        rect.DOAnchorPosX(-350, TraslationTime).SetEase(Ease.OutExpo).Play();             
     }
 }

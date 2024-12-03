@@ -24,7 +24,7 @@ public class CharacterBox : MonoBehaviour, IDisposable
     [SerializeField]
     private GameObject isdead;
 
-    [Tooltip("Fight, Act, Item, Defence")]
+    [Tooltip("Fight, Act, Item, Flee")]
     [SerializeField]
     private Sprite[] actIcons = new Sprite[5];
 
@@ -85,7 +85,7 @@ public class CharacterBox : MonoBehaviour, IDisposable
             case TurnAction.Item:
                 actImage.sprite = actIcons[2];
                 break;
-            case TurnAction.Defence:
+            case TurnAction.Flee:
                 actImage.sprite = actIcons[3];
                 break;
             case TurnAction.Spell:

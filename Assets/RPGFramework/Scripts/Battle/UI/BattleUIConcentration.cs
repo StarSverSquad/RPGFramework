@@ -35,16 +35,16 @@ public class BattleUIConcentration : MonoBehaviour
 
     public void Hide()
     {
-        container.DOAnchorPosY(-344, ShowHideTime).SetEase(Ease.InOutQuad).Play();
+        container.DOAnchorPosX(-400, ShowHideTime).SetEase(Ease.InOutQuad).Play();
     }
 
     public void Show()
     {
-        container.DOAnchorPosY(332, ShowHideTime).SetEase(Ease.InOutQuad).Play();
+        container.DOAnchorPosX(150, ShowHideTime).SetEase(Ease.InOutQuad).Play();
     }
 
-    public void Upper()
+    public void NearWindow()
     {
-        container.DOAnchorPosY(746, UpperTime).SetEase(Ease.InOutQuad).Play();
+        container.DOAnchorPosX(-160, UpperTime).SetEase(Ease.InOutQuad).Play();
     }
 }

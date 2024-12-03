@@ -13,11 +13,21 @@ public class BattleChoiceButton : CommonChoiceUIElement
 
     private Vector2[] startSizesOfFocusEffect = new Vector2[2];
 
+    [SerializeField]
+    private Color commonColor;
+    [SerializeField]
+    private Color lockedColor;
+
+    [SerializeField]
+    private Color textCommonColor;
+    [SerializeField]
+    private Color textFocusColor;
+
     private Color actualColor;
 
     private void Start()
     {
-        actualColor = new Color(0.8f, 0.8f, 0.8f);
+        actualColor = commonColor;
 
         startSizesOfFocusEffect[0] = FocusEffectElements[0].sizeDelta;
         startSizesOfFocusEffect[1] = FocusEffectElements[1].sizeDelta;
@@ -38,16 +48,18 @@ public class BattleChoiceButton : CommonChoiceUIElement
 
     private void OnButtonUnLocked()
     {
-        actualColor = new Color(1, 0.82f, 0);
+        actualColor = commonColor;
     }
 
     private void OnButtonLocked()
     {
-        actualColor = new Color(0.8f, 0.8f, 0.8f);
+        actualColor = lockedColor;
     }
 
     private void OnButtonUnFocus()
     {
+        mainText.color = textCommonColor;
+
         aS[0].Kill(true);
         aS[1].Kill(true);
 
@@ -65,6 +77,8 @@ public class BattleChoiceButton : CommonChoiceUIElement
     {
         FocusEffectElements[0].GetComponent<Image>().enabled = true;
         FocusEffectElements[1].GetComponent<Image>().enabled = true;
+
+        mainText.color = textFocusColor;
 
         Color outColor = actualColor;
         outColor.a = 0;

@@ -11,8 +11,8 @@ public class BattlePipeline : RPGFrameworkBehaviour
     /// </summary>
     public enum ChoiceAction
     {
-        Primary, InterationOrAbility, Interaction, Ability, Entity, Teammate, Enemy,
-        Item, Defence
+        Primary, Special, Interaction, Ability, Entity, Teammate, Enemy,
+        Item, Flee
     }
 
     public BattleData Data => BattleManager.Data;
@@ -349,7 +349,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                             case 1:
                                 currenTurnData.BattleAction = TurnAction.Act;
 
-                                choiceActions.Add(ChoiceAction.InterationOrAbility);
+                                choiceActions.Add(ChoiceAction.Special);
                                 break;
                             // Выбраны вещи
                             case 2:
@@ -359,9 +359,9 @@ public class BattlePipeline : RPGFrameworkBehaviour
                                 break;
                             // Выбрана обарона
                             case 3:
-                                currenTurnData.BattleAction = TurnAction.Defence;
+                                currenTurnData.BattleAction = TurnAction.Flee;
 
-                                choiceActions.Add(ChoiceAction.Defence);
+                                choiceActions.Add(ChoiceAction.Flee);
                                 break;
                             // Неизветсное действие
                             default:
@@ -374,7 +374,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
                     break;
                 // Выбор между взаимодействием и способностью 
-                case ChoiceAction.InterationOrAbility:
+                case ChoiceAction.Special:
                     // Запуск выбора
                     Battle.Choice.InvokeChoiceAct();
 
@@ -658,7 +658,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
                     break;
                 // Выбор защиты или бегства
-                case ChoiceAction.Defence:
+                case ChoiceAction.Flee:
                     // Запуск выбора
                     Battle.Choice.InvokeChoiceDefence();
 
@@ -680,7 +680,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                         }
 
                         // Утанавливаем соотвествующую иконку действия
-                        Battle.UI.CharacterBox.Boxes[currentTurnDataIndex].ChangeAct(TurnAction.Defence);
+                        Battle.UI.CharacterBox.Boxes[currentTurnDataIndex].ChangeAct(TurnAction.Flee);
 
                         NextCharacter();
                     }
@@ -696,11 +696,11 @@ public class BattlePipeline : RPGFrameworkBehaviour
         UI.CharacterSide.Hide();
         UI.PlayerTurnSide.Hide();
         UI.CharacterQuery.Hide();
+        UI.Concentration.NearWindow();
 
         yield return new WaitForSeconds(.5f);
 
         UI.CharacterBox.Show();
-        UI.Concentration.Upper();
 
         yield return new WaitForSeconds(UI.CharacterBox.TraslateContainerTime);
 
@@ -909,7 +909,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                     }
                     break;
                 // Если персонаж обораняется
-                case TurnAction.Defence:
+                case TurnAction.Flee:
                     if (turnData.IsFlee)
                     {
                         Battle.BattleAudio.PlaySound(Data.Flee);

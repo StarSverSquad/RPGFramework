@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18fabe3e78ca4245aa0d76a2af0a2c5, type: 3}
+  m_Name: otrava
+  m_EditorClassIdentifier: 
+  Event: {fileID: 0}
+  Tag: poison
+  Name: otrava
+  Color: {r: 0.14541732, g: 0.8773585, b: 0.07035423, a: 0.80784315}
+  Icon: {fileID: -1067524621, guid: 43a40bfc1d0a404438f3a7f4ccf8b0e6, type: 3}
+  SkipTurn: 0
+  OnlyForBattle: 0
+  AddHeal: -10
+  AddMana: 0
+  AddDamage: 0
+  AddDefence: 0
+  AddAgility: 0
+  AddLuck: 0
+  TurnCount: 3

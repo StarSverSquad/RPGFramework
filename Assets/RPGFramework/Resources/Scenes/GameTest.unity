@@ -1015,6 +1015,104 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 35182848}
   m_CullTransparentMesh: 1
+--- !u!1 &44749969
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 44749970}
+  - component: {fileID: 44749972}
+  - component: {fileID: 44749971}
+  m_Layer: 6
+  m_Name: "\u0413\u0440\u044B\u043D\u044E\u043A"
+  m_TagString: Untagged
+  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &44749970
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44749969}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.96, y: 2.45, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4541639996532272930}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &44749971
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44749969}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
+--- !u!114 &44749972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 44749969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f92c8edad02c4274bba17723d560f98b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Interaction: 5
+  DynamicOrderChange: 0
+  hasExecuted: 0
+  OnlyOne: 0
+  CacheResult: 0
+  Parallel: 0
+  Event: {fileID: 1096451616}
 --- !u!114 &56989206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2469,12 +2567,13 @@ MonoBehaviour:
   - rid: 6736345329577230336
   - rid: 6736345329577230337
   - rid: 6736345346795634689
-  - rid: 6736345346795634690
   - rid: 6736345346795634691
-  - rid: 6736345329577230338
   - rid: 6736345346795634688
   - rid: 6736345346795634692
   - rid: 6736345346795634693
+  - rid: 6736345329577230338
+  - rid: 6736345346795634690
+  - rid: 5872027692484526161
   Meta:
     edges:
     - inputPortName: Input
@@ -2490,13 +2589,13 @@ MonoBehaviour:
       outputPortName: Output
       outputNodeGUID: 685e6ad0be43bd84ba5e028eb9f1a81a
     - inputPortName: Input
-      inputNodeGUID: a056bb82d107bc3458feb307abcee610
-      outputPortName: Output
-      outputNodeGUID: 4d990f601a841d34cbc8542e1527c4e0
-    - inputPortName: Input
       inputNodeGUID: 4d990f601a841d34cbc8542e1527c4e0
       outputPortName: Output
       outputNodeGUID: c29b5fe73629b7442a5701c16e8b61a7
+    - inputPortName: Input
+      inputNodeGUID: f229af58d202bf24d8ffea17508519e8
+      outputPortName: Output
+      outputNodeGUID: f881a06dadfcc0e4ba1022d54a87c11a
     - inputPortName: Input
       inputNodeGUID: 8debb04cbd5ae4d42980dc9c1d14e0c1
       outputPortName: Output
@@ -2506,40 +2605,55 @@ MonoBehaviour:
       outputPortName: Output
       outputNodeGUID: 8debb04cbd5ae4d42980dc9c1d14e0c1
     - inputPortName: Input
-      inputNodeGUID: f229af58d202bf24d8ffea17508519e8
+      inputNodeGUID: 1abd4be09ec661649b172723dd61bdf7
       outputPortName: Output
-      outputNodeGUID: f881a06dadfcc0e4ba1022d54a87c11a
+      outputNodeGUID: 4d990f601a841d34cbc8542e1527c4e0
+    - inputPortName: Input
+      inputNodeGUID: a056bb82d107bc3458feb307abcee610
+      outputPortName: Output
+      outputNodeGUID: 1abd4be09ec661649b172723dd61bdf7
     nodes:
     - guid: 0a36817baf1095d44bdec87287e05458
       actionIndex: 0
-      position: {x: 250.4, y: 250.4}
+      position: {x: 250, y: 250}
     - guid: dca730474d2bcbe4fb9bf1e9bf3f7f31
       actionIndex: 1
-      position: {x: 431.2, y: 208}
+      position: {x: 431, y: 208}
     - guid: 685e6ad0be43bd84ba5e028eb9f1a81a
       actionIndex: 2
-      position: {x: 1848, y: 271.2}
-    - guid: 4d990f601a841d34cbc8542e1527c4e0
-      actionIndex: 3
-      position: {x: 2472, y: 312.8}
+      position: {x: 1848, y: 271}
     - guid: c29b5fe73629b7442a5701c16e8b61a7
-      actionIndex: 4
-      position: {x: 2154.4, y: 313.6}
-    - guid: a056bb82d107bc3458feb307abcee610
-      actionIndex: 5
-      position: {x: 2791.2, y: 308.8}
+      actionIndex: 3
+      position: {x: 2154, y: 314}
     - guid: f881a06dadfcc0e4ba1022d54a87c11a
-      actionIndex: 6
-      position: {x: 818.4, y: 223.2}
+      actionIndex: 4
+      position: {x: 818, y: 223}
     - guid: f229af58d202bf24d8ffea17508519e8
-      actionIndex: 7
-      position: {x: 1137.6, y: 249.6}
+      actionIndex: 5
+      position: {x: 1138, y: 250}
     - guid: 8debb04cbd5ae4d42980dc9c1d14e0c1
+      actionIndex: 6
+      position: {x: 1478, y: 246}
+    - guid: a056bb82d107bc3458feb307abcee610
+      actionIndex: 7
+      position: {x: 3379, y: 325}
+    - guid: 4d990f601a841d34cbc8542e1527c4e0
       actionIndex: 8
-      position: {x: 1477.6, y: 245.6}
+      position: {x: 2472, y: 313}
+    - guid: 1abd4be09ec661649b172723dd61bdf7
+      actionIndex: 9
+      position: {x: 2852, y: 298}
   references:
     version: 2
     RefIds:
+    - rid: 5872027692484526161
+      type: {class: ChangeItemCountAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 6736345329577230338
+        Item: {fileID: 11400000, guid: b5bb1387b3d000c41a2715cd72b430dd, type: 2}
+        Count: 3
+        IsSet: 0
     - rid: 6736345329577230336
       type: {class: StartAction, ns: , asm: Assembly-CSharp}
       data:
@@ -2579,7 +2693,7 @@ MonoBehaviour:
       type: {class: ChangeItemCountAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions:
-        - rid: 6736345329577230338
+        - rid: 5872027692484526161
         Item: {fileID: 11400000, guid: 786d248c8eb5c024ab810cb49339daa8, type: 2}
         Count: 99
         IsSet: 0
@@ -2607,7 +2721,7 @@ MonoBehaviour:
         - rid: 6736345346795634689
         isAdd: 1
         updateModels: 1
-        character: {fileID: 11400000, guid: c587648662ba9514494323c6ce7efe1b, type: 2}
+        character: {fileID: 11400000, guid: a5ecbc99ea023a143b17c46e6ec51a2a, type: 2}
         existentObject: {fileID: 0}
 --- !u!1 &547604423
 GameObject:
@@ -5173,6 +5287,123 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce44f432308fc3046841a282038c3e9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1096451616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a07e43a344a4a5f438c0481d93a21355, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Actions:
+  - rid: 5872027692484526152
+  - rid: 5872027692484526153
+  - rid: 5872027692484526154
+  - rid: 5872027692484526155
+  - rid: 5872027692484526156
+  - rid: 5872027692484526157
+  Meta:
+    edges:
+    - inputPortName: Input
+      inputNodeGUID: f104d367c5561f54695809ff9819e005
+      outputPortName: Output
+      outputNodeGUID: 6dda0cf38b06de84cb0d4db19cc6cec2
+    - inputPortName: Input
+      inputNodeGUID: e5aee206d834dcb47b71cbbcb8f193bd
+      outputPortName: Output
+      outputNodeGUID: f104d367c5561f54695809ff9819e005
+    - inputPortName: Input
+      inputNodeGUID: 2bba57c7af8e0864d93925493612f53e
+      outputPortName: Output
+      outputNodeGUID: e5aee206d834dcb47b71cbbcb8f193bd
+    - inputPortName: Input
+      inputNodeGUID: a0834783c94e72742acfe1447320aa50
+      outputPortName: Then
+      outputNodeGUID: ef2620d60fdcdba458ee37770dc4e9a4
+    - inputPortName: Input
+      inputNodeGUID: ef2620d60fdcdba458ee37770dc4e9a4
+      outputPortName: Output
+      outputNodeGUID: 2bba57c7af8e0864d93925493612f53e
+    nodes:
+    - guid: 6dda0cf38b06de84cb0d4db19cc6cec2
+      actionIndex: 0
+      position: {x: 250, y: 250}
+    - guid: f104d367c5561f54695809ff9819e005
+      actionIndex: 1
+      position: {x: 435, y: 131}
+    - guid: e5aee206d834dcb47b71cbbcb8f193bd
+      actionIndex: 2
+      position: {x: 759, y: 112}
+    - guid: 2bba57c7af8e0864d93925493612f53e
+      actionIndex: 3
+      position: {x: 950, y: 112}
+    - guid: ef2620d60fdcdba458ee37770dc4e9a4
+      actionIndex: 4
+      position: {x: 1248, y: 122}
+    - guid: a0834783c94e72742acfe1447320aa50
+      actionIndex: 5
+      position: {x: 1654, y: 159}
+  references:
+    version: 2
+    RefIds:
+    - rid: 5872027692484526152
+      type: {class: StartAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 5872027692484526153
+    - rid: 5872027692484526153
+      type: {class: MessageAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 5872027692484526154
+        message:
+          text: "\u0410 \u0433\u0434\u0435 \u043F\u0438\u0432\u043E?"
+          speed: 0
+          clear: 1
+          wait: 1
+          name: 
+          closeWindow: 1
+          letterSound: {fileID: 0}
+          image: {fileID: 365996475, guid: e4547c401ed1aaf45906d594afcf674d, type: 3}
+          position: 0
+          textEffectTypeName: None
+    - rid: 5872027692484526154
+      type: {class: WaitAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 5872027692484526155
+        time: 3
+    - rid: 5872027692484526155
+      type: {class: MessageAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 5872027692484526156
+        message:
+          text: "\u0413\u0420\u042B\u041D\u042E\u041A \u0417\u0410\u041B\u0423\u041F\u0410?!?!"
+          speed: 0
+          clear: 1
+          wait: 1
+          name: 
+          closeWindow: 1
+          letterSound: {fileID: 0}
+          image: {fileID: 365996475, guid: e4547c401ed1aaf45906d594afcf674d, type: 3}
+          position: 0
+          textEffectTypeName: None
+    - rid: 5872027692484526156
+      type: {class: InvokeBattleAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 5872027692484526157
+        battle: {fileID: 11400000, guid: 69608e378443a134c8b51eb11bd292db, type: 2}
+        fleePort: 0
+    - rid: 5872027692484526157
+      type: {class: EndAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions: []
 --- !u!224 &1170069087 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4829175247268643356, guid: ae57416b9eadcb845958953b0abf3b39, type: 3}
@@ -12842,6 +13073,7 @@ Transform:
   m_Children:
   - {fileID: 690669125}
   - {fileID: 1354287381}
+  - {fileID: 44749970}
   - {fileID: 335719317}
   - {fileID: 228149447}
   m_Father: {fileID: 5125654499283723096}

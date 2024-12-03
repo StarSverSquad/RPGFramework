@@ -77,5 +77,5 @@
 
 public enum TurnAction
 {
-    None, Fight, Act, Item, Defence, Spell
+    None, Fight, Act, Item, Flee, Spell
 }

@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[UseActionNode]
+[UseActionNode(contextualMenuPath: "События исследования/Перемещение персонажа")]
 public class TranslateCharacterNode : ActionNodeWrapper<TranslateCharacterAction>
 {
     public TranslateCharacterNode(TranslateCharacterAction Action) : base(Action)

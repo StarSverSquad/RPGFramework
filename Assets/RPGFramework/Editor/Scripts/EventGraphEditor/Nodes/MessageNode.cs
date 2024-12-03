@@ -56,12 +56,12 @@ public class MessageNode : ActionNodeWrapper<MessageAction>
             label: "Ждать?");
 
         Toggle clearToggle = BuildToggle(
-            Action.message.wait,
+            Action.message.clear,
             val => Action.message.clear = val,
             label: "Очистить?");
 
         Toggle closeToggle = BuildToggle(
-            Action.message.wait,
+            Action.message.closeWindow,
             val => Action.message.closeWindow = val,
             label: "Закрыть?");
 

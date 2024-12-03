@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class LocalCharacterManager : MonoBehaviour, IManagerInitialize
+public class LocalCharacterManager : RPGFrameworkBehaviour
 {
     public RPGCharacter[] Characters => GameManager.Instance.Character.Characters;
 
@@ -22,10 +22,10 @@ public class LocalCharacterManager : MonoBehaviour, IManagerInitialize
 
     private float distance = 0;
 
-    private PlayerExplorerMovement PlayerMovement => ExplorerManager.PlayerMovement;
-    private ExplorerEventHandler EventHandler => ExplorerManager.Instance.EventHandler;
+    private PlayerExplorerMovement PlayerMovement => Explorer.PlayerManager.movement;
+    private ExplorerEventHandler EventHandler => Explorer.EventHandler;
 
-    public void Initialize()
+    public override void Initialize()
     {
         PlayerMovement.OnMoving += Movement_OnMoving;
         PlayerMovement.OnStopMoving += Movement_OnStopMoving;
@@ -84,7 +84,7 @@ public class LocalCharacterManager : MonoBehaviour, IManagerInitialize
 
     private void Movement_OnStopMoving()
     {
-        if (Models.Count == 0 || EventHandler.EventRuning)
+        if (Models.Count == 0 || (EventHandler.HandledEvent && !PlayerMovement.IsAutoMoving))
             return;
 
         for (int i = 0; i < Models.Count; i++)
@@ -98,7 +98,7 @@ public class LocalCharacterManager : MonoBehaviour, IManagerInitialize
 
     private void Movement_OnMoving()
     {
-        if (Models.Count == 0 || EventHandler.EventRuning)
+        if (Models.Count == 0 || (EventHandler.HandledEvent && !PlayerMovement.IsAutoMoving))
             return;
 
         float scalarvelocity = updateSpeed * Time.fixedDeltaTime;
@@ -140,12 +140,12 @@ public class LocalCharacterManager : MonoBehaviour, IManagerInitialize
         }
     }
 
-    private void PlayerMovement_OnRotate(CommonDirection obj)
+    private void PlayerMovement_OnRotate(CommonDirection direction)
     {
         if (Models.Count == 0)
             return;
 
-        Models[0].AnimateMove(obj);
+        Models[0].AnimateMove(direction);
     }
 
     private void EventHandler_OnHandle()

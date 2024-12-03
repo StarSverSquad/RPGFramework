@@ -9,9 +9,9 @@ public class RPGCharacter : RPGEntity
     [Header("Настройки персонажа")]
     public string Class;
 
-    public Sprite Icon;
-    public Sprite BigIcon;
-    public Sprite BattleIcon;
+    public Sprite CommonImage;
+    public Sprite BattleImage;
+    public Sprite BattleSmallImage;
 
     public Color Color;
 

@@ -38,6 +38,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
     public int TurnCounter { get; private set; }
 
     private int currentTurnDataIndex = 0;
+    public int CurrentTurnDataIndex => currentTurnDataIndex;
 
     private Coroutine main = null;
 
@@ -328,9 +329,11 @@ public class BattlePipeline : RPGFrameworkBehaviour
                     {
                         if (currentTurnDataIndex != 0)
                         {
-                            UI.CharacterQuery.PreviouslyCharacter();
+                            
+                            //UI.CharacterQuery.PreviouslyCharacter();
                             currentTurnDataIndex--;
                         }
+                        UI.CharacterQuery.UpdatePositions();
                         Battle.UI.CharacterBox.Boxes[currentTurnDataIndex].ChangeAct(TurnAction.None);
                     } 
                     else
@@ -1021,7 +1024,8 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
         if (currentTurnDataIndex < Data.TurnsData.Count)
         {
-            UI.CharacterQuery.NextCharacter();
+            UI.CharacterQuery.UpdatePositions();
+            //UI.CharacterQuery.NextCharacter();
         }
 
         choiceActions.Clear();

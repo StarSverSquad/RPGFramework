@@ -16,16 +16,19 @@ public class BattleUIConcentration : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI counter;
 
-    public float ShowHideTime => 0.75f;
-    public float UpperTime => 0.25f;
+    public float ShowHideTime = 0.75f;
+    public float NearWindowTime = 0.25f;
+
+    public Color BarNormal;
+    public Color BarDark;
 
     public void SetConcentration(int value)
     {
         float ySize = (value / 100f) * barBg.sizeDelta.y;
 
         barFront.DOSizeDelta(new Vector2(barFront.sizeDelta.x, ySize), 0.15f).SetEase(Ease.OutCirc).Play();
-        barFront.GetComponent<Image>().DOColor(new Color(.1f, 0.52f, 0), 0.4f)
-            .From(new Color(.16f, 0.72f, 0.014f)).SetEase(Ease.OutCirc).Play();
+
+        barFront.GetComponent<Image>().DOColor(BarNormal, 0.4f).From(BarDark).SetEase(Ease.OutCirc).Play();
 
         if (value >= 100)
             counter.text = "ПОЛНАЯ!";
@@ -45,6 +48,6 @@ public class BattleUIConcentration : MonoBehaviour
 
     public void NearWindow()
     {
-        container.DOAnchorPosX(-160, UpperTime).SetEase(Ease.InOutQuad).Play();
+        container.DOAnchorPosX(-160, NearWindowTime).SetEase(Ease.InOutQuad).Play();
     }
 }

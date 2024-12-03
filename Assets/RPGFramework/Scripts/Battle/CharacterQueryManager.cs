@@ -1,10 +1,12 @@
 ﻿using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.Progress;
 
-public class CharacterQueryManager : MonoBehaviour
+public class CharacterQueryManager : RPGFrameworkBehaviour
 {
     [SerializeField]
     private RectTransform content;
@@ -18,11 +20,15 @@ public class CharacterQueryManager : MonoBehaviour
     [SerializeField]
     private float offset;
 
+    private int CurrentCharacterIndex => Battle.Pipeline.CurrentTurnDataIndex;
+
     private Tween contentTw;
+
+    private Coroutine updatePisitionCoroutine = null;
 
     public void Show()
     {
-        float currentOffset = offset;
+        float currentOffset = -content.sizeDelta.y;
 
         foreach (var turnsData in BattleManager.Data.TurnsData.Skip(1))
         {
@@ -56,24 +62,12 @@ public class CharacterQueryManager : MonoBehaviour
         contentTw = content.DOAnchorPosY(-content.sizeDelta.y, 0.5f).SetEase(Ease.OutCirc).Play();
     }
 
-    public void NextCharacter()
+    public void UpdatePositions()
     {
-        foreach (var item in elements)
-        {
-            var rect = item.GetComponent<RectTransform>();
+        if (updatePisitionCoroutine != null)
+            StopCoroutine(updatePisitionCoroutine);
 
-             rect.DOAnchorPosY(-(offset + rect.sizeDelta.y), 0.25f).SetRelative().SetEase(Ease.OutCirc).Play();
-        }
-    }
-
-    public void PreviouslyCharacter()
-    {
-        foreach (var item in elements)
-        {
-            var rect = item.GetComponent<RectTransform>();
-
-            rect.DOAnchorPosY(offset + rect.sizeDelta.y, 0.25f).SetRelative().SetEase(Ease.OutCirc).Play();
-        }
+        updatePisitionCoroutine = StartCoroutine(UpdatePisitionCoroutine());
     }
 
     private IEnumerator QueryCoroutine()
@@ -86,6 +80,47 @@ public class CharacterQueryManager : MonoBehaviour
 
             yield return new WaitForSeconds(.25f);
         }
+    }
+
+    private IEnumerator NextCharacterCoroutine()
+    {
+        foreach (var item in elements)
+        {
+            var rect = item.GetComponent<RectTransform>();
+
+            rect.DOKill();
+            rect.DOAnchorPosY(-(offset + rect.sizeDelta.y), 0.25f).SetRelative().SetEase(Ease.OutCirc).Play();
+
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    private IEnumerator PreviouslyCharacterCoroutine()
+    {
+        foreach (var item in elements)
+        {
+            var rect = item.GetComponent<RectTransform>();
+
+            rect.DOKill();
+            rect.DOAnchorPosY(offset + rect.sizeDelta.y, 0.25f).SetRelative().SetEase(Ease.OutCirc).Play();
+
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    private IEnumerator UpdatePisitionCoroutine()
+    {
+        for (int i = 0; i < elements.Count; i++)
+        {
+            var rect = elements[i].GetComponent<RectTransform>();
+
+            rect.DOAnchorPosY(offset - (rect.sizeDelta.y * CurrentCharacterIndex) + (rect.sizeDelta.y * i) - content.sizeDelta.y, 0.25f)
+                .SetEase(Ease.OutCirc).Play();
+
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        updatePisitionCoroutine = null;
     }
 
     private void OnDestroy()

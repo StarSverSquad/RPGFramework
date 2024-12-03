@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,10 +19,7 @@ public class CharacterQueryElement : MonoBehaviour
     private TextMeshProUGUI characterNameTxt;
 
     [SerializeField]
-    private TextMeshProUGUI healCounter;
-
-    [SerializeField]
-    private TextMeshProUGUI manaCounter;
+    private IconList iconList;
 
     [SerializeField]
     private LineBar healBar;
@@ -35,12 +33,11 @@ public class CharacterQueryElement : MonoBehaviour
     public void Initialize(RPGCharacter character)
     {
         gradient.color = character.Color;
-        icon.sprite = character.BattleImage;
+        icon.sprite = character.BattleSmallImage;
 
         characterNameTxt.text = character.Name;
 
-        healCounter.text = $"{character.Heal} / {character.MaxHeal}";
-        manaCounter.text = $"{character.Mana} / {character.MaxMana}";
+        iconList.UpdateIcons(character.States.Select(i => i.Icon).ToArray());
 
         healBar.SetValue((float)character.Heal / (float)character.MaxHeal);
         manaBar.SetValue((float)character.Mana / (float)character.MaxMana);

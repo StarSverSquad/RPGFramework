@@ -28,7 +28,7 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
 
     public void Show()
     {
-        float currentOffset = -content.sizeDelta.y;
+        float currentOffset = offset;
 
         foreach (var turnsData in BattleManager.Data.TurnsData.Skip(1))
         {
@@ -54,6 +54,7 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
     {
         foreach (var item in elements)
         {
+            item.GetComponent<RectTransform>().DOKill();
             item.StopAnimation();
             Destroy(item.gameObject);
         }
@@ -114,7 +115,7 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
         {
             var rect = elements[i].GetComponent<RectTransform>();
 
-            rect.DOAnchorPosY(offset - (rect.sizeDelta.y * CurrentCharacterIndex) + (rect.sizeDelta.y * i) - content.sizeDelta.y, 0.25f)
+            rect.DOAnchorPosY(offset + ((rect.sizeDelta.y + offset) * i) - ((rect.sizeDelta.y + offset) * CurrentCharacterIndex), 0.25f)
                 .SetEase(Ease.OutCirc).Play();
 
             yield return new WaitForSeconds(0.1f);

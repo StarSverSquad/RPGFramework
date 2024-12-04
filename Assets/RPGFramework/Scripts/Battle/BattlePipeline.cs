@@ -280,6 +280,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
         Choice.PrimaryChoice.SetActive(true);
 
         int actionIndex = 0;
+        bool isCancelChoice = false;
 
         // Установление иконки действия
         for (int i = 0; i < Data.TurnsData.Count; i++)
@@ -293,11 +294,24 @@ public class BattlePipeline : RPGFrameworkBehaviour
             // Если персонаж пал или пропускает ход или не может ничего делать в битве, то его надо пропустить
             if (currenTurnData.IsDead || currenTurnData.Character.States.Any(i => i.SkipTurn) || !currenTurnData.Character.CanMoveInBattle)
             {
-                currenTurnData.BattleAction = TurnAction.None;
-                currentTurnDataIndex++;
+                if (isCancelChoice && currentTurnDataIndex != 0)
+                {
+                    currentTurnDataIndex--;
+                }
+                else
+                {
+                    currenTurnData.BattleAction = TurnAction.None;
+                    currentTurnDataIndex++;
+
+                    isCancelChoice = false;
+
+                }
                 continue;
             }
-                
+            isCancelChoice = false;
+
+            UI.CharacterQuery.UpdatePositions();
+
             // Установка первичного действия
             if (choiceActions.Count == 0)
             {
@@ -329,11 +343,9 @@ public class BattlePipeline : RPGFrameworkBehaviour
                     {
                         if (currentTurnDataIndex != 0)
                         {
-                            
-                            //UI.CharacterQuery.PreviouslyCharacter();
                             currentTurnDataIndex--;
+                            isCancelChoice = true;
                         }
-                        UI.CharacterQuery.UpdatePositions();
                         Battle.UI.CharacterBox.Boxes[currentTurnDataIndex].ChangeAct(TurnAction.None);
                     } 
                     else
@@ -1024,7 +1036,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
         if (currentTurnDataIndex < Data.TurnsData.Count)
         {
-            UI.CharacterQuery.UpdatePositions();
+            //UI.CharacterQuery.UpdatePositions();
             //UI.CharacterQuery.NextCharacter();
         }
 

@@ -722,11 +722,11 @@ public class BattlePipeline : RPGFrameworkBehaviour
         // Выключение первичного выбора
         Choice.PrimaryChoice.SetActive(false);
 
-        bool saveQTE = false;
-
         /// ЦИКЛ ПОСЛЕДСВИЙ ВЫБОРА
-        foreach (var turnData in Data.TurnsData)
+        for (int charIndex = 0; charIndex < Data.TurnsData.Count; charIndex++)
         {
+            var turnData = Data.TurnsData[charIndex];
+
             bool flee = false;
 
             RPGCharacter currentCharacter = turnData.Character;
@@ -734,13 +734,6 @@ public class BattlePipeline : RPGFrameworkBehaviour
             // Если персонаж пал или пропускает ход или не может ничего делать в битве, то его надо пропустить 
             if (turnData.IsDead || currentCharacter.States.Any(i => i.SkipTurn) || !currentCharacter.CanMoveInBattle)
                 continue;
-
-            if (saveQTE && turnData.BattleAction != TurnAction.Fight)
-            {
-                saveQTE = false;
-
-                Battle.AttackQTE.Hide();
-            }
 
             UI.CharacterBox.FocusBox(currentCharacter);
 
@@ -764,12 +757,10 @@ public class BattlePipeline : RPGFrameworkBehaviour
                         // Запуск QTE атаки
                         Battle.AttackQTE.Show();
 
-                        if (!saveQTE)
-                            yield return new WaitForSeconds(2f);
+                        if (!Battle.AttackQTE.IsShowed)
+                            yield return new WaitForSeconds(1f);
 
                         Battle.AttackQTE.Invoke();
-
-                        saveQTE = true;
 
                         yield return new WaitWhile(() => Battle.AttackQTE.QTE.IsWorking);
 
@@ -1033,12 +1024,6 @@ public class BattlePipeline : RPGFrameworkBehaviour
     private void NextCharacter()
     {
         currentTurnDataIndex++;
-
-        if (currentTurnDataIndex < Data.TurnsData.Count)
-        {
-            //UI.CharacterQuery.UpdatePositions();
-            //UI.CharacterQuery.NextCharacter();
-        }
 
         choiceActions.Clear();
     }

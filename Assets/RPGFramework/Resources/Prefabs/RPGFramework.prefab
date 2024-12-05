@@ -2376,7 +2376,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: -103.00001}
+  m_AnchoredPosition: {x: 0, y: -125}
   m_SizeDelta: {x: 1920, y: 204.96}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2538940439903334905
@@ -3727,7 +3727,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -655}
+  m_AnchoredPosition: {x: 0, y: -654}
   m_SizeDelta: {x: 787.99, y: 201}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &4076088417765240838
@@ -4379,20 +4379,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 8568455353698621480}
+  container: {fileID: 8099042202753836452}
   sliderRigthPosition: {x: 416, y: 0}
   sliderLeftPosition: {x: -416, y: 0}
   sliderImage: {fileID: 1785640856818631822}
+  qteEffectLine: {fileID: 6887433770037451081, guid: e3de7553013c4d6469f81b21788c8095, type: 3}
   sliderColors:
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 0.7584905, g: 0, b: 0, a: 1}
   - {r: 0.8037735, g: 0.5144585, b: 0, a: 1}
   damageFactor: 0
-  MissFactor: 0
-  VeryBadFactor: 0.25
-  BadFactor: 0.5
-  MediumFactor: 0.75
-  GoodFactor: 1
-  CritFactor: 1.25
   isWorking: 0
   isSkip: 0
   sliderCurve:
@@ -4419,14 +4415,57 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  FirstVeryBadBorder: 0
-  BadBorder: 0.123
-  MediumBorder: 0.225
-  FirstGoodBorder: 0.358
-  CritBorder: 0.492
-  SecoundGoodBorder: 0.599
-  SecoundVeryBadBorder: 0.743
-  MissBorder: 0.877
+  damageCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: -0.00040894747
+      inSlope: 2.223102
+      outSlope: 2.223102
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.45000002
+      value: 0.9999871
+      inSlope: 1.0895395
+      outSlope: 1.0895395
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.2508415
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.51
+      value: 1.2500086
+      inSlope: 0.18535258
+      outSlope: 0.18535258
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.87932044
+    - serializedVersion: 3
+      time: 0.55
+      value: 0.99999785
+      inSlope: -1.1215155
+      outSlope: -1.1215155
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.20775849
+    - serializedVersion: 3
+      time: 1
+      value: 0.000017554266
+      inSlope: -2.2221785
+      outSlope: -2.2221785
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!114 &204827173952449386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4442,7 +4481,7 @@ MonoBehaviour:
   qteContainer: {fileID: 8099042202753836452}
   qte: {fileID: 4077990758106147915}
   hidenRectPosition: {x: 0, y: -677}
-  showedRectPosition: {x: 0, y: -190}
+  showedRectPosition: {x: 0, y: -180}
 --- !u!1 &5114348691609866395
 GameObject:
   m_ObjectHideFlags: 0
@@ -6259,7 +6298,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2087184418231758631
 Transform:
   m_ObjectHideFlags: 0
@@ -7912,7 +7951,7 @@ MonoBehaviour:
   container: {fileID: 6336811242700693367}
   mask: {fileID: 8705279458417187229}
   background: {fileID: 8211212471000570547}
-  Margin: {x: 0.1, y: 0.1, z: 0.1, w: 0.1}
+  Margin: {x: 0.25, y: 0.25, z: 0.25, w: 0.25}
 --- !u!1 &8495582979392728802
 GameObject:
   m_ObjectHideFlags: 0

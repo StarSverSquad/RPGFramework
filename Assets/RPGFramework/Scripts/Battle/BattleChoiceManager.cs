@@ -200,8 +200,8 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
             if (current.BattleAction == TurnAction.Item)
             {
-                info.locked = !current.IsConsumed &&
-                    (turnData.IsDead && !consumed.ForDeath) || (!turnData.IsDead == !consumed.ForAlive);
+                info.locked = !(current.IsConsumed &&
+                    (turnData.IsDead && consumed.ForDeath) || (!turnData.IsDead && consumed.ForAlive));
             }
             else if (current.BattleAction == TurnAction.Act)
             {

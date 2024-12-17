@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+// Код требует рефакторинг
 public class CharacterQueryManager : RPGFrameworkBehaviour
 {
     [SerializeField]
@@ -59,6 +60,7 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
         }
 
         updateCoroutine = StartCoroutine(UpdateCoroutine());
+        StartCoroutine(WaveCoroutine());
 
         contentTw = content.DOAnchorPosY(0, 0.5f).SetEase(Ease.OutCirc).Play();
     }
@@ -67,7 +69,7 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
         foreach (var item in elements)
         {
             item.GetComponent<RectTransform>().DOKill();
-            //item.StopAnimation();
+            item.StopAnimation();
             Destroy(item.gameObject);
         }
         elements.Clear();

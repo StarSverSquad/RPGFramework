@@ -20,15 +20,19 @@ public class CharacterQueryElement : MonoBehaviour
 
     [SerializeField]
     private IconList iconList;
-
     [SerializeField]
     private LineBar healBar;
-
     [SerializeField]
     private LineBar manaBar;
 
+    [SerializeField]
+    private float moveDuration = 0.2f;
+
+    private RectTransform rectTransform;
+
     // <-- -->
     private Sequence animation0;
+    private Tween moveAnimation;
 
     public void Initialize(RPGCharacter character)
     {
@@ -41,6 +45,8 @@ public class CharacterQueryElement : MonoBehaviour
 
         healBar.SetValue((float)character.Heal / (float)character.MaxHeal);
         manaBar.SetValue((float)character.Mana / (float)character.MaxMana);
+
+        rectTransform = GetComponent<RectTransform>();
     }
 
     public void StartAnimation()
@@ -56,6 +62,16 @@ public class CharacterQueryElement : MonoBehaviour
         animation0.SetLoops(-1).SetDelay(0.5f).Play();
     }
 
+    public void MoveToPoint(Vector2 rectPoint, Vector2 fromPoint)
+    {
+        if (moveAnimation != null)
+            moveAnimation.Kill();
+
+        rectTransform.anchoredPosition = fromPoint;
+
+        moveAnimation = rectTransform.DOAnchorPos(rectPoint, moveDuration).Play();
+    }
+
     public void StopAnimation()
     {
         animation0.Kill(true);
@@ -64,5 +80,6 @@ public class CharacterQueryElement : MonoBehaviour
     private void OnDestroy()
     {
         animation0.Kill();
+        moveAnimation.Kill();
     }
 }

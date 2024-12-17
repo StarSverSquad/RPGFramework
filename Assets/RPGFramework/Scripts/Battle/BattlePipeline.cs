@@ -298,6 +298,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                 if (isCancelChoice && currentTurnDataIndex != 0)
                 {
                     currentTurnDataIndex--;
+                    UI.CharacterQuery.PreviewPosition();
                 }
                 else
                 {
@@ -310,8 +311,6 @@ public class BattlePipeline : RPGFrameworkBehaviour
                 continue;
             }
             isCancelChoice = false;
-
-            UI.CharacterQuery.UpdatePositions();
 
             // Установка первичного действия
             if (choiceActions.Count == 0)
@@ -345,6 +344,8 @@ public class BattlePipeline : RPGFrameworkBehaviour
                         if (currentTurnDataIndex != 0)
                         {
                             currentTurnDataIndex--;
+
+                            UI.CharacterQuery.PreviewPosition();
                             isCancelChoice = true;
                         }
                         Battle.UI.CharacterBox.Boxes[currentTurnDataIndex].ChangeAct(TurnAction.None);
@@ -991,6 +992,8 @@ public class BattlePipeline : RPGFrameworkBehaviour
     private void NextCharacter()
     {
         Battle.UI.CharacterBox.Boxes[currentTurnDataIndex].ChangeAct(Data.TurnsData[currentTurnDataIndex].BattleAction);
+
+        UI.CharacterQuery.NextPosition();
 
         currentTurnDataIndex++;
 

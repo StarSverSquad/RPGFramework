@@ -8,6 +8,13 @@ using UnityEngine;
 public class CharacterQueryManager : RPGFrameworkBehaviour
 {
     [SerializeField]
+    private RectTransform inSlot;
+    [SerializeField]
+    private RectTransform outSlot;
+    [SerializeField]
+    private RectTransform[] slots = new RectTransform[5];
+
+    [SerializeField]
     private RectTransform content;
 
     [SerializeField]
@@ -16,8 +23,12 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
     [SerializeField]
     private List<CharacterQueryElement> elements = new List<CharacterQueryElement>();
 
+    private List<CharacterQueryElement> queue = new List<CharacterQueryElement>();
+
     [SerializeField]
     private float offset;
+
+    
 
     private int CurrentCharacterIndex => Battle.Pipeline.CurrentTurnDataIndex;
 
@@ -29,22 +40,29 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
     {
         float currentOffset = offset;
 
-        foreach (var turnsData in BattleManager.Data.TurnsData.Skip(1))
+        for (int i = 0; i < BattleManager.Data.TurnsData.Count; i++)
         {
+            var turnsData = BattleManager.Data.TurnsData[i];
+
             GameObject instance = Instantiate(ElementPrefab, transform);
 
             var element = instance.GetComponent<CharacterQueryElement>();
             element.Initialize(turnsData.Character);
 
             var rectTransform = instance.GetComponent<RectTransform>();
-            rectTransform.anchoredPosition = new Vector2(0, currentOffset);
+
+            if (i < 4)
+            {
+                rectTransform.anchoredPosition = slots[i].anchoredPosition;
+            }
+            else
+            {
+                rectTransform.anchoredPosition = inSlot.anchoredPosition;
+            }
 
             elements.Add(element);
-
-            currentOffset += rectTransform.sizeDelta.y + offset;
+            queue.Add(element);
         }
-
-        StartCoroutine(QueryCoroutine());
 
         contentTw = content.DOAnchorPosY(0, 0.5f).SetEase(Ease.OutCirc).Play();
     }
@@ -54,20 +72,39 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
         foreach (var item in elements)
         {
             item.GetComponent<RectTransform>().DOKill();
-            item.StopAnimation();
+            //item.StopAnimation();
             Destroy(item.gameObject);
         }
         elements.Clear();
+        queue.Clear();
 
         contentTw = content.DOAnchorPosY(-content.sizeDelta.y, 0.5f).SetEase(Ease.OutCirc).Play();
     }
 
-    public void UpdatePositions()
+    public void NextPosition()
     {
+        var firstElement = queue.First();
+
+        queue.RemoveAt(0);
+        queue.Add(firstElement);
+
         if (updatePisitionCoroutine != null)
             StopCoroutine(updatePisitionCoroutine);
 
-        updatePisitionCoroutine = StartCoroutine(UpdatePisitionCoroutine());
+        updatePisitionCoroutine = StartCoroutine(NextCoroutine());
+    }
+
+    public void PreviewPosition()
+    {
+        var lastElement = queue.Last();
+
+        queue.RemoveAt(queue.Count - 1);
+        queue.Insert(0, lastElement);
+
+        if (updatePisitionCoroutine != null)
+            StopCoroutine(updatePisitionCoroutine);
+
+        updatePisitionCoroutine = StartCoroutine(PreviewCoroutine());
     }
 
     private IEnumerator QueryCoroutine()
@@ -82,42 +119,47 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
         }
     }
 
-    private IEnumerator NextCharacterCoroutine()
+    private IEnumerator NextCoroutine()
     {
-        foreach (var item in elements)
+        for (int i = 0; i < queue.Count; i++)
         {
-            var rect = item.GetComponent<RectTransform>();
+            var element = queue[i];
 
-            rect.DOKill();
-            rect.DOAnchorPosY(-(offset + rect.sizeDelta.y), 0.25f).SetRelative().SetEase(Ease.OutCirc).Play();
+            if (i < slots.Length - 1)
+            {
+                bool isLast = i == queue.Count - 1;
 
-            yield return new WaitForSeconds(0.1f);
+                element.MoveToPoint(slots[i].anchoredPosition, 
+                                   isLast ? slots.Last().anchoredPosition : slots[i + 1].anchoredPosition);
+            }
+
+            yield return new WaitForFixedUpdate();
         }
+
+        updatePisitionCoroutine = null;
     }
 
-    private IEnumerator PreviouslyCharacterCoroutine()
+    private IEnumerator PreviewCoroutine()
     {
-        foreach (var item in elements)
+        for (int i = queue.Count - 1; i >= 0; i--)
         {
-            var rect = item.GetComponent<RectTransform>();
+            var element = queue[i];
 
-            rect.DOKill();
-            rect.DOAnchorPosY(offset + rect.sizeDelta.y, 0.25f).SetRelative().SetEase(Ease.OutCirc).Play();
+            if (i < slots.Length - 1)
+            {
+                bool isFirst = i == 0;
 
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
+                if (isFirst)
+                {
+                    element.MoveToPoint(slots.Last().anchoredPosition, element.GetComponent<RectTransform>().anchoredPosition);
+                }
+                else
+                {
+                    element.MoveToPoint(slots[i].anchoredPosition, slots[i - 1].anchoredPosition);
+                }
+            }
 
-    private IEnumerator UpdatePisitionCoroutine()
-    {
-        for (int i = 0; i < elements.Count; i++)
-        {
-            var rect = elements[i].GetComponent<RectTransform>();
-
-            rect.DOAnchorPosY(offset + ((rect.sizeDelta.y + offset) * i) - ((rect.sizeDelta.y + offset) * CurrentCharacterIndex), 0.25f)
-                .SetEase(Ease.OutCirc).Play();
-
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForFixedUpdate();
         }
 
         updatePisitionCoroutine = null;

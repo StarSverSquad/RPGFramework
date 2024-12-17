@@ -24,7 +24,7 @@ public class CharacterBox : MonoBehaviour, IDisposable
     [SerializeField]
     private GameObject isdead;
 
-    [Tooltip("Fight, Act, Item, Flee")]
+    [Tooltip("Attack, Act, Item, Flee")]
     [SerializeField]
     private Sprite[] actIcons = new Sprite[5];
 
@@ -59,7 +59,7 @@ public class CharacterBox : MonoBehaviour, IDisposable
 
         SetDead(false);
         MarkTarget(false);
-        ChangeAct(TurnAction.None);
+        ChangeAct(BattleTurnData.TurnAction.None);
         UpdateStates();
 
         initialized = true;
@@ -69,29 +69,32 @@ public class CharacterBox : MonoBehaviour, IDisposable
     /// <summary>
     /// Смена значка действия
     /// </summary>
-    public void ChangeAct(TurnAction action)
+    public void ChangeAct(BattleTurnData.TurnAction action)
     {
         actImage.enabled = true;
 
 
         switch (action)
         {
-            case TurnAction.Fight:
+            case BattleTurnData.TurnAction.Attack:
                 actImage.sprite = actIcons[0];
                 break;
-            case TurnAction.Act:
+            case BattleTurnData.TurnAction.Act:
                 actImage.sprite = actIcons[1];
                 break;
-            case TurnAction.Item:
+            case BattleTurnData.TurnAction.Item:
                 actImage.sprite = actIcons[2];
                 break;
-            case TurnAction.Flee:
+            case BattleTurnData.TurnAction.Flee:
                 actImage.sprite = actIcons[3];
                 break;
-            case TurnAction.Spell:
+            case BattleTurnData.TurnAction.Defence:
+                actImage.sprite = actIcons[3];
+                break;
+            case BattleTurnData.TurnAction.Ability:
                 actImage.sprite = actIcons[4];
                 break;
-            case TurnAction.None:
+            case BattleTurnData.TurnAction.None:
             default:
             actImage.enabled = false;
                 break;

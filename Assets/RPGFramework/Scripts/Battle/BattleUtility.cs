@@ -123,7 +123,9 @@ public class BattleUtility : RPGFrameworkBehaviour
     {
         CharacterBox box = BattleManager.Instance.UI.CharacterBox.GetBox(data.Character);
 
-        int realDamage = data.Character.GiveDamage(Mathf.RoundToInt(bullet.enemy.Damage * bullet.DamageModifier * (data.IsDefence ? .5f : 1f)));
+        float defenceAspect = data.BattleAction == BattleTurnData.TurnAction.Defence ? .5f : 1f;
+
+        int realDamage = data.Character.GiveDamage(Mathf.RoundToInt(bullet.enemy.Damage * bullet.DamageModifier * defenceAspect));
 
         BattleManager.Instance.Shaker.Shake(2);
 

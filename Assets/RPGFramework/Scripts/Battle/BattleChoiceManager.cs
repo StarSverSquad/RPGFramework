@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static BattleTurnData;
 
 public class BattleChoiceManager : RPGFrameworkBehaviour
 {
@@ -79,7 +80,7 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
     private void Choice_OnStartChoice()
     {
         if (Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Ability ||
-            Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Interaction ||
+            Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Act ||
             Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Item)
         {
             ShowDescriptionFor(CurrentItem);
@@ -101,7 +102,7 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
         BattleAudio.PlaySound(Data.Hover);
 
         if (Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Ability ||
-            Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Interaction ||
+            Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Act ||
             Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Item)
         {
             ShowDescriptionFor(CurrentItem);
@@ -312,6 +313,31 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
             };
 
             choices.Add(element);
+        }
+
+        battleChoice.AppendElements(choices.ToArray());
+
+        battleChoice.InvokeChoice();
+    }
+
+    public void InvokeChoiceBattle()
+    {
+        List<CommonChoiceUI.ElementInfo> choices = new List<CommonChoiceUI.ElementInfo>()
+        {
+            new CommonChoiceUI.ElementInfo()
+            {
+                name = "Атака",
+                value = 0
+            }
+        };
+
+        if (Data.BattleInfo.CanFlee)
+        {
+            choices.Add(new CommonChoiceUI.ElementInfo()
+            {
+                name = "Защита",
+                value = 1
+            });
         }
 
         battleChoice.AppendElements(choices.ToArray());

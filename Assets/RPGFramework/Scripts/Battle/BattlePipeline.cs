@@ -305,6 +305,8 @@ public class BattlePipeline : RPGFrameworkBehaviour
                     currenTurnData.BattleAction = TurnAction.None;
                     currentTurnDataIndex++;
 
+                    UI.CharacterQuery.NextPosition();
+
                     isCancelChoice = false;
 
                 }

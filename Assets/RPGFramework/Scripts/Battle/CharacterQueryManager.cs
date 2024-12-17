@@ -25,21 +25,15 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
 
     private List<CharacterQueryElement> queue = new List<CharacterQueryElement>();
 
-    [SerializeField]
-    private float offset;
-
-    
-
-    private int CurrentCharacterIndex => Battle.Pipeline.CurrentTurnDataIndex;
+    private Queue<string> actions = new Queue<string>();
 
     private Tween contentTw;
 
-    private Coroutine updatePisitionCoroutine = null;
+    private Coroutine actionCorotine = null;
+    private Coroutine updateCoroutine = null;
 
     public void Show()
     {
-        float currentOffset = offset;
-
         for (int i = 0; i < BattleManager.Data.TurnsData.Count; i++)
         {
             var turnsData = BattleManager.Data.TurnsData[i];
@@ -64,9 +58,10 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
             queue.Add(element);
         }
 
+        updateCoroutine = StartCoroutine(UpdateCoroutine());
+
         contentTw = content.DOAnchorPosY(0, 0.5f).SetEase(Ease.OutCirc).Play();
     }
-
     public void Hide()
     {
         foreach (var item in elements)
@@ -78,36 +73,22 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
         elements.Clear();
         queue.Clear();
 
+        StopAllCoroutines();
+
         contentTw = content.DOAnchorPosY(-content.sizeDelta.y, 0.5f).SetEase(Ease.OutCirc).Play();
     }
 
     public void NextPosition()
     {
-        var firstElement = queue.First();
-
-        queue.RemoveAt(0);
-        queue.Add(firstElement);
-
-        if (updatePisitionCoroutine != null)
-            StopCoroutine(updatePisitionCoroutine);
-
-        updatePisitionCoroutine = StartCoroutine(NextCoroutine());
+        actions.Enqueue("next");
     }
 
     public void PreviewPosition()
     {
-        var lastElement = queue.Last();
-
-        queue.RemoveAt(queue.Count - 1);
-        queue.Insert(0, lastElement);
-
-        if (updatePisitionCoroutine != null)
-            StopCoroutine(updatePisitionCoroutine);
-
-        updatePisitionCoroutine = StartCoroutine(PreviewCoroutine());
+        actions.Enqueue("preview");
     }
 
-    private IEnumerator QueryCoroutine()
+    private IEnumerator WaveCoroutine()
     {
         yield return new WaitForSeconds(.5f);
 
@@ -136,7 +117,7 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        updatePisitionCoroutine = null;
+        actionCorotine = null;
     }
 
     private IEnumerator PreviewCoroutine()
@@ -162,7 +143,47 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
             yield return new WaitForFixedUpdate();
         }
 
-        updatePisitionCoroutine = null;
+        actionCorotine = null;
+    }
+
+    private IEnumerator UpdateCoroutine()
+    {
+        var prefabElement = ElementPrefab.GetComponent<CharacterQueryElement>();
+
+        while (true)
+        {
+            if (actions.Count > 0)
+            {
+                if (actionCorotine != null)
+                    StopCoroutine(actionCorotine);
+
+                string act = actions.Dequeue();
+
+                if (act == "next")
+                {
+                    var firstElement = queue.First();
+
+                    queue.RemoveAt(0);
+                    queue.Add(firstElement);
+
+                    actionCorotine = StartCoroutine(NextCoroutine());
+                }
+                else
+                {
+                    var lastElement = queue.Last();
+
+                    queue.RemoveAt(queue.Count - 1);
+                    queue.Insert(0, lastElement);
+
+                    actionCorotine = StartCoroutine(PreviewCoroutine());
+                }
+
+                yield return new WaitForSeconds(prefabElement.moveDuration);
+
+                yield return new WaitWhile(() => actionCorotine != null);
+            }
+            yield return null;
+        }
     }
 
     private void OnDestroy()

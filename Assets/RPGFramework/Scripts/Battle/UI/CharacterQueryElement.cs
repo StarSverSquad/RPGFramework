@@ -25,8 +25,7 @@ public class CharacterQueryElement : MonoBehaviour
     [SerializeField]
     private LineBar manaBar;
 
-    [SerializeField]
-    private float moveDuration = 0.2f;
+    public float moveDuration = 0.2f;
 
     private RectTransform rectTransform;
 

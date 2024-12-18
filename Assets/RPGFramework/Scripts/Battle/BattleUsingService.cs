@@ -83,10 +83,12 @@ public class BattleUsingService
 
                     model.Damage();
                 }
-                    
                 else if (healDif > 0)
+                {
                     battleManager.utility.SpawnFallingText((Vector2)model.transform.position + new Vector2(0, 0.5f),
                                     healDif.ToString(), Color.white, Color.green);
+                }
+                
 
                 for (int i = 0; i < states.Length; i++)
                 {
@@ -117,10 +119,16 @@ public class BattleUsingService
                 else if (healDif > 0)
                     battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
                                     healDif.ToString(), Color.white, Color.green);
+                else
+                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
+                                    "MAX", Color.green, Color.green);
 
                 if (manaDif > 0)
                     battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f),
                                     manaDif.ToString(), Color.white, Color.cyan);
+                else if (manaDif == 0)
+                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f),
+                                    "MAX", Color.cyan, Color.cyan);
 
                 for (int i = 0; i < states.Length; i++)
                 {
@@ -243,10 +251,16 @@ public class BattleUsingService
                 else if (healDif > 0)
                     battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
                                     healDif.ToString(), Color.white, Color.green);
+                else
+                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
+                                        "MAX", Color.green, Color.green);
 
                 if (manaDif > 0)
                     battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f),
                                     manaDif.ToString(), Color.white, Color.cyan);
+                else if (manaDif == 0)
+                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f),
+                                    "MAX", Color.cyan, Color.cyan);
 
                 for (int i = 0; i < states.Length; i++)
                 {

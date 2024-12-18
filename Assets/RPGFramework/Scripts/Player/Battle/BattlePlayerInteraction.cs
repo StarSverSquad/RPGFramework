@@ -50,10 +50,10 @@ public class BattlePlayerInteraction : MonoBehaviour
             damageAnimation = DOTween.Sequence();
 
             damageAnimation.Append(
-                spriteRenderer.DOColor(new Color(0.5f, 0, 0), 0.15f).From(Color.red));
+                spriteRenderer.DOColor(new Color(0.5f, 0.5f, 0.5f), 0.15f).From(Color.white));
 
             damageAnimation.Append(
-                spriteRenderer.DOColor(Color.red, 0.15f));
+                spriteRenderer.DOColor(Color.white, 0.15f));
 
             damageAnimation.SetLoops(3).Play();
 

@@ -1855,25 +1855,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Actions:
   - rid: 6736345329577230336
-  - rid: 6736345329577230337
   - rid: 6736345346795634689
   - rid: 6736345346795634691
-  - rid: 6736345346795634688
   - rid: 6736345346795634692
   - rid: 6736345346795634693
   - rid: 6736345329577230338
   - rid: 6736345346795634690
   - rid: 5872027692484526161
+  - rid: 6736345329577230337
+  - rid: 7075457782937288886
   Meta:
     edges:
     - inputPortName: Input
       inputNodeGUID: dca730474d2bcbe4fb9bf1e9bf3f7f31
       outputPortName: Output
       outputNodeGUID: 0a36817baf1095d44bdec87287e05458
-    - inputPortName: Input
-      inputNodeGUID: f881a06dadfcc0e4ba1022d54a87c11a
-      outputPortName: Output
-      outputNodeGUID: dca730474d2bcbe4fb9bf1e9bf3f7f31
     - inputPortName: Input
       inputNodeGUID: c29b5fe73629b7442a5701c16e8b61a7
       outputPortName: Output
@@ -1882,10 +1878,6 @@ MonoBehaviour:
       inputNodeGUID: 4d990f601a841d34cbc8542e1527c4e0
       outputPortName: Output
       outputNodeGUID: c29b5fe73629b7442a5701c16e8b61a7
-    - inputPortName: Input
-      inputNodeGUID: f229af58d202bf24d8ffea17508519e8
-      outputPortName: Output
-      outputNodeGUID: f881a06dadfcc0e4ba1022d54a87c11a
     - inputPortName: Input
       inputNodeGUID: 8debb04cbd5ae4d42980dc9c1d14e0c1
       outputPortName: Output
@@ -1902,37 +1894,45 @@ MonoBehaviour:
       inputNodeGUID: a056bb82d107bc3458feb307abcee610
       outputPortName: Output
       outputNodeGUID: 1abd4be09ec661649b172723dd61bdf7
+    - inputPortName: Input
+      inputNodeGUID: af469f4bb7684be4ab0c8216451297be
+      outputPortName: Output
+      outputNodeGUID: dca730474d2bcbe4fb9bf1e9bf3f7f31
+    - inputPortName: Input
+      inputNodeGUID: f229af58d202bf24d8ffea17508519e8
+      outputPortName: Output
+      outputNodeGUID: af469f4bb7684be4ab0c8216451297be
     nodes:
     - guid: 0a36817baf1095d44bdec87287e05458
       actionIndex: 0
-      position: {x: 250, y: 250}
-    - guid: dca730474d2bcbe4fb9bf1e9bf3f7f31
-      actionIndex: 1
-      position: {x: 431, y: 208}
+      position: {x: 250.4, y: 250.4}
     - guid: 685e6ad0be43bd84ba5e028eb9f1a81a
-      actionIndex: 2
-      position: {x: 1848, y: 271}
+      actionIndex: 1
+      position: {x: 1848, y: 271.2}
     - guid: c29b5fe73629b7442a5701c16e8b61a7
-      actionIndex: 3
-      position: {x: 2154, y: 314}
-    - guid: f881a06dadfcc0e4ba1022d54a87c11a
-      actionIndex: 4
-      position: {x: 818, y: 223}
+      actionIndex: 2
+      position: {x: 2154.4, y: 314.4}
     - guid: f229af58d202bf24d8ffea17508519e8
-      actionIndex: 5
-      position: {x: 1138, y: 250}
+      actionIndex: 3
+      position: {x: 1138.4, y: 250.4}
     - guid: 8debb04cbd5ae4d42980dc9c1d14e0c1
-      actionIndex: 6
-      position: {x: 1478, y: 246}
+      actionIndex: 4
+      position: {x: 1478.4, y: 246.4}
     - guid: a056bb82d107bc3458feb307abcee610
-      actionIndex: 7
-      position: {x: 3379, y: 325}
+      actionIndex: 5
+      position: {x: 3379.2, y: 324.8}
     - guid: 4d990f601a841d34cbc8542e1527c4e0
-      actionIndex: 8
-      position: {x: 2472, y: 313}
+      actionIndex: 6
+      position: {x: 2472, y: 312.8}
     - guid: 1abd4be09ec661649b172723dd61bdf7
+      actionIndex: 7
+      position: {x: 2852, y: 298.4}
+    - guid: dca730474d2bcbe4fb9bf1e9bf3f7f31
+      actionIndex: 8
+      position: {x: 431.2, y: 208}
+    - guid: af469f4bb7684be4ab0c8216451297be
       actionIndex: 9
-      position: {x: 2852, y: 298}
+      position: {x: 743.2, y: 287.2}
   references:
     version: 2
     RefIds:
@@ -1953,7 +1953,7 @@ MonoBehaviour:
       type: {class: AddRemoveCharacterAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions:
-        - rid: 6736345346795634688
+        - rid: 7075457782937288886
         isAdd: 1
         updateModels: 1
         character: {fileID: 11400000, guid: 790d475a3cca9dc40ba693d252f828ec, type: 2}
@@ -1962,15 +1962,6 @@ MonoBehaviour:
       type: {class: EndAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions: []
-    - rid: 6736345346795634688
-      type: {class: AddRemoveCharacterAction, ns: , asm: Assembly-CSharp}
-      data:
-        NextActions:
-        - rid: 6736345346795634692
-        isAdd: 1
-        updateModels: 1
-        character: {fileID: 11400000, guid: 97eeedaec2ce55542b6b2769cb383d54, type: 2}
-        existentObject: {fileID: 0}
     - rid: 6736345346795634689
       type: {class: ChangeItemCountAction, ns: , asm: Assembly-CSharp}
       data:
@@ -2012,6 +2003,15 @@ MonoBehaviour:
         isAdd: 1
         updateModels: 1
         character: {fileID: 11400000, guid: a5ecbc99ea023a143b17c46e6ec51a2a, type: 2}
+        existentObject: {fileID: 0}
+    - rid: 7075457782937288886
+      type: {class: AddRemoveCharacterAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 6736345346795634692
+        isAdd: 1
+        updateModels: 1
+        character: {fileID: 11400000, guid: 97eeedaec2ce55542b6b2769cb383d54, type: 2}
         existentObject: {fileID: 0}
 --- !u!114 &622000814
 MonoBehaviour:
@@ -5850,7 +5850,7 @@ Transform:
   m_GameObject: {fileID: 6691272761900589634}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.3281736, y: -0.43974233, z: 49.884323}
+  m_LocalPosition: {x: 3.3281736, y: -0.43974233, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

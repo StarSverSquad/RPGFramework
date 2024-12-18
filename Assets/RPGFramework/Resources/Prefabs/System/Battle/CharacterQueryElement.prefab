@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 173.55, y: -11.14}
+  m_AnchoredPosition: {x: 173.55, y: -11.140015}
   m_SizeDelta: {x: 121.23999, y: 23}
   m_Pivot: {x: -0.00000015180558, y: 0.99999964}
 --- !u!114 &8343094469160568368
@@ -91,11 +91,11 @@ RectTransform:
   - {fileID: 4706443924421933828}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -0.000020981, y: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -492.5}
   m_SizeDelta: {x: 511.061, y: 95}
-  m_Pivot: {x: 0.49999997, y: 0.00000012665987}
+  m_Pivot: {x: 0.49999997, y: 0.49999994}
 --- !u!114 &4667403251738904561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,6 +115,7 @@ MonoBehaviour:
   iconList: {fileID: 8343094469160568368}
   healBar: {fileID: 5851109308257790054}
   manaBar: {fileID: 2265229045474651218}
+  moveDuration: 0.15
 --- !u!1 &822198099104184620
 GameObject:
   m_ObjectHideFlags: 0

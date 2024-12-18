@@ -16,6 +16,8 @@ public class AttackQTEManager : MonoBehaviour
     [SerializeField]
     private Vector2 showedRectPosition;
 
+    public bool IsShowed { get; private set; } = false;
+
     public float TransmitionTime => 0.75f;
         
     public void Invoke()
@@ -25,11 +27,17 @@ public class AttackQTEManager : MonoBehaviour
 
     public void Show()
     {
-        qteContainer.DOAnchorPos(showedRectPosition, TransmitionTime).SetEase(Ease.OutCirc).Play();
+        qteContainer.DOAnchorPos(showedRectPosition, TransmitionTime).SetEase(Ease.OutCirc).Play().onComplete = () =>
+        {
+            IsShowed = true;
+        };
     }
 
     public void Hide()
     {
-        qteContainer.DOAnchorPos(hidenRectPosition, TransmitionTime).SetEase(Ease.InCirc).Play();
+        qteContainer.DOAnchorPos(hidenRectPosition, TransmitionTime).SetEase(Ease.InCirc).Play().onComplete = () =>
+        {
+            IsShowed = false;
+        };
     }
 }

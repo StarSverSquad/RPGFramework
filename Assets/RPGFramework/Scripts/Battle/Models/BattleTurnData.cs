@@ -1,5 +1,12 @@
-﻿public class BattleTurnData
+﻿using System;
+
+public class BattleTurnData
 {
+    public enum TurnAction
+    {
+        None, Attack, Act, Item, Flee, Ability, Defence
+    }
+
     public TurnAction BattleAction { get; set; }
 
     public RPGCharacter Character { get; private set; }
@@ -15,8 +22,6 @@
 
     #region ACT INFO
 
-    public bool IsAbility;
-
     public RPGEnemy.EnemyAct InteractionAct;
 
     public RPGAbility Ability;
@@ -27,13 +32,6 @@
 
     public RPGCollectable Item;
     public bool IsConsumed;
-
-    #endregion
-
-    #region DEFENCE INFO
-
-    public bool IsDefence;
-    public bool IsFlee;
 
     #endregion
 
@@ -58,9 +56,7 @@
         BattleAction = TurnAction.None;
 
         IsTarget = false;
-        IsAbility = false;
         IsConsumed = false;
-        IsDefence = false;
 
         Ability = null;
         InteractionAct = RPGEnemy.EnemyAct.NullAct;
@@ -75,7 +71,3 @@
     }
 }
 
-public enum TurnAction
-{
-    None, Fight, Act, Item, Flee, Spell
-}

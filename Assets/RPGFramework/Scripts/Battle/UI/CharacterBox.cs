@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterBox : MonoBehaviour, IDisposable
+public class CharacterBox : RPGFrameworkBehaviour, IDisposable
 {
     [SerializeField]
     private IconList iconList;
@@ -23,10 +23,6 @@ public class CharacterBox : MonoBehaviour, IDisposable
     private GameObject istargetobj;
     [SerializeField]
     private GameObject isdead;
-
-    [Tooltip("Attack, Act, Item, Flee")]
-    [SerializeField]
-    private Sprite[] actIcons = new Sprite[5];
 
     [SerializeField]
     private LineBar healBar;
@@ -65,40 +61,11 @@ public class CharacterBox : MonoBehaviour, IDisposable
         initialized = true;
     }
 
-
-    /// <summary>
-    /// Смена значка действия
-    /// </summary>
     public void ChangeAct(BattleTurnData.TurnAction action)
     {
-        actImage.enabled = true;
+        actImage.enabled = action != BattleTurnData.TurnAction.None;
 
-
-        switch (action)
-        {
-            case BattleTurnData.TurnAction.Attack:
-                actImage.sprite = actIcons[0];
-                break;
-            case BattleTurnData.TurnAction.Act:
-                actImage.sprite = actIcons[1];
-                break;
-            case BattleTurnData.TurnAction.Item:
-                actImage.sprite = actIcons[2];
-                break;
-            case BattleTurnData.TurnAction.Flee:
-                actImage.sprite = actIcons[3];
-                break;
-            case BattleTurnData.TurnAction.Defence:
-                actImage.sprite = actIcons[3];
-                break;
-            case BattleTurnData.TurnAction.Ability:
-                actImage.sprite = actIcons[4];
-                break;
-            case BattleTurnData.TurnAction.None:
-            default:
-            actImage.enabled = false;
-                break;
-        }
+        actImage.sprite = Battle.data.GetActionIcon(action);
     }
 
     public void MarkTarget(bool mark)

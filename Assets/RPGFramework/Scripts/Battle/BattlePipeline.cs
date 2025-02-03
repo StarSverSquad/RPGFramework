@@ -176,10 +176,10 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
     private IEnumerator BattleEnter()
     {
-        foreach (var item in GameManager.Instance.Character.Characters)
+        foreach (var character in GameManager.Instance.Character.Characters)
         {
-            if (item.ParticipateInBattle)
-                Data.TurnsData.Add(new BattleTurnData(item));
+            if (character.ParticipateInBattle)
+                Data.TurnsData.Add(new BattleTurnData(character));
         }
 
         if (Data.BattleInfo.StopGlobalMusic)
@@ -298,7 +298,9 @@ public class BattlePipeline : RPGFrameworkBehaviour
                 if (isCancelChoice && currentTurnDataIndex != 0)
                 {
                     currentTurnDataIndex--;
-                    UI.CharacterQuery.PreviewPosition();
+
+                    if (currentTurnDataIndex > 0)
+                        UI.CharacterQuery.PreviewPosition();
                 }
                 else
                 {

@@ -60,7 +60,6 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
         }
 
         updateCoroutine = StartCoroutine(UpdateCoroutine());
-        StartCoroutine(WaveCoroutine());
 
         contentTw = content.DOAnchorPosY(0, 0.5f).SetEase(Ease.OutCirc).Play();
     }
@@ -69,7 +68,6 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
         foreach (var item in elements)
         {
             item.GetComponent<RectTransform>().DOKill();
-            item.StopAnimation();
             Destroy(item.gameObject);
         }
         elements.Clear();
@@ -82,23 +80,23 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
 
     public void NextPosition()
     {
+        UpdateDynamics();
+
         actions.Enqueue("next");
     }
 
     public void PreviewPosition()
     {
+        UpdateDynamics();
+
         actions.Enqueue("preview");
     }
 
-    private IEnumerator WaveCoroutine()
+    private void UpdateDynamics()
     {
-        yield return new WaitForSeconds(.5f);
-
         foreach (var item in elements)
         {
-            item.StartAnimation();
-
-            yield return new WaitForSeconds(.25f);
+            item.UpdateDynamic();
         }
     }
 
@@ -184,6 +182,7 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
 
                 yield return new WaitWhile(() => actionCorotine != null);
             }
+
             yield return null;
         }
     }

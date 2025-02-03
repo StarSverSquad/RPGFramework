@@ -4344,7 +4344,6 @@ MonoBehaviour:
   content: {fileID: 9162015852903928510}
   ElementPrefab: {fileID: 308438627376238011, guid: 11792e17340fade4ca2a28a83ab9f419, type: 3}
   elements: []
-  offset: 12
 --- !u!114 &3645566081391919316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6121,6 +6120,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Enemys: []
+  actionIcons:
+  - {fileID: 6674051819941947454, guid: 7718a304d2006c04a9863a6100cade02, type: 3}
+  - {fileID: -2141057946, guid: 7718a304d2006c04a9863a6100cade02, type: 3}
+  - {fileID: 5178810440651349108, guid: 7718a304d2006c04a9863a6100cade02, type: 3}
+  - {fileID: 1304362138, guid: 7718a304d2006c04a9863a6100cade02, type: 3}
+  - {fileID: 555879071260492866, guid: 7718a304d2006c04a9863a6100cade02, type: 3}
+  - {fileID: 667584375, guid: 40745823e1aba59459ed47ebdfedc8aa, type: 3}
   DefaultEffect: {fileID: 2429433655878315730, guid: 65fcf45a9d4420542a3cc46fa519c398, type: 3}
   DmgText: {fileID: 8448606485995851385, guid: 9a20811517bb5bb43b6c618854a6d20b, type: 3}
   BattleCanvas: {fileID: 7427866169965658193}

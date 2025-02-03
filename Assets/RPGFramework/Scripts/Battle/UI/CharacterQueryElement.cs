@@ -4,8 +4,27 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterQueryElement : MonoBehaviour
+public class CharacterQueryElement : RPGFrameworkBehaviour
 {
+    [SerializeField]
+    private GameObject fallContent;
+    public bool FallIsActive
+    {
+        set => fallContent.SetActive(value);
+        get => fallContent.activeSelf;
+    }
+
+    [SerializeField]
+    private GameObject usedContent;
+    public bool UsedIsActive
+    {
+        set => usedContent.SetActive(value);
+        get => usedContent.activeSelf;
+    }
+
+    [SerializeField]
+    private Image actionImage;
+
     [SerializeField]
     private RectTransform content;
 
@@ -25,12 +44,13 @@ public class CharacterQueryElement : MonoBehaviour
     [SerializeField]
     private LineBar manaBar;
 
+    private RPGCharacter linkedCharacter;
+    private BattleTurnData CharacterTurnData => Battle.data.TurnsData.First(i => i.Character == linkedCharacter);
+
     public float moveDuration = 0.2f;
 
     private RectTransform rectTransform;
 
-    // <-- -->
-    private Sequence animation0;
     private Tween moveAnimation;
 
     public void Initialize(RPGCharacter character)
@@ -46,19 +66,10 @@ public class CharacterQueryElement : MonoBehaviour
         manaBar.SetValue((float)character.Mana / (float)character.MaxMana);
 
         rectTransform = GetComponent<RectTransform>();
-    }
 
-    public void StartAnimation()
-    {
-        animation0?.Kill(true);
+        linkedCharacter = character;
 
-        animation0 = DOTween.Sequence();
-
-        animation0.Append(content.DOAnchorPosX(25, 0.75f).SetEase(Ease.OutSine));
-
-        animation0.Append(content.DOAnchorPosX(0, 0.75f).SetEase(Ease.OutSine));
-
-        animation0.SetLoops(-1).SetDelay(0.5f).Play();
+        FallIsActive = CharacterTurnData.IsDead;
     }
 
     public void MoveToPoint(Vector2 rectPoint, Vector2 fromPoint)
@@ -71,14 +82,21 @@ public class CharacterQueryElement : MonoBehaviour
         moveAnimation = rectTransform.DOAnchorPos(rectPoint, moveDuration).Play();
     }
 
-    public void StopAnimation()
+    public void UpdateDynamic()
     {
-        animation0.Kill(true);
+        if (!FallIsActive)
+        {
+            Sprite acitonSprite = Battle.data.GetActionIcon(CharacterTurnData.BattleAction);
+
+            actionImage.sprite = acitonSprite;
+            actionImage.gameObject.SetActive(acitonSprite != null);
+
+            UsedIsActive = acitonSprite != null;
+        }
     }
 
     private void OnDestroy()
     {
-        animation0.Kill();
         moveAnimation.Kill();
     }
 }

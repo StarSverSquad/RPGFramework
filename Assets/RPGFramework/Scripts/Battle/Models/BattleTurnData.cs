@@ -4,7 +4,7 @@ public class BattleTurnData
 {
     public enum TurnAction
     {
-        None, Attack, Act, Item, Flee, Ability, Defence
+        None = -1, Attack, Act, Item, Flee, Ability, Defence
     }
 
     public TurnAction BattleAction { get; set; }

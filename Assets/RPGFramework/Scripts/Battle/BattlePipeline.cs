@@ -299,7 +299,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                 {
                     currentTurnDataIndex--;
 
-                    if (currentTurnDataIndex > 0)
+                    //if (currentTurnDataIndex > 0)
                         UI.CharacterQuery.PreviewPosition();
                 }
                 else
@@ -345,7 +345,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                     // Если отмена то откат к предыдущему персонажу, либо игнор
                     if (Choice.IsPrimaryCanceled)
                     {
-                        if (currentTurnDataIndex != 0)
+                        if (currentTurnDataIndex > 0)
                         {
                             currentTurnDataIndex--;
 

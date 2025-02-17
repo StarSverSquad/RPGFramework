@@ -63,7 +63,11 @@ public class BattleUsingService
             string[] oldStates = target.States.Select(x => x.Tag).ToArray();
 
             foreach (var effect in ability.Effects)
+            {
+                effect.Factor = minigameFactor;
+
                 yield return BattleManager.Instance.Pipeline.StartCoroutine(effect.Invoke(user, target));
+            }
 
             RPGEntityState[] states = target.States.Where(i => oldStates.All(y => i.Tag != y)).ToArray();
             

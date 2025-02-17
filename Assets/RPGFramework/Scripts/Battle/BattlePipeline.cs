@@ -774,68 +774,64 @@ public class BattlePipeline : RPGFrameworkBehaviour
                     }
                     break;
                 case TurnAction.Act:
-                    if (turnData.BattleAction == TurnAction.Ability)
+                    if (turnData.InteractionAct.Name == "Check")
                     {
-                        currentCharacter.Mana -= turnData.Ability.ManaCost;
-
-                        if (turnData.Ability.StartEvent != null)
+                        Common.MessageBox.Write(new MessageInfo()
                         {
-                            turnData.Ability.StartEvent.Invoke(this);
+                            text = $"АТАКА: {turnData.EnemyBuffer.Damage}, ЗАЩИТА: {turnData.EnemyBuffer.Defence}<\\:>\n" +
+                                   $"{turnData.EnemyBuffer.Description}",
+                            closeWindow = true,
+                            wait = true
+                        });
 
-                            yield return new WaitWhile(() => turnData.Ability.StartEvent.IsPlaying);
-                        }
-
-                        switch (turnData.Ability.Direction)
-                        {
-                            case RPGAbility.AbilityDirection.AllTeam:
-                                yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
-                                break;
-                            case RPGAbility.AbilityDirection.Teammate:
-                                yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, turnData.CharacterBuffer));
-                                break;
-                            case RPGAbility.AbilityDirection.AllEnemys:
-                                yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.Enemys.ToArray()));
-                                break;
-                            case RPGAbility.AbilityDirection.Enemy:
-                                yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, turnData.EnemyBuffer));
-                                break;
-                            case RPGAbility.AbilityDirection.Any:
-                                yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, turnData.EntityBuffer));
-                                break;
-                            case RPGAbility.AbilityDirection.All:
-                                yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
-
-                                yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.Enemys.ToArray()));
-                                break;
-                        }
-
-                        if (turnData.Ability.EndEvent != null)
-                        {
-                            turnData.Ability.EndEvent.Invoke(this);
-
-                            yield return new WaitWhile(() => turnData.Ability.EndEvent.IsPlaying);
-                        }
+                        yield return new WaitWhile(() => Common.MessageBox.IsWriting);
                     }
                     else
                     {
-                        if (turnData.InteractionAct.Name == "Check")
-                        {
-                            Common.MessageBox.Write(new MessageInfo()
-                            {
-                                text = $"АТАКА: {turnData.EnemyBuffer.Damage}, ЗАЩИТА: {turnData.EnemyBuffer.Defence}<\\:>\n" +
-                                       $"{turnData.EnemyBuffer.Description}",
-                                closeWindow = true,
-                                wait = true
-                            });
+                        turnData.InteractionAct.Event.Invoke(this);
 
-                            yield return new WaitWhile(() => Common.MessageBox.IsWriting);
-                        }
-                        else
-                        {
-                            turnData.InteractionAct.Event.Invoke(this);
+                        yield return new WaitWhile(() => turnData.InteractionAct.Event.IsPlaying);
+                    }
+                    break;
+                case TurnAction.Ability:
+                    currentCharacter.Mana -= turnData.Ability.ManaCost;
 
-                            yield return new WaitWhile(() => turnData.InteractionAct.Event.IsPlaying);
-                        }
+                    if (turnData.Ability.StartEvent != null)
+                    {
+                        turnData.Ability.StartEvent.Invoke(this);
+
+                        yield return new WaitWhile(() => turnData.Ability.StartEvent.IsPlaying);
+                    }
+
+                    switch (turnData.Ability.Direction)
+                    {
+                        case RPGAbility.AbilityDirection.AllTeam:
+                            yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
+                            break;
+                        case RPGAbility.AbilityDirection.Teammate:
+                            yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, turnData.CharacterBuffer));
+                            break;
+                        case RPGAbility.AbilityDirection.AllEnemys:
+                            yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.Enemys.ToArray()));
+                            break;
+                        case RPGAbility.AbilityDirection.Enemy:
+                            yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, turnData.EnemyBuffer));
+                            break;
+                        case RPGAbility.AbilityDirection.Any:
+                            yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, turnData.EntityBuffer));
+                            break;
+                        case RPGAbility.AbilityDirection.All:
+                            yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
+
+                            yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.Enemys.ToArray()));
+                            break;
+                    }
+
+                    if (turnData.Ability.EndEvent != null)
+                    {
+                        turnData.Ability.EndEvent.Invoke(this);
+
+                        yield return new WaitWhile(() => turnData.Ability.EndEvent.IsPlaying);
                     }
                     break;
                 case TurnAction.Item:

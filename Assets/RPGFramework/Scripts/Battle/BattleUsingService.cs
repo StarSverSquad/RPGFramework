@@ -22,6 +22,8 @@ public class BattleUsingService
             battleManager.Minigame.InvokeMinigame(ability.Minigame);
 
             yield return new WaitWhile(() => battleManager.Minigame.MinigameIsPlay);
+
+            minigameFactor = battleManager.Minigame.LastWinFactor;
         }
 
         if (targets.Any(i => i is RPGEnemy) && ability.VisualEffect != null)
@@ -64,12 +66,14 @@ public class BattleUsingService
                 yield return BattleManager.Instance.Pipeline.StartCoroutine(effect.Invoke(user, target));
 
             RPGEntityState[] states = target.States.Where(i => oldStates.All(y => i.Tag != y)).ToArray();
-            int healDif = target.Heal - oldHp, manaDif = target.Mana - oldMp;
+            
             
             if (ability.Formula >= 0)
                 target.Heal += Mathf.RoundToInt(ability.Formula * minigameFactor);
             else
-                healDif -= target.GiveDamage(Mathf.RoundToInt((Mathf.Abs(ability.Formula) + user.Damage * 0.25f) * minigameFactor));
+                target.GiveDamage(Mathf.RoundToInt((Mathf.Abs(ability.Formula) + user.Damage * 0.25f) * minigameFactor));
+
+            int healDif = target.Heal - oldHp, manaDif = target.Mana - oldMp;
 
             if (target is RPGEnemy enemy)
             {
@@ -121,16 +125,19 @@ public class BattleUsingService
                 else if (healDif > 0)
                     battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
                                     healDif.ToString(), Color.white, Color.green);
-                else
+                else if (target.Heal == target.MaxHeal)
                     battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
-                                    "MAX", Color.green, Color.green);
+                                    "MAX", Color.green);
+                else if (ability.Formula > 0 && healDif == 0)
+                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
+                                    "0", Color.green);
 
                 if (manaDif > 0)
-                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f),
+                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.5f),
                                     manaDif.ToString(), Color.white, Color.cyan);
-                else if (manaDif == 0)
-                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f),
-                                    "MAX", Color.cyan, Color.cyan);
+                else if (target.Mana == target.MaxMana)
+                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.5f),
+                                    "MAX", Color.cyan);
 
                 for (int i = 0; i < states.Length; i++)
                 {
@@ -258,10 +265,10 @@ public class BattleUsingService
                                         "MAX", Color.green, Color.green);
 
                 if (manaDif > 0)
-                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f),
+                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.5f),
                                     manaDif.ToString(), Color.white, Color.cyan);
                 else if (manaDif == 0)
-                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f),
+                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.5f),
                                     "MAX", Color.cyan, Color.cyan);
 
                 for (int i = 0; i < states.Length; i++)

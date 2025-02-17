@@ -10,6 +10,8 @@ public class MinigameManager : RPGFrameworkBehaviour
 
     public bool MinigameIsPlay => currentMinigame != null;
 
+    public float LastWinFactor { get; private set; } = 0f;
+
     public void InvokeMinigame(MinigameBase minigame)
     {
         if (currentMinigame != null)
@@ -41,6 +43,8 @@ public class MinigameManager : RPGFrameworkBehaviour
 
     private void OnMinigameEnd()
     {
+        LastWinFactor = currentMinigame.WinFactor;
+
         currentMinigame.OnEnd -= OnMinigameEnd;
 
         Destroy(currentMinigame.gameObject);

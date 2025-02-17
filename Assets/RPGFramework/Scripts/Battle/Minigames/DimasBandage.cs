@@ -17,16 +17,11 @@ public class DimasBandage : MinigameBase
     private Image bar;
     private float barMaxWidth = 0;
 
-    [SerializeField]
-    private Canvas canvas;
-
     private bool gameStarted = false;
 
     protected override IEnumerator Minigame()
     {
         barMaxWidth = bar.rectTransform.sizeDelta.x;
-
-        //canvas. = Camera.main;
 
         gameStarted = true;
 
@@ -56,7 +51,9 @@ public class DimasBandage : MinigameBase
 
         bar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, barMaxWidth * progress);
 
-        bar.color = new Color(255 * (1 - progress), 0, 255 * progress);
+        bar.color = new Color(1f - progress, progress, 0);
+
+        progress = Mathf.Clamp01(progress);
     }
 
     private void FixedUpdate()

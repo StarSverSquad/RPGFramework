@@ -4,9 +4,6 @@ using UnityEngine;
 
 public abstract class MinigameBase : RPGFrameworkBehaviour
 {
-    [SerializeField]
-    protected GameObject Content;
-
     private Coroutine coroutine = null;
     public bool IsRuning => coroutine != null;
 

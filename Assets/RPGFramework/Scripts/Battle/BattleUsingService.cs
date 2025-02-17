@@ -19,7 +19,9 @@ public class BattleUsingService
 
         if (ability.Minigame != null)
         {
+            battleManager.Minigame.InvokeMinigame(ability.Minigame);
 
+            yield return new WaitWhile(() => battleManager.Minigame.MinigameIsPlay);
         }
 
         if (targets.Any(i => i is RPGEnemy) && ability.VisualEffect != null)

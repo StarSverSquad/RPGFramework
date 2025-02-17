@@ -6028,7 +6028,7 @@ GameObject:
   - component: {fileID: 6341244355187613983}
   - component: {fileID: 9006280429696733391}
   - component: {fileID: 179258461875434390}
-  - component: {fileID: 1627620487790945280}
+  - component: {fileID: 8405943389438414826}
   m_Layer: 0
   m_Name: BattleContent
   m_TagString: Untagged
@@ -6078,7 +6078,7 @@ MonoBehaviour:
   VisualTransmition: {fileID: 3447483504139707677}
   Shaker: {fileID: 179258461875434390}
   UI: {fileID: 3834372777945536817}
-  Minigame: {fileID: 1627620487790945280}
+  Minigame: {fileID: 8405943389438414826}
   utility: {fileID: 956800464406140057}
   data: {fileID: 6341244355187613983}
 --- !u!114 &1492566794163858137
@@ -6172,7 +6172,7 @@ MonoBehaviour:
   ShakeRect: {fileID: 5472019234005125726}
   baseOffsetX: 15
   baseOffsetY: 10
---- !u!114 &1627620487790945280
+--- !u!114 &8405943389438414826
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -6181,9 +6181,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 6223028378642940389}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa5f16a8c2fc4f14da1e27ce38e6103f, type: 3}
+  m_Script: {fileID: 11500000, guid: b35f130cd05a58746b132afda1070b6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  container: {fileID: 7873594714373457272}
 --- !u!1 &6244354055022385376
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,9 +1,14 @@
 using UnityEngine;
 
-public class MinigameManager
+public class MinigameManager : RPGFrameworkBehaviour
 {
+    [SerializeField]
+    private Transform container;
+
     private MinigameBase currentMinigame = null;
     public MinigameBase CurrentMinigame => currentMinigame;
+
+    public bool MinigameIsPlay => currentMinigame != null;
 
     public void InvokeMinigame(MinigameBase minigame)
     {
@@ -13,10 +18,12 @@ public class MinigameManager
             return;
         }
 
-        currentMinigame = minigame;
+        var obj = Instantiate(minigame.gameObject, container);
+
+        currentMinigame = obj.GetComponent<MinigameBase>();
         currentMinigame.OnEnd += OnMinigameEnd;
 
-        minigame.Invoke();
+        currentMinigame.Invoke();
     }
 
     public void CancelMinigame()
@@ -36,7 +43,7 @@ public class MinigameManager
     {
         currentMinigame.OnEnd -= OnMinigameEnd;
 
-        Object.Destroy(currentMinigame.gameObject);
+        Destroy(currentMinigame.gameObject);
 
         currentMinigame = null;
     }

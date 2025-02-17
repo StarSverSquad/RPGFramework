@@ -40,8 +40,8 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
 
     public override void InitializeChild()
     {
-        Player.SetActive(false);
+        Minigame = new MinigameManager();
 
-        Minigame.Initialize();
+        Player.SetActive(false);
     }
 }

@@ -1,7 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,12 +8,19 @@ public class AttackQTE : MonoBehaviour
     [Header("Links")]
     [SerializeField]
     private RectTransform slider;
+    [SerializeField]
+    private RectTransform container;
+
     [SerializeField] 
     private Vector2 sliderRigthPosition;
     [SerializeField]
     private Vector2 sliderLeftPosition;
+
     [SerializeField]
     private Image sliderImage;
+
+    [SerializeField]
+    private QTEEffectLine qteEffectLine;
 
     [SerializeField]
     private Color[] sliderColors = new Color[3];
@@ -23,14 +28,6 @@ public class AttackQTE : MonoBehaviour
     [SerializeField]
     private float damageFactor = 0;
     public float DamageFactor => damageFactor;
-
-    [Header("Factors")]
-    public float MissFactor = 0;
-    public float VeryBadFactor = 0.25f;
-    public float BadFactor = 0.5f;
-    public float MediumFactor = 0.75f;
-    public float GoodFactor = 1f;
-    public float CritFactor = 1.25f;
 
     [Header("Data")]
     [SerializeField]
@@ -42,24 +39,7 @@ public class AttackQTE : MonoBehaviour
     public bool IsSkip => isSkip;
 
     public AnimationCurve sliderCurve;
-
-    [Header("Borders")]
-    [Range(0f, 1f)]
-    public float FirstVeryBadBorder = 0;
-    [Range(0f, 1f)]
-    public float BadBorder = 0;
-    [Range(0f, 1f)]
-    public float MediumBorder = 0;
-    [Range(0f, 1f)]
-    public float FirstGoodBorder = 0;
-    [Range(0f, 1f)]
-    public float CritBorder = 0;
-    [Range(0f, 1f)]
-    public float SecoundGoodBorder = 0;
-    [Range(0f, 1f)]
-    public float SecoundVeryBadBorder = 0;
-    [Range(0f, 1f)]
-    public float MissBorder = 0;
+    public AnimationCurve damageCurve;
 
     public event Action OnHit;
     public event Action OnMiss;
@@ -115,9 +95,10 @@ public class AttackQTE : MonoBehaviour
         {
             isSkip = true;
 
-            damageFactor = MissFactor;
+            damageFactor = 0;
 
             OnSkip?.Invoke();
+            OnMiss?.Invoke();
         }
         else
         {
@@ -125,57 +106,29 @@ public class AttackQTE : MonoBehaviour
 
             sliderImage.enabled = true;
 
-            if (load < FirstVeryBadBorder)
-            {
-                sliderImage.color = sliderColors[1];
-                damageFactor = MissFactor;
+            damageFactor = damageCurve.Evaluate(load);
 
+            GameObject endSlide = Instantiate(qteEffectLine.gameObject, container);
+            QTEEffectLine qTEEffect = endSlide.GetComponent<QTEEffectLine>();
+
+            endSlide.transform.position = slider.position;
+
+            if (damageFactor < 0.25f)
+            {
+                qTEEffect.lineColor = sliderColors[1];
                 OnMiss?.Invoke();
             }
-            else if (load >= MissBorder)
+            else if (damageFactor < 1f)
             {
-                sliderImage.color = sliderColors[1];
-                damageFactor = MissFactor;
-
-                OnMiss?.Invoke();
+                qTEEffect.lineColor = sliderColors[0];
             }
-            else if (load >= SecoundVeryBadBorder)
+            else
             {
-                sliderImage.color = sliderColors[1];
-                damageFactor = VeryBadFactor;
-            }
-            else if (load >= SecoundGoodBorder)
-            {
-                sliderImage.color = sliderColors[1];
-                damageFactor = GoodFactor;
-            }
-            else if (load >= CritBorder)
-            {
-                sliderImage.color = sliderColors[2];
-                damageFactor = CritFactor;
-
+                qTEEffect.lineColor = sliderColors[2];
                 OnCrit?.Invoke();
             }
-            else if (load >= FirstGoodBorder)
-            {
-                sliderImage.color = sliderColors[1];
-                damageFactor = GoodFactor;
-            }
-            else if (load >= MediumBorder)
-            {
-                sliderImage.color = sliderColors[1];
-                damageFactor = MediumFactor;
-            }
-            else if (load >= BadBorder)
-            {
-                sliderImage.color = sliderColors[1];
-                damageFactor = BadFactor;
-            }
-            else if (load >= FirstVeryBadBorder)
-            {
-                sliderImage.color = sliderColors[1];
-                damageFactor = VeryBadFactor;
-            }
+
+            qTEEffect.Invoke();
         }
 
         slider.anchoredPosition = sliderRigthPosition;

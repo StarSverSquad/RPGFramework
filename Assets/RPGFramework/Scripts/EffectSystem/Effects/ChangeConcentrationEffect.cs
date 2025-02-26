@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using UnityEngine;
 
 public class ChangeConcentrationEffect : EffectBase
 {
@@ -6,7 +7,7 @@ public class ChangeConcentrationEffect : EffectBase
 
     public override IEnumerator Invoke(RPGEntity user, RPGEntity target)
     {
-        BattleManager.Utility.AddConcetration(AddConcentration);
+        BattleManager.Utility.AddConcetration(Mathf.RoundToInt(AddConcentration * Factor));
 
         yield break;
     }

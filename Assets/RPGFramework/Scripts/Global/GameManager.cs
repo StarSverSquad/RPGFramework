@@ -40,13 +40,11 @@ public class GameManager : ContentManagerBase
             Destroy(gameObject);
     }
 
-#if UNITY_EDITOR
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.N))
             NewGame();
     }
-#endif
 
     public override void InitializeChild()
     {

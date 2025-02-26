@@ -4,10 +4,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEditor.Progress;
 
+// Код требует рефакторинг
 public class CharacterQueryManager : RPGFrameworkBehaviour
 {
+    [SerializeField]
+    private RectTransform inSlot;
+    [SerializeField]
+    private RectTransform outSlot;
+    [SerializeField]
+    private RectTransform[] slots = new RectTransform[5];
+
     [SerializeField]
     private RectTransform content;
 
@@ -17,111 +24,167 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
     [SerializeField]
     private List<CharacterQueryElement> elements = new List<CharacterQueryElement>();
 
-    [SerializeField]
-    private float offset;
+    private List<CharacterQueryElement> queue = new List<CharacterQueryElement>();
 
-    private int CurrentCharacterIndex => Battle.Pipeline.CurrentTurnDataIndex;
+    private Queue<string> actions = new Queue<string>();
 
     private Tween contentTw;
 
-    private Coroutine updatePisitionCoroutine = null;
+    private Coroutine actionCorotine = null;
+    private Coroutine updateCoroutine = null;
 
     public void Show()
     {
-        float currentOffset = offset;
-
-        foreach (var turnsData in BattleManager.Data.TurnsData.Skip(1))
+        for (int i = 0; i < BattleManager.Data.TurnsData.Count; i++)
         {
+            var turnsData = BattleManager.Data.TurnsData[i];
+
             GameObject instance = Instantiate(ElementPrefab, transform);
 
             var element = instance.GetComponent<CharacterQueryElement>();
             element.Initialize(turnsData.Character);
 
             var rectTransform = instance.GetComponent<RectTransform>();
-            rectTransform.anchoredPosition = new Vector2(0, currentOffset);
+
+            if (i < 4)
+            {
+                rectTransform.anchoredPosition = slots[i].anchoredPosition;
+            }
+            else
+            {
+                rectTransform.anchoredPosition = inSlot.anchoredPosition;
+            }
 
             elements.Add(element);
-
-            currentOffset += rectTransform.sizeDelta.y + offset;
+            queue.Add(element);
         }
 
-        StartCoroutine(QueryCoroutine());
+        updateCoroutine = StartCoroutine(UpdateCoroutine());
 
         contentTw = content.DOAnchorPosY(0, 0.5f).SetEase(Ease.OutCirc).Play();
     }
-
     public void Hide()
     {
         foreach (var item in elements)
         {
             item.GetComponent<RectTransform>().DOKill();
-            item.StopAnimation();
             Destroy(item.gameObject);
         }
         elements.Clear();
+        queue.Clear();
+
+        StopAllCoroutines();
 
         contentTw = content.DOAnchorPosY(-content.sizeDelta.y, 0.5f).SetEase(Ease.OutCirc).Play();
     }
 
-    public void UpdatePositions()
+    public void NextPosition()
     {
-        if (updatePisitionCoroutine != null)
-            StopCoroutine(updatePisitionCoroutine);
+        UpdateDynamics();
 
-        updatePisitionCoroutine = StartCoroutine(UpdatePisitionCoroutine());
+        actions.Enqueue("next");
     }
 
-    private IEnumerator QueryCoroutine()
+    public void PreviewPosition()
     {
-        yield return new WaitForSeconds(.5f);
+        UpdateDynamics();
 
-        foreach (var item in elements)
-        {
-            item.StartAnimation();
-
-            yield return new WaitForSeconds(.25f);
-        }
+        actions.Enqueue("preview");
     }
 
-    private IEnumerator NextCharacterCoroutine()
+    private void UpdateDynamics()
     {
         foreach (var item in elements)
         {
-            var rect = item.GetComponent<RectTransform>();
-
-            rect.DOKill();
-            rect.DOAnchorPosY(-(offset + rect.sizeDelta.y), 0.25f).SetRelative().SetEase(Ease.OutCirc).Play();
-
-            yield return new WaitForSeconds(0.1f);
+            item.UpdateDynamic();
         }
     }
 
-    private IEnumerator PreviouslyCharacterCoroutine()
+    private IEnumerator NextCoroutine()
     {
-        foreach (var item in elements)
+        for (int i = 0; i < queue.Count; i++)
         {
-            var rect = item.GetComponent<RectTransform>();
+            var element = queue[i];
 
-            rect.DOKill();
-            rect.DOAnchorPosY(offset + rect.sizeDelta.y, 0.25f).SetRelative().SetEase(Ease.OutCirc).Play();
+            if (i < slots.Length - 1)
+            {
+                bool isLast = i == queue.Count - 1;
 
-            yield return new WaitForSeconds(0.1f);
+                element.MoveToPoint(slots[i].anchoredPosition, 
+                                   isLast ? slots.Last().anchoredPosition : slots[i + 1].anchoredPosition);
+            }
+
+            yield return new WaitForFixedUpdate();
         }
+
+        actionCorotine = null;
     }
 
-    private IEnumerator UpdatePisitionCoroutine()
+    private IEnumerator PreviewCoroutine()
     {
-        for (int i = 0; i < elements.Count; i++)
+        for (int i = queue.Count - 1; i >= 0; i--)
         {
-            var rect = elements[i].GetComponent<RectTransform>();
+            var element = queue[i];
 
-            rect.DOAnchorPosY(offset + ((rect.sizeDelta.y + offset) * i) - ((rect.sizeDelta.y + offset) * CurrentCharacterIndex), 0.25f)
-                .SetEase(Ease.OutCirc).Play();
+            if (i < slots.Length - 1)
+            {
+                bool isFirst = i == 0;
 
-            yield return new WaitForSeconds(0.1f);
+                if (isFirst)
+                {
+                    element.MoveToPoint(slots.Last().anchoredPosition, element.GetComponent<RectTransform>().anchoredPosition);
+                }
+                else
+                {
+                    element.MoveToPoint(slots[i].anchoredPosition, slots[i - 1].anchoredPosition);
+                }
+            }
+
+            yield return new WaitForFixedUpdate();
         }
 
-        updatePisitionCoroutine = null;
+        actionCorotine = null;
+    }
+
+    private IEnumerator UpdateCoroutine()
+    {
+        var prefabElement = ElementPrefab.GetComponent<CharacterQueryElement>();
+
+        while (true)
+        {
+            if (actions.Count > 0)
+            {
+                if (actionCorotine != null)
+                    StopCoroutine(actionCorotine);
+
+                string act = actions.Dequeue();
+
+                if (act == "next")
+                {
+                    var firstElement = queue.First();
+
+                    queue.RemoveAt(0);
+                    queue.Add(firstElement);
+
+                    actionCorotine = StartCoroutine(NextCoroutine());
+                }
+                else
+                {
+                    var lastElement = queue.Last();
+
+                    queue.RemoveAt(queue.Count - 1);
+                    queue.Insert(0, lastElement);
+
+                    actionCorotine = StartCoroutine(PreviewCoroutine());
+                }
+
+                yield return new WaitForSeconds(prefabElement.moveDuration);
+
+                yield return new WaitWhile(() => actionCorotine != null);
+            }
+
+            yield return null;
+        }
     }
 
     private void OnDestroy()

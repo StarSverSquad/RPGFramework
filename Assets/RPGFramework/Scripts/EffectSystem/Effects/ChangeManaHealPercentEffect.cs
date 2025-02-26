@@ -9,8 +9,8 @@ public class ChangeManaHealPercentEffect : EffectBase
 
     public override IEnumerator Invoke(RPGEntity user, RPGEntity target)
     {
-        target.Heal += Mathf.RoundToInt(target.MaxHeal * Heal);
-        target.Mana += Mathf.RoundToInt(target.MaxMana * Mana);
+        target.Heal += Mathf.RoundToInt(target.MaxHeal * Heal * Factor);
+        target.Mana += Mathf.RoundToInt(target.MaxMana * Mana * Factor);
 
         yield break;
     }

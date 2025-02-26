@@ -9,8 +9,8 @@ public class ChangeManaHealConstEffect : EffectBase
 
     public override IEnumerator Invoke(RPGEntity user, RPGEntity target)
     {
-        target.Heal += Heal;
-        target.Mana += Mana;
+        target.Heal += Mathf.RoundToInt(Heal * Factor);
+        target.Mana += Mathf.RoundToInt(Mana * Factor);
 
         yield break;
     }

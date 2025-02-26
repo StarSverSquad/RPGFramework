@@ -79,6 +79,12 @@ public class BattleUtility : RPGFrameworkBehaviour
 
         dmg.Invoke(text);
     }
+
+    public void SpawnFallingText(Vector2 position, string text, Color color)
+    {
+        SpawnFallingText(position, text, color, color);
+    }
+
     public void SpawnFallingText(Vector2 position, string text, Color colorStart, Color colorEnd)
     {
         GameObject obj = Instantiate(Data.DmgText.gameObject, position, Quaternion.identity, Data.BattleCanvas.transform);
@@ -123,7 +129,9 @@ public class BattleUtility : RPGFrameworkBehaviour
     {
         CharacterBox box = BattleManager.Instance.UI.CharacterBox.GetBox(data.Character);
 
-        int realDamage = data.Character.GiveDamage(Mathf.RoundToInt(bullet.enemy.Damage * bullet.DamageModifier * (data.IsDefence ? .5f : 1f)));
+        float defenceAspect = data.BattleAction == BattleTurnData.TurnAction.Defence ? .5f : 1f;
+
+        int realDamage = data.Character.GiveDamage(Mathf.RoundToInt(bullet.enemy.Damage * bullet.DamageModifier * defenceAspect));
 
         BattleManager.Instance.Shaker.Shake(2);
 

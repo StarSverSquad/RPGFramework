@@ -4,8 +4,27 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CharacterQueryElement : MonoBehaviour
+public class CharacterQueryElement : RPGFrameworkBehaviour
 {
+    [SerializeField]
+    private GameObject fallContent;
+    public bool FallIsActive
+    {
+        set => fallContent.SetActive(value);
+        get => fallContent.activeSelf;
+    }
+
+    [SerializeField]
+    private GameObject usedContent;
+    public bool UsedIsActive
+    {
+        set => usedContent.SetActive(value);
+        get => usedContent.activeSelf;
+    }
+
+    [SerializeField]
+    private Image actionImage;
+
     [SerializeField]
     private RectTransform content;
 
@@ -20,15 +39,19 @@ public class CharacterQueryElement : MonoBehaviour
 
     [SerializeField]
     private IconList iconList;
-
     [SerializeField]
     private LineBar healBar;
-
     [SerializeField]
     private LineBar manaBar;
 
-    // <-- -->
-    private Sequence animation0;
+    private RPGCharacter linkedCharacter;
+    private BattleTurnData CharacterTurnData => Battle.data.TurnsData.First(i => i.Character == linkedCharacter);
+
+    public float moveDuration = 0.2f;
+
+    private RectTransform rectTransform;
+
+    private Tween moveAnimation;
 
     public void Initialize(RPGCharacter character)
     {
@@ -41,28 +64,39 @@ public class CharacterQueryElement : MonoBehaviour
 
         healBar.SetValue((float)character.Heal / (float)character.MaxHeal);
         manaBar.SetValue((float)character.Mana / (float)character.MaxMana);
+
+        rectTransform = GetComponent<RectTransform>();
+
+        linkedCharacter = character;
+
+        FallIsActive = CharacterTurnData.IsDead;
     }
 
-    public void StartAnimation()
+    public void MoveToPoint(Vector2 rectPoint, Vector2 fromPoint)
     {
-        animation0?.Kill(true);
+        if (moveAnimation != null)
+            moveAnimation.Kill();
 
-        animation0 = DOTween.Sequence();
+        rectTransform.anchoredPosition = fromPoint;
 
-        animation0.Append(content.DOAnchorPosX(25, 0.75f).SetEase(Ease.OutSine));
-
-        animation0.Append(content.DOAnchorPosX(0, 0.75f).SetEase(Ease.OutSine));
-
-        animation0.SetLoops(-1).SetDelay(0.5f).Play();
+        moveAnimation = rectTransform.DOAnchorPos(rectPoint, moveDuration).Play();
     }
 
-    public void StopAnimation()
+    public void UpdateDynamic()
     {
-        animation0.Kill(true);
+        if (!FallIsActive)
+        {
+            Sprite acitonSprite = Battle.data.GetActionIcon(CharacterTurnData.BattleAction);
+
+            actionImage.sprite = acitonSprite;
+            actionImage.gameObject.SetActive(acitonSprite != null);
+
+            UsedIsActive = acitonSprite != null;
+        }
     }
 
     private void OnDestroy()
     {
-        animation0.Kill();
+        moveAnimation.Kill();
     }
 }

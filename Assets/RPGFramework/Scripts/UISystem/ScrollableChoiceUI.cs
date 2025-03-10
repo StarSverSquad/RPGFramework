@@ -2,93 +2,96 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ScrollableChoiceUI : CommonChoiceUI
+namespace RPGF.Choice
 {
-    [Header("Scroll settings")]
-    [SerializeField]
-    private bool canScroll = false;
-    public bool CanScroll => canScroll;
-    [SerializeField]
-    private float scrollSpeed = 4f;
-    public float ScrollSpeed => scrollSpeed;
-
-    private Coroutine scrollCoroutine = null;
-
-    private Tween scrollTween;
-    private Dictionary<ElementInfo, float> elementsDefaultAbsY;
-
-    public bool IsCrolling => scrollCoroutine != null;
-
-    private void Start()
+    public class ScrollableChoiceUI : ChoiceUI
     {
-        OnStart += BattleChoiceUI_OnStartChoice;
-        OnEnd += BattleChoiceUI_OnEndChoice;
-        OnSellectionChanged += BattleChoiceUI_OnSellectionChanged;
+        [Header("Scroll settings")]
+        [SerializeField]
+        private bool canScroll = false;
+        public bool CanScroll => canScroll;
+        [SerializeField]
+        private float scrollSpeed = 4f;
+        public float ScrollSpeed => scrollSpeed;
 
-        CleanUp();
-    }
+        private Coroutine scrollCoroutine = null;
 
-    private void BattleChoiceUI_OnSellectionChanged()
-    {
-        if (!canScroll)
-            return;
+        private Tween scrollTween;
+        private Dictionary<ElementInfo, float> elementsDefaultAbsY;
 
-        scrollTween.Kill();
+        public bool IsCrolling => scrollCoroutine != null;
 
-        Vector3[] rectCorners = new Vector3[4];
-        Vector3[] itemCorners = new Vector3[4];
-        Vector3[] contentCorners = new Vector3[4];
-
-        rect.GetWorldCorners(rectCorners);
-        CurrentItem.element.GetComponent<RectTransform>().GetWorldCorners(itemCorners);
-        content.GetWorldCorners(contentCorners);
-
-        float contentToElementTop = Mathf.Abs(itemCorners[1].y - contentCorners[1].y);
-        float contentToElementBottom = Mathf.Abs(itemCorners[0].y - contentCorners[0].y);
-
-        if (itemCorners[1].y > rectCorners[1].y)
+        private void Start()
         {
-            scrollTween = content.DOMoveY(content.position.y - Mathf.Abs(itemCorners[1].y - rectCorners[1].y) - Margin.y / 48, 0.25f).SetEase(Ease.OutQuint).Play();
+            OnStart += BattleChoiceUI_OnStartChoice;
+            OnEnd += BattleChoiceUI_OnEndChoice;
+            OnSellectionChanged += BattleChoiceUI_OnSellectionChanged;
+
+            CleanUp();
         }
 
-        if (itemCorners[0].y < rectCorners[0].y)
+        private void BattleChoiceUI_OnSellectionChanged()
         {
-            scrollTween = content.DOMoveY(content.position.y + Mathf.Abs(itemCorners[0].y - rectCorners[0].y) + Margin.w / 48, 0.25f).SetEase(Ease.OutQuint).Play();
-        }
-    }
+            if (!canScroll)
+                return;
 
-    private void OnDestroy()
-    {
-        OnStart -= BattleChoiceUI_OnStartChoice;
-        OnEnd -= BattleChoiceUI_OnEndChoice;
-    }
+            scrollTween.Kill();
 
-    private void BattleChoiceUI_OnStartChoice()
-    {
-        elementsDefaultAbsY = new Dictionary<ElementInfo, float>();
+            Vector3[] rectCorners = new Vector3[4];
+            Vector3[] itemCorners = new Vector3[4];
+            Vector3[] contentCorners = new Vector3[4];
 
-        foreach (var lst in elementLists)
-        {
-            foreach (var item in lst)
+            rect.GetWorldCorners(rectCorners);
+            CurrentItem.element.GetComponent<RectTransform>().GetWorldCorners(itemCorners);
+            content.GetWorldCorners(contentCorners);
+
+            float contentToElementTop = Mathf.Abs(itemCorners[1].y - contentCorners[1].y);
+            float contentToElementBottom = Mathf.Abs(itemCorners[0].y - contentCorners[0].y);
+
+            if (itemCorners[1].y > rectCorners[1].y)
             {
-                elementsDefaultAbsY.Add(item, item.element.transform.position.y);
+                scrollTween = content.DOMoveY(content.position.y - Mathf.Abs(itemCorners[1].y - rectCorners[1].y) - margin.top / 48, 0.25f).SetEase(Ease.OutQuint).Play();
+            }
+
+            if (itemCorners[0].y < rectCorners[0].y)
+            {
+                scrollTween = content.DOMoveY(content.position.y + Mathf.Abs(itemCorners[0].y - rectCorners[0].y) + margin.bottom / 48, 0.25f).SetEase(Ease.OutQuint).Play();
             }
         }
-    }
 
-    private void BattleChoiceUI_OnEndChoice()
-    {
-        if (scrollCoroutine != null)
-            StopCoroutine(scrollCoroutine);
+        private void OnDestroy()
+        {
+            OnStart -= BattleChoiceUI_OnStartChoice;
+            OnEnd -= BattleChoiceUI_OnEndChoice;
+        }
 
-        scrollCoroutine = null;
-    }
+        private void BattleChoiceUI_OnStartChoice()
+        {
+            elementsDefaultAbsY = new Dictionary<ElementInfo, float>();
 
-    public override void CleanUp()
-    {
-        base.CleanUp();
+            foreach (var lst in elementLists)
+            {
+                foreach (var item in lst)
+                {
+                    elementsDefaultAbsY.Add(item, item.element.transform.position.y);
+                }
+            }
+        }
 
-        if (scrollCoroutine != null)
-            StopCoroutine(scrollCoroutine);
+        private void BattleChoiceUI_OnEndChoice()
+        {
+            if (scrollCoroutine != null)
+                StopCoroutine(scrollCoroutine);
+
+            scrollCoroutine = null;
+        }
+
+        public override void CleanUp()
+        {
+            base.CleanUp();
+
+            if (scrollCoroutine != null)
+                StopCoroutine(scrollCoroutine);
+        }
     }
 }

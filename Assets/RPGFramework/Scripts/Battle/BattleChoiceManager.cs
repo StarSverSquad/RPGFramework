@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RPGF.Choice;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
     public bool IsCanceled => battleChoice.IsCanceled;
     public bool IsPrimaryCanceled => primaryChoice.IsCanceled;
 
-    public CommonChoiceUI.ElementInfo CurrentItem => battleChoice.CurrentItem;
+    public ChoiceUI.ElementInfo CurrentItem => battleChoice.CurrentItem;
 
     public int PrimaryCurrentIndex => primaryChoice.Choice;
 
@@ -130,13 +131,13 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceEntity()
     {
-        battleChoice.AppendTittle("Персонаж", CommonChoiceUI.Aling.center);
+        battleChoice.AppendTitle("Персонаж", TMPro.TextAlignmentOptions.Center);
 
-        List<CommonChoiceUI.ElementInfo> choices = new List<CommonChoiceUI.ElementInfo>();
+        List<ChoiceUI.ElementInfo> choices = new List<ChoiceUI.ElementInfo>();
 
         foreach (var item in Data.TurnsData)
         {
-            choices.Add(new CommonChoiceUI.ElementInfo()
+            choices.Add(new ChoiceUI.ElementInfo()
             {
                 name = item.Character.Name,
                 value = item.Character
@@ -146,13 +147,13 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
         battleChoice.AppendElements(choices.ToArray());
 
 
-        battleChoice.AppendTittle("Противник", CommonChoiceUI.Aling.center);
+        battleChoice.AppendTitle("Противник", TMPro.TextAlignmentOptions.Center);
 
-        List<CommonChoiceUI.ElementInfo> choices0 = new List<CommonChoiceUI.ElementInfo>();
+        List<ChoiceUI.ElementInfo> choices0 = new List<ChoiceUI.ElementInfo>();
 
         foreach (var item in Data.Enemys)
         {
-            choices0.Add(new CommonChoiceUI.ElementInfo()
+            choices0.Add(new ChoiceUI.ElementInfo()
             {
                 name = item.Name,
                 value = item
@@ -166,11 +167,11 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceEnemy()
     {
-        List<CommonChoiceUI.ElementInfo> choiceElements = new List<CommonChoiceUI.ElementInfo>();
+        List<ChoiceUI.ElementInfo> choiceElements = new List<ChoiceUI.ElementInfo>();
 
         foreach (var enemy in Data.Enemys)
         {
-            choiceElements.Add(new CommonChoiceUI.ElementInfo()
+            choiceElements.Add(new ChoiceUI.ElementInfo()
             {
                 name = enemy.Name,
                 value = enemy
@@ -184,7 +185,7 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceTeammate()
     {
-        List<CommonChoiceUI.ElementInfo> choices = new List<CommonChoiceUI.ElementInfo>();
+        List<ChoiceUI.ElementInfo> choices = new List<ChoiceUI.ElementInfo>();
 
         BattleTurnData current = Battle.Pipeline.CurrentTurnData;
 
@@ -192,7 +193,7 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
         
         foreach (var turnData in Data.TurnsData)
         {
-            CommonChoiceUI.ElementInfo info = new CommonChoiceUI.ElementInfo()
+            ChoiceUI.ElementInfo info = new ChoiceUI.ElementInfo()
             {
                 name = turnData.Character.Name,
                 value = turnData.Character,
@@ -219,11 +220,11 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceAbility()
     {
-        List<CommonChoiceUI.ElementInfo> choices = new List<CommonChoiceUI.ElementInfo>();
+        List<ChoiceUI.ElementInfo> choices = new List<ChoiceUI.ElementInfo>();
 
         foreach (var item in Pipeline.CurrentTurnData.Character.Abilities)
         {
-            choices.Add(new CommonChoiceUI.ElementInfo()
+            choices.Add(new ChoiceUI.ElementInfo()
             {
                 name = item.Name,
                 description = item.Destription + "\n" + (item.ManaCost > 0 ? $"[<color=#0081FF>Мана: {item.ManaCost}</color>] " : "") + (item.ConcentrationCost > 0 ? $"[<color=#06C100>Конц.: {item.ConcentrationCost}</color>]" : ""),
@@ -240,14 +241,14 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceAct()
     {
-        List<CommonChoiceUI.ElementInfo> choices = new List<CommonChoiceUI.ElementInfo>()
+        List<ChoiceUI.ElementInfo> choices = new List<ChoiceUI.ElementInfo>()
         {
-            new CommonChoiceUI.ElementInfo()
+            new ChoiceUI.ElementInfo()
             {
                 name = "Действие",
                 value = 0
             },
-            new CommonChoiceUI.ElementInfo()
+            new ChoiceUI.ElementInfo()
             {
                 name = "Способность",
                 value = 1,
@@ -262,9 +263,9 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceDefence()
     {
-        List<CommonChoiceUI.ElementInfo> choices = new List<CommonChoiceUI.ElementInfo>()
+        List<ChoiceUI.ElementInfo> choices = new List<ChoiceUI.ElementInfo>()
         {
-            new CommonChoiceUI.ElementInfo()
+            new ChoiceUI.ElementInfo()
             {
                 name = "Защита",
                 value = 0
@@ -273,7 +274,7 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
         if (Data.BattleInfo.CanFlee)
         {
-            choices.Add(new CommonChoiceUI.ElementInfo()
+            choices.Add(new ChoiceUI.ElementInfo()
             {
                 name = "Бегство",
                 value = 1
@@ -287,7 +288,7 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceItem()
     {
-        List<CommonChoiceUI.ElementInfo> choices = new List<CommonChoiceUI.ElementInfo>();
+        List<ChoiceUI.ElementInfo> choices = new List<ChoiceUI.ElementInfo>();
 
         foreach (var slot in GameManager.Instance.Inventory.Slots)
         {
@@ -302,7 +303,7 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
                     alreadyUsing += item.Item == slot.Item ? 1 : 0;
             }
 
-            CommonChoiceUI.ElementInfo element = new CommonChoiceUI.ElementInfo()
+            ChoiceUI.ElementInfo element = new ChoiceUI.ElementInfo()
             {
                 name = slot.Item.Name,
                 description = slot.Item.Description,
@@ -322,9 +323,9 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceBattle()
     {
-        List<CommonChoiceUI.ElementInfo> choices = new List<CommonChoiceUI.ElementInfo>()
+        List<ChoiceUI.ElementInfo> choices = new List<ChoiceUI.ElementInfo>()
         {
-            new CommonChoiceUI.ElementInfo()
+            new ChoiceUI.ElementInfo()
             {
                 name = "Атака",
                 value = 0
@@ -333,7 +334,7 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
         if (Data.BattleInfo.CanFlee)
         {
-            choices.Add(new CommonChoiceUI.ElementInfo()
+            choices.Add(new ChoiceUI.ElementInfo()
             {
                 name = "Защита",
                 value = 1
@@ -347,9 +348,9 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceInteraction()
     {
-        List<CommonChoiceUI.ElementInfo> choiceElements = new List<CommonChoiceUI.ElementInfo>
+        List<ChoiceUI.ElementInfo> choiceElements = new List<ChoiceUI.ElementInfo>
         {
-            new CommonChoiceUI.ElementInfo()
+            new ChoiceUI.ElementInfo()
             {
                 name = "Проверить",
                 description = "Проверить текущего врага",
@@ -365,7 +366,7 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
         foreach (var act in currentCharacter.EnemyBuffer.Acts)
         {
 
-            CommonChoiceUI.ElementInfo elementInfo = new CommonChoiceUI.ElementInfo()
+            ChoiceUI.ElementInfo elementInfo = new ChoiceUI.ElementInfo()
             {
                 name = act.Name,
                 description = act.Description,
@@ -396,7 +397,7 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void CleanUp() => battleChoice.CleanUp();
 
-    private void ShowDescriptionFor(CommonChoiceUI.ElementInfo element)
+    private void ShowDescriptionFor(ChoiceUI.ElementInfo element)
     {
         BattleManager.Instance.UI.Description.SetActive(true);
         BattleManager.Instance.UI.Description.Text = element.description;

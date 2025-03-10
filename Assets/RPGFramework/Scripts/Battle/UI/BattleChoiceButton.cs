@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using DG.Tweening;
+using RPGF.Choice;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleChoiceButton : CommonChoiceUIElement
+public class BattleChoiceButton : ChoiceElement
 {
     [SerializeField]
     private RectTransform[] FocusEffectElements = new RectTransform[2];

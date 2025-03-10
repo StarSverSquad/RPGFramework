@@ -21,4 +21,4 @@ public class Pizdilovka : RPGAttackPattern
             CreateObjectRelativeBattleField(bulletPrefabV, new Vector2(Random.Range(-1.5f, 1.5f), 4));
         }
     }
-}
+}/// сосал???? маму твою ебал!!!

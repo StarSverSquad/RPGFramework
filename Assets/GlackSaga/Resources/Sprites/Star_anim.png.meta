@@ -57,7 +57,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 77
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -135,12 +135,12 @@ TextureImporter:
       name: Star_anim_0
       rect:
         serializedVersion: 2
-        x: 44
-        y: 44
-        width: 29
-        height: 29
+        x: 0
+        y: 0
+        width: 117
+        height: 117
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -157,12 +157,12 @@ TextureImporter:
       name: Star_anim_1
       rect:
         serializedVersion: 2
-        x: 122
-        y: 5
-        width: 107
-        height: 107
+        x: 117
+        y: 0
+        width: 117
+        height: 117
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -179,12 +179,12 @@ TextureImporter:
       name: Star_anim_2
       rect:
         serializedVersion: 2
-        x: 233
+        x: 234
         y: 0
-        width: 118
+        width: 117
         height: 117
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -201,7 +201,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 569a2bf18080e7b4f85e28c95f8ead56
     internalID: 0
     vertices: []
     indices: 

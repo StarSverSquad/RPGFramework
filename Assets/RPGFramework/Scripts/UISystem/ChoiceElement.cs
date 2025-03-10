@@ -61,7 +61,7 @@ namespace RPGF.Choice
             mainText.text = text;
         }
 
-        public void SetFocus(bool focus)
+        public virtual void SetFocus(bool focus)
         {
             IsFocused = focus;
 
@@ -81,7 +81,7 @@ namespace RPGF.Choice
 
         }
 
-        public void SetLock(bool locked)
+        public virtual void SetLock(bool locked)
         {
             IsLocked = locked;
 
@@ -91,12 +91,12 @@ namespace RPGF.Choice
                 OnUnlocked?.Invoke();
         }   
 
-        public void Selected()
+        public virtual void Selected()
         {
             OnSelected?.Invoke();
         }
 
-        public void FailSelect()
+        public virtual void FailSelect()
         {
             OnFailSelect?.Invoke();
         }

@@ -7,22 +7,22 @@ using UnityEngine;
 
 namespace RPGF.Choice
 {
-    public class ChoiceUI : MonoBehaviour, IDisposable
+    public class ChoiceUI : RPGFrameworkBehaviour, IDisposable
     {
         #region Element info
         [Serializable]
-        public struct ElementInfo
+        public class Element
         {
-            public object value;
+            public object Value;
 
-            public Sprite icon;
+            public Sprite Icon;
 
-            public string name;
-            public string description;
+            public string Name;
+            public string Description;
 
-            public ChoiceElement element;
+            public ChoiceElement UIElement;
 
-            public string counterText;
+            public string CounterText;
 
             public bool locked;
         }
@@ -41,18 +41,20 @@ namespace RPGF.Choice
 
         [Header("Ссылки")]
         [SerializeField]
+        [Tooltip("Объект в котором содаёться содержимое")]
         protected RectTransform content;
         [SerializeField]
+        [Tooltip("Объект относительно которого идёт позиционирование")]
         protected RectTransform rect;
 
         [Header("Префабы")]
         [SerializeField]
-        protected ChoiceElement elementPrefab;
+        protected ChoiceElement ElementPrefab;
         [SerializeField]
-        protected TextMeshProUGUI titlePrefab;
+        protected TextMeshProUGUI TitlePrefab;
 
         [Header("Настройки")]
-        public Margin margin;
+        public Margin _Margin;
 
         [SerializeField]
         private int columns;
@@ -62,33 +64,29 @@ namespace RPGF.Choice
         private Vector2 gap;
         public Vector2 Gap => gap;
 
-        #region Not unity serialize
-
-        protected List<List<ElementInfo>> elementLists = new List<List<ElementInfo>>();
-        protected List<GameObject> objBuffer = new List<GameObject>();
+        protected List<List<Element>> ElementLists = new();
+        protected List<GameObject> AllGameObjects = new();
 
         private Vector2 cursor = Vector2.zero;
 
         private Coroutine choiceCorotine = null;
 
+        public Element CurrentUIElement => ElementLists[listIndex.x][listIndex.y];
+        public float ElementSizeX => (rect.sizeDelta.x - _Margin.left - _Margin.right - (gap.x * (columns - 1))) / columns;
+
+        private Vector2Int listIndex = Vector2Int.zero;
+
         public bool IsChoicing => choiceCorotine != null;
         public bool IsChoiced { get; private set; } = false;
         public bool IsCanceled { get; private set; } = false;
 
-        [Obsolete]
-        public ElementInfo CurrentItem => elementLists[listIndex.x][listIndex.y];
-
-        public float ElementSizeX => (rect.sizeDelta.x - margin.left - margin.right - (gap.x * (columns - 1))) / columns;
-
-        private Vector2Int listIndex = Vector2Int.zero;
-
+        #region Events
         public event Action OnStart;
         public event Action OnEnd;
         public event Action OnSellectionChanged;
         public event Action OnCanceled;
         public event Action OnDeny;
         public event Action OnSuccess;
-
         #endregion
 
         private void Start()
@@ -96,31 +94,31 @@ namespace RPGF.Choice
             Dispose();
         }
 
-        public void AppendElements(params ElementInfo[] elements)
+        public void AppendElements(params Element[] elements)
         {
-            elementLists.Add(new List<ElementInfo>());
+            ElementLists.Add(new());
 
             for (int i = 0, j = 0; i < elements.Length; i++)
             {
-                ElementInfo cur = elements[i];
+                Element current = elements[i];
 
-                GameObject obj = Instantiate(elementPrefab.gameObject, content);
+                GameObject obj = Instantiate(ElementPrefab.gameObject, content);
 
-                RectTransform elRect = obj.GetComponent<RectTransform>();
-                ChoiceElement objElement = obj.GetComponent<ChoiceElement>();
+                var elRect = obj.GetComponent<RectTransform>();
+                var objElement = obj.GetComponent<ChoiceElement>();
 
-                objElement.Setup(cur.name, cur.icon, cur.counterText);
+                objElement.Setup(current.Name, current.Icon, current.CounterText);
 
-                objElement.SetLock(cur.locked);
+                objElement.SetLock(current.locked);
 
                 elRect.anchoredPosition = Vector2.zero;
                 elRect.anchoredPosition += cursor;
                 elRect.sizeDelta = new Vector2(ElementSizeX, elRect.sizeDelta.y);
 
-                cur.element = objElement;
+                current.UIElement = objElement;
 
-                objBuffer.Add(obj);
-                elementLists.Last().Add(cur);
+                AllGameObjects.Add(obj);
+                ElementLists.Last().Add(current);
 
                 j++;
 
@@ -128,59 +126,37 @@ namespace RPGF.Choice
 
                 if (j == columns)
                 {
-                    cursor = new Vector2(margin.left, cursor.y - elRect.sizeDelta.y - gap.y);
+                    cursor = new Vector2(_Margin.left, cursor.y - elRect.sizeDelta.y - gap.y);
 
                     j = 0;
                 }
                 else if (i == elements.Length - 1)
-                    cursor = new Vector2(margin.left, cursor.y - elRect.sizeDelta.y);
+                    cursor = new Vector2(_Margin.left, cursor.y - elRect.sizeDelta.y);
             }
 
-            content.sizeDelta = new Vector2(this.rect.sizeDelta.x, -cursor.y);
-        }
-
-        public void AppendElements(ElementInfo element)
-        {
-
+            content.sizeDelta = new Vector2(rect.sizeDelta.x, -cursor.y);
         }
 
         public void AppendTitle(string text, TextAlignmentOptions aling)
         {
-            GameObject obj = Instantiate(titlePrefab.gameObject, content);
+            GameObject obj = Instantiate(TitlePrefab.gameObject, content);
             TextMeshProUGUI textMesh = obj.GetComponent<TextMeshProUGUI>();
             RectTransform rect = obj.GetComponent<RectTransform>();
 
             obj.transform.position = transform.position;
 
             rect.anchoredPosition += cursor;
-            rect.sizeDelta = new Vector2(this.rect.sizeDelta.x - margin.left - margin.right, rect.sizeDelta.y);
+            rect.sizeDelta = new Vector2(this.rect.sizeDelta.x - _Margin.left - _Margin.right, rect.sizeDelta.y);
 
             textMesh.text = text;
 
             textMesh.alignment = aling;
 
-            objBuffer.Add(obj);
+            AllGameObjects.Add(obj);
 
-            cursor = new Vector2(margin.left, cursor.y - rect.sizeDelta.y);
+            cursor = new Vector2(_Margin.left, cursor.y - rect.sizeDelta.y);
 
             content.sizeDelta = new Vector2(this.rect.sizeDelta.x, -cursor.y);
-        }
-
-
-        /// <remarks>Лучше использовать Dispose</remarks>
-        [Obsolete()]
-        public virtual void CleanUp()
-        {
-            foreach (var obj in objBuffer)
-                Destroy(obj);
-            objBuffer.Clear();
-
-            elementLists.Clear();
-
-            cursor = new Vector2(margin.left, -margin.top);
-
-            content.sizeDelta = new Vector2(rect.sizeDelta.x, margin.top + margin.bottom);
-            content.position = rect.position;
         }
 
         public virtual void InvokeChoice()
@@ -197,22 +173,22 @@ namespace RPGF.Choice
 
         protected virtual void CheckIndex()
         {
-            if (listIndex.y > elementLists[listIndex.x].Count - 1)
+            if (listIndex.y > ElementLists[listIndex.x].Count - 1)
             {
-                if (listIndex.x < elementLists.Count - 1)
+                if (listIndex.x < ElementLists.Count - 1)
                 {
                     listIndex.x++;
                     listIndex.y = 0;
                 }
                 else
-                    listIndex.y = elementLists[listIndex.x].Count - 1;
+                    listIndex.y = ElementLists[listIndex.x].Count - 1;
             }
             else if (listIndex.y < 0)
             {
                 if (listIndex.x > 0)
                 {
                     listIndex.x--;
-                    listIndex.y = elementLists[listIndex.x].Count - 1;
+                    listIndex.y = ElementLists[listIndex.x].Count - 1;
                 }
                 else
                     listIndex.y = 0;
@@ -227,70 +203,70 @@ namespace RPGF.Choice
 
             yield return null;
 
-            if (elementLists.Count == 0)
+            if (ElementLists.Count == 0)
                 IsCanceled = true;
             else
             {
                 OnStart?.Invoke();
 
-                CurrentItem.element.SetFocus(true);
+                CurrentUIElement.UIElement.SetFocus(true);
             }
 
             while (!IsChoiced && !IsCanceled)
             {
                 yield return null;
 
-                if (Input.GetKeyDown(KeyCode.UpArrow))
+                if (Input.GetKeyDown(Game.BaseOptions.MoveUp))
                 {
-                    CurrentItem.element.SetFocus(false);
+                    CurrentUIElement.UIElement.SetFocus(false);
 
                     listIndex.y -= columns;
 
                     CheckIndex();
 
-                    CurrentItem.element.SetFocus(true);
+                    CurrentUIElement.UIElement.SetFocus(true);
 
                     OnSellectionChanged?.Invoke();
                 }
-                else if (Input.GetKeyDown(KeyCode.DownArrow))
+                else if (Input.GetKeyDown(Game.BaseOptions.MoveDown))
                 {
-                    CurrentItem.element.SetFocus(false);
+                    CurrentUIElement.UIElement.SetFocus(false);
 
                     listIndex.y += columns;
 
                     CheckIndex();
 
-                    CurrentItem.element.SetFocus(true);
+                    CurrentUIElement.UIElement.SetFocus(true);
 
                     OnSellectionChanged?.Invoke();
                 }
-                else if (Input.GetKeyDown(KeyCode.RightArrow))
+                else if (Input.GetKeyDown(Game.BaseOptions.MoveRight))
                 {
-                    CurrentItem.element.SetFocus(false);
+                    CurrentUIElement.UIElement.SetFocus(false);
 
                     listIndex.y++;
 
                     CheckIndex();
 
-                    CurrentItem.element.SetFocus(true);
+                    CurrentUIElement.UIElement.SetFocus(true);
 
                     OnSellectionChanged?.Invoke();
                 }
-                else if (Input.GetKeyDown(KeyCode.LeftArrow))
+                else if (Input.GetKeyDown(Game.BaseOptions.MoveLeft))
                 {
-                    CurrentItem.element.SetFocus(false);
+                    CurrentUIElement.UIElement.SetFocus(false);
 
                     listIndex.y--;
 
                     CheckIndex();
 
-                    CurrentItem.element.SetFocus(true);
+                    CurrentUIElement.UIElement.SetFocus(true);
 
                     OnSellectionChanged?.Invoke();
                 }
-                else if (Input.GetKeyDown(KeyCode.Z))
+                else if (Input.GetKeyDown(Game.BaseOptions.Accept))
                 {
-                    if (!CurrentItem.locked)
+                    if (!CurrentUIElement.locked)
                     {
                         IsChoiced = true;
                         OnSuccess?.Invoke();
@@ -298,7 +274,7 @@ namespace RPGF.Choice
                     else
                         OnDeny?.Invoke();
                 }
-                else if (Input.GetKeyDown(KeyCode.X))
+                else if (Input.GetKeyDown(Game.BaseOptions.Cancel))
                 {
                     IsCanceled = true;
                     OnCanceled?.Invoke();
@@ -310,17 +286,17 @@ namespace RPGF.Choice
             OnEnd?.Invoke();
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
-            foreach (var obj in objBuffer)
+            foreach (var obj in AllGameObjects)
                 Destroy(obj);
-            objBuffer.Clear();
+            AllGameObjects.Clear();
 
-            elementLists.Clear();
+            ElementLists.Clear();
 
-            cursor = new Vector2(margin.left, -margin.top);
+            cursor = new Vector2(_Margin.left, -_Margin.top);
 
-            content.sizeDelta = new Vector2(rect.sizeDelta.x, margin.top + margin.bottom);
+            content.sizeDelta = new Vector2(rect.sizeDelta.x, _Margin.top + _Margin.bottom);
             content.position = rect.position;
 
         }

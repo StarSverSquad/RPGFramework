@@ -404,7 +404,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                         PreviewAction();
                     else
                     {
-                        if ((int)Choice.CurrentItem.value == 0)
+                        if ((int)Choice.CurrentItem.Value == 0)
                         {
                             currenTurnData.BattleAction = TurnAction.Act;
                             choiceActions.Add(ChoiceAction.Enemy);
@@ -436,7 +436,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                     }
                     else
                     {
-                        currenTurnData.InteractionAct = (RPGEnemy.EnemyAct)Choice.CurrentItem.value;
+                        currenTurnData.InteractionAct = (RPGEnemy.EnemyAct)Choice.CurrentItem.Value;
 
                         NextCharacter();
                     }
@@ -458,7 +458,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                     }
                     else
                     {
-                        currenTurnData.Ability = (RPGAbility)Choice.CurrentItem.value;
+                        currenTurnData.Ability = (RPGAbility)Choice.CurrentItem.Value;
 
                         switch (currenTurnData.Ability.Direction)
                         {
@@ -501,7 +501,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                     }
                     else
                     {
-                        currenTurnData.EntityBuffer = (RPGEntity)Battle.Choice.CurrentItem.value;
+                        currenTurnData.EntityBuffer = (RPGEntity)Battle.Choice.CurrentItem.Value;
 
                         switch (currenTurnData.BattleAction)
                         {
@@ -539,7 +539,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                     }
                     else
                     {
-                        currenTurnData.CharacterBuffer = (RPGCharacter)Choice.CurrentItem.value;
+                        currenTurnData.CharacterBuffer = (RPGCharacter)Choice.CurrentItem.Value;
 
                         switch (currenTurnData.BattleAction)
                         {
@@ -573,7 +573,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                     }
                     else
                     {
-                        currenTurnData.EnemyBuffer = (RPGEnemy)Choice.CurrentItem.value;
+                        currenTurnData.EnemyBuffer = (RPGEnemy)Choice.CurrentItem.Value;
 
                         switch (currenTurnData.BattleAction)
                         {
@@ -611,7 +611,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                         else
                         {
                             // Запоминаем предмет
-                            currenTurnData.Item = Battle.Choice.CurrentItem.value as RPGCollectable;
+                            currenTurnData.Item = Battle.Choice.CurrentItem.Value as RPGCollectable;
 
                             // Этот предмет является потребляемым?
                             currenTurnData.IsConsumed = currenTurnData.Item is RPGConsumed;
@@ -661,7 +661,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                         PreviewAction();
                     else
                     {
-                        int result = (int)Battle.Choice.CurrentItem.value;
+                        int result = (int)Battle.Choice.CurrentItem.Value;
 
                         if (result == 0)
                         {

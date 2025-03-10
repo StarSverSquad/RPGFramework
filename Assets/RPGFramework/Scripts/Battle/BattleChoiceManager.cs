@@ -25,7 +25,7 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
     public bool IsCanceled => battleChoice.IsCanceled;
     public bool IsPrimaryCanceled => primaryChoice.IsCanceled;
 
-    public ChoiceUI.ElementInfo CurrentItem => battleChoice.CurrentItem;
+    public ChoiceUI.Element CurrentItem => battleChoice.CurrentUIElement;
 
     public int PrimaryCurrentIndex => primaryChoice.Choice;
 
@@ -133,14 +133,14 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
     {
         battleChoice.AppendTitle("Персонаж", TMPro.TextAlignmentOptions.Center);
 
-        List<ChoiceUI.ElementInfo> choices = new List<ChoiceUI.ElementInfo>();
+        List<ChoiceUI.Element> choices = new List<ChoiceUI.Element>();
 
         foreach (var item in Data.TurnsData)
         {
-            choices.Add(new ChoiceUI.ElementInfo()
+            choices.Add(new ChoiceUI.Element()
             {
-                name = item.Character.Name,
-                value = item.Character
+                Name = item.Character.Name,
+                Value = item.Character
             });
         }
 
@@ -149,14 +149,14 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
         battleChoice.AppendTitle("Противник", TMPro.TextAlignmentOptions.Center);
 
-        List<ChoiceUI.ElementInfo> choices0 = new List<ChoiceUI.ElementInfo>();
+        List<ChoiceUI.Element> choices0 = new List<ChoiceUI.Element>();
 
         foreach (var item in Data.Enemys)
         {
-            choices0.Add(new ChoiceUI.ElementInfo()
+            choices0.Add(new ChoiceUI.Element()
             {
-                name = item.Name,
-                value = item
+                Name = item.Name,
+                Value = item
             });
         }
 
@@ -167,14 +167,14 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceEnemy()
     {
-        List<ChoiceUI.ElementInfo> choiceElements = new List<ChoiceUI.ElementInfo>();
+        List<ChoiceUI.Element> choiceElements = new List<ChoiceUI.Element>();
 
         foreach (var enemy in Data.Enemys)
         {
-            choiceElements.Add(new ChoiceUI.ElementInfo()
+            choiceElements.Add(new ChoiceUI.Element()
             {
-                name = enemy.Name,
-                value = enemy
+                Name = enemy.Name,
+                Value = enemy
             });
         }
 
@@ -185,7 +185,7 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceTeammate()
     {
-        List<ChoiceUI.ElementInfo> choices = new List<ChoiceUI.ElementInfo>();
+        List<ChoiceUI.Element> choices = new List<ChoiceUI.Element>();
 
         BattleTurnData current = Battle.Pipeline.CurrentTurnData;
 
@@ -193,10 +193,10 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
         
         foreach (var turnData in Data.TurnsData)
         {
-            ChoiceUI.ElementInfo info = new ChoiceUI.ElementInfo()
+            ChoiceUI.Element info = new ChoiceUI.Element()
             {
-                name = turnData.Character.Name,
-                value = turnData.Character,
+                Name = turnData.Character.Name,
+                Value = turnData.Character,
                 locked = false
             };
 
@@ -220,17 +220,17 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceAbility()
     {
-        List<ChoiceUI.ElementInfo> choices = new List<ChoiceUI.ElementInfo>();
+        List<ChoiceUI.Element> choices = new List<ChoiceUI.Element>();
 
         foreach (var item in Pipeline.CurrentTurnData.Character.Abilities)
         {
-            choices.Add(new ChoiceUI.ElementInfo()
+            choices.Add(new ChoiceUI.Element()
             {
-                name = item.Name,
-                description = item.Destription + "\n" + (item.ManaCost > 0 ? $"[<color=#0081FF>Мана: {item.ManaCost}</color>] " : "") + (item.ConcentrationCost > 0 ? $"[<color=#06C100>Конц.: {item.ConcentrationCost}</color>]" : ""),
-                value = item,
+                Name = item.Name,
+                Description = item.Destription + "\n" + (item.ManaCost > 0 ? $"[<color=#0081FF>Мана: {item.ManaCost}</color>] " : "") + (item.ConcentrationCost > 0 ? $"[<color=#06C100>Конц.: {item.ConcentrationCost}</color>]" : ""),
+                Value = item,
                 locked = Pipeline.CurrentTurnData.Character.Mana < item.ManaCost || Data.Concentration < item.ConcentrationCost,
-                icon = item.icon
+                Icon = item.icon
             });
         }
 
@@ -241,17 +241,17 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceAct()
     {
-        List<ChoiceUI.ElementInfo> choices = new List<ChoiceUI.ElementInfo>()
+        List<ChoiceUI.Element> choices = new List<ChoiceUI.Element>()
         {
-            new ChoiceUI.ElementInfo()
+            new ChoiceUI.Element()
             {
-                name = "Действие",
-                value = 0
+                Name = "Действие",
+                Value = 0
             },
-            new ChoiceUI.ElementInfo()
+            new ChoiceUI.Element()
             {
-                name = "Способность",
-                value = 1,
+                Name = "Способность",
+                Value = 1,
                 locked = Pipeline.CurrentTurnData.Character.Abilities.Count == 0
             }
         };
@@ -263,21 +263,21 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceDefence()
     {
-        List<ChoiceUI.ElementInfo> choices = new List<ChoiceUI.ElementInfo>()
+        List<ChoiceUI.Element> choices = new List<ChoiceUI.Element>()
         {
-            new ChoiceUI.ElementInfo()
+            new ChoiceUI.Element()
             {
-                name = "Защита",
-                value = 0
+                Name = "Защита",
+                Value = 0
             }
         };
 
         if (Data.BattleInfo.CanFlee)
         {
-            choices.Add(new ChoiceUI.ElementInfo()
+            choices.Add(new ChoiceUI.Element()
             {
-                name = "Бегство",
-                value = 1
+                Name = "Бегство",
+                Value = 1
             });
         }
 
@@ -288,7 +288,7 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceItem()
     {
-        List<ChoiceUI.ElementInfo> choices = new List<ChoiceUI.ElementInfo>();
+        List<ChoiceUI.Element> choices = new List<ChoiceUI.Element>();
 
         foreach (var slot in GameManager.Instance.Inventory.Slots)
         {
@@ -303,13 +303,13 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
                     alreadyUsing += item.Item == slot.Item ? 1 : 0;
             }
 
-            ChoiceUI.ElementInfo element = new ChoiceUI.ElementInfo()
+            ChoiceUI.Element element = new ChoiceUI.Element()
             {
-                name = slot.Item.Name,
-                description = slot.Item.Description,
-                icon = slot.Item.Icon,
-                counterText = slot.Count - alreadyUsing == 1 ? "" : $"{slot.Count - alreadyUsing}x",
-                value = slot.Item,
+                Name = slot.Item.Name,
+                Description = slot.Item.Description,
+                Icon = slot.Item.Icon,
+                CounterText = slot.Count - alreadyUsing == 1 ? "" : $"{slot.Count - alreadyUsing}x",
+                Value = slot.Item,
                 locked = alreadyUsing >= slot.Count
             };
 
@@ -323,21 +323,21 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceBattle()
     {
-        List<ChoiceUI.ElementInfo> choices = new List<ChoiceUI.ElementInfo>()
+        List<ChoiceUI.Element> choices = new List<ChoiceUI.Element>()
         {
-            new ChoiceUI.ElementInfo()
+            new ChoiceUI.Element()
             {
-                name = "Атака",
-                value = 0
+                Name = "Атака",
+                Value = 0
             }
         };
 
         if (Data.BattleInfo.CanFlee)
         {
-            choices.Add(new ChoiceUI.ElementInfo()
+            choices.Add(new ChoiceUI.Element()
             {
-                name = "Защита",
-                value = 1
+                Name = "Защита",
+                Value = 1
             });
         }
 
@@ -348,13 +348,13 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceInteraction()
     {
-        List<ChoiceUI.ElementInfo> choiceElements = new List<ChoiceUI.ElementInfo>
+        List<ChoiceUI.Element> choiceElements = new List<ChoiceUI.Element>
         {
-            new ChoiceUI.ElementInfo()
+            new ChoiceUI.Element()
             {
-                name = "Проверить",
-                description = "Проверить текущего врага",
-                value = new RPGEnemy.EnemyAct()
+                Name = "Проверить",
+                Description = "Проверить текущего врага",
+                Value = new RPGEnemy.EnemyAct()
                 {
                     Name = "Check"
                 }
@@ -366,11 +366,11 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
         foreach (var act in currentCharacter.EnemyBuffer.Acts)
         {
 
-            ChoiceUI.ElementInfo elementInfo = new ChoiceUI.ElementInfo()
+            ChoiceUI.Element elementInfo = new ChoiceUI.Element()
             {
-                name = act.Name,
-                description = act.Description,
-                value = act,
+                Name = act.Name,
+                Description = act.Description,
+                Value = act,
                 locked = false
             };
 
@@ -395,11 +395,11 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     #endregion
 
-    public void CleanUp() => battleChoice.CleanUp();
+    public void CleanUp() => battleChoice.Dispose();
 
-    private void ShowDescriptionFor(ChoiceUI.ElementInfo element)
+    private void ShowDescriptionFor(ChoiceUI.Element element)
     {
         BattleManager.Instance.UI.Description.SetActive(true);
-        BattleManager.Instance.UI.Description.Text = element.description;
+        BattleManager.Instance.UI.Description.Text = element.Description;
     }
 }

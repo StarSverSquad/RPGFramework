@@ -17,7 +17,7 @@ namespace RPGF.Choice
         private Coroutine scrollCoroutine = null;
 
         private Tween scrollTween;
-        private Dictionary<ElementInfo, float> elementsDefaultAbsY;
+        private Dictionary<Element, float> elementsDefaultAbsY;
 
         public bool IsCrolling => scrollCoroutine != null;
 
@@ -27,7 +27,7 @@ namespace RPGF.Choice
             OnEnd += BattleChoiceUI_OnEndChoice;
             OnSellectionChanged += BattleChoiceUI_OnSellectionChanged;
 
-            CleanUp();
+            Dispose();
         }
 
         private void BattleChoiceUI_OnSellectionChanged()
@@ -42,7 +42,7 @@ namespace RPGF.Choice
             Vector3[] contentCorners = new Vector3[4];
 
             rect.GetWorldCorners(rectCorners);
-            CurrentItem.element.GetComponent<RectTransform>().GetWorldCorners(itemCorners);
+            CurrentUIElement.UIElement.GetComponent<RectTransform>().GetWorldCorners(itemCorners);
             content.GetWorldCorners(contentCorners);
 
             float contentToElementTop = Mathf.Abs(itemCorners[1].y - contentCorners[1].y);
@@ -50,12 +50,12 @@ namespace RPGF.Choice
 
             if (itemCorners[1].y > rectCorners[1].y)
             {
-                scrollTween = content.DOMoveY(content.position.y - Mathf.Abs(itemCorners[1].y - rectCorners[1].y) - margin.top / 48, 0.25f).SetEase(Ease.OutQuint).Play();
+                scrollTween = content.DOMoveY(content.position.y - Mathf.Abs(itemCorners[1].y - rectCorners[1].y) - _Margin.top / 48, 0.25f).SetEase(Ease.OutQuint).Play();
             }
 
             if (itemCorners[0].y < rectCorners[0].y)
             {
-                scrollTween = content.DOMoveY(content.position.y + Mathf.Abs(itemCorners[0].y - rectCorners[0].y) + margin.bottom / 48, 0.25f).SetEase(Ease.OutQuint).Play();
+                scrollTween = content.DOMoveY(content.position.y + Mathf.Abs(itemCorners[0].y - rectCorners[0].y) + _Margin.bottom / 48, 0.25f).SetEase(Ease.OutQuint).Play();
             }
         }
 
@@ -67,13 +67,13 @@ namespace RPGF.Choice
 
         private void BattleChoiceUI_OnStartChoice()
         {
-            elementsDefaultAbsY = new Dictionary<ElementInfo, float>();
+            elementsDefaultAbsY = new Dictionary<Element, float>();
 
-            foreach (var lst in elementLists)
+            foreach (var lst in ElementLists)
             {
                 foreach (var item in lst)
                 {
-                    elementsDefaultAbsY.Add(item, item.element.transform.position.y);
+                    elementsDefaultAbsY.Add(item, item.UIElement.transform.position.y);
                 }
             }
         }
@@ -86,9 +86,9 @@ namespace RPGF.Choice
             scrollCoroutine = null;
         }
 
-        public override void CleanUp()
+        public override void Dispose()
         {
-            base.CleanUp();
+            base.Dispose();
 
             if (scrollCoroutine != null)
                 StopCoroutine(scrollCoroutine);

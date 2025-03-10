@@ -136,7 +136,7 @@ public class InventoryManager : IEnumerable<InventorySlot>, IDisposable
 
         if (slot == null && value <= 0)
         {
-            Debug.LogWarning("Предмет не найден в инвенторе");
+            Debug.LogWarning("Предмет не найден в инвентаре");
             return;
         }
 

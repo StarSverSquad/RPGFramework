@@ -1,10 +1,8 @@
 ﻿using DG.Tweening;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-public class BattleChoiceUI : CommonChoiceUI
+public class ScrollableChoiceUI : CommonChoiceUI
 {
     [Header("Scroll settings")]
     [SerializeField]

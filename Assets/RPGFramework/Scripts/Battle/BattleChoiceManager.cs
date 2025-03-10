@@ -12,8 +12,8 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
     public BattlePipeline Pipeline => BattleManager.Instance.Pipeline;
 
     [SerializeField]
-    private BattleChoiceUI battleChoice;
-    public BattleChoiceUI BattleChoice => battleChoice;
+    private ScrollableChoiceUI battleChoice;
+    public ScrollableChoiceUI BattleChoice => battleChoice;
 
     [SerializeField]
     private PrimaryBattleChoiceUI primaryChoice;

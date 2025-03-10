@@ -1859,11 +1859,16 @@ MonoBehaviour:
   - rid: 6736345346795634691
   - rid: 6736345346795634692
   - rid: 6736345346795634693
-  - rid: 6736345329577230338
   - rid: 6736345346795634690
-  - rid: 5872027692484526161
   - rid: 6736345329577230337
   - rid: 7075457782937288886
+  - rid: 5872027692484526161
+  - rid: 1267146707653623931
+  - rid: 1267146707653623933
+  - rid: 1267146707653623935
+  - rid: 1267146707653623934
+  - rid: 1267146707653623932
+  - rid: 1267146707653623936
   Meta:
     edges:
     - inputPortName: Input
@@ -1891,10 +1896,6 @@ MonoBehaviour:
       outputPortName: Output
       outputNodeGUID: 4d990f601a841d34cbc8542e1527c4e0
     - inputPortName: Input
-      inputNodeGUID: a056bb82d107bc3458feb307abcee610
-      outputPortName: Output
-      outputNodeGUID: 1abd4be09ec661649b172723dd61bdf7
-    - inputPortName: Input
       inputNodeGUID: af469f4bb7684be4ab0c8216451297be
       outputPortName: Output
       outputNodeGUID: dca730474d2bcbe4fb9bf1e9bf3f7f31
@@ -1902,6 +1903,30 @@ MonoBehaviour:
       inputNodeGUID: f229af58d202bf24d8ffea17508519e8
       outputPortName: Output
       outputNodeGUID: af469f4bb7684be4ab0c8216451297be
+    - inputPortName: Input
+      inputNodeGUID: 57041ac432557814585e069a7f7dfcca
+      outputPortName: Output
+      outputNodeGUID: 1abd4be09ec661649b172723dd61bdf7
+    - inputPortName: Input
+      inputNodeGUID: 938f8e5b018cedd4aa2b343c9180f28a
+      outputPortName: Output
+      outputNodeGUID: 87b3b0b2aa3027940b4b2398f8be8a35
+    - inputPortName: Input
+      inputNodeGUID: edb6e7a5486930843a2fab28e61b25e3
+      outputPortName: Output
+      outputNodeGUID: 938f8e5b018cedd4aa2b343c9180f28a
+    - inputPortName: Input
+      inputNodeGUID: 87b3b0b2aa3027940b4b2398f8be8a35
+      outputPortName: Output
+      outputNodeGUID: 57041ac432557814585e069a7f7dfcca
+    - inputPortName: Input
+      inputNodeGUID: a07c41b8574dabb4b94e30177ae9d0f6
+      outputPortName: Output
+      outputNodeGUID: edb6e7a5486930843a2fab28e61b25e3
+    - inputPortName: Input
+      inputNodeGUID: ed8eeb58ae6c3d7499ba68aac6a1cfe3
+      outputPortName: Output
+      outputNodeGUID: a07c41b8574dabb4b94e30177ae9d0f6
     nodes:
     - guid: 0a36817baf1095d44bdec87287e05458
       actionIndex: 0
@@ -1918,29 +1943,88 @@ MonoBehaviour:
     - guid: 8debb04cbd5ae4d42980dc9c1d14e0c1
       actionIndex: 4
       position: {x: 1478.4, y: 246.4}
-    - guid: a056bb82d107bc3458feb307abcee610
-      actionIndex: 5
-      position: {x: 3379.2, y: 324.8}
     - guid: 4d990f601a841d34cbc8542e1527c4e0
-      actionIndex: 6
+      actionIndex: 5
       position: {x: 2472, y: 312.8}
-    - guid: 1abd4be09ec661649b172723dd61bdf7
-      actionIndex: 7
-      position: {x: 2852, y: 298.4}
     - guid: dca730474d2bcbe4fb9bf1e9bf3f7f31
-      actionIndex: 8
+      actionIndex: 6
       position: {x: 431.2, y: 208}
     - guid: af469f4bb7684be4ab0c8216451297be
-      actionIndex: 9
+      actionIndex: 7
       position: {x: 743.2, y: 287.2}
+    - guid: 1abd4be09ec661649b172723dd61bdf7
+      actionIndex: 8
+      position: {x: 2852, y: 298.4}
+    - guid: 87b3b0b2aa3027940b4b2398f8be8a35
+      actionIndex: 9
+      position: {x: 3680, y: 240.8}
+    - guid: 938f8e5b018cedd4aa2b343c9180f28a
+      actionIndex: 10
+      position: {x: 4016.8, y: 228.8}
+    - guid: 57041ac432557814585e069a7f7dfcca
+      actionIndex: 11
+      position: {x: 3227.2, y: 228.8}
+    - guid: ed8eeb58ae6c3d7499ba68aac6a1cfe3
+      actionIndex: 12
+      position: {x: 4699.2, y: 337.6}
+    - guid: edb6e7a5486930843a2fab28e61b25e3
+      actionIndex: 13
+      position: {x: 4134.4, y: 414.4}
+    - guid: a07c41b8574dabb4b94e30177ae9d0f6
+      actionIndex: 14
+      position: {x: 4402.4, y: 254.4}
   references:
     version: 2
     RefIds:
+    - rid: 1267146707653623931
+      type: {class: ChangeItemCountAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 1267146707653623933
+        Item: {fileID: 11400000, guid: 00544d366fa88ea40b775b6ed66433f0, type: 2}
+        Count: 2
+        IsSet: 0
+    - rid: 1267146707653623932
+      type: {class: ChangeItemCountAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 1267146707653623936
+        Item: {fileID: 11400000, guid: 2212317419dab4b4c97049c846fffaee, type: 2}
+        Count: 3
+        IsSet: 0
+    - rid: 1267146707653623933
+      type: {class: ChangeItemCountAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 1267146707653623932
+        Item: {fileID: 11400000, guid: 7169b477887973d4d9307cc4fbaa94db, type: 2}
+        Count: 12
+        IsSet: 0
+    - rid: 1267146707653623934
+      type: {class: EndAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions: []
+    - rid: 1267146707653623935
+      type: {class: ChangeItemCountAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 1267146707653623931
+        Item: {fileID: 11400000, guid: 14501f073de46e84fab6e401ebc817ab, type: 2}
+        Count: 1
+        IsSet: 0
+    - rid: 1267146707653623936
+      type: {class: ChangeItemCountAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 1267146707653623934
+        Item: {fileID: 11400000, guid: 1017952af9e44b849927f25cec713cf1, type: 2}
+        Count: 2
+        IsSet: 0
     - rid: 5872027692484526161
       type: {class: ChangeItemCountAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions:
-        - rid: 6736345329577230338
+        - rid: 1267146707653623935
         Item: {fileID: 11400000, guid: b5bb1387b3d000c41a2715cd72b430dd, type: 2}
         Count: 3
         IsSet: 0
@@ -1958,10 +2042,6 @@ MonoBehaviour:
         updateModels: 1
         character: {fileID: 11400000, guid: 790d475a3cca9dc40ba693d252f828ec, type: 2}
         existentObject: {fileID: 0}
-    - rid: 6736345329577230338
-      type: {class: EndAction, ns: , asm: Assembly-CSharp}
-      data:
-        NextActions: []
     - rid: 6736345346795634689
       type: {class: ChangeItemCountAction, ns: , asm: Assembly-CSharp}
       data:
@@ -5252,6 +5332,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -125.00001
       objectReference: {fileID: 0}
+    - target: {fileID: 4765885667691323271, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+      propertyPath: offset.x
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4765885667691323271, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+      propertyPath: offset.y
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 5114348691609866395, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_Name
       value: RPGFramework
@@ -5260,9 +5348,25 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6264338026786466921, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+      propertyPath: m_Name
+      value: mask
+      objectReference: {fileID: 0}
     - target: {fileID: 7427866169965658193, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_PlaneDistance
       value: 5000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796093514020280656, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 303.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796093514020280656, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.010009766
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796093514020280656, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -6.4600067
       objectReference: {fileID: 0}
     - target: {fileID: 8872072263468819927, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.y

@@ -9,7 +9,7 @@ public class LocalCharacterManager : RPGFrameworkBehaviour
 {
     public RPGCharacter[] Characters => GameManager.Instance.Character.Characters;
 
-    public List<DynamicExplorerObject> Models = new List<DynamicExplorerObject>();
+    public List<RPGCharacterController> Models = new List<RPGCharacterController>();
 
     public List<Vector2> Targets = new List<Vector2>();
 
@@ -32,10 +32,29 @@ public class LocalCharacterManager : RPGFrameworkBehaviour
         PlayerMovement.OnStartMoving += PlayerMovement_OnStartMoving;
         PlayerMovement.OnRotate += PlayerMovement_OnRotate;
 
+        PlayerMovement.OnStartRun += PlayerMovement_OnStartRun;
+        PlayerMovement.OnStopRun += PlayerMovement_OnStopRun;
+
         EventHandler.OnHandle += EventHandler_OnHandle;
     }
 
-    public void AddModel(DynamicExplorerObject model)
+    private void PlayerMovement_OnStopRun()
+    {
+        foreach (var item in Models)
+        {
+            item.SpeedFactor = 1f;
+        }
+    }
+
+    private void PlayerMovement_OnStartRun()
+    {
+        foreach (var item in Models)
+        {
+            item.SpeedFactor = 1.5f;
+        }
+    }
+
+    public void AddModel(RPGCharacterController model)
     {
         if (Models.Contains(model))
             return;
@@ -46,7 +65,7 @@ public class LocalCharacterManager : RPGFrameworkBehaviour
         Targets.Add(ExplorerManager.GetPlayerPosition());
     }
 
-    public void RemoveModel(DynamicExplorerObject model)
+    public void RemoveModel(RPGCharacterController model)
     {
         if (!Models.Contains(model))
             return;
@@ -75,7 +94,7 @@ public class LocalCharacterManager : RPGFrameworkBehaviour
                 ExplorerManager.GetPlayerPosition3D() + new Vector3(0, 0, 0.05f * i), 
                 Quaternion.identity, transform);
 
-            DynamicExplorerObject model = n.GetComponent<DynamicExplorerObject>();
+            RPGCharacterController model = n.GetComponent<RPGCharacterController>();
 
             Models.Add(model);
             Targets.Add(ExplorerManager.GetPlayerPosition());

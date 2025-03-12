@@ -27,6 +27,8 @@ public class PlayerExplorerMovement : MonoBehaviour
     public event Action OnMoving;
     public event Action OnStopMoving;
     public event Action OnStartMoving;
+    public event Action OnStartRun;
+    public event Action OnStopRun;
     public event Action<CommonDirection> OnRotate;
 
     [SerializeField]
@@ -104,7 +106,14 @@ public class PlayerExplorerMovement : MonoBehaviour
 
         NormolizedVelocity = Velocity.normalized;
 
-        IsRun = Input.GetKey(GameManager.Instance.BaseOptions.Run) && CanRun;
+        bool nRun = Input.GetKey(GameManager.Instance.BaseOptions.Run) && CanRun;
+
+        if (nRun && !IsRun)
+            OnStartRun?.Invoke();
+        else if (!nRun && IsRun)
+            OnStopRun?.Invoke();
+
+        IsRun = nRun;
 
         Velocity = ResultSpeed * Velocity.normalized;
 

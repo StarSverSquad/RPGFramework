@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class DynamicExplorerObject : MonoBehaviour
+public class RPGCharacterController : MonoBehaviour
 {
     #region NOT UNITY SERIALIZED
 
@@ -174,6 +174,8 @@ public class DynamicExplorerObject : MonoBehaviour
 
     public void AnimateMove(CommonDirection direction)
     {
+        DirectionView = direction;
+
         if (animationCoroutine != null)
             StopCoroutine(animationCoroutine);
 
@@ -279,7 +281,7 @@ public class DynamicExplorerObject : MonoBehaviour
     {
         float speed = moveVector.magnitude / time;
 
-        float ct = time;
+        float currentTime = time;
 
         MoveInPause = false;
 
@@ -304,13 +306,13 @@ public class DynamicExplorerObject : MonoBehaviour
             AnimateMove(direction);
         }
 
-        while (ct > 0)
+        while (currentTime > 0)
         {
             yield return new WaitForFixedUpdate();
 
             transform.Translate(moveVector.normalized * speed * Time.fixedDeltaTime);
 
-            ct -= Time.fixedDeltaTime;
+            currentTime -= Time.fixedDeltaTime;
 
             yield return new WaitWhile(() => MoveInPause);
         }

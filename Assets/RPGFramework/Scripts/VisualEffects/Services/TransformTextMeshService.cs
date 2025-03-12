@@ -87,6 +87,10 @@ public class TransformTextMeshService
         visibles = textInfo.characterInfo.Where(c => c.isVisible).ToArray();
 
         mesh = textMesh.mesh;
+
+        if (mesh == null)
+            return;
+
         vertices = mesh.vertices;
         colors = mesh.colors;
     }

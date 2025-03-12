@@ -56,14 +56,14 @@ public class AddRemoveCharacterNode : ActionNodeWrapper<AddRemoveCharacterAction
         {
             ObjectField exitentObjectField = new ObjectField("Существующая модель")
             {
-                objectType = typeof(DynamicExplorerObject),
+                objectType = typeof(RPGCharacterController),
                 allowSceneObjects = true
             };
 
             exitentObjectField.SetValueWithoutNotify(Action.existentObject);
             exitentObjectField.RegisterValueChangedCallback(data =>
             {
-                Action.existentObject = data.newValue as DynamicExplorerObject;
+                Action.existentObject = data.newValue as RPGCharacterController;
 
                 MakeDirty();
             });

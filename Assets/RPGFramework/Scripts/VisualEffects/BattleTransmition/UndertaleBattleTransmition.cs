@@ -21,7 +21,7 @@ public class UndertaleBattleTransmition : VisualBattleTransmitionEffectBase
 
     public override IEnumerator PartOne()
     {
-        heart.transform.position = ExplorerManager.GetPlayerPosition3D();
+        heart.transform.position = ExplorerManager.GetPlayerPosition3D() + new Vector3(0, 0.35f, 0);
 
         source.clip = tick;
 

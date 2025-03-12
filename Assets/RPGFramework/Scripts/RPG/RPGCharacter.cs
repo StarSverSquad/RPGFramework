@@ -15,7 +15,7 @@ public class RPGCharacter : RPGEntity
 
     public Color Color;
 
-    public DynamicExplorerObject Model;
+    public RPGCharacterController Model;
 
     public bool ParticipateInBattle = true;
     public bool CanMoveInBattle = true;

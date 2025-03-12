@@ -12,7 +12,7 @@ public class TranslateCharacterAction : GraphActionBase
     public bool InParty;
 
     public string CharacterTag;
-    public DynamicExplorerObject CharacterInScene;
+    public RPGCharacterController CharacterInScene;
 
     public bool ReplaceInstance;
     public bool Wait;
@@ -49,7 +49,7 @@ public class TranslateCharacterAction : GraphActionBase
 
     public override IEnumerator ActionCoroutine()
     {
-        DynamicExplorerObject model = null;
+        RPGCharacterController model = null;
 
         int index = 0;
         if (InParty)

@@ -9,7 +9,7 @@ public class LocalCharacterManager : RPGFrameworkBehaviour
 {
     public RPGCharacter[] Characters => GameManager.Instance.Character.Characters;
 
-    public List<RPGCharacterController> Models = new List<RPGCharacterController>();
+    public List<RPGCharacterControllerLegacy> Models = new List<RPGCharacterControllerLegacy>();
 
     public List<Vector2> Targets = new List<Vector2>();
 
@@ -54,7 +54,7 @@ public class LocalCharacterManager : RPGFrameworkBehaviour
         }
     }
 
-    public void AddModel(RPGCharacterController model)
+    public void AddModel(RPGCharacterControllerLegacy model)
     {
         if (Models.Contains(model))
             return;
@@ -65,7 +65,7 @@ public class LocalCharacterManager : RPGFrameworkBehaviour
         Targets.Add(ExplorerManager.GetPlayerPosition());
     }
 
-    public void RemoveModel(RPGCharacterController model)
+    public void RemoveModel(RPGCharacterControllerLegacy model)
     {
         if (!Models.Contains(model))
             return;
@@ -94,7 +94,7 @@ public class LocalCharacterManager : RPGFrameworkBehaviour
                 ExplorerManager.GetPlayerPosition3D() + new Vector3(0, 0, 0.05f * i), 
                 Quaternion.identity, transform);
 
-            RPGCharacterController model = n.GetComponent<RPGCharacterController>();
+            RPGCharacterControllerLegacy model = n.GetComponent<RPGCharacterControllerLegacy>();
 
             Models.Add(model);
             Targets.Add(ExplorerManager.GetPlayerPosition());

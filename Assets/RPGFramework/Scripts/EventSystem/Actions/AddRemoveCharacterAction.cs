@@ -8,7 +8,7 @@ public class AddRemoveCharacterAction : GraphActionBase
 
     public RPGCharacter character;
 
-    public RPGCharacterController existentObject;
+    public RPGCharacterControllerLegacy existentObject;
 
     public AddRemoveCharacterAction() : base("AddRemoveCharacter")
     {

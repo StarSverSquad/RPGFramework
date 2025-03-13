@@ -1,10 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
-public class RPGCharacterController : MonoBehaviour
+public class RPGCharacterControllerLegacy : MonoBehaviour
 {
     #region NOT UNITY SERIALIZED
 
@@ -42,7 +42,7 @@ public class RPGCharacterController : MonoBehaviour
     [SerializeField]
     private List<Sprite> rightFrames = new List<Sprite>();
 
-    [Header("Options")]
+    [Header("Настройки")]
     public CommonDirection DefaultDirection = CommonDirection.Down;
 
     [SerializeField]

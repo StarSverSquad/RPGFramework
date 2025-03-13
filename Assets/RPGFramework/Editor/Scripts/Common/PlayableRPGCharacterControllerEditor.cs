@@ -3,14 +3,14 @@
 using RPGF.Character;
 using UnityEditor;
 
-[CustomEditor(typeof(PlayableRPGCharacterController))]
+[CustomEditor(typeof(PlayableCharacterModelController))]
 class PlayableRPGCharacterControllerEditor : Editor
 {
-    private PlayableRPGCharacterController characterController;
+    private PlayableCharacterModelController characterController;
 
     private void OnEnable()
     {
-        characterController = (PlayableRPGCharacterController)target;
+        characterController = (PlayableCharacterModelController)target;
     }
 
     public override void OnInspectorGUI()

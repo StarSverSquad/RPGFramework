@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace RPGF.Character
 {
-    public class SimpleRPGCharacterController : RPGCharacterControllerBase
+    public class SimpleCharacterModelController : CharacterModelControllerBase
     {
 
     }

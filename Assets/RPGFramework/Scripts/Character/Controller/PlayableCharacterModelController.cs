@@ -4,7 +4,7 @@ using System.Collections;
 namespace RPGF.Character
 {
     [RequireComponent(typeof(Animator), typeof(SpriteRenderer))]
-    public class PlayableRPGCharacterController : RPGCharacterControllerBase
+    public class PlayableCharacterModelController : CharacterModelControllerBase
     {
         
         private Animator _animator;

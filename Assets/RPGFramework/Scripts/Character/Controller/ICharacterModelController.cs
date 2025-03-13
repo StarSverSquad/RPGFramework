@@ -10,7 +10,7 @@ namespace RPGF.Character
     /// <summary>
     /// Describe base API
     /// </summary>
-    public interface IRPGCharacterController
+    public interface ICharacterModelController
     {
         public void RotateTo(Direction direction);
 

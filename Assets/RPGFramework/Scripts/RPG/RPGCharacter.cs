@@ -18,7 +18,7 @@ public class RPGCharacter : RPGEntity
 
     [Obsolete]
     public RPGCharacterControllerLegacy LegacyModel;
-    public PlayableRPGCharacterController Model;
+    public PlayableCharacterModelController Model;
 
     public bool ParticipateInBattle = true;
     public bool CanMoveInBattle = true;

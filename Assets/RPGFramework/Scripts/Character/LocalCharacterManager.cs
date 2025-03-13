@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using RPGF.Character;
 
 public class LocalCharacterManager : RPGFrameworkBehaviour
 {

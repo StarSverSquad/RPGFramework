@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RPGF.Character
 {
-    public abstract class RPGCharacterControllerBase : RPGFrameworkBehaviour, IDisposable, IRPGCharacterController
+    public abstract class CharacterModelControllerBase : RPGFrameworkBehaviour, IDisposable, ICharacterModelController
     {
         [Header("Базовые настройки:")]
         [SerializeField]

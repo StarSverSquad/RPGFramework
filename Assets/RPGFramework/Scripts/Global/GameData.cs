@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +11,7 @@ public class GameData : IDisposable
     public CustomDictionary<bool> BoolValues;
     public CustomDictionary<string> StringValues;
 
-    public List<string> CachedObjectedEvents = new List<string>();
+    public List<string> BlockedLocationEvents;
 
     public RPGCharacter[] Characters;
     public RPGEntityState[] States;
@@ -34,6 +33,8 @@ public class GameData : IDisposable
         FloatValues = new CustomDictionary<float>();
         BoolValues = new CustomDictionary<bool>();
         StringValues = new CustomDictionary<string>();
+
+        BlockedLocationEvents = new List<string>();
 
         foreach (var data in Manager.BaseOptions.IntValues.data)
             IntValues.Add(data.Key, data.Value);

@@ -7,79 +7,77 @@ using UnityEngine;
 
 public class SaveLoadManager
 {
-    public readonly DirectoryInfo PlaceForSaves = new DirectoryInfo(Application.dataPath + @"\Saves");
+    private readonly DirectoryInfo PlaceForSaves;
+    private readonly GameManager Game;
 
-    public SaveLoadManager()
+    public SaveLoadManager(GameManager game)
     {
+        PlaceForSaves = new(Application.dataPath + @"\Saves");
+
         if (!PlaceForSaves.Exists) PlaceForSaves.Create();
+        Game = game;
     }
 
     public void Save(int slotId)
     {
         string PathToSave = PlaceForSaves.FullName + @"\Slot" + slotId.ToString() + ".glaksave";
 
-        SaveSlot CellForSave = new SaveSlot()
+        SaveSlot CellForSave = new()
         {
             Id = slotId,
-            IntValues = GameManager.Instance.GameData.IntValues,
-            FloatValues = GameManager.Instance.GameData.FloatValues,
-            BoolValues = GameManager.Instance.GameData.BoolValues,
-            StringValues = GameManager.Instance.GameData.StringValues,
-            LocationName = GameManager.Instance.LocationManager.CurrentLocation.Name,
+            IntValues = Game.GameData.IntValues,
+            FloatValues = Game.GameData.FloatValues,
+            BoolValues = Game.GameData.BoolValues,
+            StringValues = Game.GameData.StringValues,
+            LocationName = Game.LocationManager.CurrentLocation.Name,
             PlayerPosition = ExplorerManager.GetPlayerPosition(),
             PlayerDirection = ExplorerManager.GetPlayerViewDirection(),
             SavedCharacters = SaveCharacters(
-                GameManager.Instance.Character.RegistredCharacters.ToList(),
-                GameManager.Instance.Character.Characters.ToList())
+                Game.Character.RegistredCharacters.ToList(),
+                Game.Character.Characters.ToList()),
+            BlockedLocationEvents = Game.GameData.BlockedLocationEvents
         };
 
-        foreach (InventorySlot slot in GameManager.Instance.Inventory)
+        foreach (InventorySlot slot in Game.Inventory)
         {
             CellForSave.InventoryItems.Add(slot.Item.Tag, slot.Count);
         }
 
         string JSONSave = JsonUtility.ToJson(CellForSave, true);
 
-        using (var PlaceForSave = new StreamWriter(PathToSave, false))
-        {
-            PlaceForSave.WriteLine(JSONSave);
-        }
+        File.WriteAllText(PathToSave, JSONSave);
     }
-
     public void Load(int slotId)
     {
-        string PathToSave = PlaceForSaves.FullName + @"\Slot" + slotId.ToString() + ".glaksave";
+        string PathToLoad = PlaceForSaves.FullName + @"\Slot" + slotId.ToString() + ".glaksave";
 
-        string JSONSave;
+        if (!File.Exists(PathToLoad)) return;
 
-        if (!File.Exists(PathToSave)) return;
+        string JSONSave = File.ReadAllText(PathToLoad);
 
-        using (var PlaceForSave = new StreamReader(PathToSave, false))
-        {
-            JSONSave = PlaceForSave.ReadToEnd();
-        }
+        SaveSlot slot = JsonUtility.FromJson<SaveSlot>(JSONSave);
 
-        SaveSlot CellForSave = JsonUtility.FromJson<SaveSlot>(JSONSave);
+        Game.GameData.IntValues = slot.IntValues;
+        Game.GameData.FloatValues = slot.FloatValues;
+        Game.GameData.BoolValues = slot.BoolValues;
+        Game.GameData.StringValues = slot.StringValues;
 
-        GameManager.Instance.GameData.IntValues = CellForSave.IntValues;
-        GameManager.Instance.GameData.FloatValues = CellForSave.FloatValues;
-        GameManager.Instance.GameData.BoolValues = CellForSave.BoolValues;
-        GameManager.Instance.GameData.StringValues = CellForSave.StringValues;
+        Game.GameData.BlockedLocationEvents = slot.BlockedLocationEvents;
 
-        GameManager.Instance.Character.Dispose();
-        foreach (var person in CellForSave.SavedCharacters)
+        Game.Character.Dispose();
+        foreach (var person in slot.SavedCharacters)
             LoadCharacter(person);
 
-        GameManager.Instance.Inventory.Dispose();
+        Game.Inventory.Dispose();
 
-        foreach (var item in CellForSave.InventoryItems.data)
+        foreach (var item in slot.InventoryItems.data)
         {
-            GameManager.Instance.Inventory.AddToItemCount(GameManager.Instance.GameData.Collectables.First(i => i.Tag == item.Key), item.Value);
+            Game.Inventory.AddToItemCount(Game.GameData.Collectables.First(i => i.Tag == item.Key), item.Value);
         }
 
-        LocationInfo location = GameManager.Instance.LocationManager.LoadLocationInfoByName(CellForSave.LocationName);
+        LocationInfo location = Game.LocationManager.LoadLocationInfoByName(slot.LocationName);
 
-        GameManager.Instance.LocationManager.ChangeLocation(location, CellForSave.PlayerPosition, CellForSave.PlayerDirection);
+        Game.LocationManager.ChangeLocation(location, slot.PlayerPosition, slot.PlayerDirection);
     }
 
     public void SaveConfig(GameConfig gameConfig)
@@ -93,7 +91,6 @@ public class SaveLoadManager
             PlaceForSave.WriteLine(JSONSave);
         }
     }
-
     public GameConfig? LoadConfig()
     {
         string PathToSave = PlaceForSaves.FullName + @"\Config.cfg";
@@ -148,10 +145,9 @@ public class SaveLoadManager
 
         return SavedCharacters;
     }
-
     public void LoadCharacter(CharacterSaveInfo SavedCharacter)
     {
-        RPGCharacter Glek = GameManager.Instance.GameData.Characters.FirstOrDefault(i => i.Tag == SavedCharacter.Tag).Clone() as RPGCharacter;
+        RPGCharacter Glek = Game.GameData.Characters.FirstOrDefault(i => i.Tag == SavedCharacter.Tag).Clone() as RPGCharacter;
 
         Glek.Level = SavedCharacter.Level;
         Glek.Expireance = SavedCharacter.Expirience;
@@ -163,38 +159,38 @@ public class SaveLoadManager
         Glek.DefaultAgility = SavedCharacter.DefaultAgility;
 
         if (SavedCharacter.WeaponTag != string.Empty)
-            Glek.WeaponSlot = (RPGWeapon)GameManager.Instance.GameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.WeaponTag);
+            Glek.WeaponSlot = (RPGWeapon)Game.GameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.WeaponTag);
         
         if (SavedCharacter.HeadTag != string.Empty)
-            Glek.HeadSlot = (RPGWerable)GameManager.Instance.GameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.HeadTag);
+            Glek.HeadSlot = (RPGWerable)Game.GameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.HeadTag);
         
         if (SavedCharacter.BodyTag != string.Empty)
-            Glek.BodySlot = (RPGWerable)GameManager.Instance.GameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.BodyTag);
+            Glek.BodySlot = (RPGWerable)Game.GameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.BodyTag);
         
         if (SavedCharacter.ShieldTag != string.Empty)
-            Glek.ShieldSlot = (RPGWerable)GameManager.Instance.GameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.ShieldTag);
+            Glek.ShieldSlot = (RPGWerable)Game.GameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.ShieldTag);
         
         if (SavedCharacter.TalismanTag != string.Empty)
-            Glek.TalismanSlot = (RPGWerable)GameManager.Instance.GameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.TalismanTag);
+            Glek.TalismanSlot = (RPGWerable)Game.GameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.TalismanTag);
 
         Glek.Abilities.Clear();
         foreach (var ability in SavedCharacter.Abilities)
         {
-            Glek.Abilities.Add(GameManager.Instance.GameData.Abilities.First(i => i.Tag == ability));
+            Glek.Abilities.Add(Game.GameData.Abilities.First(i => i.Tag == ability));
         }
 
         Glek.RemoveAllStates();
         foreach (var state in SavedCharacter.States)
         {
-            Glek.AddState(GameManager.Instance.GameData.States.First(i => i.Tag == state));
+            Glek.AddState(Game.GameData.States.First(i => i.Tag == state));
         }
 
         if (SavedCharacter.InParty)
-            GameManager.Instance.Character.AddCharacter(Glek);
+            Game.Character.AddCharacter(Glek);
         else 
-            GameManager.Instance.Character.RegisterCharacter(Glek);
+            Game.Character.RegisterCharacter(Glek);
 
-        GameManager.Instance.Character.GetRegisteredCharacter(Glek).Heal = SavedCharacter.Heal;
-        GameManager.Instance.Character.GetRegisteredCharacter(Glek).Mana = SavedCharacter.Mana;
+        Game.Character.GetRegisteredCharacter(Glek).Heal = SavedCharacter.Heal;
+        Game.Character.GetRegisteredCharacter(Glek).Mana = SavedCharacter.Mana;
     }
 }

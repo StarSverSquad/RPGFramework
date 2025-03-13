@@ -14,6 +14,8 @@ public class SaveSlot
     public CustomDictionary<bool> BoolValues;
     public CustomDictionary<string> StringValues;
 
+    public List<string> BlockedLocationEvents;
+
     public CustomDictionary<int> InventoryItems;
 
     public Vector2 PlayerPosition;

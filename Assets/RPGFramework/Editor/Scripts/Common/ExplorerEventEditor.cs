@@ -1,47 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(ExplorerEvent))]
+[CustomEditor(typeof(LocationEvent))]
 public class ExplorerEventEditor : Editor
 {
-    private ExplorerEvent oe;
+    private LocationEvent locationEvent;
 
     private void OnEnable()
     {
-        oe = (ExplorerEvent)target;
+        locationEvent = (LocationEvent)target;
 
-        oe.Event ??= CreateInstance<GraphEvent>();
-
-        if (string.IsNullOrEmpty(oe.GUID))
-        {
-            oe.GUID = Guid.NewGuid().ToString();
-
-            EditorUtility.SetDirty(oe);
-        }
+        locationEvent.InnerEvent ??= CreateInstance<GraphEvent>();
     }
 
     public override void OnInspectorGUI()
     {
-        oe.Interaction = (ExplorerEvent.InteractionType)EditorGUILayout.EnumPopup("Тип взаимодействия", oe.Interaction);
+        GUILayout.Label("Настройки");
 
-        oe.DynamicOrderChange = EditorGUILayout.Toggle("Динам. изм. Z координаты?", oe.DynamicOrderChange);
+        locationEvent.Interaction = (LocationEvent.InteractionType)EditorGUILayout.EnumPopup("Тип взаимодействия", locationEvent.Interaction);
 
-        oe.OnlyOne = EditorGUILayout.Toggle("Только раз?:", oe.OnlyOne);
-        oe.CacheResult = EditorGUILayout.Toggle("Кэшировать результат?", oe.CacheResult);
-        oe.Parallel = EditorGUILayout.Toggle("Паралельно?:", oe.Parallel);
+        locationEvent.OnlyOne = EditorGUILayout.Toggle("Только раз?:", locationEvent.OnlyOne);
+        locationEvent.Parallel = EditorGUILayout.Toggle("Паралельно?:", locationEvent.Parallel);
 
-        if (oe.Event != null && GUILayout.Button("Открыть редактор"))
-            EventGraphWindow.Initialize(oe.Event);
+        if (locationEvent.InnerEvent != null && GUILayout.Button("Открыть редактор"))
+            EventGraphWindow.Initialize(locationEvent.InnerEvent);
 
         if (GUILayout.Button("Пересоздать"))
-            oe.Event = CreateInstance<GraphEvent>();
+            locationEvent.InnerEvent = CreateInstance<GraphEvent>();
 
         if (GUI.changed)
-            EditorUtility.SetDirty(oe);
+            EditorUtility.SetDirty(locationEvent);
     }
 }

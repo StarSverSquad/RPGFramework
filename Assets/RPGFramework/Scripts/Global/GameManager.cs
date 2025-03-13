@@ -56,7 +56,7 @@ public class GameManager : ContentManagerBase
 
         GameData = new GameData(this);
 
-        SaveLoad = new SaveLoadManager();
+        SaveLoad = new SaveLoadManager(this);
 
         GameConfig = new GameConfigManager(SaveLoad);
 

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RPGF.Character
 {
-    public abstract class RPGCharacterControllerBase : RPGFrameworkBehaviour, IDisposable, IRPGCharacterController
+    public class RPGCharacterControllerBase : RPGFrameworkBehaviour, IDisposable, IRPGCharacterController
     {
         [SerializeField]
         private Direction _startDiration;

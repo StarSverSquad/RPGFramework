@@ -46,7 +46,7 @@ public class RPGCharacterControllerLegacy : MonoBehaviour
     public CommonDirection DefaultDirection = CommonDirection.Down;
 
     [SerializeField]
-    private ExplorerEvent reactedEvent;
+    private LocationEvent reactedEvent;
 
     [SerializeField]
     private float animationSpeed;
@@ -77,8 +77,8 @@ public class RPGCharacterControllerLegacy : MonoBehaviour
 
         if (reactedEvent != null)
         {
-            reactedEvent.Event.OnStart += Event_OnStart;
-            reactedEvent.Event.OnEnd += Event_OnEnd;
+            reactedEvent.InnerEvent.OnStart += Event_OnStart;
+            reactedEvent.InnerEvent.OnEnd += Event_OnEnd;
         }
 
         SetDefault();
@@ -88,8 +88,8 @@ public class RPGCharacterControllerLegacy : MonoBehaviour
     {
         if (reactedEvent != null)
         {
-            reactedEvent.Event.OnEnd -= Event_OnEnd;
-            reactedEvent.Event.OnStart -= Event_OnStart;
+            reactedEvent.InnerEvent.OnEnd -= Event_OnEnd;
+            reactedEvent.InnerEvent.OnStart -= Event_OnStart;
         }
     }
 

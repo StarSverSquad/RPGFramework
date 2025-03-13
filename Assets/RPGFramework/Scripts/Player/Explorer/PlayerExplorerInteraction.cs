@@ -47,11 +47,11 @@ public class PlayerExplorerInteraction : MonoBehaviour
     {
         raycastHit = Physics2D.Raycast(transform.position, Direction, InteractionDistance, LayerMask.GetMask("EventInteraction")).collider;
 
-        ExplorerEvent @event = raycastHit != null ? raycastHit.gameObject.GetComponent<ExplorerEvent>() : null;
+        LocationEvent @event = raycastHit != null ? raycastHit.gameObject.GetComponent<LocationEvent>() : null;
 
         if (@event != null)
         {
-            if (Input.GetKeyDown(KeyCode.Z) && CanInteract && @event.Interaction == ExplorerEvent.InteractionType.OnClick)
+            if (Input.GetKeyDown(KeyCode.Z) && CanInteract && @event.Interaction == LocationEvent.InteractionType.OnClick)
             {
                 @event.InvokeEvent();
             }
@@ -61,11 +61,11 @@ public class PlayerExplorerInteraction : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        ExplorerEvent @event = collision.gameObject.GetComponent<ExplorerEvent>();
+        LocationEvent @event = collision.gameObject.GetComponent<LocationEvent>();
 
         if (@event != null)
         {
-            if (@event.Interaction == ExplorerEvent.InteractionType.OnStep && CanInteract)
+            if (@event.Interaction == LocationEvent.InteractionType.OnStep && CanInteract)
             {
                 @event.InvokeEvent();
             }
@@ -74,11 +74,11 @@ public class PlayerExplorerInteraction : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        ExplorerEvent @event = collision.gameObject.GetComponent<ExplorerEvent>();
+        LocationEvent @event = collision.gameObject.GetComponent<LocationEvent>();
 
         if (@event != null)
         {
-            if (Input.GetKeyDown(KeyCode.Z) && CanInteract && @event.Interaction == ExplorerEvent.InteractionType.OnClick)
+            if (Input.GetKeyDown(KeyCode.Z) && CanInteract && @event.Interaction == LocationEvent.InteractionType.OnClick)
             {
                 @event.InvokeEvent();
             }

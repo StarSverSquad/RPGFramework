@@ -16,13 +16,13 @@ public class InvokeEventNode : ActionNodeWrapper<InvokeEventAction>
         ObjectField objectField = new ObjectField("Событие")
         {
             allowSceneObjects = true,
-            objectType = typeof(ExplorerEvent)
+            objectType = typeof(LocationEvent)
         };
 
         objectField.SetValueWithoutNotify(Action.Event);
         objectField.RegisterValueChangedCallback(val =>
         {
-            Action.Event = (ExplorerEvent)val.newValue;
+            Action.Event = (LocationEvent)val.newValue;
 
             MakeDirty();
         });

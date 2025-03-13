@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class InvokeEventAction : GraphActionBase
 {
-    public ExplorerEvent Event;
+    public LocationEvent Event;
 
     public bool Wait;
 
@@ -24,7 +24,7 @@ public class InvokeEventAction : GraphActionBase
 
         if (Wait)
         {
-            yield return new WaitWhile(() => Event.Event.IsPlaying);
+            yield return new WaitWhile(() => Event.InnerEvent.IsPlaying);
 
             ExplorerManager.Instance.EventHandler.HandleEvent((GraphEvent)gameEvent);
         }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Event", menuName = "RPGFramework/Event")]
+[CreateAssetMenu(fileName = "InnerEvent", menuName = "RPGFramework/InnerEvent")]
 public class GraphEvent : GameEventBase
 {
     public GraphEventMeta Meta = new GraphEventMeta();

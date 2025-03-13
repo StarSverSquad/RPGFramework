@@ -20,7 +20,7 @@ public class CustomDictionary<T> : IEnumerable<T>
         }
         public DictionaryItem(string key, T value)
         {
-            this.Key = key;
+            Key = key;
             Value = value;
         }
     }
@@ -29,14 +29,20 @@ public class CustomDictionary<T> : IEnumerable<T>
 
     public CustomDictionary()
     {
-        data = new List<DictionaryItem>();
+        data = new();
     }
 
     public T this[string key]
     {
-        get => data.Where(i => i.Key == key).FirstOrDefault().Value;
+        get => Get(key);
 
-        set => data.Where(i => i.Key == key).FirstOrDefault().Value = value;
+        set
+        {
+            if (!HaveKey(key))
+                Add(key, value);
+            else
+                Set(key, value);
+        }
     } 
 
     public void Add(string key, T value)
@@ -58,6 +64,15 @@ public class CustomDictionary<T> : IEnumerable<T>
     public bool HaveKey(string key)
     {
         return data.Where(i => i.Key == key).Count() > 0;
+    }
+
+    public T Get(string key)
+    {
+        return data.FirstOrDefault(i => i.Key == key).Value;
+    }
+    public void Set(string key, T value)
+    {
+        data.FirstOrDefault(i => i.Key == key).Value = value;
     }
 
     public IEnumerator<T> GetEnumerator()

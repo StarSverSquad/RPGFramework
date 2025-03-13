@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class LocalCharacterManager : RPGFrameworkBehaviour
@@ -31,7 +27,6 @@ public class LocalCharacterManager : RPGFrameworkBehaviour
         PlayerMovement.OnStopMoving += Movement_OnStopMoving;
         PlayerMovement.OnStartMoving += PlayerMovement_OnStartMoving;
         PlayerMovement.OnRotate += PlayerMovement_OnRotate;
-
         PlayerMovement.OnStartRun += PlayerMovement_OnStartRun;
         PlayerMovement.OnStopRun += PlayerMovement_OnStopRun;
 
@@ -90,7 +85,7 @@ public class LocalCharacterManager : RPGFrameworkBehaviour
 
         for (int i = 0; i < Characters.Length; i++)
         {
-            GameObject n = Instantiate(Characters[i].Model.gameObject, 
+            GameObject n = Instantiate(Characters[i].LegacyModel.gameObject, 
                 ExplorerManager.GetPlayerPosition3D() + new Vector3(0, 0, 0.05f * i), 
                 Quaternion.identity, transform);
 

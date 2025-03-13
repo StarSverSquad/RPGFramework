@@ -1,14 +1,23 @@
-﻿using System;
+﻿using RPGF.Character;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using UnityEngine;
 
 class TestNewRPGChCtrl : CustomActionBase
 {
+    public RPGCharacterControllerBase rPGCharacter;
+
     protected override IEnumerator ActionCoroutine()
     {
-        yield return null;
+        rPGCharacter.MoveToRelative(new Vector2(3, 0), 3f);
+
+        yield return new WaitForSeconds(1f);
+
+        rPGCharacter.PauseMove();
+
+        yield return new WaitForSeconds(1f);
+
+        rPGCharacter.ResumeMove();
+
+        yield return new WaitWhile(() => rPGCharacter.IsMove);
     }
 }

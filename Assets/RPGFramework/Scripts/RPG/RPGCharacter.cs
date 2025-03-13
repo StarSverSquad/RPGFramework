@@ -1,3 +1,4 @@
+using RPGF.Character;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,7 +16,9 @@ public class RPGCharacter : RPGEntity
 
     public Color Color;
 
-    public RPGCharacterControllerLegacy Model;
+    [Obsolete]
+    public RPGCharacterControllerLegacy LegacyModel;
+    public PlayableRPGCharacterController Model;
 
     public bool ParticipateInBattle = true;
     public bool CanMoveInBattle = true;

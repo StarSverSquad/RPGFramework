@@ -1,8 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public class RPGCharacterControllerBase : MonoBehaviour
+public abstract class RPGCharacterControllerBase : MonoBehaviour, IDisposable
 {
-
+    public virtual void Dispose()
+    {
+        
+    }
 }

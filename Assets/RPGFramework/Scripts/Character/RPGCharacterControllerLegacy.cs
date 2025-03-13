@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(SpriteRenderer)), Obsolete]
 public class RPGCharacterControllerLegacy : MonoBehaviour
 {
     #region NOT UNITY SERIALIZED

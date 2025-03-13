@@ -56,13 +56,13 @@ public class TranslateCharacterNode : ActionNodeWrapper<TranslateCharacterAction
             ObjectField CharacterField = new ObjectField("Персонаж")
             {
                 allowSceneObjects = true,
-                objectType = typeof(RPGCharacterController)
+                objectType = typeof(RPGCharacterControllerLegacy)
             };
 
             CharacterField.SetValueWithoutNotify(Action.CharacterInScene);
             CharacterField.RegisterValueChangedCallback(i =>
             {
-                Action.CharacterInScene = (RPGCharacterController)i.newValue;
+                Action.CharacterInScene = (RPGCharacterControllerLegacy)i.newValue;
 
                 MakeDirty();
             });

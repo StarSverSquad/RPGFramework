@@ -4,7 +4,7 @@ using UnityEngine;
 public class TestDEO : CustomActionBase
 {
     public Sprite olek;
-    public RPGCharacterController deo;
+    public RPGCharacterControllerLegacy deo;
 
     protected override IEnumerator ActionCoroutine()
     {

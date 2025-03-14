@@ -2,11 +2,10 @@
 
 namespace RPGF.Character
 {
-    [RequireComponent(typeof(Animator), typeof(SpriteRenderer))]
+    [RequireComponent(typeof(Animator))]
     public class PlayableCharacterModelController : CharacterModelControllerBase
     {
         private Animator _animator;
-        private SpriteRenderer _spriteRenderer;
 
         #region CONSTS
 
@@ -23,7 +22,6 @@ namespace RPGF.Character
         public override void Initialize()
         {
             _animator = GetComponent<Animator>();
-            _spriteRenderer = GetComponent<SpriteRenderer>();
 
             base.Initialize();
         }

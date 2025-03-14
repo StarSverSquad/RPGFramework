@@ -54,8 +54,7 @@ namespace RPGF.Character
 
         public override void Initialize()
         {
-
-            RotateTo(Direction);
+            RotateTo(_startDiration);
 
             if (_linkedEvent != null)
             {
@@ -92,20 +91,7 @@ namespace RPGF.Character
             OnRotateEvent?.Invoke(direction);
             OnRotate(direction);
         }
-        public void RotateToPlayer(ViewDirection direction)
-        {
-            Vector2 playerPosition = ExplorerManager.GetPlayerPosition();
-
-            Vector2 vector = playerPosition - (Vector2)transform.position;
-
-            RotateTo(DirectionConverter.GetViewDirectionByVector(vector));
-        }
-        public void RotateToDefault()
-        {
-            RotateTo(_startDiration);
-        }
-
-
+        
         public void MoveTo(Vector2 position, float time)
         {
             DisposeMoveTween();
@@ -143,11 +129,15 @@ namespace RPGF.Character
 
         public void RotateToPlayer()
         {
-            Vector2 vectorDirection = transform.position - ExplorerManager.GetPlayerPosition3D();
+            Vector2 vectorDirection = (ExplorerManager.GetPlayerPosition3D() - transform.position).normalized;
 
             ViewDirection direction = DirectionConverter.GetViewDirectionByVector(vectorDirection);
 
             RotateTo(direction);
+        }
+        public void RotateToDefault()
+        {
+            RotateTo(_startDiration);
         }
 
         public void PauseMove()
@@ -200,10 +190,14 @@ namespace RPGF.Character
 
         protected virtual void OnLinkedEventStart()
         {
+            RotateToPlayer();
+
             OnLinkedEventStated?.Invoke();
         }
         protected virtual void OnLinkedEventEnd()
         {
+            RotateToDefault();
+
             OnLinkedEventEnded?.Invoke();
         }
 

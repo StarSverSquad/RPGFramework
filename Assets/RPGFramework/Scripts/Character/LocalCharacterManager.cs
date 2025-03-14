@@ -24,10 +24,10 @@ public class LocalCharacterManager : RPGFrameworkBehaviour
     {
         PlayerMovement.OnMoving += Movement_OnMoving;
         PlayerMovement.OnStopMoving += Movement_OnStopMoving;
-        PlayerMovement.OnStartMoving += PlayerMovement_OnStartMoving;
-        PlayerMovement.OnRotate += PlayerMovement_OnRotate;
-        PlayerMovement.OnStartRun += PlayerMovement_OnStartRun;
-        PlayerMovement.OnStopRun += PlayerMovement_OnStopRun;
+        PlayerMovement.OnStartMoving += Movement_OnStartMoving;
+        PlayerMovement.OnRotate += Movement_OnRotate;
+        PlayerMovement.OnStartRun += Movement_OnStartRun;
+        PlayerMovement.OnStopRun += Movement_OnStopRun;
 
         EventHandler.OnHandle += OnSomeEventStarted;
     }
@@ -53,7 +53,7 @@ public class LocalCharacterManager : RPGFrameworkBehaviour
         targets.RemoveAt(index);
     }
 
-    public void UpdateModels()
+    public void RebuildModels()
     {
         foreach (var item in models)
             Destroy(item.gameObject);
@@ -69,22 +69,10 @@ public class LocalCharacterManager : RPGFrameworkBehaviour
 
             var model = newObject.GetComponent<PlayableCharacterModelController>();
 
+            model.Initialize();
+
             models.Add(model);
             targets.Add(ExplorerManager.GetPlayerPosition());
-        }
-    }
-
-    private void Movement_OnStopMoving()
-    {
-        if (models.Count == 0 || (EventHandler.HandledEvent && !PlayerMovement.IsAutoMoving))
-            return;
-
-        for (int i = 0; i < models.Count; i++)
-        {
-            //if (i == 0)
-            //    Models[i].StopAnimation(PlayerMovement.ViewDirection);
-            //else
-            //    Models[i].PauseMove();
         }
     }
 
@@ -115,44 +103,66 @@ public class LocalCharacterManager : RPGFrameworkBehaviour
             }
         }
     }
-
-    private void PlayerMovement_OnStartMoving()
+    private void Movement_OnStartMoving()
     {
-        if (models.Count == 0 || EventHandler.EventRuning)
+        if (models.Count == 0 || (EventHandler.HandledEvent && !PlayerMovement.IsAutoMoving))
             return;
 
-        //Models[0].AnimateMove(PlayerMovement.ViewDirection);
+        Models[0].SetRotationAnimation(PlayerMovement.ViewDirection);
+        Models[0].SetMoveAnimation(true);
 
-        //for (int i = 1; i < Models.Count; i++)
-        //{
-        //    if (Models[i].MoveInPause)
-        //        Models[i].UnpauseMove();
-        //}
+        for (int i = 1; i < Models.Count; i++)
+        {
+            if (!Models[i].IsMove)
+                continue;
+
+            if (Models[i].MoveIsPaused)
+                Models[i].ResumeMove();
+        }
+    }
+    private void Movement_OnStopMoving()
+    {
+        if (models.Count == 0 || (EventHandler.HandledEvent && !PlayerMovement.IsAutoMoving))
+            return;
+
+        for (int i = 0; i < models.Count; i++)
+        {
+            if (i == 0)
+                Models[i].SetMoveAnimation(false);
+            else
+                Models[i].PauseMove();
+        }
     }
 
-    private void PlayerMovement_OnRotate(ViewDirection direction)
+    private void Movement_OnRotate(ViewDirection direction)
     {
         if (models.Count == 0)
             return;
 
-        //Models[0].AnimateMove(direction);
+        Models[0].SetRotationAnimation(direction);
     }
 
-    private void PlayerMovement_OnStopRun()
+    private void Movement_OnStopRun()
     {
-
+        foreach (var item in models)
+        {
+            item.SetRunAnimation(false);
+        }
     }
-
-    private void PlayerMovement_OnStartRun()
+    private void Movement_OnStartRun()
     {
-
+        foreach (var item in models)
+        {
+            item.SetRunAnimation(true);
+        }
     }
 
     private void OnSomeEventStarted()
     {
         foreach (var model in models)
         {
-            //model.StopAnimation(PlayerMovement.ViewDirection);
+            model.SetRotationAnimation(PlayerMovement.ViewDirection);
+            model.SetMoveAnimation(false);
         }
     }
 
@@ -160,10 +170,10 @@ public class LocalCharacterManager : RPGFrameworkBehaviour
     {
         PlayerMovement.OnMoving -= Movement_OnMoving;
         PlayerMovement.OnStopMoving -= Movement_OnStopMoving;
-        PlayerMovement.OnStartMoving -= PlayerMovement_OnStartMoving;
-        PlayerMovement.OnRotate -= PlayerMovement_OnRotate;
-        PlayerMovement.OnStartRun -= PlayerMovement_OnStartRun;
-        PlayerMovement.OnStopRun -= PlayerMovement_OnStopRun;
+        PlayerMovement.OnStartMoving -= Movement_OnStartMoving;
+        PlayerMovement.OnRotate -= Movement_OnRotate;
+        PlayerMovement.OnStartRun -= Movement_OnStartRun;
+        PlayerMovement.OnStopRun -= Movement_OnStopRun;
 
         EventHandler.OnHandle -= OnSomeEventStarted;
     }

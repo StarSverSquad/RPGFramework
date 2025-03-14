@@ -14,7 +14,7 @@ public class TranslateCharacterAction : GraphActionBase
     public bool InParty;
 
     public string CharacterTag;
-    public PlayableCharacterModelController CharacterInScene;
+    public CharacterModelControllerBase CharacterInScene;
 
     public bool ReplaceInstantly;
     public bool Wait;
@@ -51,7 +51,7 @@ public class TranslateCharacterAction : GraphActionBase
 
     public override IEnumerator ActionCoroutine()
     {
-        PlayableCharacterModelController model = null;
+        CharacterModelControllerBase model = null;
 
         bool isFisrtCharacter = false;
         if (InParty)
@@ -120,14 +120,9 @@ public class TranslateCharacterAction : GraphActionBase
                 break;
             case TranslateType.Rotate:
                 if (isFisrtCharacter)
-                {
-                    //ExplorerManager.Instance.PlayerManager.movement.RotateTo(Direction);
+                    ExplorerManager.Instance.PlayerManager.movement.RotateTo(Direction);
 
-                    //model.StopAnimation();
-                    //model.RotateTo(Direction);
-                }
-                else
-                    model.RotateTo(Direction);
+                model.RotateTo(Direction);
                 break;
             case TranslateType.RotateToPlayer:
                 model.RotateToPlayer();

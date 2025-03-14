@@ -1,7 +1,6 @@
+using DG.Tweening;
 using RPGF;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerExplorerMovement : MonoBehaviour
@@ -13,33 +12,91 @@ public class PlayerExplorerMovement : MonoBehaviour
     public float Speed = 10f;
     public float AccelerationFactor = 1.5f;
 
-    public float ResultSpeed => !IsRun ? Speed : Speed * AccelerationFactor;
-
-    public bool IsMoving { get; private set; }
-    public bool IsRun { get; private set; }
-    public bool IsAutoMoving { get; private set; } = false;
-
     public Vector2 Velocity = Vector2.zero;
     public Vector2 NormolizedVelocity = Vector2.zero;
 
-    public MoveDirection MoveDirection;
+    public MoveDirection MoveDirection = MoveDirection.None;
     public ViewDirection ViewDirection = ViewDirection.Down;
 
+    [SerializeField]
+    private Rigidbody2D rb;
+
+    #region PROPS
+
+    public float ResultSpeed => !IsRun ? Speed : Speed * AccelerationFactor;
+    public bool IsMoving { get; private set; }
+    public bool IsRun { get; private set; }
+    public bool IsAutoMoving => autoMoveTween != null;
+
+    #endregion
+
+    #region EVENTS
     public event Action OnMoving;
     public event Action OnStopMoving;
     public event Action OnStartMoving;
     public event Action OnStartRun;
     public event Action OnStopRun;
     public event Action<ViewDirection> OnRotate;
+    #endregion
 
-    [SerializeField]
-    private Rigidbody2D rb;
+    private Tween autoMoveTween = null;
 
     private void FixedUpdate()
     {
         if (IsAutoMoving)
-            return;
+        {
+            OnMoving?.Invoke();
+        }
+        else
+        {
+            Move();
+        }
+    }
 
+    public void SetMovementAccess(bool active)
+    {
+        CanRun = active;
+        CanWalk = active;
+        CanRotate = active;
+    }
+
+    public void TranslateBySpeed(Vector2 vec, float speed)
+    {
+        TranslateByTime(vec, vec.magnitude / speed);
+    }
+    public void TranslateByTime(Vector2 vec, float time)
+    {
+        DisposeAutoMoveTween();
+
+        ViewDirection moveDir = DirectionConverter.GetViewDirectionByVector(vec.normalized);
+
+        RotateTo(moveDir);
+
+        autoMoveTween = transform.DOMove(vec, time).SetRelative().SetEase(Ease.Linear);
+
+        autoMoveTween.onPlay += () =>
+        {
+            OnStartMoving?.Invoke();
+        };
+
+        autoMoveTween.onComplete += () =>
+        {
+            OnStopMoving?.Invoke();
+            DisposeAutoMoveTween();
+        };
+
+        autoMoveTween.Play();
+    }
+
+    public void RotateTo(ViewDirection direction)
+    {
+        ViewDirection = direction;
+
+        OnRotate?.Invoke(direction);
+    }
+
+    private void Move()
+    {
         Velocity = Vector2.zero;
 
         MoveDirection = MoveDirection.None;
@@ -94,7 +151,7 @@ public class PlayerExplorerMovement : MonoBehaviour
 
             OnStopMoving?.Invoke();
         }
-            
+
 
         if (CanRotate && newViewDirection.HasValue)
         {
@@ -121,68 +178,12 @@ public class PlayerExplorerMovement : MonoBehaviour
         rb.linearVelocity = Velocity;
     }
 
-    public void SetMovementAccess(bool active)
+    private void DisposeAutoMoveTween()
     {
-        CanRun = active;
-        CanWalk = active;
-        CanRotate = active;
-    }
-
-    public void TranslateBySpeed(Vector2 vec, float speed)
-    {
-        if (!IsAutoMoving)
-            StartCoroutine(AutoMoveCoroutine(vec, speed));
-    }
-    public void TranslateByTime(Vector2 vec, float time)
-    {
-        if (!IsAutoMoving)
-            StartCoroutine(AutoMoveCoroutine(vec, vec.sqrMagnitude / time));
-    }
-
-    public void RotateTo(ViewDirection direction)
-    {
-        ViewDirection = direction;
-
-        OnRotate?.Invoke(direction);
-    }
-
-    
-
-    private IEnumerator AutoMoveCoroutine(Vector2 vector, float speed)
-    {
-        IsAutoMoving = true;
-
-        Vector2 vecDirection = vector.normalized;
-
-        MoveDirection moveDir = DirectionConverter.GetMoveDiretionByVector(vecDirection);
-
-        if (moveDir != MoveDirection.None)
+        if (autoMoveTween != null)
         {
-            var view = DirectionConverter.MoveDiretionToViewDiretion(moveDir);
-
-            OnRotate?.Invoke(view);
-            ViewDirection = view;
-        }           
-
-        float sqrMag = (float)Math.Sqrt(Math.Pow(vector.x, 2) + Math.Pow(vector.y, 2));
-
-        float time = sqrMag / speed;
-
-        OnStartMoving?.Invoke();
-
-        while (time > 0)
-        {
-            transform.Translate(vecDirection * speed * Time.fixedDeltaTime);
-
-            OnMoving?.Invoke();
-
-            time -= Time.fixedDeltaTime;
-
-            yield return new WaitForFixedUpdate();
+            autoMoveTween.Kill();
+            autoMoveTween = null;
         }
-
-        OnStopMoving?.Invoke();
-
-        IsAutoMoving = false;
     }
 }

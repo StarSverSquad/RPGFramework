@@ -2610,11 +2610,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1b0b104b373e8245ba66356d9f4171f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Models: []
-  Targets: []
-  updateDistance: 1.5
-  updateSpeed: 3
-  moveTime: 0.5
+  _updateTargetsDistance: 1
+  _modelMoveTime: 0.5
 --- !u!114 &1495541019343982985
 MonoBehaviour:
   m_ObjectHideFlags: 0

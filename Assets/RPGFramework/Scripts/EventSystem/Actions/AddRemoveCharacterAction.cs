@@ -26,7 +26,7 @@ public class AddRemoveCharacterAction : GraphActionBase
             GameManager.Instance.Character.RemoveCharacter(character);
 
         if (updateModels)
-            LocalManager.Instance.Character.UpdateModels();
+            LocalManager.Instance.Character.RebuildModels();
         else if (existentObject != null)
         {
             if (isAdd)
@@ -46,5 +46,16 @@ public class AddRemoveCharacterAction : GraphActionBase
     public override string GetInfo()
     {
         return "Добавляет или же удаляет персонажа из пачки.";
+    }
+
+    public override object Clone()
+    {
+        return new AddRemoveCharacterAction()
+        {
+            isAdd = isAdd,
+            character = character,
+            updateModels = updateModels,
+            existentObject = existentObject
+        };
     }
 }

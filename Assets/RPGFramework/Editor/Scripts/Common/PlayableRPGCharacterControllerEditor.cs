@@ -16,9 +16,10 @@ class PlayableRPGCharacterControllerEditor : Editor
     public override void OnInspectorGUI()
     {
         EditorGUILayout.HelpBox(
-            "Для корректной работы анимаций в Animator нужно что были следующие переменные:\n" +
+            "Для корректной работы анимаций в Animator нужно указать следующие переменные:\n" +
             "Bool: IsMove, IsRun\n" +
-            "Int: X, Y", 
+            "Float: X, Y\n" +
+            "Trigger: RESET", 
             MessageType.Info);
 
         base.OnInspectorGUI();

@@ -1,4 +1,5 @@
 using DG.Tweening;
+using RPGF.Attributes;
 using System;
 using UnityEngine;
 
@@ -7,12 +8,18 @@ namespace RPGF.Character
     public abstract class CharacterModelControllerBase : RPGFrameworkBehaviour, IDisposable, ICharacterModelController
     {
         [Header("Базовые настройки:")]
+        [DisplayName("Базовое направление")]
         [SerializeField]
         private ViewDirection _startDiration = ViewDirection.Down;
+        [DisplayName("Авто позиция Z")]
         [SerializeField]
         private bool _autoOrdeting = true;
+        [DisplayName("Авто инициализация")]
+        [SerializeField]
+        private bool _autoInitialize = false;
 
         [Header("Настройки под событие:")]
+        [DisplayName("Связанное событие")]
         [SerializeField]
         private LocationEvent _linkedEvent;
 
@@ -47,6 +54,7 @@ namespace RPGF.Character
 
         public override void Initialize()
         {
+
             RotateTo(Direction);
 
             if (_linkedEvent != null)
@@ -54,6 +62,12 @@ namespace RPGF.Character
                 _linkedEvent.InnerEvent.OnStart += OnLinkedEventStart;
                 _linkedEvent.InnerEvent.OnEnd += OnLinkedEventEnd;
             }
+        }
+
+        private void OnEnable()
+        {
+            if (_autoInitialize)
+                Initialize();
         }
 
         private void Update()
@@ -78,14 +92,28 @@ namespace RPGF.Character
             OnRotateEvent?.Invoke(direction);
             OnRotate(direction);
         }
-        
+        public void RotateToPlayer(ViewDirection direction)
+        {
+            Vector2 playerPosition = ExplorerManager.GetPlayerPosition();
+
+            Vector2 vector = playerPosition - (Vector2)transform.position;
+
+            RotateTo(DirectionConverter.GetViewDirectionByVector(vector));
+        }
+        public void RotateToDefault()
+        {
+            RotateTo(_startDiration);
+        }
+
+
         public void MoveTo(Vector2 position, float time)
         {
             DisposeMoveTween();
 
-            Vector2 vectorDiretion = (Vector2)transform.position - position;
+            Vector2 vectorDiretion = (position - (Vector2)transform.position).normalized;
 
-            ViewDirection moveDiretion = DirectionConverter.GetViewDirectionByVector(vectorDiretion);
+            ViewDirection viewDiretion = DirectionConverter.GetViewDirectionByVector(vectorDiretion);
+            RotateTo(viewDiretion);
 
             moveTween = transform.DOMove(position, time).SetEase(Ease.Linear).Play();
 

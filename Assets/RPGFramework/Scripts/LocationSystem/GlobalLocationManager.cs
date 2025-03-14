@@ -146,7 +146,7 @@ public class GlobalLocationManager : MonoBehaviour
                 ExplorerManager.Instance.PlayerManager.movement.RotateTo(message.Direction);
             }
 
-            LocalManager.Instance.Character.UpdateModels();
+            LocalManager.Instance.Character.RebuildModels();
 
             switch (message.Location.CameraLink)
             {

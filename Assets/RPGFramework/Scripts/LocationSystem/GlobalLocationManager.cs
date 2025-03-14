@@ -1,3 +1,4 @@
+using RPGF;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ public class GlobalLocationManager : MonoBehaviour
         public bool TeleportToPoint;
 
         public Vector2 Position;
-        public CommonDirection Direction;
+        public ViewDirection Direction;
 
         public TransimitionMessage()
         {
@@ -26,7 +27,7 @@ public class GlobalLocationManager : MonoBehaviour
             Point = string.Empty;
             TeleportToPoint = true;
             Position = Vector2.zero;
-            Direction = CommonDirection.Down;
+            Direction = ViewDirection.Down;
         }
     }
 
@@ -52,7 +53,7 @@ public class GlobalLocationManager : MonoBehaviour
             Location = location,
             Point = pointName,
             TeleportToPoint = true,
-            Direction = CommonDirection.None,
+            Direction = ViewDirection.Down,
             Position = Vector2.zero
         };
 
@@ -64,7 +65,7 @@ public class GlobalLocationManager : MonoBehaviour
     /// <param name="location">Локация</param>
     /// <param name="position">Позиция на сцене</param>
     /// <param name="direction">Направление взгляда</param>
-    public void ChangeLocation(LocationInfo location, Vector2 position, CommonDirection direction)
+    public void ChangeLocation(LocationInfo location, Vector2 position, ViewDirection direction)
     {
         if (IsChanging) return;
 

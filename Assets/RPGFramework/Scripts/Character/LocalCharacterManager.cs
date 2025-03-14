@@ -1,23 +1,21 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using RPGF.Character;
+using RPGF;
 
 public class LocalCharacterManager : RPGFrameworkBehaviour
 {
+    [SerializeField]
+    private float _updateTargetsDistance = 1f;
+    [SerializeField]
+    private float _modelMoveTime = 1f;
+
+    private List<PlayableCharacterModelController> models = new();
+    private List<Vector2> targets = new();
+
     public RPGCharacter[] Characters => GameManager.Instance.Character.Characters;
 
-    public List<RPGCharacterControllerLegacy> Models = new List<RPGCharacterControllerLegacy>();
-
-    public List<Vector2> Targets = new List<Vector2>();
-
-    [SerializeField]
-    private float updateDistance;
-    [SerializeField]
-    private float updateSpeed = 1f;
-    [SerializeField]
-    private float moveTime = 1f;
-
-    private float distance = 0;
+    public List<PlayableCharacterModelController> Models => models;
 
     private PlayerExplorerMovement PlayerMovement => Explorer.PlayerManager.movement;
     private ExplorerEventHandler EventHandler => Explorer.EventHandler;
@@ -31,143 +29,130 @@ public class LocalCharacterManager : RPGFrameworkBehaviour
         PlayerMovement.OnStartRun += PlayerMovement_OnStartRun;
         PlayerMovement.OnStopRun += PlayerMovement_OnStopRun;
 
-        EventHandler.OnHandle += EventHandler_OnHandle;
+        EventHandler.OnHandle += OnSomeEventStarted;
     }
 
-    private void PlayerMovement_OnStopRun()
+    public void AddModel(PlayableCharacterModelController model)
     {
-        foreach (var item in Models)
-        {
-            item.SpeedFactor = 1f;
-        }
-    }
-
-    private void PlayerMovement_OnStartRun()
-    {
-        foreach (var item in Models)
-        {
-            item.SpeedFactor = 1.5f;
-        }
-    }
-
-    public void AddModel(RPGCharacterControllerLegacy model)
-    {
-        if (Models.Contains(model))
+        if (models.Contains(model))
             return;
 
         model.transform.SetParent(transform);
 
-        Models.Add(model);
-        Targets.Add(ExplorerManager.GetPlayerPosition());
+        models.Add(model);
+        targets.Add(ExplorerManager.GetPlayerPosition());
     }
-
-    public void RemoveModel(RPGCharacterControllerLegacy model)
+    public void RemoveModel(PlayableCharacterModelController model)
     {
-        if (!Models.Contains(model))
+        if (!models.Contains(model))
             return;
 
-        int index = Models.IndexOf(model);
+        int index = models.IndexOf(model);
 
-        Models.Remove(model);
-        Targets.RemoveAt(index);
+        models.Remove(model);
+        targets.RemoveAt(index);
     }
 
     public void UpdateModels()
     {
-        foreach (var item in Models)
-        {
+        foreach (var item in models)
             Destroy(item.gameObject);
-        }
 
-        Models.Clear();
-        Targets.Clear();
-
-        distance = 0;
+        models.Clear();
+        targets.Clear();
 
         for (int i = 0; i < Characters.Length; i++)
         {
-            GameObject n = Instantiate(Characters[i].LegacyModel.gameObject, 
+            var newObject = Instantiate(Characters[i].Model.gameObject, 
                 ExplorerManager.GetPlayerPosition3D() + new Vector3(0, 0, 0.05f * i), 
                 Quaternion.identity, transform);
 
-            RPGCharacterControllerLegacy model = n.GetComponent<RPGCharacterControllerLegacy>();
+            var model = newObject.GetComponent<PlayableCharacterModelController>();
 
-            Models.Add(model);
-            Targets.Add(ExplorerManager.GetPlayerPosition());
+            models.Add(model);
+            targets.Add(ExplorerManager.GetPlayerPosition());
         }
     }
 
     private void Movement_OnStopMoving()
     {
-        if (Models.Count == 0 || (EventHandler.HandledEvent && !PlayerMovement.IsAutoMoving))
+        if (models.Count == 0 || (EventHandler.HandledEvent && !PlayerMovement.IsAutoMoving))
             return;
 
-        for (int i = 0; i < Models.Count; i++)
+        for (int i = 0; i < models.Count; i++)
         {
-            if (i == 0)
-                Models[i].StopAnimation(PlayerMovement.ViewDirection);
-            else
-                Models[i].PauseMove();
+            //if (i == 0)
+            //    Models[i].StopAnimation(PlayerMovement.ViewDirection);
+            //else
+            //    Models[i].PauseMove();
         }
     }
 
     private void Movement_OnMoving()
     {
-        if (Models.Count == 0 || (EventHandler.HandledEvent && !PlayerMovement.IsAutoMoving))
+        if (models.Count == 0 || (EventHandler.HandledEvent && !PlayerMovement.IsAutoMoving))
             return;
 
-        float scalarvelocity = updateSpeed * Time.fixedDeltaTime;
+        Vector2 playerPosition = ExplorerManager.GetPlayerPosition();
 
-        distance += scalarvelocity;
+        float distance = Vector2.Distance(playerPosition, targets[0]);
 
-        Models[0].transform.position = ExplorerManager.GetPlayerPosition();
+        models[0].transform.position = playerPosition;
         
-        if (distance > updateDistance)
+        if (distance > _updateTargetsDistance)
         {
-            for (int i = Targets.Count - 1; i >= 0; i--)
+            for (int i = 0; i < targets.Count; i++)
             {
                 if (i == 0)
-                    Targets[0] = Models[0].transform.position;
+                    targets[0] = playerPosition;
                 else
-                    Targets[i] = Targets[i - 1];
+                    targets[i] = targets[i - 1];
             }
 
-            for (int i = 1; i < Models.Count; i++)
+            for (int i = 1; i < models.Count; i++)
             {
-                Models[i].MoveToByTime(Targets[i - 1], moveTime);
+                models[i].MoveTo(targets[i - 1], _modelMoveTime);
             }
-
-            distance = 0;
         }
     }
 
     private void PlayerMovement_OnStartMoving()
     {
-        if (Models.Count == 0 || EventHandler.EventRuning)
+        if (models.Count == 0 || EventHandler.EventRuning)
             return;
 
-        Models[0].AnimateMove(PlayerMovement.ViewDirection);
+        //Models[0].AnimateMove(PlayerMovement.ViewDirection);
 
-        for (int i = 1; i < Models.Count; i++)
-        {
-            if (Models[i].MoveInPause)
-                Models[i].UnpauseMove();
-        }
+        //for (int i = 1; i < Models.Count; i++)
+        //{
+        //    if (Models[i].MoveInPause)
+        //        Models[i].UnpauseMove();
+        //}
     }
 
-    private void PlayerMovement_OnRotate(CommonDirection direction)
+    private void PlayerMovement_OnRotate(ViewDirection direction)
     {
-        if (Models.Count == 0)
+        if (models.Count == 0)
             return;
 
-        Models[0].AnimateMove(direction);
+        //Models[0].AnimateMove(direction);
     }
 
-    private void EventHandler_OnHandle()
+    private void PlayerMovement_OnStopRun()
     {
-        foreach (var model in Models)
+
+    }
+
+    private void PlayerMovement_OnStartRun()
+    {
+
+    }
+
+    private void OnSomeEventStarted()
+    {
+        foreach (var model in models)
         {
-            model.StopAnimation(PlayerMovement.ViewDirection);
+            //model.StopAnimation(PlayerMovement.ViewDirection);
         }
     }
 
@@ -177,7 +162,9 @@ public class LocalCharacterManager : RPGFrameworkBehaviour
         PlayerMovement.OnStopMoving -= Movement_OnStopMoving;
         PlayerMovement.OnStartMoving -= PlayerMovement_OnStartMoving;
         PlayerMovement.OnRotate -= PlayerMovement_OnRotate;
+        PlayerMovement.OnStartRun -= PlayerMovement_OnStartRun;
+        PlayerMovement.OnStopRun -= PlayerMovement_OnStopRun;
 
-        EventHandler.OnHandle -= EventHandler_OnHandle;
+        EventHandler.OnHandle -= OnSomeEventStarted;
     }
 }

@@ -1,3 +1,4 @@
+using RPGF;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,11 +40,8 @@ public class ExplorerManager : ContentManagerBase, IManagerInitialize
         return Instance.PlayerManager.transform.position;
     }
 
-    public static CommonDirection GetPlayerViewDirection()
+    public static ViewDirection GetPlayerViewDirection()
     {
-        if (Instance == null)
-            return CommonDirection.None;
-
         return Instance.PlayerManager.movement.ViewDirection;
     }
 }

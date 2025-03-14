@@ -16,8 +16,6 @@ public class RPGCharacter : RPGEntity
 
     public Color Color;
 
-    [Obsolete]
-    public RPGCharacterControllerLegacy LegacyModel;
     public PlayableCharacterModelController Model;
 
     public bool ParticipateInBattle = true;

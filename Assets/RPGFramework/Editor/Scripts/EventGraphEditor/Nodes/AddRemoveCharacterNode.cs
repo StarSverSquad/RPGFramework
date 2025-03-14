@@ -1,4 +1,5 @@
-﻿using UnityEditor.UIElements;
+﻿using RPGF.Character;
+using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
 [UseActionNode]
@@ -56,14 +57,14 @@ public class AddRemoveCharacterNode : ActionNodeWrapper<AddRemoveCharacterAction
         {
             ObjectField exitentObjectField = new ObjectField("Существующая модель")
             {
-                objectType = typeof(RPGCharacterControllerLegacy),
+                objectType = typeof(PlayableCharacterModelController),
                 allowSceneObjects = true
             };
 
             exitentObjectField.SetValueWithoutNotify(Action.existentObject);
             exitentObjectField.RegisterValueChangedCallback(data =>
             {
-                Action.existentObject = data.newValue as RPGCharacterControllerLegacy;
+                Action.existentObject = data.newValue as PlayableCharacterModelController;
 
                 MakeDirty();
             });

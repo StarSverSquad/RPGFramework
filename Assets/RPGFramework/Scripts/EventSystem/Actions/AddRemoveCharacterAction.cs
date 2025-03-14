@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using RPGF.Character;
+using System.Collections;
 
 public class AddRemoveCharacterAction : GraphActionBase
 {
@@ -8,7 +8,7 @@ public class AddRemoveCharacterAction : GraphActionBase
 
     public RPGCharacter character;
 
-    public RPGCharacterControllerLegacy existentObject;
+    public PlayableCharacterModelController existentObject;
 
     public AddRemoveCharacterAction() : base("AddRemoveCharacter")
     {

@@ -1,3 +1,4 @@
+using RPGF;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,15 +22,15 @@ public class PlayerExplorerMovement : MonoBehaviour
     public Vector2 Velocity = Vector2.zero;
     public Vector2 NormolizedVelocity = Vector2.zero;
 
-    public CommonDirection MoveDirection;
-    public CommonDirection ViewDirection = CommonDirection.Down;
+    public MoveDirection MoveDirection;
+    public ViewDirection ViewDirection = ViewDirection.Down;
 
     public event Action OnMoving;
     public event Action OnStopMoving;
     public event Action OnStartMoving;
     public event Action OnStartRun;
     public event Action OnStopRun;
-    public event Action<CommonDirection> OnRotate;
+    public event Action<ViewDirection> OnRotate;
 
     [SerializeField]
     private Rigidbody2D rb;
@@ -41,39 +42,39 @@ public class PlayerExplorerMovement : MonoBehaviour
 
         Velocity = Vector2.zero;
 
-        MoveDirection = CommonDirection.None;
+        MoveDirection = MoveDirection.None;
         NormolizedVelocity = Vector2.zero;
 
-        CommonDirection newViewDirection = CommonDirection.None;
+        ViewDirection? newViewDirection = null;
 
         if (CanWalk && !ExplorerManager.Instance.EventHandler.EventRuning)
         {
 
             if (Input.GetKey(GameManager.Instance.BaseOptions.MoveRight))
             {
-                MoveDirection = CommonDirection.Right;
-                newViewDirection = CommonDirection.Right;
+                MoveDirection = MoveDirection.Right;
+                newViewDirection = ViewDirection.Right;
                 Velocity += new Vector2(1, 0);
             }
 
             if (Input.GetKey(GameManager.Instance.BaseOptions.MoveLeft))
             {
-                MoveDirection = CommonDirection.Left;
-                newViewDirection = CommonDirection.Left;
+                MoveDirection = MoveDirection.Left;
+                newViewDirection = ViewDirection.Left;
                 Velocity += new Vector2(-1, 0);
             }
 
             if (Input.GetKey(GameManager.Instance.BaseOptions.MoveUp))
             {
-                MoveDirection = CommonDirection.Up;
-                newViewDirection = CommonDirection.Up;
+                MoveDirection = MoveDirection.Up;
+                newViewDirection = ViewDirection.Up;
                 Velocity += new Vector2(0, 1);
             }
 
             if (Input.GetKey(GameManager.Instance.BaseOptions.MoveDown))
             {
-                MoveDirection = CommonDirection.Down;
-                newViewDirection = CommonDirection.Down;
+                MoveDirection = MoveDirection.Down;
+                newViewDirection = ViewDirection.Down;
                 Velocity += new Vector2(0, -1);
             }
         }
@@ -95,12 +96,12 @@ public class PlayerExplorerMovement : MonoBehaviour
         }
             
 
-        if (CanRotate && newViewDirection != CommonDirection.None)
+        if (CanRotate && newViewDirection.HasValue)
         {
             if (ViewDirection != newViewDirection)
             {
-                ViewDirection = newViewDirection;
-                OnRotate?.Invoke(newViewDirection);
+                ViewDirection = newViewDirection.Value;
+                OnRotate?.Invoke(newViewDirection.Value);
             }
         }
 
@@ -138,49 +139,32 @@ public class PlayerExplorerMovement : MonoBehaviour
             StartCoroutine(AutoMoveCoroutine(vec, vec.sqrMagnitude / time));
     }
 
-    public void RotateTo(CommonDirection direction)
+    public void RotateTo(ViewDirection direction)
     {
-        if (direction == CommonDirection.None)
-            return;
-
         ViewDirection = direction;
 
         OnRotate?.Invoke(direction);
     }
 
-    private IEnumerator AutoMoveCoroutine(Vector2 vec, float speed)
+    
+
+    private IEnumerator AutoMoveCoroutine(Vector2 vector, float speed)
     {
         IsAutoMoving = true;
 
-        Vector2 vecDirection = vec.normalized;
+        Vector2 vecDirection = vector.normalized;
 
-        CommonDirection vieDir = CommonDirection.None;
+        MoveDirection moveDir = DirectionConverter.GetMoveDiretionByVector(vecDirection);
 
-        if (vecDirection.y > 0.7)
+        if (moveDir != MoveDirection.None)
         {
-            vieDir = CommonDirection.Up;
-        }
-        else if (vecDirection.y < -0.7)
-        {
-            vieDir = CommonDirection.Down;
-        }
-        else if (vecDirection.x > 0)
-        {
-            vieDir = CommonDirection.Right;
-        }
-        else if (vecDirection.x < 0)
-        {
-            vieDir = CommonDirection.Left;
-        }
+            var view = DirectionConverter.MoveDiretionToViewDiretion(moveDir);
 
-        if (vieDir != CommonDirection.None)
-        {
-            OnRotate?.Invoke(vieDir);
-
-            ViewDirection = vieDir;
+            OnRotate?.Invoke(view);
+            ViewDirection = view;
         }           
 
-        float sqrMag = (float)Math.Sqrt(Math.Pow(vec.x, 2) + Math.Pow(vec.y, 2));
+        float sqrMag = (float)Math.Sqrt(Math.Pow(vector.x, 2) + Math.Pow(vector.y, 2));
 
         float time = sqrMag / speed;
 
@@ -201,9 +185,4 @@ public class PlayerExplorerMovement : MonoBehaviour
 
         IsAutoMoving = false;
     }
-}
-
-public enum CommonDirection
-{
-    None, Up, Down, Right, Left
 }

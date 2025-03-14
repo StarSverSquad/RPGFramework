@@ -1,3 +1,4 @@
+using RPGF;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,7 +20,7 @@ public class SaveSlot
     public CustomDictionary<int> InventoryItems;
 
     public Vector2 PlayerPosition;
-    public CommonDirection PlayerDirection;
+    public ViewDirection PlayerDirection;
 
     public List<CharacterSaveInfo> SavedCharacters;
 

@@ -1,3 +1,4 @@
+using RPGF;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -71,20 +72,17 @@ public class MainCameraManager : MonoBehaviour
 
             switch (ExplorerManager.GetPlayerViewDirection())
             {
-                case CommonDirection.Up:
+                case ViewDirection.Up:
                     targetPoint += new Vector2(0, Offset.y);
                     break;
-                case CommonDirection.Down:
+                case ViewDirection.Down:
                     targetPoint += new Vector2(0, -Offset.y);
                     break;
-                case CommonDirection.Right:
+                case ViewDirection.Right:
                     targetPoint += new Vector2(Offset.x, 0);
                     break;
-                case CommonDirection.Left:
+                case ViewDirection.Left:
                     targetPoint += new Vector2(-Offset.x, 0);
-                    break;
-                default:
-                    Debug.LogError("Не возможно определить напровление взгляда игрока!");
                     break;
             }
 

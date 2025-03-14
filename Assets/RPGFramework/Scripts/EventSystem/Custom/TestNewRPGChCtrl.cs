@@ -4,7 +4,7 @@ using UnityEngine;
 
 class TestNewRPGChCtrl : CustomActionBase
 {
-    public CharacterModelControllerBase rPGCharacter;
+    public PlayableCharacterModelController rPGCharacter;
 
     protected override IEnumerator ActionCoroutine()
     {

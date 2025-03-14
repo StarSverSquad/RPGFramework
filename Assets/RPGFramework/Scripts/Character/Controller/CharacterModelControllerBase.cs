@@ -8,7 +8,7 @@ namespace RPGF.Character
     {
         [Header("Базовые настройки:")]
         [SerializeField]
-        private Direction _startDiration = Direction.Down;
+        private ViewDirection _startDiration = ViewDirection.Down;
         [SerializeField]
         private bool _autoOrdeting = true;
 
@@ -18,7 +18,7 @@ namespace RPGF.Character
 
         #region PROPS
 
-        public Direction Direction { get; private set; }
+        public ViewDirection Direction { get; private set; }
 
         public bool IsMove => moveTween != null;
         public bool MoveIsPaused { get; private set; } = false;
@@ -41,7 +41,7 @@ namespace RPGF.Character
         public event Action OnLinkedEventStated;
         public event Action OnLinkedEventEnded;
 
-        public event Action<Direction> OnRotateEvent;
+        public event Action<ViewDirection> OnRotateEvent;
 
         #endregion
 
@@ -61,7 +61,7 @@ namespace RPGF.Character
             if (_autoOrdeting)
                 transform.position = new Vector3(transform.position.x, 
                                                  transform.position.y, 
-                                                 -transform.position.y);
+                                                 transform.position.y);
         }
 
         private void OnDestroy()
@@ -71,7 +71,7 @@ namespace RPGF.Character
 
         #region MAIN API
 
-        public void RotateTo(Direction direction)
+        public void RotateTo(ViewDirection direction)
         {
             Direction = direction;
 
@@ -85,7 +85,7 @@ namespace RPGF.Character
 
             Vector2 vectorDiretion = (Vector2)transform.position - position;
 
-            Direction moveDiretion = GetDirectionByVector(vectorDiretion);
+            ViewDirection moveDiretion = DirectionConverter.GetViewDirectionByVector(vectorDiretion);
 
             moveTween = transform.DOMove(position, time).SetEase(Ease.Linear).Play();
 
@@ -117,7 +117,7 @@ namespace RPGF.Character
         {
             Vector2 vectorDirection = transform.position - ExplorerManager.GetPlayerPosition3D();
 
-            Direction direction = GetDirectionByVector(vectorDirection);
+            ViewDirection direction = DirectionConverter.GetViewDirectionByVector(vectorDirection);
 
             RotateTo(direction);
         }
@@ -139,20 +139,6 @@ namespace RPGF.Character
 
             OnResumeMove();
             OnResumeMoveEvent?.Invoke();
-        }
-
-        protected Direction GetDirectionByVector(Vector2 vector)
-        {
-            if (vector.y > 0.20f)
-                return Direction.Up;
-            else if (vector.y < 0.20f)
-                return Direction.Down;
-            else if (vector.x > 0)
-                return Direction.Right;
-            else if (vector.x < 0)
-                return Direction.Left;
-            else
-                return Direction.Down;
         }
 
         protected void DisposeMoveTween()
@@ -193,7 +179,7 @@ namespace RPGF.Character
             OnLinkedEventEnded?.Invoke();
         }
 
-        protected virtual void OnRotate(Direction direction) { }
+        protected virtual void OnRotate(ViewDirection direction) { }
 
         #endregion
     }

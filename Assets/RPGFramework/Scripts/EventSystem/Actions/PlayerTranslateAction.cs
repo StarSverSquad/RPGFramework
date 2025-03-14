@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using RPGF;
+using System.Collections;
 using UnityEngine;
 
 public class PlayerTranslateAction : GraphActionBase
@@ -8,7 +9,7 @@ public class PlayerTranslateAction : GraphActionBase
         Move, MoveRelative
     }
 
-    public CommonDirection Direction;
+    public MoveDirection Direction;
     public TranslateType Type;
 
     public float Speed;
@@ -21,7 +22,7 @@ public class PlayerTranslateAction : GraphActionBase
 
     public PlayerTranslateAction()
     {
-        Direction = CommonDirection.Down;
+        Direction = MoveDirection.Down;
         Type = TranslateType.MoveRelative;
         Speed = 1f;
         ReplaceInstance = false;

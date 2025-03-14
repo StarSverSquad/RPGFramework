@@ -20,6 +20,7 @@ public class LocalManager : ContentManagerBase
     public SunManager Sun;
 
     [Space]
+
     [Header("Ссылки для инициализации")]
     [SerializeField]
     private ExplorerManager explorer;
@@ -37,6 +38,8 @@ public class LocalManager : ContentManagerBase
 
     public override void InitializeChild()
     {
+        Camera.Initialize();
+
         explorer.Initialize();
 
         Location.Initialize();
@@ -48,7 +51,7 @@ public class LocalManager : ContentManagerBase
         GameUI.Initialize();
     }
 
-    public static LocationObject GetCurrentLocation()
+    public static LocationController GetCurrentLocation()
     {
         if (Instance == null)
             return null;

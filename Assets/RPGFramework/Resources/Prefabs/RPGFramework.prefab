@@ -8619,11 +8619,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc16aa989b485164286e28f76c758975, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Offset: {x: 0.5, y: 0.5}
-  Speed: 10
   ZPosition: -5000
-  MoveType: 1
-  targetPoint: {x: 0, y: 0}
+  PlayerFollowBorder: {x: 5, y: 4}
 --- !u!1 &8862071321873232134
 GameObject:
   m_ObjectHideFlags: 0

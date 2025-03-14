@@ -41,7 +41,7 @@ public class PlayerExplorerMovement : MonoBehaviour
 
     private Tween autoMoveTween = null;
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (IsAutoMoving)
         {

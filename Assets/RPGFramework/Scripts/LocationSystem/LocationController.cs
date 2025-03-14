@@ -1,20 +1,17 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.SceneManagement;
 
-public class LocationObject : MonoBehaviour
+public class LocationController : MonoBehaviour
 {
     public UnityEvent OnEnterLocation;
     public UnityEvent OnLeaveLocation;
 
     public LocationInfo Info;
 
-    public List<LocationSpawnPoint> SpawnPoints = new List<LocationSpawnPoint>();
+    public List<LocationSpawnPoint> SpawnPoints = new();
 
     public Transform CameraPoint;
-    
     public GameObject MapContainer;
 
     private void Awake()

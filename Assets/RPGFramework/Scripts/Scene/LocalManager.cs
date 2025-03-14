@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using RPGF.GUI;
 using UnityEngine;
 
-/// <summary>
-/// Scene bootsrap class
-/// </summary>
 public class LocalManager : ContentManagerBase
 {
     public static LocalManager Instance;
@@ -16,7 +9,7 @@ public class LocalManager : ContentManagerBase
     public MainCameraManager Camera;
     public LocalCharacterManager Character;
     public LocalLocationManager Location;
-    public GameUIManager GameUI;
+    public TittleMenuManager TittleMenu;
     public SunManager Sun;
 
     [Space]
@@ -36,9 +29,18 @@ public class LocalManager : ContentManagerBase
         InitializeChild();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(GameManager.Instance.BaseOptions.Additional) 
+            && !TittleMenu.IsOpened
+            && !explorer.EventHandler.EventRuning)
+            TittleMenu.Open();
+    }
+
     public override void InitializeChild()
     {
         Camera.Initialize();
+        TittleMenu.Initialize();
 
         explorer.Initialize();
 
@@ -47,8 +49,6 @@ public class LocalManager : ContentManagerBase
 
         common.Initialize();
         battle.Initialize();
-
-        GameUI.Initialize();
     }
 
     public static LocationController GetCurrentLocation()

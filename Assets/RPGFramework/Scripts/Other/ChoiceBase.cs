@@ -18,7 +18,7 @@ public abstract class ChoiceBase<T> : MonoBehaviour
 
     private Coroutine coroutine;
 
-    public virtual void Choice(params string[] choices)
+    public virtual void Choice(params T[] choices)
     {
         if (!IsChoicing)
         {

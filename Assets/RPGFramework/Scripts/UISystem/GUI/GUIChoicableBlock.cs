@@ -7,16 +7,20 @@ namespace RPGF.GUI
 {
     public class GUIChoicableBlock : GUIBlockBase
     {
+        [Space, Header("Choicable block options:")]
+        [SerializeField]
+        private bool _startChoiceOnActivate = false;
         [SerializeField]
         private List<GUIElementBase> _elements = new();
         [SerializeField]
         private bool _isHorizontal = true;
 
+        public GUIElementBase CurrentElement => _elements[index];
+
         private int index = 0;
         private Coroutine choiceCoroutine = null;
 
-        protected GUIElementBase CurrentElement => _elements[index];
-
+        [Space]
         public UnityEvent OnSelectionChangedEvent;
         public UnityEvent OnCanceledEvent;
         public UnityEvent<int> OnChoicedEvent;
@@ -28,12 +32,14 @@ namespace RPGF.GUI
 
         protected override void OnActivate()
         {
-            StartChoice();
+            if (_startChoiceOnActivate)
+                StartChoice();
         }
 
         protected override void OnDispose()
         {
             index = 0;
+            StopChoice();
         }
 
         protected override void OnDiativate()
@@ -43,17 +49,17 @@ namespace RPGF.GUI
                 item.SetFocus(false);
             }
 
-            DisposeChoice();
+            StopChoice();
         }
 
-        protected void StartChoice()
+        public void StartChoice()
         {
             _elements[index].SetFocus(true);
 
-            DisposeChoice();
+            StopChoice();
             choiceCoroutine = StartCoroutine(ChoiceCoroutine());
         }
-        protected void DisposeChoice()
+        public void StopChoice()
         {
             if (choiceCoroutine != null)
             {

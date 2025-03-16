@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RPGF.GUI
 {
-    public class GUIManagerBase : RPGFrameworkBehaviour
+    public abstract class GUIManagerBase : RPGFrameworkBehaviour
     {
         [SerializeField]
         protected GUIBlockBase firstBlock;
@@ -20,7 +20,7 @@ namespace RPGF.GUI
 
         public event Action OnOpenEvent;
         public event Action OnCloseEvent;
-
+        
         public event Action<GUIBlockBase> OnNextBlockEvent;
         public event Action OnPreviewBlockEvent;
 
@@ -43,11 +43,12 @@ namespace RPGF.GUI
         public void NextBlock(GUIBlockBase block)
         {
             if (GUIStack.Count > 0)
-                GUIStack.Peek().Diativate();
+                GUIStack.Peek().SetFocus(false);
 
             GUIStack.Push(block);
 
             block.Activate();
+            block.SetFocus(true);
 
             OnNext(block);
             OnNextBlockEvent?.Invoke(block);
@@ -56,13 +57,20 @@ namespace RPGF.GUI
         {
             var block = GUIStack.Pop();
 
+            block.SetFocus(block);
             block.Diativate();
-            block.Dispose();
 
-            GUIStack.Peek().Activate();
-
+            if (GUIStack.Count > 0)
+            {
+                GUIStack.Peek().Activate();
+                GUIStack.Peek().SetFocus(true);
+            }
+                
             OnPreviewBlock();
             OnPreviewBlockEvent?.Invoke();
+
+            if (GUIStack.Count == 0)
+                Close();
         }
 
         public void Open()

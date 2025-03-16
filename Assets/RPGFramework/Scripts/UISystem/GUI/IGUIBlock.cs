@@ -7,5 +7,7 @@
 
         public void Activate();
         public void Diativate();
+
+        public void SetFocus(bool focus);
     }
 }

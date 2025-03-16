@@ -9201,6 +9201,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1664893663006534446, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+      propertyPath: m_Color.a
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 1736847258508491885, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -9241,6 +9245,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2427118352529543545, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+      propertyPath: OnCanceledEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3339828495551438545, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -125.00001
@@ -9260,6 +9268,14 @@ PrefabInstance:
     - target: {fileID: 5114348691609866395, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_Name
       value: RPGFramework
+      objectReference: {fileID: 0}
+    - target: {fileID: 5497365803757524620, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -29.930054
+      objectReference: {fileID: 0}
+    - target: {fileID: 5497365803757524620, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 19.570007
       objectReference: {fileID: 0}
     - target: {fileID: 6223028378642940389, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_IsActive
@@ -9281,6 +9297,10 @@ PrefabInstance:
       propertyPath: m_PlaneDistance
       value: 5000
       objectReference: {fileID: 0}
+    - target: {fileID: 7785789693671313926, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8633043003285860483, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_Size.x
       value: 0.39
@@ -9296,6 +9316,10 @@ PrefabInstance:
     - target: {fileID: 8872072263468819927, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 99.999985
+      objectReference: {fileID: 0}
+    - target: {fileID: 8979326252585575518, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1627620487790945280, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}

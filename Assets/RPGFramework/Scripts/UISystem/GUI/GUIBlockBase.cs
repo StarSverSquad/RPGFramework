@@ -1,36 +1,56 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 namespace RPGF.GUI
 {
     public abstract class GUIBlockBase : RPGFrameworkBehaviour, IGUIBlock
     {
+        [SerializeField]
+        private bool _disableOnDiactivate = true;
+        public bool DisableOnDiactivate => _disableOnDiactivate;
+
+        [SerializeField]
+        private bool _enableOnActivate = true;
+        public bool EnableOnActivate => _enableOnActivate;
+
         public GUIManagerBase Manager { get; private set; }
 
-        public bool IsActivated { get; private set; }
+        public bool IsActivated { get; private set; } = false;
+        public bool IsFocused { get; private set; } = false;
 
+        #region EVENTS
+
+        [Space]
         public UnityEvent OnActivateEvent;
         public UnityEvent OnDiativateEvent;
+        [Space]
         public UnityEvent OnDisposeEvent;
+        [Space]
+        public UnityEvent OnFocusEvent;
+        public UnityEvent OnLostFocusEvent;
+        [Space]
         public UnityEvent OnPreviewEvent;
         public UnityEvent<GUIBlockBase> OnNextEvent;
 
+        #endregion
+
+        /// <remarks>[НЕ РЕКОМЕНДУЕТСЯ]</remarks>
         public override void Initialize()
         {
-            Debug.LogWarning("НЕ РЕКОМЕНДУЕТСЯ");
+            Debug.LogWarning("Возможны ошибки!");
         }
         public virtual void Initialize(GUIManagerBase manager)
         {
             Manager = manager;
-
-            IsActivated = false;
         }
 
         #region MAIN API
 
         public void Activate()
         {
+            if (_enableOnActivate)
+                gameObject.SetActive(true);
+
             OnActivate();
             OnActivateEvent?.Invoke();
 
@@ -41,14 +61,36 @@ namespace RPGF.GUI
             OnDiativate();
             OnDiativateEvent?.Invoke();
 
+            if (_disableOnDiactivate)
+            {
+                gameObject.SetActive(false);
+            }
+
             IsActivated = false;
         }
+
         public void Dispose()
         {
             Diativate();
 
             OnDispose();
             OnDisposeEvent?.Invoke();
+        }
+
+        public void SetFocus(bool focus)
+        {
+            IsFocused = focus;
+
+            if (focus)
+            {
+                OnFocus();
+                OnFocusEvent?.Invoke();
+            }
+            else
+            {
+                OnLostFocus();
+                OnLostFocusEvent?.Invoke();
+            }
         }
 
         public void Preview()
@@ -76,11 +118,28 @@ namespace RPGF.GUI
 
         #endregion
 
+        #region VIRTUALS
         protected virtual void OnActivate() { }
         protected virtual void OnDiativate() { }
+
+        protected virtual void OnFocus() { }
+        protected virtual void OnLostFocus() { }
+
         protected virtual void OnDispose() { }
 
         protected virtual void OnPreview() { }
         protected virtual void OnNext(GUIBlockBase gUIBlock) { }
+
+        #endregion
+
+        protected virtual void OnDisable()
+        {
+            Dispose();
+        }
+
+        protected virtual void OnDestroy()
+        {
+            Dispose();
+        }
     }
 }

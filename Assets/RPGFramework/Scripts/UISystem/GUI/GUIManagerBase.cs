@@ -30,7 +30,7 @@ namespace RPGF.GUI
         {
             GUIStack = new Stack<GUIBlockBase>();
 
-            foreach (var item in GetComponentsInChildren<GUIBlockBase>())
+            foreach (var item in GetComponentsInChildren<GUIBlockBase>(true))
             {
                 item.Initialize(this);
             }

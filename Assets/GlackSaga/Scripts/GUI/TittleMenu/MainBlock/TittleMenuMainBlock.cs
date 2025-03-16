@@ -24,8 +24,10 @@ public class TittleMenuMainBlock : GUIChoicableBlock
     [SerializeField]
     private float _bgAnimtionTime = 0.5f;
 
-    private void Start()
+    public override void Initialize(GUIManagerBase manager)
     {
+        base.Initialize(manager);
+
         _panel.anchoredPosition = new Vector2(0, _panelHideOffset);
 
         _wordsBg.anchoredPosition = _wordsBgOutPosition;

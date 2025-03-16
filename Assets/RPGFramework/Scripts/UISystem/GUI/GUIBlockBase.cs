@@ -8,6 +8,8 @@ namespace RPGF.GUI
     {
         public GUIManagerBase Manager { get; private set; }
 
+        public bool IsActivated { get; private set; }
+
         public UnityEvent OnActivateEvent;
         public UnityEvent OnDiativateEvent;
         public UnityEvent OnDisposeEvent;
@@ -21,6 +23,8 @@ namespace RPGF.GUI
         public virtual void Initialize(GUIManagerBase manager)
         {
             Manager = manager;
+
+            IsActivated = false;
         }
 
         #region MAIN API
@@ -29,14 +33,20 @@ namespace RPGF.GUI
         {
             OnActivate();
             OnActivateEvent?.Invoke();
+
+            IsActivated = true;
         }
         public void Diativate()
         {
             OnDiativate();
             OnDiativateEvent?.Invoke();
+
+            IsActivated = false;
         }
         public void Dispose()
         {
+            Diativate();
+
             OnDispose();
             OnDisposeEvent?.Invoke();
         }

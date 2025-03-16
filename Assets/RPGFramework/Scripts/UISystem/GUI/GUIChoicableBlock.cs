@@ -28,10 +28,7 @@ namespace RPGF.GUI
 
         protected override void OnActivate()
         {
-            _elements[index].SetFocus(true);
-
-            DisposeChoiceCoroutine();
-            choiceCoroutine = StartCoroutine(ChoiceCoroutine());
+            StartChoice();
         }
 
         protected override void OnDispose()
@@ -46,10 +43,17 @@ namespace RPGF.GUI
                 item.SetFocus(false);
             }
 
-            DisposeChoiceCoroutine();
+            DisposeChoice();
         }
 
-        private void DisposeChoiceCoroutine()
+        protected void StartChoice()
+        {
+            _elements[index].SetFocus(true);
+
+            DisposeChoice();
+            choiceCoroutine = StartCoroutine(ChoiceCoroutine());
+        }
+        protected void DisposeChoice()
         {
             if (choiceCoroutine != null)
             {

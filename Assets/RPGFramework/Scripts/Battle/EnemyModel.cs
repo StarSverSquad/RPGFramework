@@ -57,7 +57,8 @@ public class EnemyModel : MonoBehaviour
 
     public void UpdateStats(RPGEntityState state)
     {
-        iconList.UpdateIcons(enemy.States.Select(i => i.Icon).ToArray());
+        var icons = enemy.States.Select(i => i.Icon).ToArray();
+        iconList.UpdateIcons(icons);
     }
 
     public void Damage()
@@ -79,7 +80,10 @@ public class EnemyModel : MonoBehaviour
             deathEffect.Cleanup();
     }
 
-    public Animator GetAnimator(string tag) => animators.First(a => a.Tag == tag).Animator;
+    public Animator GetAnimator(string tag)
+    {
+        return animators.First(a => a.Tag == tag).Animator;
+    }
 
     private void OnDestroy()
     {

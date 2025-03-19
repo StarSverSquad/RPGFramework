@@ -48,6 +48,8 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
         Pipeline = new BattlePipeline(this, CommonManager.Instance);
         Utility = new BattleUtility(this);
 
+        Choice.Initialize();
+
         Player.SetActive(false);
     }
 }

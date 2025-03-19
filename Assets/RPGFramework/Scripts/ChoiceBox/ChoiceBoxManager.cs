@@ -23,8 +23,6 @@ public class ChoiceBoxManager : ChoiceBase<string>
     [SerializeField]
     private ChoiceArrow rightArrow;
 
-    private List<ChoiceItem> items = new List<ChoiceItem>();
-
     [SerializeField]
     private Vector2 Margin;
 
@@ -43,44 +41,28 @@ public class ChoiceBoxManager : ChoiceBase<string>
 
     private Coroutine animatedTranslate = null;
 
+    private List<ChoiceItem> items = new();
+
     public void ChangePosition(Position position)
     {
-        switch (position)
+        choiceBox.anchoredPosition = position switch
         {
-            case Position.Top:
-                choiceBox.anchoredPosition = points[0].anchoredPosition;
-                break;
-            case Position.Bottom:
-                choiceBox.anchoredPosition = points[2].anchoredPosition;
-                break;
-            case Position.Center:
-                choiceBox.anchoredPosition = points[1].anchoredPosition;
-                break;
-            default:
-                choiceBox.anchoredPosition = Vector2.zero;
-                break;
-        }
+            Position.Top => points[0].anchoredPosition,
+            Position.Bottom => points[2].anchoredPosition,
+            Position.Center => points[1].anchoredPosition,
+            _ => Vector2.zero,
+        };
     }
     public void ChangePosition(Position position, Vector2 cpos)
     {
-        switch (position)
+        choiceBox.anchoredPosition = position switch
         {
-            case Position.Top:
-                choiceBox.anchoredPosition = points[0].anchoredPosition;
-                break;
-            case Position.Bottom:
-                choiceBox.anchoredPosition = points[2].anchoredPosition;
-                break;
-            case Position.Center:
-                choiceBox.anchoredPosition = points[1].anchoredPosition;
-                break;
-            case Position.Custom:
-                choiceBox.anchoredPosition = cpos;
-                break;
-            default:
-                choiceBox.anchoredPosition = Vector2.zero;
-                break;
-        }
+            Position.Top => points[0].anchoredPosition,
+            Position.Bottom => points[2].anchoredPosition,
+            Position.Center => points[1].anchoredPosition,
+            Position.Custom => cpos,
+            _ => Vector2.zero,
+        };
     }
 
     public override void OnStart()

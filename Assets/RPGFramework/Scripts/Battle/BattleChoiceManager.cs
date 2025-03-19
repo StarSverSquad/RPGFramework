@@ -1,7 +1,5 @@
 ﻿using RPGF.Choice;
 using RPGF.RPG;
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,6 +7,9 @@ using static BattleTurnData;
 
 public class BattleChoiceManager : RPGFrameworkBehaviour
 {
+    [SerializeField]
+    private EnemySelector _enemySelector;
+
     public BattleData Data => BattleManager.Data;
     public BattleAudioManager BattleAudio => BattleManager.Instance.BattleAudio;
     public BattlePipeline Pipeline => BattleManager.Instance.Pipeline;
@@ -29,6 +30,11 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
     public ChoiceUI.Element CurrentItem => battleChoice.CurrentUIElement;
 
     public int PrimaryCurrentIndex => primaryChoice.Choice;
+
+    public override void Initialize()
+    {
+        _enemySelector.Initialize();
+    }
 
     private void Start()
     {
@@ -56,6 +62,8 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
         primaryChoice.OnSellectionChanged -= PrimaryChoice_OnSellectionChanged;
         primaryChoice.OnSuccess -= PrimaryChoice_OnSuccess;
         primaryChoice.OnCanceled -= PrimaryChoice_OnCanceled;
+
+        _enemySelector.Dispose();
     }
 
     #region Primary choice callbacks
@@ -92,11 +100,15 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
     private void Choice_OnEndChoice()
     {
         BattleManager.Instance.UI.Description.SetActive(false);
+
+        _enemySelector.Dispose();
     }
 
     private void Choice_OnCanceled()
     {
         BattleAudio.PlaySound(Data.Cancel);
+
+        _enemySelector.Dispose();
     }
 
     private void Choice_OnSellectionChanged()
@@ -108,6 +120,19 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
             Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Item)
         {
             ShowDescriptionFor(CurrentItem);
+        }
+
+        if (Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Enemy ||
+            Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Entity)
+        {
+            if (battleChoice.CurrentUIElement.Value is RPGEnemy enemy)
+            {
+                _enemySelector.Select(Battle.EnemyModels.GetModel(enemy));
+            }
+            else
+            {
+                _enemySelector.Dispose();
+            }
         }
     }
 
@@ -134,50 +159,37 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
     {
         battleChoice.AppendTitle("Персонаж", TMPro.TextAlignmentOptions.Center);
 
-        List<ChoiceUI.Element> choices = new List<ChoiceUI.Element>();
-
-        foreach (var item in Data.TurnsData)
+        var choices = Data.TurnsData.Select(item => new ChoiceUI.Element
         {
-            choices.Add(new ChoiceUI.Element()
-            {
-                Name = item.Character.Name,
-                Value = item.Character
-            });
-        }
+            Name = item.Character.Name,
+            Value = item.Character
+        }).ToList();
 
         battleChoice.AppendElements(choices.ToArray());
 
-
         battleChoice.AppendTitle("Противник", TMPro.TextAlignmentOptions.Center);
 
-        List<ChoiceUI.Element> choices0 = new List<ChoiceUI.Element>();
-
-        foreach (var item in Data.Enemys)
+        var enemyChoices = Data.Enemys.Select(item => new ChoiceUI.Element
         {
-            choices0.Add(new ChoiceUI.Element()
-            {
-                Name = item.Name,
-                Value = item
-            });
-        }
+            Name = item.Name,
+            Value = item
+        }).ToList();
 
-        battleChoice.AppendElements(choices0.ToArray());
+        battleChoice.AppendElements(enemyChoices.ToArray());
 
         battleChoice.InvokeChoice();
     }
 
     public void InvokeChoiceEnemy()
     {
-        List<ChoiceUI.Element> choiceElements = new List<ChoiceUI.Element>();
-
-        foreach (var enemy in Data.Enemys)
+        List<ChoiceUI.Element> choiceElements = Data.Enemys.Select(enemy =>
         {
-            choiceElements.Add(new ChoiceUI.Element()
+            return new ChoiceUI.Element()
             {
                 Name = enemy.Name,
                 Value = enemy
-            });
-        }
+            };
+        }).ToList();
 
         battleChoice.AppendElements(choiceElements.ToArray());
 
@@ -186,15 +198,12 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceTeammate()
     {
-        List<ChoiceUI.Element> choices = new List<ChoiceUI.Element>();
-
         BattleTurnData current = Battle.Pipeline.CurrentTurnData;
-
         RPGConsumed consumed = current.Item as RPGConsumed;
-        
-        foreach (var turnData in Data.TurnsData)
+
+        var choices = Data.TurnsData.Select(turnData =>
         {
-            ChoiceUI.Element info = new ChoiceUI.Element()
+            ChoiceUI.Element info = new()
             {
                 Name = turnData.Character.Name,
                 Value = turnData.Character,
@@ -211,8 +220,8 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
                 info.locked = turnData.IsDead;
             }
 
-            choices.Add(info);
-        }
+            return info;
+        }).ToList();
 
         battleChoice.AppendElements(choices.ToArray());
 
@@ -221,21 +230,19 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceAbility()
     {
-        List<ChoiceUI.Element> choices = new List<ChoiceUI.Element>();
-
-        foreach (var item in Pipeline.CurrentTurnData.Character.Abilities)
+        var choices = Pipeline.CurrentTurnData.Character.Abilities.Select(item =>
         {
-            choices.Add(new ChoiceUI.Element()
+            return new ChoiceUI.Element()
             {
                 Name = item.Name,
                 Description = item.Description + "\n" + (item.ManaCost > 0 ? $"[<color=#0081FF>Мана: {item.ManaCost}</color>] " : "") + (item.ConcentrationCost > 0 ? $"[<color=#06C100>Конц.: {item.ConcentrationCost}</color>]" : ""),
                 Value = item,
                 locked = Pipeline.CurrentTurnData.Character.Mana < item.ManaCost || Data.Concentration < item.ConcentrationCost,
                 Icon = item.Icon
-            });
-        }
+            };
+        }).ToArray();
 
-        battleChoice.AppendElements(choices.ToArray());
+        battleChoice.AppendElements(choices);
 
         battleChoice.InvokeChoice();
     }

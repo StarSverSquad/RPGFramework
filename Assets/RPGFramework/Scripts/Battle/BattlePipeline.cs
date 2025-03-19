@@ -5,54 +5,74 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using static BattleTurnData;
 
-public class BattlePipeline : RPGFrameworkBehaviour
+public class BattlePipeline
 {
-    /// <summary>
-    /// Типы возможных менюшек в битве
-    /// </summary>
     public enum ChoiceAction
     {
         Primary, Special, Act, Ability, Entity, Teammate, Enemy,
         Item, Flee, Battle
     }
 
-    public BattleData Data => BattleManager.Data;
-    public BattleChoiceManager Choice => Battle.Choice;
-    public BattleUtility Utility => Battle.Utility;
-    public BattleVisualTransmitionManager VisualTransmition => Battle.VisualTransmition;
-    public BattleUIManager UI => Battle.UI;
+    private readonly BattleManager _battle;
+    private readonly CommonManager _common;
 
-    public bool MainIsWorking => main != null;
-
-    public bool IsPlayerTurn { get; private set; } = false;
-    public bool IsEnemyTurn { get; private set; } = false;
-
-    private List<ChoiceAction> choiceActions = new List<ChoiceAction>();
-    public ChoiceAction CurrentChoiceAction => choiceActions.Last();
-
-    public BattleTurnData CurrentTurnData => Data.TurnsData[currentTurnDataIndex];
+    #region PROPS
 
     public bool IsWin { get; private set; }
     public bool IsLose { get; private set; }
     public bool IsFlee { get; private set; }
 
+    public bool IsPlayerTurn { get; private set; } = false;
+    public bool IsEnemyTurn { get; private set; } = false;
+
     public int TurnCounter { get; private set; }
+    public int CurrentTurnDataIndex { get; private set; }
 
-    private int currentTurnDataIndex = 0;
-    public int CurrentTurnDataIndex => currentTurnDataIndex;
+    #endregion
 
-    private Coroutine main = null;
+    private List<ChoiceAction> choiceActions = new();
 
     private BattleUsingService usingService;
 
     private bool loseKey, winKey, fleeKey, breakKey;
 
+    private Coroutine main = null;
+
+    #region READONLY PROPS
+
+    public BattleData Data => _battle.data;
+    public BattleChoiceManager Choice => _battle.Choice;
+    public BattleUtility Utility => _battle.Utility;
+    public BattleVisualTransmitionManager VisualTransmition => _battle.VisualTransmition;
+    public BattleUIManager UI => _battle.UI;
+
+    public bool MainIsWorking => main != null;
+
+    public ChoiceAction CurrentChoiceAction => choiceActions.Last();
+
+    public BattleTurnData CurrentTurnData => Data.TurnsData[CurrentTurnDataIndex];
+
     private bool AllKeysFalse => !loseKey && !winKey && !fleeKey && !breakKey;
+
+    #endregion
+
+    public BattlePipeline(BattleManager battle, CommonManager common)
+    {
+        _battle = battle;
+        _common = common;
+
+        usingService = new BattleUsingService(_battle, GameManager.Instance);
+
+        TurnCounter = 0;
+        CurrentTurnDataIndex = 0;
+    }
+
+    #region API
 
     public void InvokeMainPipeline()
     {
         if (!MainIsWorking)
-            main = StartCoroutine(MainPipeline());
+            main = _battle.StartCoroutine(MainPipeline());
     }
 
     public void InvokeLose()
@@ -75,6 +95,23 @@ public class BattlePipeline : RPGFrameworkBehaviour
         breakKey = true;
     }
 
+    #endregion
+
+    private void NextCharacter()
+    {
+        _battle.UI.CharacterBox.Boxes[CurrentTurnDataIndex].ChangeAct(Data.TurnsData[CurrentTurnDataIndex].BattleAction);
+
+        UI.CharacterQuery.NextPosition();
+
+        CurrentTurnDataIndex++;
+
+        choiceActions.Clear();
+    }
+    private void PreviewAction()
+    {
+        choiceActions.Remove(choiceActions.Last());
+    }
+
     private IEnumerator MainPipeline()
     {
         loseKey = false; winKey = false; fleeKey = false; breakKey = false;
@@ -83,21 +120,19 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
         TurnCounter = 0;
 
-        usingService = new BattleUsingService(Battle, GameManager.Instance);
+        yield return _battle.StartCoroutine(BattleEnter());
 
-        yield return StartCoroutine(BattleEnter());
-
-        yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnBattleStart));
+        yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnBattleStart));
 
         if (Data.BattleInfo.EnemyStart)
         {
-            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnEnemyTurn, true));
+            yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnEnemyTurn, true));
 
-            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.EveryEnemyTurn));
+            yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.EveryEnemyTurn));
 
-            yield return StartCoroutine(EnemyTurn());
+            yield return _battle.StartCoroutine(EnemyTurn());
 
-            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLessCharacterHeal));
+            yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLessCharacterHeal));
 
             TurnCounter++;
         }
@@ -113,30 +148,30 @@ public class BattlePipeline : RPGFrameworkBehaviour
             if (!AllKeysFalse)
                 break;
 
-            yield return StartCoroutine(UpdateEntitysStates());
+            yield return _battle.StartCoroutine(UpdateEntitysStates());
 
-            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnPlayerTurn, true));
+            yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnPlayerTurn, true));
 
-            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.EveryPlayerTurn));
+            yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.EveryPlayerTurn));
 
             if (!AllKeysFalse)
                 break;
 
-            yield return StartCoroutine(PlayerTurn());
+            yield return _battle.StartCoroutine(PlayerTurn());
 
             if (Data.Enemys.Count == 0)
                 InvokeWin();
 
-            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnEnemyTurn, true));
+            yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnEnemyTurn, true));
 
-            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.EveryEnemyTurn));
+            yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.EveryEnemyTurn));
 
             if (!AllKeysFalse)
                 break;
 
-            yield return StartCoroutine(EnemyTurn());
+            yield return _battle.StartCoroutine(EnemyTurn());
 
-            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLessCharacterHeal));
+            yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLessCharacterHeal));
 
             TurnCounter++;
         }
@@ -148,30 +183,30 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
         if (fleeKey)
         {
-            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnFlee));
+            yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnFlee));
 
-            yield return StartCoroutine(Flee());
+            yield return _battle.StartCoroutine(Flee());
         }
 
         if (winKey)
         {
-            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnWin));
+            yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnWin));
 
-            yield return StartCoroutine(Win());
+            yield return _battle.StartCoroutine(Win());
         }
 
         if (loseKey)
         {
-            yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLose));
+            yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLose));
 
-            yield return StartCoroutine(Lose());
+            yield return _battle.StartCoroutine(Lose());
         }
 
-        yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnBattleEnd));
+        yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnBattleEnd));
 
         main = null;
 
-        yield return StartCoroutine(BattleExit());
+        yield return _battle.StartCoroutine(BattleExit());
     }
 
     private IEnumerator BattleEnter()
@@ -190,26 +225,26 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
         VisualTransmition.InitializeCustomEffect(Data.BattleInfo.BattleEnterEffect);
 
-        yield return StartCoroutine(VisualTransmition.InvokePartOne());
+        yield return _battle.StartCoroutine(VisualTransmition.InvokePartOne());
 
-        Battle.SetActive(true);
+        _battle.SetActive(true);
 
         yield return new WaitForFixedUpdate();
 
-        Battle.UI.CharacterBox.Initialize(Data.TurnsData.Select(i => i.Character).ToArray());
+        _battle.UI.CharacterBox.Initialize(Data.TurnsData.Select(i => i.Character).ToArray());
 
         Choice.PrimaryChoice.SetActive(false);
 
-        Battle.UI.Description.SetActive(false);
+        _battle.UI.Description.SetActive(false);
 
-        Battle.UI.Concentration.SetConcentration(0);
+        _battle.UI.Concentration.SetConcentration(0);
 
-        Battle.Background.CreateBackground(Data.BattleInfo.Background);
+        _battle.Background.CreateBackground(Data.BattleInfo.Background);
 
         if (Data.BattleInfo.BattleMusic != null)
-            Battle.BattleAudio.PlayMusic(Data.BattleInfo.BattleMusic, Data.BattleInfo.MusicVolume);
+            _battle.BattleAudio.PlayMusic(Data.BattleInfo.BattleMusic, Data.BattleInfo.MusicVolume);
 
-        yield return StartCoroutine(VisualTransmition.InvokePartTwo());
+        yield return _battle.StartCoroutine(VisualTransmition.InvokePartTwo());
 
         VisualTransmition.DisposeCustomEffect();
 
@@ -217,13 +252,13 @@ public class BattlePipeline : RPGFrameworkBehaviour
         {
             string rusMultiText = Data.BattleInfo.enemySquad.Enemies.Count > 1 ? "вступают в битву" : "вступает в битву";
 
-            Common.MessageBox.Write(new MessageInfo()
+            _common.MessageBox.Write(new MessageInfo()
             {
                 text = $"* {Data.BattleInfo.enemySquad.Name} {rusMultiText}!",
                 closeWindow = true
             });
 
-            yield return new WaitWhile(() => Common.MessageBox.IsWriting);
+            yield return new WaitWhile(() => _common.MessageBox.IsWriting);
         }
     }
 
@@ -231,7 +266,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
     {
         VisualTransmition.InitializeCustomEffect(Data.BattleInfo.BattleExitEffect);
 
-        yield return StartCoroutine(VisualTransmition.InvokePartOne());
+        yield return _battle.StartCoroutine(VisualTransmition.InvokePartOne());
 
         foreach (var item in Data.TurnsData)
         {
@@ -250,13 +285,13 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
         Data.Dispose();
 
-        Battle.SetActive(false);
+        _battle.SetActive(false);
 
-        Battle.UI.CharacterBox.Dispose();
+        _battle.UI.CharacterBox.Dispose();
 
-        Battle.EnemyModels.Dispose();
+        _battle.EnemyModels.Dispose();
 
-        yield return StartCoroutine(VisualTransmition.InvokePartTwo());
+        yield return _battle.StartCoroutine(VisualTransmition.InvokePartTwo());
 
         VisualTransmition.DisposeCustomEffect();
     }
@@ -270,7 +305,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
         Data.TurnsData.ForEach(i => i.CleanUp());
 
-        currentTurnDataIndex = 0;
+        CurrentTurnDataIndex = 0;
 
         UI.CharacterSide.Show();
         UI.PlayerTurnSide.Show();
@@ -285,19 +320,19 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
         // Установление иконки действия
         for (int i = 0; i < Data.TurnsData.Count; i++)
-            Battle.UI.CharacterBox.Boxes[i].ChangeAct(TurnAction.None);
+            _battle.UI.CharacterBox.Boxes[i].ChangeAct(TurnAction.None);
 
         /// ОБЩИЙ ЦИКЛ ВЫБОРА
-        while (currentTurnDataIndex < Data.TurnsData.Count)
+        while (CurrentTurnDataIndex < Data.TurnsData.Count)
         {
-            BattleTurnData currenTurnData = Data.TurnsData[currentTurnDataIndex];
+            BattleTurnData currenTurnData = Data.TurnsData[CurrentTurnDataIndex];
 
             // Если персонаж пал или пропускает ход или не может ничего делать в битве, то его надо пропустить
             if (currenTurnData.IsDead || currenTurnData.Character.States.Any(i => i.SkipTurn) || !currenTurnData.Character.CanMoveInBattle)
             {
-                if (isCancelChoice && currentTurnDataIndex != 0)
+                if (isCancelChoice && CurrentTurnDataIndex != 0)
                 {
-                    currentTurnDataIndex--;
+                    CurrentTurnDataIndex--;
 
                     //if (currentTurnDataIndex > 0)
                         UI.CharacterQuery.PreviewPosition();
@@ -305,7 +340,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                 else
                 {
                     currenTurnData.BattleAction = TurnAction.None;
-                    currentTurnDataIndex++;
+                    CurrentTurnDataIndex++;
 
                     UI.CharacterQuery.NextPosition();
 
@@ -345,14 +380,14 @@ public class BattlePipeline : RPGFrameworkBehaviour
                     // Если отмена то откат к предыдущему персонажу, либо игнор
                     if (Choice.IsPrimaryCanceled)
                     {
-                        if (currentTurnDataIndex > 0)
+                        if (CurrentTurnDataIndex > 0)
                         {
-                            currentTurnDataIndex--;
+                            CurrentTurnDataIndex--;
 
                             UI.CharacterQuery.PreviewPosition();
                             isCancelChoice = true;
                         }
-                        Battle.UI.CharacterBox.Boxes[currentTurnDataIndex].ChangeAct(TurnAction.None);
+                        _battle.UI.CharacterBox.Boxes[CurrentTurnDataIndex].ChangeAct(TurnAction.None);
                     } 
                     else
                     {
@@ -395,12 +430,12 @@ public class BattlePipeline : RPGFrameworkBehaviour
                 // Выбор между взаимодействием и способностью 
                 case ChoiceAction.Special:
                     // Запуск выбора
-                    Battle.Choice.InvokeChoiceAct();
+                    _battle.Choice.InvokeChoiceAct();
 
-                    yield return new WaitWhile(() => Battle.Choice.IsChoicing);
+                    yield return new WaitWhile(() => _battle.Choice.IsChoicing);
 
                     // Если отмена то откат
-                    if (Battle.Choice.IsCanceled)
+                    if (_battle.Choice.IsCanceled)
                         PreviewAction();
                     else
                     {
@@ -417,16 +452,16 @@ public class BattlePipeline : RPGFrameworkBehaviour
                     }
 
                     // Очистка меню выбора
-                    Battle.Choice.CleanUp();
+                    _battle.Choice.CleanUp();
                     break;
                 // Выбор взаимодействия
                 case ChoiceAction.Act:
-                    Battle.Choice.InvokeChoiceInteraction();
+                    _battle.Choice.InvokeChoiceInteraction();
 
-                    yield return new WaitWhile(() => Battle.Choice.IsChoicing);
+                    yield return new WaitWhile(() => _battle.Choice.IsChoicing);
 
                     // Если отмена то откат
-                    if (Battle.Choice.IsCanceled)
+                    if (_battle.Choice.IsCanceled)
                     {
                         currenTurnData.InteractionAct = RPGEnemy.EnemyAct.NullAct;
 
@@ -482,17 +517,17 @@ public class BattlePipeline : RPGFrameworkBehaviour
                         }
                     }
 
-                    Battle.Choice.CleanUp();
+                    _battle.Choice.CleanUp();
                     break;
                 // Выбор сущности (Враг или персонаж)
                 case ChoiceAction.Entity:
                     // Запуск выбора
-                    Battle.Choice.InvokeChoiceEntity();
+                    _battle.Choice.InvokeChoiceEntity();
 
-                    yield return new WaitWhile(() => Battle.Choice.IsChoicing);
+                    yield return new WaitWhile(() => _battle.Choice.IsChoicing);
 
                     // Если отмена то откат
-                    if (Battle.Choice.IsCanceled)
+                    if (_battle.Choice.IsCanceled)
                     {
                         if (currenTurnData.BattleAction == TurnAction.Item)
                             currenTurnData.Item = null;
@@ -501,7 +536,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                     }
                     else
                     {
-                        currenTurnData.EntityBuffer = (RPGEntity)Battle.Choice.CurrentItem.Value;
+                        currenTurnData.EntityBuffer = (RPGEntity)_battle.Choice.CurrentItem.Value;
 
                         switch (currenTurnData.BattleAction)
                         {
@@ -522,7 +557,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                     }
 
                     // Очистка меню выбора
-                    Battle.Choice.CleanUp();
+                    _battle.Choice.CleanUp();
                     break;
                 // Выбор персонажа
                 case ChoiceAction.Teammate:
@@ -557,12 +592,12 @@ public class BattlePipeline : RPGFrameworkBehaviour
                 // Выбор врага
                 case ChoiceAction.Enemy:
                     // Запуск выбора
-                    Battle.Choice.InvokeChoiceEnemy();
+                    _battle.Choice.InvokeChoiceEnemy();
 
-                    yield return new WaitWhile(() => Battle.Choice.IsChoicing);      
+                    yield return new WaitWhile(() => _battle.Choice.IsChoicing);      
                     
                     // Если отмена то откат
-                    if (Battle.Choice.IsCanceled)
+                    if (_battle.Choice.IsCanceled)
                     {
                         if (currenTurnData.BattleAction == TurnAction.Item)
                             currenTurnData.Item = null;
@@ -594,7 +629,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                     }
 
                     // Очистка меню выбора
-                    Battle.Choice.CleanUp();
+                    _battle.Choice.CleanUp();
                     break;
                 // Выбор пердмета
                 case ChoiceAction.Item:
@@ -602,16 +637,16 @@ public class BattlePipeline : RPGFrameworkBehaviour
                         .Where(i => i.Item.Usage == RPGCollectable.Usability.Battle ||
                                     i.Item.Usage == RPGCollectable.Usability.Any).Count() > 0)
                     {
-                        Battle.Choice.InvokeChoiceItem();
+                        _battle.Choice.InvokeChoiceItem();
 
-                        yield return new WaitWhile(() => Battle.Choice.IsChoicing);
+                        yield return new WaitWhile(() => _battle.Choice.IsChoicing);
 
-                        if (Battle.Choice.IsCanceled)
+                        if (_battle.Choice.IsCanceled)
                             PreviewAction();
                         else
                         {
                             // Запоминаем предмет
-                            currenTurnData.Item = Battle.Choice.CurrentItem.Value as RPGCollectable;
+                            currenTurnData.Item = _battle.Choice.CurrentItem.Value as RPGCollectable;
 
                             // Этот предмет является потребляемым?
                             currenTurnData.IsConsumed = currenTurnData.Item is RPGConsumed;
@@ -640,7 +675,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                                 NextCharacter();
                         }
 
-                        Battle.Choice.CleanUp();
+                        _battle.Choice.CleanUp();
                     }
                     else
                         PreviewAction();
@@ -653,15 +688,15 @@ public class BattlePipeline : RPGFrameworkBehaviour
                     break;
                 // Выбор атаки или защиты
                 case ChoiceAction.Battle:
-                    Battle.Choice.InvokeChoiceBattle();
+                    _battle.Choice.InvokeChoiceBattle();
 
-                    yield return new WaitWhile(() => Battle.Choice.IsChoicing);
+                    yield return new WaitWhile(() => _battle.Choice.IsChoicing);
 
-                    if (Battle.Choice.IsCanceled)
+                    if (_battle.Choice.IsCanceled)
                         PreviewAction();
                     else
                     {
-                        int result = (int)Battle.Choice.CurrentItem.Value;
+                        int result = (int)_battle.Choice.CurrentItem.Value;
 
                         if (result == 0)
                         {
@@ -679,7 +714,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                         }
                     }
 
-                    Battle.Choice.CleanUp();
+                    _battle.Choice.CleanUp();
                 break;
             }
 
@@ -732,16 +767,16 @@ public class BattlePipeline : RPGFrameworkBehaviour
                         }
 
                         // Запуск QTE атаки
-                        Battle.AttackQTE.Show();
+                        _battle.AttackQTE.Show();
 
-                        if (!Battle.AttackQTE.IsShowed)
+                        if (!_battle.AttackQTE.IsShowed)
                             yield return new WaitForSeconds(1f);
 
-                        Battle.AttackQTE.Invoke();
+                        _battle.AttackQTE.Invoke();
 
-                        yield return new WaitWhile(() => Battle.AttackQTE.QTE.IsWorking);
+                        yield return new WaitWhile(() => _battle.AttackQTE.QTE.IsWorking);
 
-                        yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.BeforeHit, false, turnData.EnemyBuffer.Tag));
+                        yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.BeforeHit, false, turnData.EnemyBuffer.Tag));
 
                         VisualAttackEffect effect = currentCharacter.WeaponSlot == null ? Data.DefaultEffect : currentCharacter.WeaponSlot.Effect;
 
@@ -749,7 +784,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                             effect = BattleManager.BattleUtility.SpawnAttackEffect(effect);
                         else
                         {
-                            Vector2 attackPos = Battle.EnemyModels.GetModel(turnData.EnemyBuffer).AttackGlobalPoint;
+                            Vector2 attackPos = _battle.EnemyModels.GetModel(turnData.EnemyBuffer).AttackGlobalPoint;
 
                             effect = BattleManager.BattleUtility.SpawnAttackEffect(effect, attackPos);
                         }
@@ -760,23 +795,23 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
                         yield return new WaitForSeconds(0.5f);
 
-                        Destroy(effect.gameObject);
+                        Object.Destroy(effect.gameObject);
 
                         // Убрать QTE
-                        Battle.AttackQTE.Hide();
+                        _battle.AttackQTE.Hide();
 
                         // Нанесение урона врагу
-                        BattleManager.BattleUtility.DamageEnemy(currentCharacter, turnData.EnemyBuffer, Battle.AttackQTE.QTE.DamageFactor);
+                        BattleManager.BattleUtility.DamageEnemy(currentCharacter, turnData.EnemyBuffer, _battle.AttackQTE.QTE.DamageFactor);
 
-                        yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.AfterHit, false, turnData.EnemyBuffer.Tag));
+                        yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.AfterHit, false, turnData.EnemyBuffer.Tag));
 
-                        yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLessEnemyHeal, false, turnData.EnemyBuffer.Tag));
+                        yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLessEnemyHeal, false, turnData.EnemyBuffer.Tag));
                     }
                     break;
                 case TurnAction.Act:
                     if (turnData.InteractionAct.Name == "Check")
                     {
-                        Common.MessageBox.Write(new MessageInfo()
+                        _common.MessageBox.Write(new MessageInfo()
                         {
                             text = $"АТАКА: {turnData.EnemyBuffer.Damage}, ЗАЩИТА: {turnData.EnemyBuffer.Defence}<\\:>\n" +
                                    $"{turnData.EnemyBuffer.Description}",
@@ -784,11 +819,11 @@ public class BattlePipeline : RPGFrameworkBehaviour
                             wait = true
                         });
 
-                        yield return new WaitWhile(() => Common.MessageBox.IsWriting);
+                        yield return new WaitWhile(() => _common.MessageBox.IsWriting);
                     }
                     else
                     {
-                        turnData.InteractionAct.Event.Invoke(this);
+                        turnData.InteractionAct.Event.Invoke(_battle);
 
                         yield return new WaitWhile(() => turnData.InteractionAct.Event.IsPlaying);
                     }
@@ -798,7 +833,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
                     if (turnData.Ability.StartEvent != null)
                     {
-                        turnData.Ability.StartEvent.Invoke(this);
+                        turnData.Ability.StartEvent.Invoke(_battle);
 
                         yield return new WaitWhile(() => turnData.Ability.StartEvent.IsPlaying);
                     }
@@ -806,30 +841,30 @@ public class BattlePipeline : RPGFrameworkBehaviour
                     switch (turnData.Ability.Direction)
                     {
                         case RPGAbility.AbilityDirection.AllTeam:
-                            yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
+                            yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
                             break;
                         case RPGAbility.AbilityDirection.Teammate:
-                            yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, turnData.CharacterBuffer));
+                            yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, turnData.CharacterBuffer));
                             break;
                         case RPGAbility.AbilityDirection.AllEnemys:
-                            yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.Enemys.ToArray()));
+                            yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.Enemys.ToArray()));
                             break;
                         case RPGAbility.AbilityDirection.Enemy:
-                            yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, turnData.EnemyBuffer));
+                            yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, turnData.EnemyBuffer));
                             break;
                         case RPGAbility.AbilityDirection.Any:
-                            yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, turnData.EntityBuffer));
+                            yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, turnData.EntityBuffer));
                             break;
                         case RPGAbility.AbilityDirection.All:
-                            yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
+                            yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
 
-                            yield return StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.Enemys.ToArray()));
+                            yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.Enemys.ToArray()));
                             break;
                     }
 
                     if (turnData.Ability.EndEvent != null)
                     {
-                        turnData.Ability.EndEvent.Invoke(this);
+                        turnData.Ability.EndEvent.Invoke(_battle);
 
                         yield return new WaitWhile(() => turnData.Ability.EndEvent.IsPlaying);
                     }
@@ -847,13 +882,13 @@ public class BattlePipeline : RPGFrameworkBehaviour
                         {
                             if (consumed.WriteMessage)
                             {
-                                Common.MessageBox.Write(new MessageInfo()
+                                _common.MessageBox.Write(new MessageInfo()
                                 {
                                     text = $"* {currentCharacter.Name} использует {consumed.Name}!",
                                     closeWindow = true,
                                 });
 
-                                yield return new WaitWhile(() => Common.MessageBox.IsWriting);
+                                yield return new WaitWhile(() => _common.MessageBox.IsWriting);
                                 yield return new WaitForSeconds(.25f);
                             }
                             else
@@ -862,41 +897,41 @@ public class BattlePipeline : RPGFrameworkBehaviour
                             switch (consumed.Direction)
                             {
                                 case RPGConsumed.ConsumingDirection.AllTeam:
-                                    yield return StartCoroutine(usingService.UseItem(consumed, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
+                                    yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
                                     break;
                                 case RPGConsumed.ConsumingDirection.Teammate:
-                                    yield return StartCoroutine(usingService.UseItem(consumed, currentCharacter, turnData.CharacterBuffer));
+                                    yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, turnData.CharacterBuffer));
                                     break;
                                 case RPGConsumed.ConsumingDirection.AllEnemys:
-                                    yield return StartCoroutine(usingService.UseItem(consumed, currentCharacter, Data.Enemys.ToArray()));
+                                    yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, Data.Enemys.ToArray()));
                                     break;
                                 case RPGConsumed.ConsumingDirection.Enemy:
-                                    yield return StartCoroutine(usingService.UseItem(consumed, currentCharacter, turnData.EnemyBuffer));
+                                    yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, turnData.EnemyBuffer));
                                     break;
                                 case RPGConsumed.ConsumingDirection.Any:
-                                    yield return StartCoroutine(usingService.UseItem(consumed, currentCharacter, turnData.EntityBuffer));
+                                    yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, turnData.EntityBuffer));
                                     break;
                                 case RPGConsumed.ConsumingDirection.All:
-                                    yield return StartCoroutine(usingService.UseItem(consumed, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
+                                    yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
 
-                                    yield return StartCoroutine(usingService.UseItem(consumed, currentCharacter, Data.Enemys.ToArray()));
+                                    yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, Data.Enemys.ToArray()));
                                     break;
                             }
                         }
                     }
                     break;
                 case TurnAction.Flee:
-                    Battle.BattleAudio.PlaySound(Data.Flee);
+                    _battle.BattleAudio.PlaySound(Data.Flee);
 
-                    Battle.BattleAudio.PauseMusic();
+                    _battle.BattleAudio.PauseMusic();
 
-                    Common.MessageBox.Write(new MessageInfo()
+                    _common.MessageBox.Write(new MessageInfo()
                     {
                         text = $"* {currentCharacter.Name} пытаеться сбежать<\\:>.<\\:>.<\\:>.",
                         closeWindow = true,
                     });
 
-                    yield return new WaitWhile(() => Common.MessageBox.IsWriting);
+                    yield return new WaitWhile(() => _common.MessageBox.IsWriting);
 
                     yield return new WaitForSeconds(.5f);
 
@@ -915,15 +950,15 @@ public class BattlePipeline : RPGFrameworkBehaviour
                     }
                     else
                     {
-                        Battle.BattleAudio.UnPauseMusic();
+                        _battle.BattleAudio.UnPauseMusic();
 
-                        Common.MessageBox.Write(new MessageInfo()
+                        _common.MessageBox.Write(new MessageInfo()
                         {
                             text = $"* Но сбежать не удалось",
                             closeWindow = true,
                         });
 
-                        yield return new WaitWhile(() => Common.MessageBox.IsWriting);
+                        yield return new WaitWhile(() => _common.MessageBox.IsWriting);
                     }
                     break;
                 case TurnAction.Defence:
@@ -941,7 +976,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
                 for (int i = 0; i < deads.Length; i++)
                 {
-                    yield return new WaitWhile(() => Battle.EnemyModels.GetModel(deads[i]).IsAnimatingEffect);
+                    yield return new WaitWhile(() => _battle.EnemyModels.GetModel(deads[i]).IsAnimatingEffect);
 
                     BattleManager.BattleUtility.RemoveEnemy(deads[i]);
                 }
@@ -951,7 +986,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                 break;
         }
 
-        Battle.AttackQTE.Hide();
+        _battle.AttackQTE.Hide();
 
         IsPlayerTurn = false;
     }
@@ -981,27 +1016,12 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
         foreach (var @event in events)
         {
-            @event.Event.Invoke(this);
+            @event.Event.Invoke(_battle);
 
             yield return new WaitWhile(() => @event.Event.IsPlaying);
         }
 
         yield break;
-    }
-
-    private void NextCharacter()
-    {
-        Battle.UI.CharacterBox.Boxes[currentTurnDataIndex].ChangeAct(Data.TurnsData[currentTurnDataIndex].BattleAction);
-
-        UI.CharacterQuery.NextPosition();
-
-        currentTurnDataIndex++;
-
-        choiceActions.Clear();
-    }
-    private void PreviewAction()
-    {
-        choiceActions.Remove(choiceActions.Last());
     }
 
     private IEnumerator UpdateEntitysStates()
@@ -1015,7 +1035,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
             {
                 if (state.Event != null)
                 {
-                    state.Event.Invoke(this);
+                    state.Event.Invoke(_battle);
 
                     yield return new WaitWhile(() => state.Event.IsPlaying);
                 }
@@ -1025,7 +1045,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
             turnData.Character.UpdateAllStates();
 
-            CharacterBox box = Battle.UI.CharacterBox.GetBox(turnData.Character);
+            CharacterBox box = _battle.UI.CharacterBox.GetBox(turnData.Character);
 
             if (turnData.Character.Heal < oldHeal)
             {
@@ -1047,7 +1067,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
             enemy.UpdateAllStates();
 
-            EnemyModel model = Battle.EnemyModels.GetModel(enemy);
+            EnemyModel model = _battle.EnemyModels.GetModel(enemy);
 
             if (enemy.Heal < oldHeal)
             {
@@ -1081,7 +1101,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
         }
 
         foreach (var pattern in patterns)
-            Battle.Pattern.AddPattern(pattern);
+            _battle.Pattern.AddPattern(pattern);
 
         int chars = Random.Range(1, Data.TurnsData.Where(i => !i.IsDead).Count() + 1);
 
@@ -1097,29 +1117,29 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
             turnData.IsTarget = true;
 
-            Battle.UI.CharacterBox.GetBox(turnData.Character).MarkTarget(true);
+            _battle.UI.CharacterBox.GetBox(turnData.Character).MarkTarget(true);
 
             targets.Add(turnData);
         }
 
-        Battle.Player.SetActive(true);
-        Battle.BattleField.SetActive(true);
+        _battle.Player.SetActive(true);
+        _battle.BattleField.SetActive(true);
 
-        Battle.Pattern.Invoke(patterns.Count <= 1);
+        _battle.Pattern.Invoke(patterns.Count <= 1);
 
-        yield return new WaitWhile(() => Battle.Pattern.IsAttack && !loseKey && !breakKey);
+        yield return new WaitWhile(() => _battle.Pattern.IsAttack && !loseKey && !breakKey);
 
         if (loseKey || breakKey)
-            Battle.Pattern.Break();
+            _battle.Pattern.Break();
 
         foreach (var item in targets)
         {
             item.IsTarget = false;
-            Battle.UI.CharacterBox.GetBox(item.Character).MarkTarget(false);
+            _battle.UI.CharacterBox.GetBox(item.Character).MarkTarget(false);
         }
 
-        Battle.Player.SetActive(false);
-        Battle.BattleField.SetActive(false);
+        _battle.Player.SetActive(false);
+        _battle.BattleField.SetActive(false);
 
         UI.CharacterBox.Hide();
 
@@ -1135,25 +1155,25 @@ public class BattlePipeline : RPGFrameworkBehaviour
         UI.PlayerTurnSide.Hide();
         UI.CharacterBox.Hide();
 
-        PlayerPrefs.SetFloat("DeadX", Battle.Player.transform.position.x - Camera.main.transform.position.x);
-        PlayerPrefs.SetFloat("DeadY", Battle.Player.transform.position.y - Camera.main.transform.position.y);
+        PlayerPrefs.SetFloat("DeadX", _battle.Player.transform.position.x - Camera.main.transform.position.x);
+        PlayerPrefs.SetFloat("DeadY", _battle.Player.transform.position.y - Camera.main.transform.position.y);
         PlayerPrefs.Save();
 
-        Battle.BattleAudio.StopMusic();
+        _battle.BattleAudio.StopMusic();
 
         if (Data.BattleInfo.ShowDeadMessage)
         {
-            Battle.BattleAudio.PlaySound(Data.Lose);
+            _battle.BattleAudio.PlaySound(Data.Lose);
 
-            Battle.UI.CharacterBox.SetActive(false);
+            _battle.UI.CharacterBox.SetActive(false);
 
-            Common.MessageBox.Write(new MessageInfo()
+            _common.MessageBox.Write(new MessageInfo()
             {
                 text = "* Ваша команда проебала!",
                 closeWindow = true,
             });
 
-            yield return new WaitWhile(() => Common.MessageBox.IsWriting);
+            yield return new WaitWhile(() => _common.MessageBox.IsWriting);
         }
 
         if (!Data.BattleInfo.CanLose)
@@ -1164,7 +1184,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
     {
         IsWin = true;
 
-        Battle.BattleAudio.StopMusic();
+        _battle.BattleAudio.StopMusic();
 
         #region ДРОП
 
@@ -1230,46 +1250,46 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
         if (Data.BattleInfo.ShowEndMessage)
         {
-            Battle.BattleAudio.PlaySound(Data.Win);
+            _battle.BattleAudio.PlaySound(Data.Win);
 
-            Common.MessageBox.Write(new MessageInfo()
+            _common.MessageBox.Write(new MessageInfo()
             {
                 text = "* Ваша команда одержала победу<!>",
                 closeWindow = true
             });
 
-            yield return new WaitWhile(() => Common.MessageBox.IsWriting);
+            yield return new WaitWhile(() => _common.MessageBox.IsWriting);
 
             if (dropText != string.Empty || moneyText != string.Empty)
             {
-                Common.MessageBox.Write(new MessageInfo()
+                _common.MessageBox.Write(new MessageInfo()
                 {
                     text = moneyText + dropText,
                     closeWindow = true
                 });
 
-                yield return new WaitWhile(() => Common.MessageBox.IsWriting);
+                yield return new WaitWhile(() => _common.MessageBox.IsWriting);
             }
 
             if (lvlUpText != string.Empty)
             {
-                Common.MessageBox.Write(new MessageInfo()
+                _common.MessageBox.Write(new MessageInfo()
                 {
                     text = lvlUpText,
                     closeWindow = true
                 });
 
-                yield return new WaitWhile(() => Common.MessageBox.IsWriting);
+                yield return new WaitWhile(() => _common.MessageBox.IsWriting);
             }
         }
 
-        Battle.UI.CharacterBox.SetActive(false);
+        _battle.UI.CharacterBox.SetActive(false);
 
     }
 
     private IEnumerator Flee()
     {
-        Battle.BattleAudio.StopMusic();
+        _battle.BattleAudio.StopMusic();
 
         IsFlee = true;
 

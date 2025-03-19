@@ -66,7 +66,7 @@ public class BattleUsingService
             {
                 effect.Factor = minigameFactor;
 
-                yield return BattleManager.Instance.Pipeline.StartCoroutine(effect.Invoke(user, target));
+                yield return BattleManager.Instance.StartCoroutine(effect.Invoke(user, target));
             }
 
             RPGEntityState[] states = target.States.Where(i => oldStates.All(y => i.Tag != y)).ToArray();
@@ -214,7 +214,7 @@ public class BattleUsingService
             {
                 effect.Factor = 1f;
 
-                yield return battleManager.Pipeline.StartCoroutine(effect.Invoke(user, target));
+                yield return battleManager.StartCoroutine(effect.Invoke(user, target));
             }
 
             RPGEntityState[] states = target.States.Where(i => oldStates.All(y => i.Tag != y)).ToArray();

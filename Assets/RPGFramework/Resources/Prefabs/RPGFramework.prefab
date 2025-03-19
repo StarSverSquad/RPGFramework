@@ -6639,7 +6639,6 @@ GameObject:
   - component: {fileID: 359477631808309587}
   - component: {fileID: 1492566794163858137}
   - component: {fileID: 6341244355187613983}
-  - component: {fileID: 9006280429696733391}
   - component: {fileID: 179258461875434390}
   - component: {fileID: 8405943389438414826}
   m_Layer: 0
@@ -6679,7 +6678,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   container: {fileID: 6653017777265320983}
-  Pipeline: {fileID: 9006280429696733391}
   Choice: {fileID: 1492566794163858137}
   BattleField: {fileID: 8023696288632485103}
   Background: {fileID: 5870881595871833980}
@@ -6745,18 +6743,6 @@ MonoBehaviour:
   Lose: {fileID: 8300000, guid: 952e86353b3b52048acf8830d356244d, type: 3}
   Win: {fileID: 8300000, guid: 28888de9dfc502d4e8c0fa8d4bdc0e53, type: 3}
   Flee: {fileID: 8300000, guid: 5793af13e9de1da4fb3f2d5c76061e7b, type: 3}
---- !u!114 &9006280429696733391
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6223028378642940389}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf6523626e2e9a14d9199d5b1b3abfae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &179258461875434390
 MonoBehaviour:
   m_ObjectHideFlags: 0

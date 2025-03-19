@@ -7,7 +7,6 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
 {
     public static BattleManager Instance;
 
-    public BattlePipeline Pipeline;
     public BattleChoiceManager Choice;
     public BattleFieldManager BattleField;
     public BattleBackground Background;
@@ -23,7 +22,9 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
     public BattleData data;
 
 
-    public BattleUtility Utility { get; set; }
+    public BattlePipeline Pipeline { get; private set; }
+
+    public BattleUtility Utility { get; private set; }
     public static BattleUtility BattleUtility => Instance.Utility;
 
     // TRASH
@@ -43,6 +44,7 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
 
     public override void InitializeChild()
     {
+        Pipeline = new BattlePipeline(this, CommonManager.Instance);
         Utility = new BattleUtility(this);
 
         Player.SetActive(false);

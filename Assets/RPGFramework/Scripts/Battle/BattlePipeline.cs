@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using RPGF.RPG;
 using static BattleTurnData;
 
 public class BattlePipeline
@@ -497,21 +498,21 @@ public class BattlePipeline
 
                         switch (currenTurnData.Ability.Direction)
                         {
-                            case RPGAbility.AbilityDirection.All:
-                            case RPGAbility.AbilityDirection.AllEnemys:
-                            case RPGAbility.AbilityDirection.AllTeam:
+                            case UsabilityDirection.All:
+                            case UsabilityDirection.AllEnemys:
+                            case UsabilityDirection.AllTeam:
                                 currenTurnData.ReservedConcentration = -currenTurnData.Ability.ConcentrationCost;
                                 Utility.AddConcetration(-currenTurnData.Ability.ConcentrationCost);
 
                                 NextCharacter();
                                 break;
-                            case RPGAbility.AbilityDirection.Teammate:
+                            case UsabilityDirection.Teammate:
                                 choiceActions.Add(ChoiceAction.Teammate);
                                 break;
-                            case RPGAbility.AbilityDirection.Enemy:
+                            case UsabilityDirection.Enemy:
                                 choiceActions.Add(ChoiceAction.Enemy);
                                 break;
-                            case RPGAbility.AbilityDirection.Any:
+                            case UsabilityDirection.Any:
                                 choiceActions.Add(ChoiceAction.Entity);
                                 break;
                         }
@@ -634,8 +635,8 @@ public class BattlePipeline
                 // Выбор пердмета
                 case ChoiceAction.Item:
                     if (GameManager.Instance.Inventory.Slots
-                        .Where(i => i.Item.Usage == RPGCollectable.Usability.Battle ||
-                                    i.Item.Usage == RPGCollectable.Usability.Any).Count() > 0)
+                        .Where(i => i.Item.Usage == Usability.Battle ||
+                                    i.Item.Usage == Usability.Any).Count() > 0)
                     {
                         _battle.Choice.InvokeChoiceItem();
 
@@ -655,18 +656,18 @@ public class BattlePipeline
                             {
                                 switch (consumed.Direction)
                                 {
-                                    case RPGConsumed.ConsumingDirection.AllEnemys:
-                                    case RPGConsumed.ConsumingDirection.AllTeam:
-                                    case RPGConsumed.ConsumingDirection.All:
+                                    case UsabilityDirection.AllEnemys:
+                                    case UsabilityDirection.AllTeam:
+                                    case UsabilityDirection.All:
                                         NextCharacter();
                                         break;
-                                    case RPGConsumed.ConsumingDirection.Teammate:
+                                    case UsabilityDirection.Teammate:
                                         choiceActions.Add(ChoiceAction.Teammate);
                                         break;
-                                    case RPGConsumed.ConsumingDirection.Enemy:
+                                    case UsabilityDirection.Enemy:
                                         choiceActions.Add(ChoiceAction.Enemy);
                                         break;
-                                    case RPGConsumed.ConsumingDirection.Any:
+                                    case UsabilityDirection.Any:
                                         choiceActions.Add(ChoiceAction.Entity);
                                         break;
                                 }
@@ -840,22 +841,22 @@ public class BattlePipeline
 
                     switch (turnData.Ability.Direction)
                     {
-                        case RPGAbility.AbilityDirection.AllTeam:
+                        case UsabilityDirection.AllTeam:
                             yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
                             break;
-                        case RPGAbility.AbilityDirection.Teammate:
+                        case UsabilityDirection.Teammate:
                             yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, turnData.CharacterBuffer));
                             break;
-                        case RPGAbility.AbilityDirection.AllEnemys:
+                        case UsabilityDirection.AllEnemys:
                             yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.Enemys.ToArray()));
                             break;
-                        case RPGAbility.AbilityDirection.Enemy:
+                        case UsabilityDirection.Enemy:
                             yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, turnData.EnemyBuffer));
                             break;
-                        case RPGAbility.AbilityDirection.Any:
+                        case UsabilityDirection.Any:
                             yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, turnData.EntityBuffer));
                             break;
-                        case RPGAbility.AbilityDirection.All:
+                        case UsabilityDirection.All:
                             yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
 
                             yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.Enemys.ToArray()));
@@ -896,22 +897,22 @@ public class BattlePipeline
 
                             switch (consumed.Direction)
                             {
-                                case RPGConsumed.ConsumingDirection.AllTeam:
+                                case UsabilityDirection.AllTeam:
                                     yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
                                     break;
-                                case RPGConsumed.ConsumingDirection.Teammate:
+                                case UsabilityDirection.Teammate:
                                     yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, turnData.CharacterBuffer));
                                     break;
-                                case RPGConsumed.ConsumingDirection.AllEnemys:
+                                case UsabilityDirection.AllEnemys:
                                     yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, Data.Enemys.ToArray()));
                                     break;
-                                case RPGConsumed.ConsumingDirection.Enemy:
+                                case UsabilityDirection.Enemy:
                                     yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, turnData.EnemyBuffer));
                                     break;
-                                case RPGConsumed.ConsumingDirection.Any:
+                                case UsabilityDirection.Any:
                                     yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, turnData.EntityBuffer));
                                     break;
-                                case RPGConsumed.ConsumingDirection.All:
+                                case UsabilityDirection.All:
                                     yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
 
                                     yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, Data.Enemys.ToArray()));

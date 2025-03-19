@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RPGF.RPG;
+using System;
 using System.Collections;
 
 public class ChangeItemCountAction : GraphActionBase

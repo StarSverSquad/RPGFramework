@@ -1,4 +1,5 @@
 ﻿using RPGF.Character;
+using RPGF.RPG;
 using System.Collections;
 
 public class AddRemoveCharacterAction : GraphActionBase

@@ -1,4 +1,5 @@
 ﻿using RPGF.Battle.Pattern;
+using RPGF.RPG;
 using System.Linq;
 using UnityEngine;
 

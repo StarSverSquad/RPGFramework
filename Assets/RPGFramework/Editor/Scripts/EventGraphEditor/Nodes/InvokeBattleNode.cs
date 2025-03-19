@@ -4,6 +4,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 using UnityEngine;
 using UnityEditor.UIElements;
+using RPGF.RPG;
 
 [UseActionNode]
 public class InvokeBattleNode : ActionNodeWrapper<InvokeBattleAction>

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using RPGF.RPG;
+using System.Collections;
 using UnityEngine;
 
 public class ExplorerItemConsumeManager : MonoBehaviour
@@ -20,7 +21,7 @@ public class ExplorerItemConsumeManager : MonoBehaviour
 
     private IEnumerator ConsumeCoroutine(RPGConsumed item, RPGEntity who, RPGEntity target)
     {
-        if (item.Usage == RPGCollectable.Usability.Battle || item.Usage == RPGCollectable.Usability.Noway
+        if (item.Usage == Usability.Battle || item.Usage == Usability.Noway
             || !GameManager.Instance.Inventory.HasItemSlot(item))
         {
             consumeCoroutine = null;

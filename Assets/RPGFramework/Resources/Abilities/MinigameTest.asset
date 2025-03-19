@@ -14,21 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Tag: MinigameTest
   Name: "\u0420\u0435\u043F"
-  Destription: 
-  icon: {fileID: 15837853, guid: 43a40bfc1d0a404438f3a7f4ccf8b0e6, type: 3}
-  Direction: 0
-  ManaCost: 20
-  ConcentrationCost: 0
-  ForDeath: 0
-  ForAlive: 1
-  Formula: 0
-  WakeupCharacter: 0
-  StartEvent: {fileID: 0}
-  EndEvent: {fileID: 11400000, guid: 6cfb35083b643904e80eef7516538ef4, type: 2}
+  Description: 
+  Icon: {fileID: 696182320, guid: 14a080794ebe3f844a6e8e03d008540c, type: 3}
+  Usage: 2
+  Direction: 1
+  Event: {fileID: 0}
   VisualEffect: {fileID: 0}
-  Minigame: {fileID: 6862185979652220638, guid: 141b48dbabcda0746b74c27443e22f08, type: 3}
+  WakeupCharacter: 0
+  ForAlive: 1
+  ForDeath: 0
   Effects:
   - rid: 206985668269965411
+  ManaCost: 20
+  ConcentrationCost: 0
+  Formula: 0
+  StartEvent: {fileID: 0}
+  EndEvent: {fileID: 11400000, guid: 6cfb35083b643904e80eef7516538ef4, type: 2}
+  Minigame: {fileID: 6862185979652220638, guid: 141b48dbabcda0746b74c27443e22f08, type: 3}
   references:
     version: 2
     RefIds:

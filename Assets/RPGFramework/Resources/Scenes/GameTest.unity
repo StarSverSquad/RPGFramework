@@ -1989,10 +1989,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Actions:
   - rid: 1267146782738481239
-  - rid: 1267146782738481241
-  - rid: 1267146782738481242
   - rid: 1267146782738481240
   - rid: 1267146796664094892
+  - rid: 1267146782738481241
+  - rid: 1267146782738481242
+  - rid: 1267146898309644510
   Meta:
     edges:
     - inputPortName: Input
@@ -2008,25 +2009,32 @@ MonoBehaviour:
       outputPortName: Output
       outputNodeGUID: b19f0e13375197a4297962e32abd7247
     - inputPortName: Input
-      inputNodeGUID: f0641a5ce1e893444974561a2e5685b5
+      inputNodeGUID: 2d715d88c44686448a29c42cadcbf6b4
       outputPortName: Output
       outputNodeGUID: 80fbd383e0cc9f44485aec84fe671c09
+    - inputPortName: Input
+      inputNodeGUID: f0641a5ce1e893444974561a2e5685b5
+      outputPortName: Output
+      outputNodeGUID: 2d715d88c44686448a29c42cadcbf6b4
     nodes:
     - guid: b44b0a0599eef174baa7f4ab6e837ce4
       actionIndex: 0
       position: {x: 250.4, y: 250.4}
-    - guid: f0641a5ce1e893444974561a2e5685b5
-      actionIndex: 1
-      position: {x: 1107.2, y: 218.4}
-    - guid: 8ed8b5f7a13033b4faa667f9695efa58
-      actionIndex: 2
-      position: {x: 1364, y: 286.4}
     - guid: b19f0e13375197a4297962e32abd7247
-      actionIndex: 3
+      actionIndex: 1
       position: {x: 373.6, y: 218.4}
     - guid: 80fbd383e0cc9f44485aec84fe671c09
-      actionIndex: 4
+      actionIndex: 2
       position: {x: 701.6, y: 193.6}
+    - guid: f0641a5ce1e893444974561a2e5685b5
+      actionIndex: 3
+      position: {x: 1431.2, y: 236}
+    - guid: 8ed8b5f7a13033b4faa667f9695efa58
+      actionIndex: 4
+      position: {x: 1688, y: 304}
+    - guid: 2d715d88c44686448a29c42cadcbf6b4
+      actionIndex: 5
+      position: {x: 1068.8, y: 193.6}
   references:
     version: 2
     RefIds:
@@ -2064,11 +2072,19 @@ MonoBehaviour:
       type: {class: AddRemoveCharacterAction, ns: , asm: Assembly-CSharp}
       data:
         NextActions:
-        - rid: 1267146782738481241
+        - rid: 1267146898309644510
         isAdd: 1
         updateModels: 1
         character: {fileID: 11400000, guid: d29961ecddcc45c43a48e2ef7c13686c, type: 2}
         existentObject: {fileID: 0}
+    - rid: 1267146898309644510
+      type: {class: ChangeItemCountAction, ns: , asm: Assembly-CSharp}
+      data:
+        NextActions:
+        - rid: 1267146782738481241
+        Item: {fileID: 11400000, guid: 628044dbb1b741240b966295d607cd1b, type: 2}
+        Count: 4
+        IsSet: 0
 --- !u!1 &413498090
 GameObject:
   m_ObjectHideFlags: 0

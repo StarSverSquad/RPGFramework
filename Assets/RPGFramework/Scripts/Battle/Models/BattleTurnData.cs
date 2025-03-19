@@ -1,4 +1,4 @@
-﻿using System;
+﻿using RPGF.RPG;
 
 public class BattleTurnData
 {

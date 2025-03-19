@@ -11,7 +11,7 @@ public class BattlePlayerBorder : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "PatternBulletBase")
+        if (collision.CompareTag("PatternBullet"))
         {
             PatternBulletBase bullet = collision.gameObject.GetComponent<PatternBulletBase>();
 

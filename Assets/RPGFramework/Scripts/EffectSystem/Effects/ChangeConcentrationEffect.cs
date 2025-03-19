@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using RPGF.RPG;
+using System.Collections;
 using UnityEngine;
 
 public class ChangeConcentrationEffect : EffectBase

@@ -1,65 +1,11 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DefaultItem", menuName = "RPG/DefaultItem")]
-public class RPGCollectable : ScriptableObject
+namespace RPGF.RPG
 {
-    public enum Rareness
+    [CreateAssetMenu(fileName = "DefaultItem", menuName = "RPG/DefaultItem")]
+    public class RPGCollectable : RPGUsable
     {
-        Common, Rare, Special, Key
-    }
-
-    public enum Usability
-    {
-        Any, Noway, Battle, Explorer
-    }
-
-    public string Tag;
-    public string Name;
-    [Multiline(2)]
-    public string Description;
-
-    public Rareness Rare;
-
-    public Usability Usage;
-
-    public Sprite Icon;
-
-    public GraphEvent Event;
-
-    public void InvokeEvent(Action OnEnd = null)
-    {
-        if (Event != null)
-        {
-            switch (Usage)
-            {
-                case Usability.Any:
-                    if (BattleManager.IsBattle)
-                        Event.Invoke(BattleManager.Instance);
-                    else if (!ExplorerManager.Instance.EventHandler.EventRuning)
-                    {
-                        Event.Invoke(ExplorerManager.Instance.EventHandler);
-                        ExplorerManager.Instance.EventHandler.HandleEvent(Event);
-                    }
-                        break;
-                case Usability.Battle:
-                    if (BattleManager.IsBattle)
-                        Event.Invoke(BattleManager.Instance);
-                    break;
-                case Usability.Explorer:
-                    if (!BattleManager.IsBattle && !ExplorerManager.Instance.EventHandler.EventRuning)
-                    {
-                        Event.Invoke(ExplorerManager.Instance.EventHandler);
-                        ExplorerManager.Instance.EventHandler.HandleEvent(Event);
-                    }
-                    break;
-                case Usability.Noway:
-                    break;
-            }
-        }
-
-        OnEnd?.Invoke();
+        public Rareness Rare;
     }
 }

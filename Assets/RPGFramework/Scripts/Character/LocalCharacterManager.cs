@@ -2,6 +2,7 @@
 using UnityEngine;
 using RPGF.Character;
 using RPGF;
+using RPGF.RPG;
 
 public class LocalCharacterManager : RPGFrameworkBehaviour
 {

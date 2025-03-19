@@ -3,239 +3,238 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class RPGEntity : ScriptableObject, ICloneable<RPGEntity>
+namespace RPGF.RPG
 {
-    public string Tag;
-    public string Name;
-    [Multiline(3)]
-    public string Description;
-    [Header("Настройки сущности")]
-    public int DefaultHeal;
-    public int DefaultMana;
-
-    public int DefaultDamage;
-    public int DefaultDefence;
-    public int DefaultAgility;
-    public int DefaultLuck;
-
-    private int heal;
-    public int Heal
+    public class RPGEntity : RPGBase, ICloneable<RPGEntity>
     {
-        get => heal; 
+        [Header("Настройки сущности")]
+        public int DefaultHeal;
+        public int DefaultMana;
 
-        set 
+        public int DefaultDamage;
+        public int DefaultDefence;
+        public int DefaultAgility;
+        public int DefaultLuck;
+
+        private int heal;
+        public int Heal
         {
-            heal = Mathf.Clamp(value, 0, MaxHeal);
+            get => heal; 
 
-            OnHealChanged?.Invoke();
+            set 
+            {
+                heal = Mathf.Clamp(value, 0, MaxHeal);
+
+                OnHealChanged?.Invoke();
+            }
         }
-    }
 
-    private int mana;
-    public int Mana
-    {
-        get => mana;
-
-        set
+        private int mana;
+        public int Mana
         {
-            mana = Mathf.Clamp(value, 0, MaxMana);
+            get => mana;
 
-            OnManaChanged?.Invoke();
+            set
+            {
+                mana = Mathf.Clamp(value, 0, MaxMana);
+
+                OnManaChanged?.Invoke();
+            }
         }
-    }
 
-    public int MaxHeal { get; set; }
-    public int MaxMana { get; set; }
+        public int MaxHeal { get; set; }
+        public int MaxMana { get; set; }
 
-    public int Damage { get; set; }
-    public int Defence { get; set; }
-    public int Agility { get; set; }
-    public int Luck { get; set; }
+        public int Damage { get; set; }
+        public int Defence { get; set; }
+        public int Agility { get; set; }
+        public int Luck { get; set; }
     
-    private List<RPGEntityStateInstance> stateInstances = new List<RPGEntityStateInstance>();
-    public RPGEntityStateInstance[] StateInstances => stateInstances.ToArray();
-    public RPGEntityState[] States => stateInstances.Select(i => i.Original).ToArray();
+        private List<RPGEntityStateInstance> stateInstances = new List<RPGEntityStateInstance>();
+        public RPGEntityStateInstance[] StateInstances => stateInstances.ToArray();
+        public RPGEntityState[] States => stateInstances.Select(i => i.Original).ToArray();
 
-    public event Action OnHealChanged;
-    public event Action OnManaChanged;
+        public event Action OnHealChanged;
+        public event Action OnManaChanged;
 
-    public event Action OnAllStatesChanged;
-    public event Action<RPGEntityState> OnStateChanged;
-    public event Action<RPGEntityState> OnStateUpdated;
-    public event Action<RPGEntityState> OnStateRemoved;
-    public event Action<RPGEntityState> OnStateAdded;
+        public event Action OnAllStatesChanged;
+        public event Action<RPGEntityState> OnStateChanged;
+        public event Action<RPGEntityState> OnStateUpdated;
+        public event Action<RPGEntityState> OnStateRemoved;
+        public event Action<RPGEntityState> OnStateAdded;
 
-    public virtual void InitializeEntity()
-    {
-        RemoveAllStates();
-
-        UpdateStats();
-
-        Heal = MaxHeal; Mana = MaxMana;
-    }
-
-    public virtual void UpdateStats()
-    {
-        Damage = DefaultDamage;
-        Defence = DefaultDefence;
-        Agility = DefaultAgility;
-        Luck = DefaultLuck;
-
-        MaxHeal = DefaultHeal;
-        MaxMana = DefaultMana;
-
-        foreach (var state in States)
+        public virtual void InitializeEntity()
         {
-            Damage += state.AddDamage;
-            Defence += state.AddDefence;
-            Agility += state.AddAgility;
-            Luck += state.AddLuck;
-        }
-    }
+            RemoveAllStates();
 
-    #region [ДЛЯ СОСТОЯНИЙ]
+            UpdateStats();
 
-    /// <summary>
-    /// Добовляет состоаяние
-    /// </summary>
-    public virtual void AddState(RPGEntityState state)
-    {
-        if (HasState(state))
-        {
-            GetStateInstance(state).TurnsLeft = state.TurnCount;
-            return;
+            Heal = MaxHeal; Mana = MaxMana;
         }
 
-        stateInstances.Add(new RPGEntityStateInstance(state));
+        public virtual void UpdateStats()
+        {
+            Damage = DefaultDamage;
+            Defence = DefaultDefence;
+            Agility = DefaultAgility;
+            Luck = DefaultLuck;
 
-        UpdateStats();
+            MaxHeal = DefaultHeal;
+            MaxMana = DefaultMana;
 
-        OnStateAdded?.Invoke(state);
-        OnStateChanged?.Invoke(state);
-    }
-    /// <summary>
-    /// Удаляет состояние
-    /// </summary>
-    public virtual void RemoveState(RPGEntityState state)
-    {
-        if (!HasState(state))
-            return;
+            foreach (var state in States)
+            {
+                Damage += state.AddDamage;
+                Defence += state.AddDefence;
+                Agility += state.AddAgility;
+                Luck += state.AddLuck;
+            }
+        }
 
-        stateInstances.Remove(GetStateInstance(state));
+        #region [ДЛЯ СОСТОЯНИЙ]
 
-        UpdateStats();
+        /// <summary>
+        /// Добовляет состоаяние
+        /// </summary>
+        public virtual void AddState(RPGEntityState state)
+        {
+            if (HasState(state))
+            {
+                GetStateInstance(state).TurnsLeft = state.TurnCount;
+                return;
+            }
 
-        OnStateRemoved?.Invoke(state);
-        OnStateChanged?.Invoke(state);
-    }
-    /// <summary>
-    /// Удаляет все состояния
-    /// </summary>
-    public virtual void RemoveAllStates()
-    {
-        stateInstances.Clear();
+            stateInstances.Add(new RPGEntityStateInstance(state));
 
-        UpdateStats();
+            UpdateStats();
 
-        OnAllStatesChanged?.Invoke();
-    }
-    /// <summary>
-    /// Удаляет только те состояния которые не могут существовать вне битвы
-    /// </summary>
-    public virtual void RemoveNonBattleStates()
-    {
-        RPGEntityState[] states = States.Where(i => i.OnlyForBattle).ToArray();
+            OnStateAdded?.Invoke(state);
+            OnStateChanged?.Invoke(state);
+        }
+        /// <summary>
+        /// Удаляет состояние
+        /// </summary>
+        public virtual void RemoveState(RPGEntityState state)
+        {
+            if (!HasState(state))
+                return;
 
-        foreach (RPGEntityState state in states)
-            RemoveState(state);
+            stateInstances.Remove(GetStateInstance(state));
 
-        UpdateStats();
-    }
-    /// <summary>
-    /// Обнавляет выбранное состояние
-    /// </summary>
-    public virtual void UpdateState(RPGEntityState state)
-    {
-        if (!HasState(state))
-            return;
+            UpdateStats();
 
-        Heal = Mathf.Clamp(Heal + state.AddHeal, 1, MaxHeal);
-        Mana = Mathf.Clamp(Mana + state.AddMana, 1, MaxMana);
+            OnStateRemoved?.Invoke(state);
+            OnStateChanged?.Invoke(state);
+        }
+        /// <summary>
+        /// Удаляет все состояния
+        /// </summary>
+        public virtual void RemoveAllStates()
+        {
+            stateInstances.Clear();
 
-        RPGEntityStateInstance instance = GetStateInstance(state);
+            UpdateStats();
 
-        instance.TurnsLeft--;
+            OnAllStatesChanged?.Invoke();
+        }
+        /// <summary>
+        /// Удаляет только те состояния которые не могут существовать вне битвы
+        /// </summary>
+        public virtual void RemoveNonBattleStates()
+        {
+            RPGEntityState[] states = States.Where(i => i.OnlyForBattle).ToArray();
 
-        OnStateUpdated?.Invoke(state);
+            foreach (RPGEntityState state in states)
+                RemoveState(state);
 
-        if (instance.TurnsLeft <= 0)
-            RemoveState(state);
-    }
-    /// <summary>
-    /// Обнавляет все состояния
-    /// </summary>
-    public virtual void UpdateAllStates()
-    {
-        foreach (var state in States)
-            UpdateState(state);
+            UpdateStats();
+        }
+        /// <summary>
+        /// Обнавляет выбранное состояние
+        /// </summary>
+        public virtual void UpdateState(RPGEntityState state)
+        {
+            if (!HasState(state))
+                return;
 
-        OnAllStatesChanged?.Invoke();
-    }
-    /// <summary>
-    /// Проверяет наличие состояния
-    /// </summary>
-    public virtual bool HasState(RPGEntityState state) => States.Any(i => i.Tag == state.Tag);
-    /// <summary>
-    /// Создаёт экзмпляр состояния
-    /// </summary>
-    public virtual RPGEntityStateInstance GetStateInstance(RPGEntityState state) => stateInstances.FirstOrDefault(i => i.Original.Tag == state.Tag);
+            Heal = Mathf.Clamp(Heal + state.AddHeal, 1, MaxHeal);
+            Mana = Mathf.Clamp(Mana + state.AddMana, 1, MaxMana);
 
-    #endregion
+            RPGEntityStateInstance instance = GetStateInstance(state);
 
-    /// <summary>
-    /// Наносит урон сущности
-    /// </summary>
-    /// <param name="who">Кто наносит урон</param>
-    /// <param name="DamageModifier">Модификатор урона</param>
-    /// <param name="dontHurt">[Выстовлять только если нужен только расчет урона]</param>
-    /// <returns>Полученный урон</returns>
-    public virtual int GiveDamage(RPGEntity who, float DamageModifier = 1, bool dontHurt = false)
-    {
-        int resultDamage = Mathf.RoundToInt(who.Damage * DamageModifier) - Mathf.RoundToInt(Defence * .5f);
+            instance.TurnsLeft--;
 
-        resultDamage = Mathf.RoundToInt(UnityEngine.Random.Range(resultDamage * 0.75f, resultDamage * 1.25f));
+            OnStateUpdated?.Invoke(state);
 
-        if (resultDamage <= 0)
-            return 0;
+            if (instance.TurnsLeft <= 0)
+                RemoveState(state);
+        }
+        /// <summary>
+        /// Обнавляет все состояния
+        /// </summary>
+        public virtual void UpdateAllStates()
+        {
+            foreach (var state in States)
+                UpdateState(state);
 
-        if (!dontHurt)
-            Heal -= resultDamage;
+            OnAllStatesChanged?.Invoke();
+        }
+        /// <summary>
+        /// Проверяет наличие состояния
+        /// </summary>
+        public virtual bool HasState(RPGEntityState state) => States.Any(i => i.Tag == state.Tag);
+        /// <summary>
+        /// Создаёт экзмпляр состояния
+        /// </summary>
+        public virtual RPGEntityStateInstance GetStateInstance(RPGEntityState state) => stateInstances.FirstOrDefault(i => i.Original.Tag == state.Tag);
 
-        return resultDamage;
-    }
-    /// <summary>
-    /// Наносит урон сущности
-    /// </summary>
-    /// <param name="damage">Урон</param>
-    /// <param name="dontHurt">[Выстовлять только если нужен только расчет урона]</param>
-    /// <returns></returns>
-    public virtual int GiveDamage(int damage, bool dontHurt = false)
-    {
-        int resultDamage = Mathf.RoundToInt(damage) - Mathf.RoundToInt(Defence * .5f);
+        #endregion
 
-        resultDamage = Mathf.RoundToInt(UnityEngine.Random.Range(resultDamage * 0.75f, resultDamage * 1.25f));
+        /// <summary>
+        /// Наносит урон сущности
+        /// </summary>
+        /// <param name="who">Кто наносит урон</param>
+        /// <param name="DamageModifier">Модификатор урона</param>
+        /// <param name="dontHurt">[Выстовлять только если нужен только расчет урона]</param>
+        /// <returns>Полученный урон</returns>
+        public virtual int GiveDamage(RPGEntity who, float DamageModifier = 1, bool dontHurt = false)
+        {
+            int resultDamage = Mathf.RoundToInt(who.Damage * DamageModifier) - Mathf.RoundToInt(Defence * .5f);
 
-        if (resultDamage <= 0)
-            return 0;
+            resultDamage = Mathf.RoundToInt(UnityEngine.Random.Range(resultDamage * 0.75f, resultDamage * 1.25f));
 
-        if (!dontHurt)
-            Heal -= resultDamage;
+            if (resultDamage <= 0)
+                return 0;
 
-        return resultDamage;
-    }
+            if (!dontHurt)
+                Heal -= resultDamage;
 
-    public RPGEntity Clone()
-    {
-        return Instantiate(this);
+            return resultDamage;
+        }
+        /// <summary>
+        /// Наносит урон сущности
+        /// </summary>
+        /// <param name="damage">Урон</param>
+        /// <param name="dontHurt">[Выстовлять только если нужен только расчет урона]</param>
+        /// <returns></returns>
+        public virtual int GiveDamage(int damage, bool dontHurt = false)
+        {
+            int resultDamage = Mathf.RoundToInt(damage) - Mathf.RoundToInt(Defence * .5f);
+
+            resultDamage = Mathf.RoundToInt(UnityEngine.Random.Range(resultDamage * 0.75f, resultDamage * 1.25f));
+
+            if (resultDamage <= 0)
+                return 0;
+
+            if (!dontHurt)
+                Heal -= resultDamage;
+
+            return resultDamage;
+        }
+
+        public RPGEntity Clone()
+        {
+            return Instantiate(this);
+        }
     }
 }

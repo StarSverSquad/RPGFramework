@@ -1,4 +1,5 @@
 ﻿using RPGF.Choice;
+using RPGF.RPG;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -227,10 +228,10 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
             choices.Add(new ChoiceUI.Element()
             {
                 Name = item.Name,
-                Description = item.Destription + "\n" + (item.ManaCost > 0 ? $"[<color=#0081FF>Мана: {item.ManaCost}</color>] " : "") + (item.ConcentrationCost > 0 ? $"[<color=#06C100>Конц.: {item.ConcentrationCost}</color>]" : ""),
+                Description = item.Description + "\n" + (item.ManaCost > 0 ? $"[<color=#0081FF>Мана: {item.ManaCost}</color>] " : "") + (item.ConcentrationCost > 0 ? $"[<color=#06C100>Конц.: {item.ConcentrationCost}</color>]" : ""),
                 Value = item,
                 locked = Pipeline.CurrentTurnData.Character.Mana < item.ManaCost || Data.Concentration < item.ConcentrationCost,
-                Icon = item.icon
+                Icon = item.Icon
             });
         }
 
@@ -292,8 +293,8 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
         foreach (var slot in GameManager.Instance.Inventory.Slots)
         {
-            if (slot.Item.Usage == RPGCollectable.Usability.Noway ||
-                slot.Item.Usage == RPGCollectable.Usability.Explorer)
+            if (slot.Item.Usage == Usability.Noway ||
+                slot.Item.Usage == Usability.Explorer)
                 continue;
 
             int alreadyUsing = 0;

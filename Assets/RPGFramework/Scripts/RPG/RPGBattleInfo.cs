@@ -2,64 +2,67 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "BattleInfo", menuName = "RPG/BattleInfo")]
-public class RPGBattleInfo : ScriptableObject
+namespace RPGF.RPG
 {
-    [Header("Общие настройки")]
-    public RPGEnemySquad enemySquad;
-
-    [Tooltip("Враг начинает первым?")]
-    public bool EnemyStart = false;
-
-    [Tooltip("Можно ли проиграть?")]
-    public bool CanLose = true;
-
-    [Tooltip("Можно ли сбежать?")]
-    public bool CanFlee = false;
-
-    [Tooltip("Стандартный вывод сообщений")]
-    public bool ShowStartMessage = true;
-    public bool ShowEndMessage = true;
-    public bool ShowDeadMessage = true;
-
-    [Header("Настройки аудио")]
-    public AudioClip BattleMusic;
-    public float MusicVolume;
-
-    [Tooltip("Заглушать ли глобальную музыку?")]
-    public bool StopGlobalMusic = true;
-
-    [Header("Остальное")]
-    public GameObject Background;
-
-    [Space]
-    public VisualBattleTransmitionEffectBase BattleEnterEffect;
-    public VisualBattleTransmitionEffectBase BattleExitEffect;
-
-    [SerializeReference]
-    [HideInInspector]
-    public List<RPGBattleEvent> Events = new List<RPGBattleEvent>();
-}
-
-[Serializable]
-public class RPGBattleEvent
-{
-    public enum InvokePeriod
+    [CreateAssetMenu(fileName = "BattleInfo", menuName = "RPG/BattleInfo")]
+    public class RPGBattleInfo : ScriptableObject
     {
-        NoWay, EveryPlayerTurn, EveryEnemyTurn, OnPlayerTurn, OnEnemyTurn, 
-        OnWin, OnFlee, OnLose, OnBattleStart, OnBattleEnd, BeforeHit, AfterHit,
-        OnLessEnemyHeal, OnLessCharacterHeal
+        [Header("Общие настройки")]
+        public RPGEnemySquad enemySquad;
+
+        [Tooltip("Враг начинает первым?")]
+        public bool EnemyStart = false;
+
+        [Tooltip("Можно ли проиграть?")]
+        public bool CanLose = true;
+
+        [Tooltip("Можно ли сбежать?")]
+        public bool CanFlee = false;
+
+        [Tooltip("Стандартный вывод сообщений")]
+        public bool ShowStartMessage = true;
+        public bool ShowEndMessage = true;
+        public bool ShowDeadMessage = true;
+
+        [Header("Настройки аудио")]
+        public AudioClip BattleMusic;
+        public float MusicVolume;
+
+        [Tooltip("Заглушать ли глобальную музыку?")]
+        public bool StopGlobalMusic = true;
+
+        [Header("Остальное")]
+        public GameObject Background;
+
+        [Space]
+        public VisualBattleTransmitionEffectBase BattleEnterEffect;
+        public VisualBattleTransmitionEffectBase BattleExitEffect;
+
+        [SerializeReference]
+        [HideInInspector]
+        public List<RPGBattleEvent> Events = new List<RPGBattleEvent>();
     }
 
-    public InvokePeriod Period;
+    [Serializable]
+    public class RPGBattleEvent
+    {
+        public enum InvokePeriod
+        {
+            NoWay, EveryPlayerTurn, EveryEnemyTurn, OnPlayerTurn, OnEnemyTurn, 
+            OnWin, OnFlee, OnLose, OnBattleStart, OnBattleEnd, BeforeHit, AfterHit,
+            OnLessEnemyHeal, OnLessCharacterHeal
+        }
 
-    public bool IsCustomEvent;
+        public InvokePeriod Period;
 
-    public CustomActionBase CustomAction;
-    public GraphEvent Event;
+        public bool IsCustomEvent;
 
-    public int Turn;
+        public CustomActionBase CustomAction;
+        public GraphEvent Event;
 
-    public string EntityTag;
-    public float Heal;
+        public int Turn;
+
+        public string EntityTag;
+        public float Heal;
+    }
 }

@@ -1,34 +1,35 @@
-﻿using System;
-using System.Collections;
-using System.Drawing;
+﻿using DG.Tweening;
+using System;
 using UnityEngine;
 
-public class BattleFieldManager : MonoBehaviour, IActive
+public class BattleFieldManager : MonoBehaviour, IActive, IDisposable
 {
     [Tooltip("Up, Down, Left, Right")]
+    [Header("Ссылки:")]
     [SerializeField]
     private BoxCollider2D[] boxColliders = new BoxCollider2D[4];
-
     [SerializeField]
     private GameObject container;
-
     [SerializeField]
     private Transform mask;
-
     [SerializeField]
     private SpriteRenderer background;
 
-    public Vector4 Margin;
+    [Header("Настройки:")]
+    [SerializeField]
+    private float Margin = 0.1f;
+    [SerializeField]
+    private Vector2 DefaultCenterOffset = Vector2.down;
 
-    private Coroutine resizeCoroutine = null;
-    private Coroutine rotateCoroutine = null;
-    private Coroutine transofrmCoroutine = null;
+    private Tween resizeTween;
+    private Tween rotateTween;
+    private Tween moveTween;
 
-    public bool IsResizing => resizeCoroutine != null;
-    public bool IsRotating => rotateCoroutine != null;
-    public bool IsTransforming => transofrmCoroutine != null;
+    public bool IsResizing => resizeTween != null;
+    public bool IsRotating => rotateTween != null;
+    public bool IsMoving => moveTween != null;
 
-    private Vector2 cameraPosition => (Vector2)Camera.main.transform.position - new Vector2(0, 1f);
+    public Vector2 StartPosition => (Vector2)Camera.main.transform.position + DefaultCenterOffset;
 
     public void SetActive(bool active)
     {
@@ -38,112 +39,143 @@ public class BattleFieldManager : MonoBehaviour, IActive
         {
             Resize(new Vector2(3, 3));
             Rotate(0);
-            transform.position = cameraPosition;
+            MoveTo(StartPosition);
         }   
     }
 
-    private void OnBackgroundResized()
+    #region API
+
+    public void Resize(Vector2 size, float time = 0, Ease ease = Ease.Linear)
     {
-        boxColliders[0].offset = new Vector2(0, (background.size.y / 2f) - (Margin.y / 2f));
-        boxColliders[0].size = new Vector2(background.size.x, Margin.y);
+        DisposeResizeTween();
 
-        boxColliders[1].offset = new Vector2(0, -(background.size.y / 2f) + (Margin.w / 2f));
-        boxColliders[1].size = new Vector2(background.size.x, Margin.w);
-
-        boxColliders[2].offset = new Vector2(-(background.size.x / 2f) + (Margin.x / 2f), 0);
-        boxColliders[2].size = new Vector2(Margin.x, background.size.y);
-
-        boxColliders[3].offset = new Vector2((background.size.x / 2f) - (Margin.z / 2f), 0);
-        boxColliders[3].size = new Vector2(Margin.z, background.size.y);
-
-        mask.localScale = new Vector2(background.size.x - Margin.x - Margin.z,
-                                        background.size.y - Margin.y - Margin.w);
-    }
-
-    public void Resize(Vector2 size, float speed = 0)
-    {
-        if (IsResizing)
-        {
-            StopCoroutine(resizeCoroutine);
-            resizeCoroutine = null;
-        }
-
-        if (speed <= 0)
+        if (time <= 0)
         {
             background.size = size;
 
-            OnBackgroundResized();
+            UpdateColliders();
         }
         else
         {
-            resizeCoroutine = StartCoroutine(AnimationPack.MoveToBySpeed2D(background.size, size, speed, val =>
+            resizeTween = DOTween
+                .To(() => background.size, x => background.size = x, size, 1f)
+                .SetEase(ease)
+                .Play();
+
+            resizeTween.onUpdate = () =>
             {
-                background.size = val;
-                OnBackgroundResized();
-            }, () => resizeCoroutine = null));
+                UpdateColliders();
+            };
+
+            resizeTween.onComplete = () =>
+            {
+                DisposeResizeTween();
+            };
         }
     }
 
-    public void Rotate(float Angle, float speed = 0)
+    public void Rotate(float angle, float time = 0, Ease ease = Ease.Linear)
     {
-        if (IsRotating)
-        {
-            StopCoroutine(rotateCoroutine);
-            rotateCoroutine = null;
-        }
+        DisposeRotateTween();
 
-        if (speed <= 0)
+        if (time <= 0)
         {
-            transform.rotation = Quaternion.Euler(0, 0, Angle);
+            transform.rotation = Quaternion.Euler(0, 0, angle);
         }
         else
         {
-            rotateCoroutine = StartCoroutine(AnimationPack.MoveToBySpeed(transform.rotation.eulerAngles.z, Angle, speed, val =>
+            rotateTween = transform
+                .DORotate(new Vector3(0, 0, angle), time, RotateMode.FastBeyond360)
+                .SetEase(ease)
+                .Play();
+
+            rotateTween.onComplete = () =>
             {
-                transform.rotation = Quaternion.Euler(0, 0, val);
-            }, () => rotateCoroutine = null));
+                DisposeRotateTween();
+            };
         }
     }
 
-    public void Transform(Vector2 position, float speed = 0)
+    public void MoveTo(Vector2 position, float time = 0, Ease ease = Ease.Linear)
     {
-        if (IsTransforming)
-        {
-            StopCoroutine(transofrmCoroutine);
-            transofrmCoroutine = null;
-        }
+        DisposeMoveTween();
 
-        if (speed <= 0)
+        if (time <= 0)
         {
-            transform.position = cameraPosition + position;
+            transform.position = position;
         }
         else
         {
-            transofrmCoroutine = StartCoroutine(AnimationPack.MoveToBySpeed2D(transform.position, cameraPosition + position, speed, val =>
+            moveTween = transform
+                .DOMove(position, time)
+                .SetEase(ease)
+                .Play();
+
+            moveTween.onComplete = () =>
             {
-                transform.position = val;
-            }, () => transofrmCoroutine = null));
+                DisposeMoveTween();
+            };
+        }
+    }
+    public void MoveRelative(Vector2 offset, float time = 0, Ease ease = Ease.Linear)
+    {
+        MoveTo((Vector2)transform.position + offset, time, ease);
+    }
+
+    #endregion
+
+    private void DisposeResizeTween()
+    {
+        if (resizeTween != null)
+        {
+            resizeTween.Kill();
+            resizeTween = null;
+        }
+    }
+    private void DisposeRotateTween()
+    {
+        if (rotateTween != null)
+        {
+            rotateTween.Kill();
+            rotateTween = null;
+        }
+    }
+    private void DisposeMoveTween()
+    {
+        if (moveTween != null)
+        {
+            moveTween.Kill();
+            moveTween = null;
         }
     }
 
-    public void Move(Vector2 offset, float speed = 0)
+    private void UpdateColliders()
     {
-        if (IsTransforming)
-        {
-            StopCoroutine(transofrmCoroutine);
-            transofrmCoroutine = null;
-        }
+        boxColliders[0].offset = new Vector2(0, (background.size.y / 2f) - (Margin / 2f));
+        boxColliders[0].size = new Vector2(background.size.x, Margin);
 
-        if (speed <= 0)
-        {
-            transform.position += (Vector3)offset;
-        }
-        else
-        {
-            transofrmCoroutine = StartCoroutine(AnimationPack.MoveToBySpeed2D(transform.position, (Vector2)transform.position + offset, speed, val =>
-            {
-                transform.position = val;
-            }, () => transofrmCoroutine = null));
-        }
+        boxColliders[1].offset = new Vector2(0, -(background.size.y / 2f) + (Margin / 2f));
+        boxColliders[1].size = new Vector2(background.size.x, Margin);
+
+        boxColliders[2].offset = new Vector2(-(background.size.x / 2f) + (Margin / 2f), 0);
+        boxColliders[2].size = new Vector2(Margin, background.size.y);
+
+        boxColliders[3].offset = new Vector2((background.size.x / 2f) - (Margin / 2f), 0);
+        boxColliders[3].size = new Vector2(Margin, background.size.y);
+
+        mask.localScale = new Vector2(background.size.x - Margin - Margin,
+                                        background.size.y - Margin - Margin);
+    }
+
+    public void Dispose()
+    {
+        DisposeMoveTween();
+        DisposeResizeTween();
+        DisposeRotateTween();
+    }
+
+    private void OnDisable()
+    {
+        Dispose();
     }
 }

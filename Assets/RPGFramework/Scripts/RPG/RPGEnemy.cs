@@ -19,7 +19,7 @@ public class RPGEnemy : RPGEntity
     }
 
     [Tooltip("—юда нужны объекты которые имеют RPGAttackPattern!")]
-    public List<RPGAttackPattern> Patterns = new List<RPGAttackPattern>();
+    public List<BattleAttackPatternBase> Patterns = new List<BattleAttackPatternBase>();
 
     public List<EnemyAct> Acts = new List<EnemyAct>();
 

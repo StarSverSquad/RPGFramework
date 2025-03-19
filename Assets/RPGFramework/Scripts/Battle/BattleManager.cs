@@ -20,16 +20,19 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
     public BattleUIShake Shaker;
     public BattleUIManager UI;
     public MinigameManager Minigame;
-
-
-    public BattleUtility utility;
-    public static BattleUtility Utility => Instance.utility;
     public BattleData data;
+
+
+    public BattleUtility Utility { get; set; }
+    public static BattleUtility BattleUtility => Instance.Utility;
+
+    // TRASH
     public static BattleData Data => Instance.data;
 
     public static bool IsBattle => Instance.Pipeline.MainIsWorking;
 
-    public static void StartBattle(RPGBattleInfo info) => Utility.StartBattle(info); 
+    public static void StartBattle(RPGBattleInfo info) => BattleUtility.StartBattle(info); 
+    //
 
     public void Initialize()
     {
@@ -40,6 +43,8 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
 
     public override void InitializeChild()
     {
+        Utility = new BattleUtility(this);
+
         Player.SetActive(false);
     }
 }

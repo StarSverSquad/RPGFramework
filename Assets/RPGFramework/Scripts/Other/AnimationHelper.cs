@@ -1,9 +1,10 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-public static class AnimationPack
+public static class AnimationHelper
 {
     #region One constant
 
@@ -149,51 +150,6 @@ public static class AnimationPack
         OnEndCallback?.Invoke();
     }
 
-    public static IEnumerator MoveToByTimeLerp2D(Vector2 from, Vector2 to, float time, Action<Vector2> OnChangeCallback, Action OnEndCallback = null)
-    {
-        Vector2 dif = to - from;
-
-        float speed = Mathf.Abs(dif.magnitude / time);
-
-        float curtime = time;
-        Vector2 curpos = from;
-
-        while (curtime > 0)
-        {
-            yield return new WaitForFixedUpdate();
-
-            curpos = Vector2.Lerp(curpos, to, speed);
-
-            OnChangeCallback?.Invoke(curpos);
-
-            curtime -= Time.fixedDeltaTime;
-        }
-
-        OnEndCallback?.Invoke();
-    }
-
-    public static IEnumerator MoveToBySpeedLerp2D(Vector2 from, Vector2 to, float speed, Action<Vector2> OnChangeCallback, Action OnEndCallback = null)
-    {
-        float distance = Vector2.Distance(from, to);
-        float time = distance / speed;
-
-        float curtime = 0;
-        Vector2 curpos = from;
-
-        while (curtime < time)
-        {
-            yield return new WaitForFixedUpdate();
-
-            curtime += Time.fixedDeltaTime;
-            float t = Mathf.Clamp01(curtime / time);
-            curpos = Vector2.Lerp(from, to, t);
-
-            OnChangeCallback?.Invoke(curpos);
-        }
-
-        OnEndCallback?.Invoke();
-    }
-
     #endregion
 
     #region Color
@@ -235,52 +191,6 @@ public static class AnimationPack
             yield return new WaitForFixedUpdate();
 
             curpos = Vector4.MoveTowards(curpos, to, speed * Time.fixedDeltaTime);
-
-            OnChangeCallback?.Invoke(curpos);
-
-            curtime -= Time.fixedDeltaTime;
-        }
-
-        OnEndCallback?.Invoke();
-    }
-
-    public static IEnumerator ColorByTimeLerp(Color from, Color to, float time, Action<Color> OnChangeCallback, Action OnEndCallback = null)
-    {
-        Color dif = to - from;
-
-        float speed = Mathf.Abs(((Vector4)dif).magnitude / time);
-
-        float curtime = time;
-        Color curpos = from;
-
-        while (curtime > 0)
-        {
-            yield return new WaitForFixedUpdate();
-
-            curpos = Vector4.Lerp(curpos, to, speed);
-
-            OnChangeCallback?.Invoke(curpos);
-
-            curtime -= Time.fixedDeltaTime;
-        }
-
-        OnEndCallback?.Invoke();
-    }
-
-    public static IEnumerator ColorBySpeedLerp(Color from, Color to, float speed, Action<Color> OnChangeCallback, Action OnEndCallback = null)
-    {
-        Color dif = to - from;
-
-        float time = ((Vector4)dif).magnitude / speed;
-
-        float curtime = time;
-        Color curpos = from;
-
-        while (curtime > 0)
-        {
-            yield return new WaitForFixedUpdate();
-
-            curpos = Vector4.Lerp(curpos, to, speed);
 
             OnChangeCallback?.Invoke(curpos);
 

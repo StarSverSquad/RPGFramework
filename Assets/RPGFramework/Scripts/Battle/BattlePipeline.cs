@@ -18,7 +18,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
     public BattleData Data => BattleManager.Data;
     public BattleChoiceManager Choice => Battle.Choice;
-    public BattleUtility Utility => Battle.utility;
+    public BattleUtility Utility => Battle.Utility;
     public BattleVisualTransmitionManager VisualTransmition => Battle.VisualTransmition;
     public BattleUIManager UI => Battle.UI;
 
@@ -746,12 +746,12 @@ public class BattlePipeline : RPGFrameworkBehaviour
                         VisualAttackEffect effect = currentCharacter.WeaponSlot == null ? Data.DefaultEffect : currentCharacter.WeaponSlot.Effect;
 
                         if (effect.LocaleInCenter)
-                            effect = BattleManager.Utility.SpawnAttackEffect(effect);
+                            effect = BattleManager.BattleUtility.SpawnAttackEffect(effect);
                         else
                         {
                             Vector2 attackPos = Battle.EnemyModels.GetModel(turnData.EnemyBuffer).AttackGlobalPoint;
 
-                            effect = BattleManager.Utility.SpawnAttackEffect(effect, attackPos);
+                            effect = BattleManager.BattleUtility.SpawnAttackEffect(effect, attackPos);
                         }
 
                         effect.Invoke();
@@ -766,7 +766,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                         Battle.AttackQTE.Hide();
 
                         // Нанесение урона врагу
-                        BattleManager.Utility.DamageEnemy(currentCharacter, turnData.EnemyBuffer, Battle.AttackQTE.QTE.DamageFactor);
+                        BattleManager.BattleUtility.DamageEnemy(currentCharacter, turnData.EnemyBuffer, Battle.AttackQTE.QTE.DamageFactor);
 
                         yield return StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.AfterHit, false, turnData.EnemyBuffer.Tag));
 
@@ -943,7 +943,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
                 {
                     yield return new WaitWhile(() => Battle.EnemyModels.GetModel(deads[i]).IsAnimatingEffect);
 
-                    BattleManager.Utility.RemoveEnemy(deads[i]);
+                    BattleManager.BattleUtility.RemoveEnemy(deads[i]);
                 }
             }
 
@@ -1029,11 +1029,11 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
             if (turnData.Character.Heal < oldHeal)
             {
-                BattleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f), (oldHeal - turnData.Character.Heal).ToString(), Color.white, Color.red);
+                BattleManager.BattleUtility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f), (oldHeal - turnData.Character.Heal).ToString(), Color.white, Color.red);
             }
             else if (turnData.Character.Heal > oldHeal)
             {
-                BattleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f), (oldHeal - turnData.Character.Heal).ToString(), Color.white, Color.green);
+                BattleManager.BattleUtility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f), (oldHeal - turnData.Character.Heal).ToString(), Color.white, Color.green);
             } 
 
         }
@@ -1051,11 +1051,11 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
             if (enemy.Heal < oldHeal)
             {
-                BattleManager.Utility.SpawnFallingText(model.DamageTextGlobalPoint, (oldHeal - enemy.Heal).ToString(), Color.white, Color.red);
+                BattleManager.BattleUtility.SpawnFallingText(model.DamageTextGlobalPoint, (oldHeal - enemy.Heal).ToString(), Color.white, Color.red);
             }
             else if (enemy.Heal > oldHeal)
             {
-                BattleManager.Utility.SpawnFallingText(model.DamageTextGlobalPoint, (oldHeal - enemy.Heal).ToString(), Color.white, Color.green);
+                BattleManager.BattleUtility.SpawnFallingText(model.DamageTextGlobalPoint, (oldHeal - enemy.Heal).ToString(), Color.white, Color.green);
             }
         }
     }
@@ -1066,7 +1066,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        List<RPGAttackPattern> patterns = new List<RPGAttackPattern>();
+        List<BattleAttackPatternBase> patterns = new List<BattleAttackPatternBase>();
         List<BattleTurnData> targets = new List<BattleTurnData>();
 
         foreach (var enemy in Data.Enemys)
@@ -1074,7 +1074,7 @@ public class BattlePipeline : RPGFrameworkBehaviour
             if (enemy.States.Any(i => i.SkipTurn))
                 continue;
 
-            RPGAttackPattern pattern = enemy.Patterns[Random.Range(0, enemy.Patterns.Count)];
+            BattleAttackPatternBase pattern = enemy.Patterns[Random.Range(0, enemy.Patterns.Count)];
             pattern.enemy = enemy;
 
             patterns.Add(pattern);

@@ -9,7 +9,7 @@ public class BattlePatternManager : MonoBehaviour
     [SerializeField]
     private List<GameObject> patternObjects = new List<GameObject>();
     [SerializeField]
-    private List<RPGAttackPattern> patterns = new List<RPGAttackPattern>();
+    private List<BattleAttackPatternBase> patterns = new List<BattleAttackPatternBase>();
 
     private Coroutine attackCoroutine = null;
     public bool IsAttack => attackCoroutine != null;
@@ -18,11 +18,11 @@ public class BattlePatternManager : MonoBehaviour
     /// Добовляет паттерн к списку используемых патернов
     /// </summary>
     /// <param name="pattern">Паттерн</param>
-    public void AddPattern(RPGAttackPattern pattern)
+    public void AddPattern(BattleAttackPatternBase pattern)
     {
         // Устанавливает паттерну его владельца
         GameObject ptrobj = Instantiate(pattern.gameObject, transform, false);
-        RPGAttackPattern ptr = ptrobj.GetComponent<RPGAttackPattern>();
+        BattleAttackPatternBase ptr = ptrobj.GetComponent<BattleAttackPatternBase>();
 
         patterns.Add(ptr);
     }
@@ -94,7 +94,7 @@ public class BattlePatternManager : MonoBehaviour
         }            
         patternObjects.Clear();
 
-        foreach (RPGAttackPattern o in patterns)
+        foreach (BattleAttackPatternBase o in patterns)
         {
             o.StopAllCoroutines();
             Destroy(o.gameObject);

@@ -843,8 +843,8 @@ SpriteRenderer:
   m_FlipY: 0
   m_DrawMode: 2
   m_Size: {x: 3, y: 3}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
+  m_AdaptiveModeThreshold: 1
+  m_SpriteTileMode: 1
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
@@ -2342,7 +2342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: e4b8e47b0b06ad44f9b9c94198ac6f4f, type: 2}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.2}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.2509804}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2942,7 +2942,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.68895704, b: 0, a: 0.050980393}
+  m_Color: {r: 1, g: 0.68895704, b: 0, a: 0.14901961}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -6638,7 +6638,6 @@ GameObject:
   - component: {fileID: 6099149435097865380}
   - component: {fileID: 359477631808309587}
   - component: {fileID: 1492566794163858137}
-  - component: {fileID: 956800464406140057}
   - component: {fileID: 6341244355187613983}
   - component: {fileID: 9006280429696733391}
   - component: {fileID: 179258461875434390}
@@ -6693,7 +6692,6 @@ MonoBehaviour:
   Shaker: {fileID: 179258461875434390}
   UI: {fileID: 3834372777945536817}
   Minigame: {fileID: 8405943389438414826}
-  utility: {fileID: 956800464406140057}
   data: {fileID: 6341244355187613983}
 --- !u!114 &1492566794163858137
 MonoBehaviour:
@@ -6709,18 +6707,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   battleChoice: {fileID: 4765885667691323271}
   primaryChoice: {fileID: 6069382063962830162}
---- !u!114 &956800464406140057
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6223028378642940389}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4a66a3e35a57b94484547a8b8bb7da8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6341244355187613983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7198,7 +7184,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2087184418231758631
 Transform:
   m_ObjectHideFlags: 0
@@ -9848,7 +9834,8 @@ MonoBehaviour:
   container: {fileID: 6336811242700693367}
   mask: {fileID: 8705279458417187229}
   background: {fileID: 8211212471000570547}
-  Margin: {x: 0.1, y: 0.1, z: 0.1, w: 0.1}
+  Margin: 0.1
+  DefaultCenterOffset: {x: 0, y: -1}
 --- !u!1 &8495151942299469087
 GameObject:
   m_ObjectHideFlags: 0

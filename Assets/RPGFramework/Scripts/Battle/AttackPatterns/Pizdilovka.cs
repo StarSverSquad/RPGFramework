@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Pizdilovka : RPGAttackPattern
+public class Pizdilovka : BattleAttackPatternBase
 {
     [SerializeField] // Аттрибут, который позволяет юнити обращаться к приватным полям
     private GameObject bulletPrefabH; // Поле для хранения привата пули 

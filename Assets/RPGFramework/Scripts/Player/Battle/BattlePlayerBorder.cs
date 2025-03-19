@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using RPGF.Battle.Pattern;
 using UnityEngine;
 
 public class BattlePlayerBorder : MonoBehaviour
@@ -10,9 +11,9 @@ public class BattlePlayerBorder : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "PatternBullet")
+        if (collision.tag == "PatternBulletBase")
         {
-            PatternBullet bullet = collision.gameObject.GetComponent<PatternBullet>();
+            PatternBulletBase bullet = collision.gameObject.GetComponent<PatternBulletBase>();
 
             if (bullet.IsHitBorder)
                 return;
@@ -25,7 +26,7 @@ public class BattlePlayerBorder : MonoBehaviour
 
             spriteRenderer.DOColor(new Color(1, 1, 1, 0), 0.5f).From(Color.white).Play();
 
-            BattleManager.Utility.AddConcetration(bullet.AdditionConcentration);
+            BattleManager.BattleUtility.AddConcetration(bullet.AdditionConcentration);
         }
     }
 }

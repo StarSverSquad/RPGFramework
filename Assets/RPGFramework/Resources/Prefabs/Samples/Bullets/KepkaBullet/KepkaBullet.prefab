@@ -53,8 +53,8 @@ MonoBehaviour:
   CanHitBorder: 1
   DestroyAfterHit: 1
   IgnoreHitCooldown: 0
-  AddState: 1
-  State: {fileID: 11400000, guid: 942091a8ab61978419d89549fa55d72c, type: 2}
+  States:
+  - {fileID: 11400000, guid: 942091a8ab61978419d89549fa55d72c, type: 2}
   enemy: {fileID: 0}
   model: {fileID: 5108280560385745220}
   animator: {fileID: 622896020824943660}
@@ -65,7 +65,7 @@ MonoBehaviour:
   Reverse: 0
 --- !u!95 &622896020824943660
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -79,6 +79,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -95,6 +96,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -188,6 +190,7 @@ CircleCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1112362455632919881}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -211,9 +214,9 @@ CircleCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: -0.124652624, y: 0}
-  serializedVersion: 2
   m_Radius: 0.26400995
 --- !u!1 &2107044579270049187
 GameObject:
@@ -296,6 +299,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

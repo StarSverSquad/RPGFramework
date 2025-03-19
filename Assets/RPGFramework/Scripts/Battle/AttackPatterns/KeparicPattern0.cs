@@ -1,17 +1,18 @@
-﻿using System.Collections;
+﻿using RPGF.Battle.Pattern;
+using System.Collections;
 using UnityEngine;
 
-public class KeparicPattern0 : RPGAttackPattern
+public class KeparicPattern0 : BattleAttackPatternBase
 {
     [SerializeField]
-    private PatternBullet KeparicBullet;
+    private PatternBulletBase KeparicBullet;
 
     public float TimeOffset = 1f;
 
     protected override IEnumerator PatternCoroutine()
     {
-        BattleManager.Instance.BattleField.Resize(new Vector2(0.5f, 0.5f));
-        BattleManager.Instance.BattleField.Resize(new Vector2(1.5f, 3), 4f);
+        Battle.BattleField.Resize(new Vector2(0.5f, 0.5f));
+        Battle.BattleField.Resize(new Vector2(1.5f, 3), 4f);
 
         bool right = true;
 

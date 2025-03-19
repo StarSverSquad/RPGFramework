@@ -1,21 +1,20 @@
-﻿using System.Collections;
+﻿using RPGF.Battle.Pattern;
+using System.Collections;
 using UnityEngine;
 
-public class TestPattern : RPGAttackPattern
+public class TestPattern : BattleAttackPatternBase
 {
     [SerializeField]
-    private PatternBullet SomeBullet;
+    private PatternBulletBase SomeBullet;
 
     public int BulletsCount = 15;
     public float TimeOffset = 1f;
-
-    private Coroutine move = null;
 
     protected override IEnumerator PatternCoroutine()
     {
         float time = Mathf.Abs(PatternTime - TimeOffset) / (BulletsCount + 1);
 
-        move = StartCoroutine(MoveField());
+        StartCoroutine(MoveField());
 
         while (true)
         {
@@ -47,18 +46,18 @@ public class TestPattern : RPGAttackPattern
 
         while (true)
         {
-            if (!BattleManager.Instance.BattleField.IsRotating)
+            if (!Battle.BattleField.IsRotating)
             {
-                BattleManager.Instance.BattleField.Rotate(0);
-                BattleManager.Instance.BattleField.Rotate(360, 16);
+                Battle.BattleField.Rotate(0);
+                Battle.BattleField.Rotate(359, 4);
             }
 
-            if (!BattleManager.Instance.BattleField.IsTransforming)
+            if (!Battle.BattleField.IsMoving)
             {
                 if (moveKey)
-                    BattleManager.Instance.BattleField.Transform(new Vector2(-2, 0), 1);
+                    Battle.BattleField.MoveRelative(new Vector2(-2, 0), 2);
                 else
-                    BattleManager.Instance.BattleField.Transform(new Vector2(2, 0), 1);
+                    Battle.BattleField.MoveRelative(new Vector2(2, 0), 2);
 
                 moveKey = !moveKey;
             }

@@ -63,4 +63,9 @@ public class TittleMenuMainButton : GUIElementBase
                 .Play();
         }
     }
+
+    private void OnDisable()
+    {
+        _underline.DOKill();
+    }
 }

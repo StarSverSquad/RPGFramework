@@ -73,4 +73,13 @@ public class TittleMenuMainBlock : GUIChoicableBlock
             Preview();
         };
     }
+
+    protected override void OnDisable()
+    {
+        base.OnDisable();
+
+        _wordsBg.DOKill();
+        _panel.DOKill();
+        _solidColorBg.DOKill();
+    }
 }

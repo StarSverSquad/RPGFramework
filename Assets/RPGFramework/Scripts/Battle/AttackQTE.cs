@@ -71,7 +71,7 @@ public class AttackQTE : MonoBehaviour
 
         float load = 0;
 
-        Coroutine slideCoroutine = StartCoroutine(AnimationPack.MoveByCurve(sliderCurve, value =>
+        Coroutine slideCoroutine = StartCoroutine(AnimationHelper.MoveByCurve(sliderCurve, value =>
         {
             slider.anchoredPosition = new Vector2(sliderRigthPosition.x + (sliderLeftPosition.x - sliderRigthPosition.x) * value, slider.anchoredPosition.y);
 

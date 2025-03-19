@@ -33,9 +33,9 @@ public class BattleUsingService
             VisualAttackEffect effect;
 
             if (targets.Where(i => i is RPGEnemy).Count() == 1)
-                effect = battleManager.utility.SpawnAttackEffect(ability.VisualEffect);
+                effect = battleManager.Utility.SpawnAttackEffect(ability.VisualEffect);
             else 
-                effect = battleManager.utility.SpawnAttackEffect(ability.VisualEffect, model.AttackGlobalPoint);
+                effect = battleManager.Utility.SpawnAttackEffect(ability.VisualEffect, model.AttackGlobalPoint);
 
             effect.Invoke();
 
@@ -88,21 +88,21 @@ public class BattleUsingService
 
                 if (healDif < 0)
                 {
-                    battleManager.utility.SpawnFallingText((Vector2)model.transform.position + new Vector2(0, 0.5f),
+                    battleManager.Utility.SpawnFallingText((Vector2)model.transform.position + new Vector2(0, 0.5f),
                                     Mathf.Abs(healDif).ToString(), Color.white, Color.red);
 
                     model.Damage();
                 }
                 else if (healDif > 0)
                 {
-                    battleManager.utility.SpawnFallingText((Vector2)model.transform.position + new Vector2(0, 0.5f),
+                    battleManager.Utility.SpawnFallingText((Vector2)model.transform.position + new Vector2(0, 0.5f),
                                     healDif.ToString(), Color.white, Color.green);
                 }
                 
 
                 for (int i = 0; i < states.Length; i++)
                 {
-                    battleManager.utility.SpawnFallingText(model.AttackGlobalPoint + new Vector2(0, 0.2f + (0.2f * i)), states[i].Name,
+                    battleManager.Utility.SpawnFallingText(model.AttackGlobalPoint + new Vector2(0, 0.2f + (0.2f * i)), states[i].Name,
                         Color.white, states[i].Color);
                 }
 
@@ -124,28 +124,28 @@ public class BattleUsingService
                 CharacterBox box = BattleManager.Instance.UI.CharacterBox.GetBox(character);
 
                 if (healDif < 0)
-                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
+                    battleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
                                     Mathf.Abs(healDif).ToString(), Color.white, Color.red);
                 else if (healDif > 0)
-                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
+                    battleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
                                     healDif.ToString(), Color.white, Color.green);
                 else if (target.Heal == target.MaxHeal)
-                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
+                    battleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
                                     "MAX", Color.green);
                 else if (ability.Formula > 0 && healDif == 0)
-                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
+                    battleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
                                     "0", Color.green);
 
                 if (manaDif > 0)
-                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.5f),
+                    battleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.5f),
                                     manaDif.ToString(), Color.white, Color.cyan);
                 else if (target.Mana == target.MaxMana)
-                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.5f),
+                    battleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.5f),
                                     "MAX", Color.cyan);
 
                 for (int i = 0; i < states.Length; i++)
                 {
-                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 2f + (0.2f * i)), states[i].Name,
+                    battleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 2f + (0.2f * i)), states[i].Name,
                                                             Color.white, states[i].Color);
                 }
 
@@ -181,9 +181,9 @@ public class BattleUsingService
             VisualAttackEffect effect;
 
             if (targets.Where(i => i is RPGEnemy).Count() == 1)
-                effect = battleManager.utility.SpawnAttackEffect(item.VisualEffect);
+                effect = battleManager.Utility.SpawnAttackEffect(item.VisualEffect);
             else
-                effect = battleManager.utility.SpawnAttackEffect(item.VisualEffect, model.AttackGlobalPoint);
+                effect = battleManager.Utility.SpawnAttackEffect(item.VisualEffect, model.AttackGlobalPoint);
 
             effect.Invoke();
 
@@ -229,19 +229,19 @@ public class BattleUsingService
 
                 if (healDif < 0)
                 {
-                    battleManager.utility.SpawnFallingText((Vector2)model.transform.position + new Vector2(0, 0.5f),
+                    battleManager.Utility.SpawnFallingText((Vector2)model.transform.position + new Vector2(0, 0.5f),
                                     Mathf.Abs(healDif).ToString(), Color.white, Color.red);
 
                     model.Damage();
                 }
                     
                 else if (healDif > 0)
-                    battleManager.utility.SpawnFallingText((Vector2)model.transform.position + new Vector2(0, 0.5f),
+                    battleManager.Utility.SpawnFallingText((Vector2)model.transform.position + new Vector2(0, 0.5f),
                                     healDif.ToString(), Color.white, Color.green);
 
                 for (int i = 0; i < states.Length; i++)
                 {
-                    battleManager.utility.SpawnFallingText(model.AttackGlobalPoint + new Vector2(0, 0.2f + (0.2f * i)), states[i].Name,
+                    battleManager.Utility.SpawnFallingText(model.AttackGlobalPoint + new Vector2(0, 0.2f + (0.2f * i)), states[i].Name,
                         Color.white, states[i].Color);
                 }
 
@@ -263,25 +263,25 @@ public class BattleUsingService
                 CharacterBox box = battleManager.UI.CharacterBox.GetBox(character);
 
                 if (healDif < 0)
-                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
+                    battleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
                                     Mathf.Abs(healDif).ToString(), Color.white, Color.red);
                 else if (healDif > 0)
-                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
+                    battleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
                                     healDif.ToString(), Color.white, Color.green);
                 else
-                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
+                    battleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f),
                                         "MAX", Color.green, Color.green);
 
                 if (manaDif > 0)
-                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.5f),
+                    battleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.5f),
                                     manaDif.ToString(), Color.white, Color.cyan);
                 else if (manaDif == 0)
-                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.5f),
+                    battleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.5f),
                                     "MAX", Color.cyan, Color.cyan);
 
                 for (int i = 0; i < states.Length; i++)
                 {
-                    battleManager.utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 2f + (0.2f * i)), states[i].Name,
+                    battleManager.Utility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 2f + (0.2f * i)), states[i].Name,
                                                             Color.white, states[i].Color);
                 }
 

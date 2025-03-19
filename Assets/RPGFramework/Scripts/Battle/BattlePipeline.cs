@@ -775,7 +775,7 @@ public class BattlePipeline
 
                         yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.BeforeHit, false, turnData.EnemyBuffer.Tag));
 
-                        VisualAttackEffect effect = currentCharacter.WeaponSlot == null ? Data.DefaultEffect : currentCharacter.WeaponSlot.VisualEffect;
+                        BattleAttackEffect effect = currentCharacter.WeaponSlot == null ? Data.DefaultEffect : currentCharacter.WeaponSlot.VisualEffect;
 
                         if (effect.LocaleInCenter)
                             effect = BattleManager.BattleUtility.SpawnAttackEffect(effect);

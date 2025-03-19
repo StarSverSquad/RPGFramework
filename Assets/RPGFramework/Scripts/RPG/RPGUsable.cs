@@ -7,7 +7,7 @@ namespace RPGF.RPG
 {
     public class RPGUsable : RPGBase
     {
-        [Header("Настройки использования")]
+        [Header("Настройки использования:")]
         [Space]
         public Sprite Icon;
         [Space]
@@ -16,7 +16,7 @@ namespace RPGF.RPG
         [Space]
         public GraphEvent Event;
         [Space]
-        public VisualAttackEffect VisualEffect;
+        public BattleAttackEffect VisualEffect;
         [Space]
         public bool WakeupCharacter = false;
         [Space]

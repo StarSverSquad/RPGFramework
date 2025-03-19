@@ -1,10 +1,8 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class VisualAttackEffect : MonoBehaviour
+public class BattleAttackEffect : MonoBehaviour
 {
     [SerializeField]
     private Image spriteRenderer;

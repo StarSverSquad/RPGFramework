@@ -17,7 +17,7 @@ public class BattleData : MonoBehaviour, IDisposable
     private Sprite[] actionIcons = new Sprite[6];
 
     [Header("Ссылки")]
-    public VisualAttackEffect DefaultEffect;
+    public BattleAttackEffect DefaultEffect;
 
     public FallingText DmgText;
 

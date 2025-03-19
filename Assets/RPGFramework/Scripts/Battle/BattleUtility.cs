@@ -109,7 +109,7 @@ public class BattleUtility
 
     #region BATTLE EFFECT CONTROL
 
-    public VisualAttackEffect SpawnAttackEffect(VisualAttackEffect instance, Vector2 position)
+    public BattleAttackEffect SpawnAttackEffect(BattleAttackEffect instance, Vector2 position)
     {
         GameObject obj = Object.Instantiate(
             instance.gameObject, 
@@ -117,9 +117,9 @@ public class BattleUtility
             Quaternion.identity, 
             Data.BattleCanvas.transform);
 
-        return obj.GetComponent<VisualAttackEffect>();
+        return obj.GetComponent<BattleAttackEffect>();
     }
-    public VisualAttackEffect SpawnAttackEffect(VisualAttackEffect instance)
+    public BattleAttackEffect SpawnAttackEffect(BattleAttackEffect instance)
     {
         return SpawnAttackEffect(
             instance, 
@@ -236,7 +236,7 @@ public class BattleUtility
         {
             EnemyModel model = _battle.EnemyModels.GetModel(targets.Where(i => i is RPGEnemy).First() as RPGEnemy);
 
-            VisualAttackEffect effect;
+            BattleAttackEffect effect;
 
             if (targets.Where(i => i is RPGEnemy).Count() == 1)
                 effect = SpawnAttackEffect(usable.VisualEffect);

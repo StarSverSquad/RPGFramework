@@ -1,5 +1,6 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using RPGF.Character;
+using RPGF.RPG;
+using System.Collections;
 
 public class AddRemoveCharacterAction : GraphActionBase
 {
@@ -8,7 +9,7 @@ public class AddRemoveCharacterAction : GraphActionBase
 
     public RPGCharacter character;
 
-    public DynamicExplorerObject existentObject;
+    public PlayableCharacterModelController existentObject;
 
     public AddRemoveCharacterAction() : base("AddRemoveCharacter")
     {
@@ -26,7 +27,7 @@ public class AddRemoveCharacterAction : GraphActionBase
             GameManager.Instance.Character.RemoveCharacter(character);
 
         if (updateModels)
-            LocalManager.Instance.Character.UpdateModels();
+            LocalManager.Instance.Character.RebuildModels();
         else if (existentObject != null)
         {
             if (isAdd)
@@ -46,5 +47,16 @@ public class AddRemoveCharacterAction : GraphActionBase
     public override string GetInfo()
     {
         return "Добавляет или же удаляет персонажа из пачки.";
+    }
+
+    public override object Clone()
+    {
+        return new AddRemoveCharacterAction()
+        {
+            isAdd = isAdd,
+            character = character,
+            updateModels = updateModels,
+            existentObject = existentObject
+        };
     }
 }

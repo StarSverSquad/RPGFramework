@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
+using RPGF.RPG;
 
 [CustomEditor(typeof(RPGBattleInfo))]
 public class RPGBattleInfoEditor : Editor

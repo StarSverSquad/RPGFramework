@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections;
+﻿using RPGF.RPG;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,7 +17,7 @@ public class BattleData : MonoBehaviour, IDisposable
     private Sprite[] actionIcons = new Sprite[6];
 
     [Header("Ссылки")]
-    public VisualAttackEffect DefaultEffect;
+    public BattleAttackEffect DefaultEffect;
 
     public FallingText DmgText;
 

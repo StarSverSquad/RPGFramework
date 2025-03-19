@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine.UI;
 using UnityEngine;
+using DG.Tweening;
 
 public class UndertaleBattleTransmition : VisualBattleTransmitionEffectBase
 {
@@ -21,7 +20,7 @@ public class UndertaleBattleTransmition : VisualBattleTransmitionEffectBase
 
     public override IEnumerator PartOne()
     {
-        heart.transform.position = ExplorerManager.GetPlayerPosition3D();
+        heart.transform.position = ExplorerManager.GetPlayerPosition3D() + new Vector3(0, 0.35f, 0);
 
         source.clip = tick;
 
@@ -62,12 +61,11 @@ public class UndertaleBattleTransmition : VisualBattleTransmitionEffectBase
         back.enabled = true;
         heart.enabled = true;
 
-        yield return StartCoroutine(AnimationPack.MoveToBySpeedLerp2D(heart.transform.position, transform.position, 2f, value =>
-        {
-            heart.transform.position = value;
-        }));
+        float time = Vector2.Distance(transform.position, heart.transform.position) / 2f;
 
-        yield return new WaitForSeconds(1f);
+        heart.transform.DOMove(transform.position, time).Play();
+
+        yield return new WaitForSeconds(time);
     }
 
     public override IEnumerator PartTwo()

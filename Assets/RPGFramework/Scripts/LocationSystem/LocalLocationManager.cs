@@ -8,20 +8,20 @@ using UnityEngine;
 public class LocalLocationManager : MonoBehaviour, IManagerInitialize
 {
     [SerializeField]
-    private List<LocationObject> Locations = new List<LocationObject>();
+    private List<LocationController> Locations = new List<LocationController>();
 
-    public LocationObject Current => GetLocationByInfo(GameManager.Instance.LocationManager.CurrentLocation);
+    public LocationController Current => GetLocationByInfo(GameManager.Instance.LocationManager.CurrentLocation);
 
     public void Initialize()
     {
         GameObject locationContainer = GameObject.FindGameObjectWithTag("LocationsContainer");
 
-        LocationObject[] locations = locationContainer.GetComponentsInChildren<LocationObject>();
+        LocationController[] locations = locationContainer.GetComponentsInChildren<LocationController>();
 
         Locations.AddRange(locations);
     }
 
-    public LocationObject GetLocationByInfo(LocationInfo info)
+    public LocationController GetLocationByInfo(LocationInfo info)
     {
         return Locations.FirstOrDefault(i => i.Info == info);
     }

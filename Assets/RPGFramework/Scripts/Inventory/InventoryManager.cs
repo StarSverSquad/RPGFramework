@@ -1,3 +1,4 @@
+using RPGF.RPG;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,16 +24,11 @@ public class InventoryManager : IEnumerable<InventorySlot>, IDisposable
         get => slots.First(i => i.Item == item);
     }
 
-    /// <summary>
-    /// Возвращает список всех потребляемых предметов
-    /// </summary>
+
     public List<RPGConsumed> GetConsumeds()
     {
         return slots.Where(i => i.Item is RPGConsumed).Select(i => i.Item as RPGConsumed).ToList();
     }
-    /// <summary>
-    /// Возвращает список всех надеваемый предметов
-    /// </summary>
     public List<RPGWerable> GetWerables()
     {
         return slots.Where(i => i.Item is RPGWerable).Select(i => i.Item as RPGWerable).ToList();
@@ -136,7 +132,7 @@ public class InventoryManager : IEnumerable<InventorySlot>, IDisposable
 
         if (slot == null && value <= 0)
         {
-            Debug.LogWarning("Предмет не найден в инвенторе");
+            Debug.LogWarning("Предмет не найден в инвентаре");
             return;
         }
 

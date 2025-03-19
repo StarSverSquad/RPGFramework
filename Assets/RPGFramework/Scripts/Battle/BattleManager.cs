@@ -1,3 +1,4 @@
+using RPGF.RPG;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,7 +8,6 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
 {
     public static BattleManager Instance;
 
-    public BattlePipeline Pipeline;
     public BattleChoiceManager Choice;
     public BattleFieldManager BattleField;
     public BattleBackground Background;
@@ -20,16 +20,21 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
     public BattleUIShake Shaker;
     public BattleUIManager UI;
     public MinigameManager Minigame;
-
-
-    public BattleUtility utility;
-    public static BattleUtility Utility => Instance.utility;
     public BattleData data;
+
+
+    public BattlePipeline Pipeline { get; private set; }
+
+    public BattleUtility Utility { get; private set; }
+    public static BattleUtility BattleUtility => Instance.Utility;
+
+    // TRASH
     public static BattleData Data => Instance.data;
 
     public static bool IsBattle => Instance.Pipeline.MainIsWorking;
 
-    public static void StartBattle(RPGBattleInfo info) => Utility.StartBattle(info); 
+    public static void StartBattle(RPGBattleInfo info) => BattleUtility.StartBattle(info); 
+    //
 
     public void Initialize()
     {
@@ -40,6 +45,9 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
 
     public override void InitializeChild()
     {
+        Pipeline = new BattlePipeline(this, CommonManager.Instance);
+        Utility = new BattleUtility(this);
+
         Player.SetActive(false);
     }
 }

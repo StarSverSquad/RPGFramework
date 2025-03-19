@@ -47,11 +47,15 @@ public class MessageBoxManager : TextWriterBase
 
     private TextVisualEffectBase textEffect = null;
 
+    private Type[] allTextEffects;
+
     public MessageInfo Message => message is MessageInfo m ? m : null;
 
     public override void Initialize()
     {
         base.Initialize();
+
+        allTextEffects = GetType().Assembly.GetTypes().Where(t => t.BaseType == typeof(TextVisualEffectBase)).ToArray();
 
         arrow.SetActive(false);
         messageBox.gameObject.SetActive(false);
@@ -158,13 +162,18 @@ public class MessageBoxManager : TextWriterBase
         // Эфекты текста нужно наверное даработать
         if (Message.textEffectTypeName != "None" && Message.textEffectTypeName != string.Empty)
         {
-            TextVisualEffectBase effect = (TextVisualEffectBase)Activator.CreateInstance(GetType().Assembly.GetType(Message.textEffectTypeName), new object[] { textMeshPro, this });
+            TextVisualEffectBase effect = (TextVisualEffectBase)Activator
+                .CreateInstance(allTextEffects.First(ef => ef.Name == Message.textEffectTypeName), textMeshPro, this);
 
             effect.StartLetter = 0;
-
             effect.StartEffect();
 
             textEffect = effect;
+        }
+        else if (textEffect != null)
+        {
+            textEffect.StopEffect();
+            textEffect = null;
         }
 
         SetupDialog();
@@ -176,13 +185,6 @@ public class MessageBoxManager : TextWriterBase
         {
             messageBox.gameObject.SetActive(false);
             nameBox.gameObject.SetActive(false);
-        }
-
-        if (textEffect != null)
-        {
-            textEffect.StopEffect();
-
-            textEffect = null;
         }
     }
 

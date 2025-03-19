@@ -1,6 +1,5 @@
+using RPGF.RPG;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -29,9 +28,7 @@ public class CharacterBox : RPGFrameworkBehaviour, IDisposable
     [SerializeField]
     private LineBar manaBar;
 
-    [SerializeField]
-    private RPGCharacter character;
-    public RPGCharacter Character => character;
+    public RPGCharacter Character { get; private set; }
 
     [SerializeField]
     private bool isDead = false;
@@ -41,7 +38,7 @@ public class CharacterBox : RPGFrameworkBehaviour, IDisposable
 
     public void Initialize(RPGCharacter character)
     {
-        this.character = character;
+        Character = character;
 
         character.OnManaChanged += UpdateMana;
         character.OnHealChanged += UpdateHeal;
@@ -84,18 +81,14 @@ public class CharacterBox : RPGFrameworkBehaviour, IDisposable
 
     private void UpdateHeal()
     {
-        healBar.SetValue((float)character.Heal / (float)character.MaxHeal);
+        healBar.SetValue((float)Character.Heal / (float)Character.MaxHeal);
     }
 
     private void UpdateMana()
     {
-        manaBar.SetValue((float)character.Mana / (float)character.MaxMana);
+        manaBar.SetValue((float)Character.Mana / (float)Character.MaxMana);
     }
 
-    /// <summary>
-    /// Обноаляет значки состояний персонажа
-    /// </summary>
-    /// <param name="states">Новые состояния</param>
     public void UpdateStates(RPGEntityState state)
     {
         iconList.UpdateIcons(Character.States.Select(i => i.Icon).ToArray());
@@ -103,12 +96,9 @@ public class CharacterBox : RPGFrameworkBehaviour, IDisposable
         //SetStatesVisibility(iconList.HasIcons);
     }
 
-    /// <summary>
-    /// Обноаляет значки состояний персонажа
-    /// </summary>
     public void UpdateStates()
     {
-        iconList.UpdateIcons(character.States.Select(i => i.Icon).ToArray());
+        iconList.UpdateIcons(Character.States.Select(i => i.Icon).ToArray());
 
         //SetStatesVisibility(iconList.HasIcons);
     }
@@ -122,11 +112,11 @@ public class CharacterBox : RPGFrameworkBehaviour, IDisposable
     {
         if (initialized)
         {
-            character.OnManaChanged -= UpdateMana;
-            character.OnHealChanged -= UpdateHeal;
-            character.OnAllStatesChanged -= UpdateStates;
+            Character.OnManaChanged -= UpdateMana;
+            Character.OnHealChanged -= UpdateHeal;
+            Character.OnAllStatesChanged -= UpdateStates;
 
-            character = null;
+            Character = null;
 
             iconList.Dispose();
 

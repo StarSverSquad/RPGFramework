@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using RPGF;
+using RPGF.Character;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -12,9 +14,9 @@ public class TranslateCharacterAction : GraphActionBase
     public bool InParty;
 
     public string CharacterTag;
-    public DynamicExplorerObject CharacterInScene;
+    public CharacterModelControllerBase CharacterInScene;
 
-    public bool ReplaceInstance;
+    public bool ReplaceInstantly;
     public bool Wait;
 
     public float Speed;
@@ -22,7 +24,7 @@ public class TranslateCharacterAction : GraphActionBase
     public Vector2 Offset;
     public Transform Point;
 
-    public CommonDirection Direction;
+    public ViewDirection Direction;
 
     public TranslateType Type;
 
@@ -36,29 +38,31 @@ public class TranslateCharacterAction : GraphActionBase
         CharacterTag = string.Empty;
         CharacterInScene = null;
 
-        ReplaceInstance = false;
+        ReplaceInstantly = false;
         Wait = false;
 
         Speed = 0;
 
         Offset = Vector2.zero;
-        Direction = CommonDirection.None;
+        Direction = ViewDirection.Down;
 
         Type = TranslateType.MoveRelative;
     }
 
     public override IEnumerator ActionCoroutine()
     {
-        DynamicExplorerObject model = null;
+        CharacterModelControllerBase model = null;
 
-        int index = 0;
+        bool isFisrtCharacter = false;
         if (InParty)
         {
-            for ( ; index < Character.Characters.Length; index++)
+            for (int index = 0; index < Character.Characters.Length; index++)
             {
                 if (Character.Characters[index].Tag == CharacterTag)
                 {
                     model = Character.Models[index];
+
+                    isFisrtCharacter = index == 0;
 
                     break;
                 }
@@ -78,7 +82,7 @@ public class TranslateCharacterAction : GraphActionBase
             case TranslateType.Move:
             case TranslateType.MoveRelative:
 
-                if (ReplaceInstance)
+                if (ReplaceInstantly)
                 {
                     if (Type == TranslateType.Move)
                         model.transform.position = Point.transform.position;
@@ -88,15 +92,24 @@ public class TranslateCharacterAction : GraphActionBase
                 else
                 {
                     if (Type == TranslateType.Move)
-                        model.MoveToBySpeed(Point.transform.position, Speed);
+                    {
+                        float time = Vector2.Distance(Point.transform.position, model.transform.position) / Speed;
+
+                        model.MoveTo(Point.transform.position, time);
+                    }
                     else
-                        model.TranslateBySpeed(Offset, Speed);
+                    {
+                        float time = Offset.magnitude / Speed;
+
+                        model.MoveToRelative(Offset, time);
+                    }
+                        
 
                     if (Wait)
                         yield return new WaitWhile(() => model.IsMove);
                 }
 
-                if (InParty && index == 0)
+                if (isFisrtCharacter)
                 {
                     if (Type == TranslateType.Move)
                         Player.TeleportToVector(Point.transform.position);
@@ -106,15 +119,10 @@ public class TranslateCharacterAction : GraphActionBase
 
                 break;
             case TranslateType.Rotate:
-                if (InParty && index == 0)
-                {
+                if (isFisrtCharacter)
                     ExplorerManager.Instance.PlayerManager.movement.RotateTo(Direction);
 
-                    model.StopAnimation();
-                    model.RotateTo(Direction);
-                }
-                else
-                    model.RotateTo(Direction);
+                model.RotateTo(Direction);
                 break;
             case TranslateType.RotateToPlayer:
                 model.RotateToPlayer();

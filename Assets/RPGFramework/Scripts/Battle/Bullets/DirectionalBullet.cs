@@ -1,7 +1,8 @@
-﻿using System.Collections;
+﻿using RPGF.Battle.Pattern;
+using System.Collections;
 using UnityEngine;
 
-public class DirectionalBullet : PatternBullet
+public class DirectionalBullet : PatternBulletBase
 {
     [SerializeField]
     private GameObject model;

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using RPGF.RPG;
 using UnityEngine;
 
 public class ItemCondition : ConditionBase

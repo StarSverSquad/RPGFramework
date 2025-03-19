@@ -1,9 +1,6 @@
+using RPGF;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using System.IO.Pipes;
-using System.Linq;
 using UnityEngine;
 
 [Serializable]
@@ -18,10 +15,12 @@ public class SaveSlot
     public CustomDictionary<bool> BoolValues;
     public CustomDictionary<string> StringValues;
 
+    public List<string> BlockedLocationEvents;
+
     public CustomDictionary<int> InventoryItems;
 
     public Vector2 PlayerPosition;
-    public CommonDirection PlayerDirection;
+    public ViewDirection PlayerDirection;
 
     public List<CharacterSaveInfo> SavedCharacters;
 

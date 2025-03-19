@@ -1,4 +1,5 @@
-﻿using UnityEditor.UIElements;
+﻿using RPGF;
+using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
 [UseActionNode]
@@ -38,7 +39,7 @@ public class LocationTrasmitionNode : ActionNodeWrapper<LocationTrasmitionAction
 
         enumField.RegisterValueChangedCallback(data =>
         {
-            Action.Message.Direction = (CommonDirection)data.newValue;
+            Action.Message.Direction = (ViewDirection)data.newValue;
 
             MakeDirty();
         });

@@ -1,29 +1,31 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Enemy", menuName = "RPG/Enemy")]
-public class RPGEnemy : RPGEntity
+namespace RPGF.RPG
 {
-    [Serializable]
-    public struct EnemyAct
+    [CreateAssetMenu(fileName = "Enemy", menuName = "RPG/Enemy")]
+    public class RPGEnemy : RPGEntity
     {
-        public string Name;
-        public string Description;
-        public GraphEvent Event;
+        [Serializable]
+        public struct EnemyAct
+        {
+            public string Name;
+            public string Description;
+            public GraphEvent Event;
 
-        public bool OnlyOne;
+            public bool OnlyOne;
 
-        public static EnemyAct NullAct => new EnemyAct() { Name = "NULL" };
+            public static EnemyAct NullAct => new EnemyAct() { Name = "NULL" };
+        }
+
+        [Tooltip("—юда нужны объекты которые имеют RPGAttackPattern!")]
+        public List<BattleAttackPatternBase> Patterns = new List<BattleAttackPatternBase>();
+
+        public List<EnemyAct> Acts = new List<EnemyAct>();
+
+        public GameObject EnemyModel;
     }
 
-    [Tooltip("—юда нужны объекты которые имеют RPGAttackPattern!")]
-    public List<RPGAttackPattern> Patterns = new List<RPGAttackPattern>();
 
-    public List<EnemyAct> Acts = new List<EnemyAct>();
-
-    public GameObject EnemyModel;
 }
-
-

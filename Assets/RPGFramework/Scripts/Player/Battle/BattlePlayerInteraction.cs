@@ -1,4 +1,5 @@
 using DG.Tweening;
+using RPGF.Battle.Pattern;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class BattlePlayerInteraction : MonoBehaviour
     public bool IsHitCooldown => cooldownCorotine != null;
 
     private Coroutine cooldownCorotine;
+
     private Sequence damageAnimation;
 
     private void OnEnable()
@@ -24,9 +26,9 @@ public class BattlePlayerInteraction : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag == "PatternBullet")
+        if (collision.CompareTag("PatternBullet"))
         {
-            PatternBullet bullet = collision.gameObject.GetComponent<PatternBullet>();
+            PatternBulletBase bullet = collision.gameObject.GetComponent<PatternBulletBase>();
 
             if (IsHitCooldown && !bullet.IgnoreHitCooldown)
             {
@@ -57,13 +59,12 @@ public class BattlePlayerInteraction : MonoBehaviour
 
             damageAnimation.SetLoops(3).Play();
 
-
             if (!IsHitCooldown)
                 cooldownCorotine = StartCoroutine(CooldownCoroutine());
 
             foreach (var item in BattleManager.Data.TurnsData.Where(i => i.IsTarget))
             {
-                BattleManager.Utility.DamageCharacterByBullet(item, bullet);
+                BattleManager.BattleUtility.DamageCharacterByBullet(item, bullet);
             }
         }
     }

@@ -1,13 +1,13 @@
+using RPGF;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Resources;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GlobalLocationManager : MonoBehaviour
+public class GlobalLocationManager : RPGFrameworkBehaviour
 {
+    #region TransimitionMessage
     [Serializable]
     public class TransimitionMessage
     {
@@ -18,7 +18,7 @@ public class GlobalLocationManager : MonoBehaviour
         public bool TeleportToPoint;
 
         public Vector2 Position;
-        public CommonDirection Direction;
+        public ViewDirection Direction;
 
         public TransimitionMessage()
         {
@@ -26,22 +26,20 @@ public class GlobalLocationManager : MonoBehaviour
             Point = string.Empty;
             TeleportToPoint = true;
             Position = Vector2.zero;
-            Direction = CommonDirection.Down;
+            Direction = ViewDirection.Down;
         }
     }
+    #endregion
 
-    public event Action<LocationInfo> OnLocationChanged;
-
-    public LocationInfo CurrentLocation = null;
+    public LocationInfo CurrentLocation { get; private set; } = null;
 
     private Coroutine changingCoroutine = null;
     public bool IsChanging => changingCoroutine != null;
 
-    /// <summary>
-    /// Переносит игрока в лакацию к заготовленой точке
-    /// </summary>
-    /// <param name="location">Локация</param>
-    /// <param name="pointName">Название точки</param>
+    public event Action<LocationInfo> OnLocationChanged;
+
+    #region API
+
     public void ChangeLocation(LocationInfo location, string pointName = "default")
     {
         if (IsChanging || location == null) 
@@ -52,19 +50,13 @@ public class GlobalLocationManager : MonoBehaviour
             Location = location,
             Point = pointName,
             TeleportToPoint = true,
-            Direction = CommonDirection.None,
+            Direction = ViewDirection.Down,
             Position = Vector2.zero
         };
 
         changingCoroutine = StartCoroutine(ChangeLocationCoroutine(message));
     }
-    /// <summary>
-    /// Переносит игрока в лакацию к определённой позиции на сцене
-    /// </summary>
-    /// <param name="location">Локация</param>
-    /// <param name="position">Позиция на сцене</param>
-    /// <param name="direction">Направление взгляда</param>
-    public void ChangeLocation(LocationInfo location, Vector2 position, CommonDirection direction)
+    public void ChangeLocation(LocationInfo location, Vector2 position, ViewDirection direction)
     {
         if (IsChanging) return;
 
@@ -79,9 +71,6 @@ public class GlobalLocationManager : MonoBehaviour
 
         changingCoroutine = StartCoroutine(ChangeLocationCoroutine(message));
     }
-    /// <summary>
-    /// Переносит игрока в лакцию по сответсвии с заданными параметрами в TransimitionMessage
-    /// </summary>
     public void ChangeLocation(TransimitionMessage message)
     {
         if (IsChanging) return;
@@ -100,80 +89,84 @@ public class GlobalLocationManager : MonoBehaviour
         return locations.First(i => i.Name == locName);
     }
 
+    #endregion
+
     private IEnumerator ChangeLocationCoroutine(TransimitionMessage message)
     {
-        GameManager.Instance.LoadingScreen.ActivatePart1();
+        Game.LoadingScreen.ActivatePart1();
 
-        yield return new WaitWhile(() => GameManager.Instance.LoadingScreen.BgIsFade);
+        yield return new WaitWhile(() => Game.LoadingScreen.BgIsFade);
 
         if (CurrentLocation != null && message.Location.SceneName == SceneManager.GetActiveScene().name)
-            LocalManager.Instance.Location.GetLocationByInfo(CurrentLocation).OnLeave();
+            Local.Location.GetLocationByInfo(CurrentLocation).OnLeave();
 
         if (message.Location.SceneName != SceneManager.GetActiveScene().name)
         {
-            GameManager.Instance.SceneLoader.LoadGameScene(message.Location.SceneName);
+            Game.SceneLoader.LoadGameScene(message.Location.SceneName);
 
-            yield return new WaitWhile(() => GameManager.Instance.SceneLoader.IsLoading);
+            yield return new WaitWhile(() => Game.SceneLoader.IsLoading);
         }
 
-        if (LocalManager.Instance != null)
+        if (!Local)
         {
-            LocationObject obj = LocalManager.Instance.Location.GetLocationByInfo(message.Location);
+            Debug.LogError("LocalManager не найден!");
+            yield break;
+        }
 
-            obj.OnEnter();
+        LocationController location = Local.Location.GetLocationByInfo(message.Location);
 
-            if (message.TeleportToPoint)
+        location.OnEnter();
+
+        if (message.TeleportToPoint)
+        {
+            if (location.SpawnPoints.Count() == 0)
             {
-                if (obj.SpawnPoints.Count() == 0)
-                {
-                    Debug.LogError("У локации нет точки спавна!");
-
-                    yield break;
-                }
-
-                LocationSpawnPoint spawnPoint = obj.SpawnPoints.FirstOrDefault(obj => obj.Name == message.Point)
-                                                ?? obj.SpawnPoints[0];
-
-                ExplorerManager.Instance.PlayerManager.TeleportToVector(spawnPoint.transform.position);
-
-                ExplorerManager.Instance.PlayerManager.movement.RotateTo(spawnPoint.SpawnDirection);
-            }
-            else
-            {
-                ExplorerManager.Instance.PlayerManager.TeleportToVector(message.Position);
-
-                ExplorerManager.Instance.PlayerManager.movement.RotateTo(message.Direction);
+                Debug.LogError("У локации нет точки спавна!");
+                yield break;
             }
 
-            LocalManager.Instance.Character.UpdateModels();
+            LocationSpawnPoint spawnPoint = 
+                location.SpawnPoints.FirstOrDefault(obj => obj.Name == message.Point)
+                     ?? location.SpawnPoints[0];
 
-            switch (message.Location.CameraLink)
-            {
-                case MainCameraManager.CameraLink.Player:
-                    LocalManager.Instance.Camera.SetPlayer();
-                    break;
-                case MainCameraManager.CameraLink.LocationPoint:
-                    LocalManager.Instance.Camera.SetLocationPoint(obj);
-                    break;
-                case MainCameraManager.CameraLink.PlayerFollow:
-                    LocalManager.Instance.Camera.SetPlayerFollow();
-                    break;
-            }
+            Explorer.PlayerManager.TeleportToVector(spawnPoint.transform.position);
+
+            Explorer.PlayerManager.movement.RotateTo(spawnPoint.SpawnDirection);
         }
         else
         {
-            Debug.LogError("LocalManager не найден!");
+            Explorer.PlayerManager.TeleportToVector(message.Position);
 
-            yield break;
+            Explorer.PlayerManager.movement.RotateTo(message.Direction);
+        }
+
+        Local.Character.RebuildModels();
+
+        switch (message.Location.CameraCapture)
+        {
+            case MainCameraManager.CaptureType.Player:
+                Local.Camera.PlaceToPlayer();
+                break;
+            case MainCameraManager.CaptureType.LocationPoint:
+                Local.Camera.PlaceToLocationPoint(location);
+                break;
+            case MainCameraManager.CaptureType.PlayerFollow:
+                Local.Camera.PlaceToLocationPoint(location);
+
+                Local.Camera.FollowToPlayer();
+                break;
+            default:
+                Local.Camera.PlaceToPlayer();
+                break;
         }
 
         CurrentLocation = message.Location;
 
         OnLocationChanged?.Invoke(message.Location);
 
-        GameManager.Instance.LoadingScreen.DeactivatePart1();
+        Game.LoadingScreen.DeactivatePart1();
 
-        yield return new WaitWhile(() => GameManager.Instance.LoadingScreen.BgIsFade);
+        yield return new WaitWhile(() => Game.LoadingScreen.BgIsFade);
 
         changingCoroutine = null;
     }

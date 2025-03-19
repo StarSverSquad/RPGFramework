@@ -1,127 +1,162 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using RPGF.Attributes;
+using DG.Tweening;
+using System;
 
-public class MainCameraManager : MonoBehaviour
+public class MainCameraManager : RPGFrameworkBehaviour
 {
-    public enum CameraLink
+    public enum CaptureType
     {
-        Player, LocationPoint, PlayerFollow, FreeMove
+        Player, PlayerFollow, LocationPoint, FreeMove, None
     }
-
-    public enum MoveFuction
-    {
-        Linear, Interpolate
-    }
-
-    private CameraLink link = CameraLink.LocationPoint;
-    public CameraLink Link => link;
-
-    private bool isMoving = false;
-    public bool IsMoving => isMoving;
-
-    public Vector2 Offset;
-
-    public float Speed;
 
     public float ZPosition = -5000;
 
-    public MoveFuction MoveType = MoveFuction.Linear;
+    public Vector2 PlayerFollowBorder;
 
-    [SerializeField]
-    private Vector2 targetPoint = Vector2.zero;
+    #region PROPS
 
-    private void FixedUpdate()
+    private CaptureType capture;
+    public CaptureType Capture
     {
-        UpdatePlayerFollow();
-    }
+        get => capture;
 
-    public void SetLocationPoint(LocationObject obj = null)
-    {
-        link = CameraLink.LocationPoint;
-
-        LocationObject loc = obj ?? LocalManager.GetCurrentLocation();
-
-        transform.position = new Vector3(loc.CameraPoint.position.x, loc.CameraPoint.position.y, transform.position.z);
-    }
-
-    public void SetPlayerFollow()
-    {
-        link = CameraLink.PlayerFollow;
-
-        Vector2 playerPos = ExplorerManager.GetPlayerPosition();
-
-        transform.position = new Vector3(playerPos.x, playerPos.y, transform.position.z);
-    }
-
-    public void SetPlayer()
-    {
-        link = CameraLink.Player;
-
-        Vector2 playerPos = ExplorerManager.GetPlayerPosition();
-
-        transform.position = new Vector3(playerPos.x, playerPos.y, transform.position.z);
-    }
-
-    private void UpdatePlayerFollow()
-    {
-        if (Link == CameraLink.PlayerFollow)
+        private set
         {
-            targetPoint = ExplorerManager.GetPlayerPosition();
-
-            switch (ExplorerManager.GetPlayerViewDirection())
-            {
-                case CommonDirection.Up:
-                    targetPoint += new Vector2(0, Offset.y);
-                    break;
-                case CommonDirection.Down:
-                    targetPoint += new Vector2(0, -Offset.y);
-                    break;
-                case CommonDirection.Right:
-                    targetPoint += new Vector2(Offset.x, 0);
-                    break;
-                case CommonDirection.Left:
-                    targetPoint += new Vector2(-Offset.x, 0);
-                    break;
-                default:
-                    Debug.LogError("Не возможно определить напровление взгляда игрока!");
-                    break;
-            }
-
-            switch (MoveType)
-            {
-                case MoveFuction.Linear:
-                    transform.position = Vector2.MoveTowards(transform.position, targetPoint, Speed * Time.fixedDeltaTime);
-                    break;
-                case MoveFuction.Interpolate:
-                    transform.position = Vector2.Lerp(transform.position, targetPoint, Speed * Time.fixedDeltaTime);
-                    break;
-                default:
-                    Debug.LogWarning("Такой функции нет!");
-                    break;
-            }
-
-            transform.position = new Vector3(transform.position.x, transform.position.y, ZPosition);
+            capture = value;
+            OnCaptureChanged?.Invoke(value);
         }
     }
 
-    public void MoveTo()
+    #endregion
+
+    private Tween moveTween = null;
+
+    #region EVENTS
+
+    public Action OnFreeMoveEnd;
+    public Action OnFreeMoveStart;
+
+    public Action<CaptureType> OnCaptureChanged;
+
+    #endregion
+
+    public override void Initialize()
     {
-        /// TODO
+        capture = CaptureType.None;
     }
 
-    private IEnumerator MoveToCoroutine()
+    private void Update()
     {
-        isMoving = true;
+        if (Capture == CaptureType.PlayerFollow)
+            PlayerFollow();
+    }
 
-        CameraLink prevLink = link;
-        link = CameraLink.FreeMove;
+    #region API
 
-        /// TODO
+    public void PlaceToLocationPoint(LocationController obj = null)
+    {
+        Capture = CaptureType.LocationPoint;
 
-        link = prevLink;
-        isMoving = false;
+        LocationController loc = obj ?? LocalManager.GetCurrentLocation();
 
-        yield break;
+        transform.position = new Vector3(
+            loc.CameraPoint.position.x, 
+            loc.CameraPoint.position.y, 
+            ZPosition);
+    }
+
+    public void FollowToPlayer()
+    {
+        Capture = CaptureType.PlayerFollow;
+    }
+
+    public void PlaceToPlayer()
+    {
+        Capture = CaptureType.Player;
+
+        Vector2 playerPos = ExplorerManager.GetPlayerPosition();
+
+        transform.position = new Vector3(playerPos.x, playerPos.y, transform.position.z);
+
+    }
+
+    public void MoveTo(Vector2 position, float time, Ease easing = Ease.Linear)
+    {
+        DisposeMoveTween();
+
+        Capture = CaptureType.FreeMove;
+
+        moveTween = transform.DOMove(position, time).SetEase(easing);
+
+        moveTween.onPlay += () =>
+        {
+            OnFreeMoveStart?.Invoke();
+        };
+
+        moveTween.onComplete += () =>
+        {
+            Capture = CaptureType.None;
+
+            OnFreeMoveEnd?.Invoke();
+
+            DisposeMoveTween();
+        };
+
+        moveTween.Play();
+    }
+
+    #endregion
+
+    private void PlayerFollow()
+    {
+        Vector2 playerPosition = ExplorerManager.GetPlayerPosition();
+        Vector2 cameraPosition = transform.position;
+        Vector2 cameraToPlayer = playerPosition - cameraPosition;
+
+        Vector2 borderX = new(
+            cameraPosition.x + PlayerFollowBorder.x,
+            cameraPosition.x - PlayerFollowBorder.x
+            );
+
+        Vector2 borderY = new(
+            cameraPosition.y + PlayerFollowBorder.y,
+            cameraPosition.y - PlayerFollowBorder.y
+            );
+
+        Vector3 newCameraPosition = Vector3.zero;
+
+        newCameraPosition.z = ZPosition;
+        newCameraPosition.x = cameraPosition.x;
+        newCameraPosition.y = cameraPosition.y;
+
+        if (playerPosition.x > borderX.x || playerPosition.x < borderX.y)
+        {
+            bool minus = cameraToPlayer.x < 0;
+
+            float absDistance = Mathf.Abs(cameraToPlayer.x) - PlayerFollowBorder.x;
+
+            newCameraPosition.x += minus ? -absDistance : absDistance;
+        }
+
+        if (playerPosition.y > borderY.x || playerPosition.y < borderY.y)
+        {
+            bool minus = cameraToPlayer.y < 0;
+
+            float absDistance = Mathf.Abs(cameraToPlayer.y) - PlayerFollowBorder.y;
+
+            newCameraPosition.y += minus ? -absDistance : absDistance;
+        }
+
+        transform.position = newCameraPosition;
+    }
+
+    private void DisposeMoveTween()
+    {
+        if (moveTween != null)
+        {
+            moveTween.Kill();
+            moveTween = null;
+        }
     }
 }

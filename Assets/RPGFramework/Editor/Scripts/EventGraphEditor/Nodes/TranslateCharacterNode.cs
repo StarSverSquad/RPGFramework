@@ -1,6 +1,8 @@
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+using RPGF.Character;
+using RPGF;
 
 [UseActionNode(contextualMenuPath: "События исследования/Перемещение персонажа")]
 public class TranslateCharacterNode : ActionNodeWrapper<TranslateCharacterAction>
@@ -56,13 +58,13 @@ public class TranslateCharacterNode : ActionNodeWrapper<TranslateCharacterAction
             ObjectField CharacterField = new ObjectField("Персонаж")
             {
                 allowSceneObjects = true,
-                objectType = typeof(DynamicExplorerObject)
+                objectType = typeof(CharacterModelControllerBase)
             };
 
             CharacterField.SetValueWithoutNotify(Action.CharacterInScene);
             CharacterField.RegisterValueChangedCallback(i =>
             {
-                Action.CharacterInScene = (DynamicExplorerObject)i.newValue;
+                Action.CharacterInScene = (CharacterModelControllerBase)i.newValue;
 
                 MakeDirty();
             });
@@ -77,10 +79,10 @@ public class TranslateCharacterNode : ActionNodeWrapper<TranslateCharacterAction
                 {
                     Toggle ReplaceInstanceToggle = new Toggle("Резко?");
 
-                    ReplaceInstanceToggle.SetValueWithoutNotify(Action.ReplaceInstance);
+                    ReplaceInstanceToggle.SetValueWithoutNotify(Action.ReplaceInstantly);
                     ReplaceInstanceToggle.RegisterValueChangedCallback(i =>
                     {
-                        Action.ReplaceInstance = i.newValue;
+                        Action.ReplaceInstantly = i.newValue;
 
                         MakeDirty();
                         UpdateUI();
@@ -88,7 +90,7 @@ public class TranslateCharacterNode : ActionNodeWrapper<TranslateCharacterAction
 
                     extensionContainer.Add(ReplaceInstanceToggle);
 
-                    if (!Action.ReplaceInstance)
+                    if (!Action.ReplaceInstantly)
                     {
                         FloatField SpeedField = new FloatField("Скорость");
 
@@ -161,7 +163,7 @@ public class TranslateCharacterNode : ActionNodeWrapper<TranslateCharacterAction
                     DiretionEnum.SetValueWithoutNotify(Action.Direction);
                     DiretionEnum.RegisterValueChangedCallback(i =>
                     {
-                        Action.Direction = (CommonDirection)i.newValue;
+                        Action.Direction = (ViewDirection)i.newValue;
 
                         MakeDirty();
                     });

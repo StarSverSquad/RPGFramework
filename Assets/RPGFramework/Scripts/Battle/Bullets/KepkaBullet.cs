@@ -1,7 +1,8 @@
-﻿using System.Collections;
+﻿using RPGF.Battle.Pattern;
+using System.Collections;
 using UnityEngine;
 
-public class KepkaBullet : PatternBullet
+public class KepkaBullet : PatternBulletBase
 {
     public Transform model;
 

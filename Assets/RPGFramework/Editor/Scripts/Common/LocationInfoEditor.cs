@@ -22,7 +22,7 @@ public class LocationInfoEditor : Editor
         EditorGUILayout.LabelField("Описание");
         loc.Description = EditorGUILayout.TextArea(loc.Description);
 
-        loc.CameraLink = (MainCameraManager.CameraLink)EditorGUILayout.EnumPopup("Камера", loc.CameraLink);
+        loc.CameraCapture = (MainCameraManager.CaptureType)EditorGUILayout.EnumPopup("Камера", loc.CameraCapture);
 
         List<string> sceneNames = Resources.LoadAll<SceneAsset>("Scenes\\").Select(s => s.name).ToList();
 

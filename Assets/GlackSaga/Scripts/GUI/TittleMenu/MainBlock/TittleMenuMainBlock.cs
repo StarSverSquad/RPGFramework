@@ -1,5 +1,6 @@
 using DG.Tweening;
 using RPGF.GUI;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -38,16 +39,16 @@ public class TittleMenuMainBlock : GUIChoicableBlock
 
     protected override void OnActivate()
     {
-        _panel.DOKill();
+        _panel?.DOKill();
         _panel.DOAnchorPosY(0, _panelAnimationTime)
             .SetEase(Ease.OutSine)
             .Play();
 
-        _solidColorBg.DOKill();
+        _solidColorBg?.DOKill();
         Color solidClr = _solidColorBg.color; solidClr.a = _solidColorBgAlpha;
         _solidColorBg.DOColor(solidClr, _bgAnimtionTime).Play();
 
-        _wordsBg.DOKill();
+        _wordsBg?.DOKill();
         _wordsBg.DOAnchorPos(Vector2.zero, _bgAnimtionTime).Play();
 
         base.OnActivate();
@@ -55,14 +56,14 @@ public class TittleMenuMainBlock : GUIChoicableBlock
 
     public override void OnCanceled()
     {
-        _solidColorBg.DOKill();
+        _solidColorBg?.DOKill();
         Color solidClr = _solidColorBg.color; solidClr.a = 0;
         _solidColorBg.DOColor(solidClr, _bgAnimtionTime).Play();
 
-        _wordsBg.DOKill();
+        _wordsBg?.DOKill();
         _wordsBg.DOAnchorPos(_wordsBgOutPosition, _bgAnimtionTime).Play();
 
-        _panel.DOKill();
+        _panel?.DOKill();
         var panelAnim = _panel
             .DOAnchorPosY(_panelHideOffset, _panelAnimationTime)
             .SetEase(Ease.InSine)
@@ -78,8 +79,8 @@ public class TittleMenuMainBlock : GUIChoicableBlock
     {
         base.OnDisable();
 
-        _wordsBg.DOKill();
-        _panel.DOKill();
-        _solidColorBg.DOKill();
+        _wordsBg?.DOKill();
+        _panel?.DOKill();
+        _solidColorBg?.DOKill();
     }
 }

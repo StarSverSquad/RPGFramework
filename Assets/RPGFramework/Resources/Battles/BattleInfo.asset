@@ -16,7 +16,9 @@ MonoBehaviour:
   EnemyStart: 0
   CanLose: 0
   CanFlee: 1
-  ShowStartMessage: 1
+  DefaultSpashMessage: "* \u041A\u0435\u043F\u0430\u0440\u0438\u043A \u043F\u0440\u0438\u0441\u0442\u0430\u043B\u044C\u043D\u043E
+    \u0441\u043C\u043E\u0442\u0440\u0438\u0442 \u043D\u0430 \u0432\u0430\u0441"
+  ShowStartMessage: 0
   ShowEndMessage: 1
   ShowDeadMessage: 1
   BattleMusic: {fileID: 8300000, guid: c89a20953ff3b6a45bd1975fa47ac579, type: 3}

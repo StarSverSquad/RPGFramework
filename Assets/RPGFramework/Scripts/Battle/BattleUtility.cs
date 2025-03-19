@@ -21,6 +21,8 @@ public class BattleUtility
     {
         Data.BattleInfo = info;
 
+        _battle.spashWriter.SpashText = info.DefaultSpashMessage;
+
         foreach (var item in info.enemySquad.Enemies)
             AddEnemy(item.Enemy, item.ScreenPosition);
 

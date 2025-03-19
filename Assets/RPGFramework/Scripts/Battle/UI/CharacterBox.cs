@@ -92,15 +92,11 @@ public class CharacterBox : RPGFrameworkBehaviour, IDisposable
     public void UpdateStates(RPGEntityState state)
     {
         iconList.UpdateIcons(Character.States.Select(i => i.Icon).ToArray());
-
-        //SetStatesVisibility(iconList.HasIcons);
     }
 
     public void UpdateStates()
     {
         iconList.UpdateIcons(Character.States.Select(i => i.Icon).ToArray());
-
-        //SetStatesVisibility(iconList.HasIcons);
     }
 
     private void OnDestroy()

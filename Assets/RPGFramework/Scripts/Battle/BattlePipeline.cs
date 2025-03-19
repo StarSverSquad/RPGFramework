@@ -99,6 +99,7 @@ public class BattlePipeline
 
     private void NextCharacter()
     {
+        Debug.Log($"NEXT INDEX: {CurrentTurnDataIndex}");
         _battle.UI.CharacterBox.Boxes[CurrentTurnDataIndex].ChangeAct(Data.TurnsData[CurrentTurnDataIndex].BattleAction);
 
         UI.CharacterQuery.NextPosition();
@@ -107,6 +108,16 @@ public class BattlePipeline
 
         choiceActions.Clear();
     }
+    private void PreviewCharacter()
+    {
+        Debug.Log($"PREV INDEX: {CurrentTurnDataIndex}");
+        _battle.UI.CharacterBox.Boxes[CurrentTurnDataIndex].ChangeAct(TurnAction.None);
+
+        CurrentTurnDataIndex--;
+
+        UI.CharacterQuery.PreviewPosition();
+    }
+
     private void PreviewAction()
     {
         choiceActions.Remove(choiceActions.Last());
@@ -125,6 +136,7 @@ public class BattlePipeline
             else
             {
                 turnData.BattleAction = TurnAction.None;
+                
                 CurrentTurnDataIndex++;
 
                 UI.CharacterQuery.NextPosition();
@@ -230,9 +242,9 @@ public class BattlePipeline
 
         yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnBattleEnd);
 
-        main = null;
-
         yield return BattleExit();
+
+        main = null;
     }
 
     private IEnumerator BattleEnter()
@@ -249,9 +261,9 @@ public class BattlePipeline
         if (Data.BattleInfo.StopGlobalMusic)
             GameManager.Instance.GameAudio.PauseBGS();
 
-        VisualTransmition.InitializeCustomEffect(Data.BattleInfo.BattleEnterEffect);
+        VisualTransmition.InitializeEffect(Data.BattleInfo.BattleEnterEffect);
 
-        yield return _battle.StartCoroutine(VisualTransmition.InvokePartOne());
+        yield return VisualTransmition.InvokePartOne();
 
         _battle.SetActive(true);
 
@@ -270,9 +282,9 @@ public class BattlePipeline
         if (Data.BattleInfo.BattleMusic != null)
             _battle.BattleAudio.PlayMusic(Data.BattleInfo.BattleMusic, Data.BattleInfo.MusicVolume);
 
-        yield return _battle.StartCoroutine(VisualTransmition.InvokePartTwo());
+        yield return VisualTransmition.InvokePartTwo();
 
-        VisualTransmition.DisposeCustomEffect();
+        VisualTransmition.DisposeEffect();
 
         if (Data.BattleInfo.ShowStartMessage)
         {
@@ -290,7 +302,7 @@ public class BattlePipeline
 
     private IEnumerator BattleExit()
     {
-        VisualTransmition.InitializeCustomEffect(Data.BattleInfo.BattleExitEffect);
+        VisualTransmition.InitializeEffect(Data.BattleInfo.BattleExitEffect);
 
         yield return _battle.StartCoroutine(VisualTransmition.InvokePartOne());
 
@@ -319,7 +331,7 @@ public class BattlePipeline
 
         yield return _battle.StartCoroutine(VisualTransmition.InvokePartTwo());
 
-        VisualTransmition.DisposeCustomEffect();
+        VisualTransmition.DisposeEffect();
     }
 
     private IEnumerator PlayerTurn()
@@ -342,15 +354,14 @@ public class BattlePipeline
         actionIndex = 0;
         isCancelChoice = false;
 
-        // Установление иконки действия
         for (int i = 0; i < Data.TurnsData.Count; i++)
             _battle.UI.CharacterBox.Boxes[i].ChangeAct(TurnAction.None);
 
         while (CurrentTurnDataIndex < Data.TurnsData.Count)
         {
-            BattleTurnData currenTurnData = Data.TurnsData[CurrentTurnDataIndex];
+            BattleTurnData currentTurnData = Data.TurnsData[CurrentTurnDataIndex];
 
-            if (ShouldSkipTurn(currenTurnData))
+            if (ShouldSkipTurn(currentTurnData))
                 continue;
 
             isCancelChoice = false;
@@ -358,14 +369,21 @@ public class BattlePipeline
             if (choiceActions.Count == 0)
                 choiceActions.Add(ChoiceAction.Primary);
 
-            if (currenTurnData.ReservedConcentration != 0)
+            if (choiceActions.Last() == ChoiceAction.Primary)
+                _battle.spashWriter.WriteSpash();
+            else
+                _battle.spashWriter.Dispose();
+
+            if (currentTurnData.ReservedConcentration != 0)
             {
-                Utility.AddConcetration(-currenTurnData.ReservedConcentration);
-                currenTurnData.ReservedConcentration = 0;
+                Utility.AddConcetration(-currentTurnData.ReservedConcentration);
+                currentTurnData.ReservedConcentration = 0;
             }
 
-            yield return HandleChoiceAction(currenTurnData);
+            yield return HandleChoiceAction(currentTurnData);
         }
+
+        _battle.spashWriter.Dispose();
 
         UI.CharacterSide.Hide();
         UI.PlayerTurnSide.Hide();
@@ -782,12 +800,10 @@ public class BattlePipeline
         {
             if (CurrentTurnDataIndex > 0)
             {
-                CurrentTurnDataIndex--;
+                PreviewCharacter();
 
-                UI.CharacterQuery.PreviewPosition();
                 isCancelChoice = true;
             }
-            _battle.UI.CharacterBox.Boxes[CurrentTurnDataIndex].ChangeAct(TurnAction.None);
         }
         else
         {
@@ -1181,7 +1197,9 @@ public class BattlePipeline
         {
             _common.MessageBox.Write(new MessageInfo()
             {
-                text = $"АТАКА: {turnData.EnemyBuffer.Damage}, ЗАЩИТА: {turnData.EnemyBuffer.Defence}<\\:>\n" +
+                text = $"АТАКА: {turnData.EnemyBuffer.Damage}" +
+                       $", ЗАЩИТА: {turnData.EnemyBuffer.Defence}" +
+                       $", ЗДОРОВЬЕ: {turnData.EnemyBuffer.Heal}<\\:>\n" +
                        $"{turnData.EnemyBuffer.Description}",
                 closeWindow = true,
                 wait = true
@@ -1192,6 +1210,12 @@ public class BattlePipeline
         else
         {
             turnData.InteractionAct.Event.Invoke(_battle);
+
+            if (turnData.InteractionAct.Minigame != null)
+            {
+                _battle.Minigame.InvokeMinigame(turnData.InteractionAct.Minigame);
+                yield return new WaitWhile(() => _battle.Minigame.MinigameIsPlay);
+            }
 
             yield return new WaitWhile(() => turnData.InteractionAct.Event.IsPlaying);
         }

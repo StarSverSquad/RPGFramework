@@ -61,11 +61,9 @@ public class UndertaleBattleTransmition : VisualBattleTransmitionEffectBase
         back.enabled = true;
         heart.enabled = true;
 
-        float time = Vector2.Distance(transform.position, heart.transform.position) / 2f;
+        heart.transform.DOMove(transform.position, 1f).Play();
 
-        heart.transform.DOMove(transform.position, time).Play();
-
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(1f);
     }
 
     public override IEnumerator PartTwo()

@@ -5,7 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
-public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
+public abstract class TextWriterBase : RPGFrameworkBehaviour
 {
     public const char ActionPoint = '\u1130';
 
@@ -17,7 +17,7 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
     [SerializeField]
     protected WriterMessage message;
 
-    [Multiline]
+    [TextArea(2, 2)]
     [SerializeField]
     protected string outcomeText;
 
@@ -47,7 +47,7 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
     public event Action<TextActionBase> OnActionCallback;
     public event Action<TextActionBase> OnTextReplaceCallback;
 
-    public virtual void Initialize()
+    public override void Initialize()
     {
         string[] typenames = GetType()
             .Assembly.GetTypes()
@@ -140,6 +140,13 @@ public abstract class TextWriterBase : MonoBehaviour, IManagerInitialize
     }
 
     public void PauseWrite() => isPause = true;
+
+    public void CancelWrite()
+    {
+        StopAllCoroutines();
+
+        writeCoroutine = null;
+    }
 
     public virtual void OnEveryLetter(char letter) { }
 

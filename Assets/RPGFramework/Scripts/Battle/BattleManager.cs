@@ -21,6 +21,7 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
     public BattleUIManager UI;
     public MinigameManager Minigame;
     public BattleData data;
+    public BattleSpashMessageWriter spashWriter;
 
 
     public BattlePipeline Pipeline { get; private set; }
@@ -49,6 +50,8 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
         Utility = new BattleUtility(this);
 
         Choice.Initialize();
+
+        spashWriter.Initialize();
 
         Player.SetActive(false);
     }

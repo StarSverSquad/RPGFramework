@@ -329,6 +329,8 @@ public class BattlePipeline
 
         _battle.EnemyModels.Dispose();
 
+        _battle.UI.CharacterQuery.Dispose();
+
         yield return _battle.StartCoroutine(VisualTransmition.InvokePartTwo());
 
         VisualTransmition.DisposeEffect();

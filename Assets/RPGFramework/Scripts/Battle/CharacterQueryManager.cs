@@ -5,28 +5,27 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-// Код требует рефакторинг
-public class CharacterQueryManager : RPGFrameworkBehaviour
+public class CharacterQueryManager : RPGFrameworkBehaviour, IDisposable
 {
     [SerializeField]
-    private RectTransform inSlot;
+    private RectTransform _inSlot;
     [SerializeField]
-    private RectTransform outSlot;
+    private RectTransform _outSlot;
     [SerializeField]
-    private RectTransform[] slots = new RectTransform[5];
+    private RectTransform[] _slots = new RectTransform[5];
 
     [SerializeField]
-    private RectTransform content;
-
+    private RectTransform _content;
     [SerializeField]
-    private GameObject ElementPrefab;
+    private GameObject _elementPrefab;
 
-    [SerializeField]
-    private List<CharacterQueryElement> elements = new List<CharacterQueryElement>();
+    public bool IsUpdating => updateCoroutine != null;
+    public bool ActionIsPlay => actionCorotine != null;
 
-    private List<CharacterQueryElement> queue = new List<CharacterQueryElement>();
+    private List<CharacterQueryElement> elements = new();
+    private List<CharacterQueryElement> queue = new();
 
-    private Queue<string> actions = new Queue<string>();
+    private Queue<string> actions = new();
 
     private Tween contentTw;
 
@@ -37,11 +36,13 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
 
     public void Show()
     {
+        Dispose();
+
         for (int i = 0; i < BattleManager.Data.TurnsData.Count; i++)
         {
             var turnsData = BattleManager.Data.TurnsData[i];
 
-            GameObject instance = Instantiate(ElementPrefab, transform);
+            GameObject instance = Instantiate(_elementPrefab, transform);
 
             var element = instance.GetComponent<CharacterQueryElement>();
             element.Initialize(turnsData.Character);
@@ -50,11 +51,11 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
 
             if (i < 4)
             {
-                rectTransform.anchoredPosition = slots[i].anchoredPosition;
+                rectTransform.anchoredPosition = _slots[i].anchoredPosition;
             }
             else
             {
-                rectTransform.anchoredPosition = inSlot.anchoredPosition;
+                rectTransform.anchoredPosition = _inSlot.anchoredPosition;
             }
 
             elements.Add(element);
@@ -63,21 +64,13 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
 
         updateCoroutine = StartCoroutine(UpdateCoroutine());
 
-        contentTw = content.DOAnchorPosY(0, 0.5f).SetEase(Ease.OutCirc).Play();
+        contentTw = _content.DOAnchorPosY(0, 0.5f).SetEase(Ease.OutCirc).Play();
     }
     public void Hide()
     {
-        foreach (var item in elements)
-        {
-            item.GetComponent<RectTransform>().DOKill();
-            Destroy(item.gameObject);
-        }
-        elements.Clear();
-        queue.Clear();
+        Dispose();
 
-        StopAllCoroutines();
-
-        contentTw = content.DOAnchorPosY(-content.sizeDelta.y, 0.5f).SetEase(Ease.OutCirc).Play();
+        contentTw = _content.DOAnchorPosY(-_content.sizeDelta.y, 0.5f).SetEase(Ease.OutCirc).Play();
     }
 
     public void NextPosition()
@@ -109,12 +102,12 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
         {
             var element = queue[i];
 
-            if (i < slots.Length - 1)
+            if (i < _slots.Length - 1)
             {
                 bool isLast = i == queue.Count - 1;
 
-                element.MoveToPoint(slots[i].anchoredPosition, 
-                                   isLast ? slots.Last().anchoredPosition : slots[i + 1].anchoredPosition);
+                element.MoveToPoint(_slots[i].anchoredPosition, 
+                                   isLast ? _slots.Last().anchoredPosition : _slots[i + 1].anchoredPosition);
             }
 
             yield return new WaitForFixedUpdate();
@@ -129,17 +122,17 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
         {
             var element = queue[i];
 
-            if (i < slots.Length - 1)
+            if (i < _slots.Length - 1)
             {
                 bool isFirst = i == 0;
 
                 if (isFirst)
                 {
-                    element.MoveToPoint(slots.Last().anchoredPosition, element.GetComponent<RectTransform>().anchoredPosition);
+                    element.MoveToPoint(_slots.Last().anchoredPosition, element.GetComponent<RectTransform>().anchoredPosition);
                 }
                 else
                 {
-                    element.MoveToPoint(slots[i].anchoredPosition, slots[i - 1].anchoredPosition);
+                    element.MoveToPoint(_slots[i].anchoredPosition, _slots[i - 1].anchoredPosition);
                 }
             }
 
@@ -151,9 +144,9 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
 
     private IEnumerator UpdateCoroutine()
     {
-        var prefabElement = ElementPrefab.GetComponent<CharacterQueryElement>();
+        var prefabElement = _elementPrefab.GetComponent<CharacterQueryElement>();
 
-        while (true)
+        while (Battle.Pipeline.MainIsWorking)
         {
             if (actions.Count > 0)
             {
@@ -188,10 +181,33 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
 
             yield return null;
         }
+
+        updateCoroutine = null;
     }
 
     private void OnDestroy()
     {
-        contentTw.Kill();
+        Dispose();
+    }
+
+    public void Dispose()
+    {
+        contentTw?.Kill();
+
+        StopAllCoroutines();
+
+        updateCoroutine = null;
+        actionCorotine = null;
+
+        foreach (var item in elements)
+        {
+            item.GetComponent<RectTransform>().DOKill();
+            Destroy(item.gameObject);
+        }
+        elements.Clear();
+
+        queue.Clear();
+
+        actions.Clear();
     }
 }

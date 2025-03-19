@@ -5218,17 +5218,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3442325c621b8be4bb5b81d346b7283a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inSlot: {fileID: 463144372648822181}
-  outSlot: {fileID: 8019934674810762561}
-  slots:
+  _inSlot: {fileID: 463144372648822181}
+  _outSlot: {fileID: 8019934674810762561}
+  _slots:
   - {fileID: 8019934674810762561}
   - {fileID: 6539672879238333333}
   - {fileID: 978178375214669213}
   - {fileID: 8872072263468819927}
   - {fileID: 463144372648822181}
-  content: {fileID: 9162015852903928510}
-  ElementPrefab: {fileID: 308438627376238011, guid: 11792e17340fade4ca2a28a83ab9f419, type: 3}
-  elements: []
+  _content: {fileID: 9162015852903928510}
+  _elementPrefab: {fileID: 308438627376238011, guid: 11792e17340fade4ca2a28a83ab9f419, type: 3}
 --- !u!114 &3645566081391919316
 MonoBehaviour:
   m_ObjectHideFlags: 0

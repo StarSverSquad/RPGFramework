@@ -33,6 +33,8 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
     private Coroutine actionCorotine = null;
     private Coroutine updateCoroutine = null;
 
+    #region API
+
     public void Show()
     {
         for (int i = 0; i < BattleManager.Data.TurnsData.Count; i++)
@@ -84,13 +86,14 @@ public class CharacterQueryManager : RPGFrameworkBehaviour
 
         actions.Enqueue("next");
     }
-
     public void PreviewPosition()
     {
         UpdateDynamics();
 
         actions.Enqueue("preview");
     }
+
+    #endregion
 
     private void UpdateDynamics()
     {

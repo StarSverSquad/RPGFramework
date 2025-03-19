@@ -1,8 +1,10 @@
 ﻿using RPGF.RPG;
+using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
 
+[Obsolete]
 public class BattleUsingService
 {
     private BattleManager battleManager;
@@ -14,6 +16,7 @@ public class BattleUsingService
         this.gameManager = gameManager;
     }
 
+    [Obsolete]
     public IEnumerator UseAbility(RPGAbility ability, RPGEntity user, params RPGEntity[] targets) 
     {
         float minigameFactor = 1f;
@@ -44,7 +47,7 @@ public class BattleUsingService
 
             yield return new WaitForSeconds(0.5f);
 
-            Object.Destroy(effect.gameObject);
+            GameObject.Destroy(effect.gameObject);
         }
 
         foreach (var target in targets)
@@ -173,6 +176,7 @@ public class BattleUsingService
         }
     }
 
+    [Obsolete]
     public IEnumerator UseItem(RPGConsumed item, RPGEntity user, params RPGEntity[] targets)
     {
         if (targets.Any(i => i is RPGEnemy) && item.VisualEffect != null)
@@ -192,7 +196,7 @@ public class BattleUsingService
 
             yield return new WaitForSeconds(0.5f);
 
-            Object.Destroy(effect.gameObject);
+            GameObject.Destroy(effect.gameObject);
         }
 
         foreach (var target in targets)

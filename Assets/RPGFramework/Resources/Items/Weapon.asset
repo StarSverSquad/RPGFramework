@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 623e880a485fa2b4f9c60dc3e10db621, type: 3}
+  m_Name: Weapon
+  m_EditorClassIdentifier: 
+  Tag: 
+  Name: 
+  Description: 
+  Icon: {fileID: 0}
+  Usage: 0
+  Direction: 0
+  Event: {fileID: 0}
+  VisualEffect: {fileID: 0}
+  WakeupCharacter: 0
+  ForAlive: 1
+  ForDeath: 1
+  Effects: []
+  Rare: 0
+  UsedOn: 0
+  RequireClasses: []
+  Heal: 0
+  Mana: 0
+  Damage: 0
+  Defence: 0
+  Agility: 0
+  Luck: 0
+  references:
+    version: 2
+    RefIds: []

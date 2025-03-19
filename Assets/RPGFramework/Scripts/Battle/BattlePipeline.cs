@@ -33,8 +33,6 @@ public class BattlePipeline
 
     private List<ChoiceAction> choiceActions = new();
 
-    private BattleUsingService usingService;
-
     private bool loseKey, winKey, fleeKey, breakKey;
 
     private Coroutine main = null;
@@ -61,8 +59,6 @@ public class BattlePipeline
     {
         _battle = battle;
         _common = common;
-
-        usingService = new BattleUsingService(_battle, GameManager.Instance);
 
         TurnCounter = 0;
         CurrentTurnDataIndex = 0;
@@ -779,7 +775,7 @@ public class BattlePipeline
 
                         yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.BeforeHit, false, turnData.EnemyBuffer.Tag));
 
-                        VisualAttackEffect effect = currentCharacter.WeaponSlot == null ? Data.DefaultEffect : currentCharacter.WeaponSlot.Effect;
+                        VisualAttackEffect effect = currentCharacter.WeaponSlot == null ? Data.DefaultEffect : currentCharacter.WeaponSlot.VisualEffect;
 
                         if (effect.LocaleInCenter)
                             effect = BattleManager.BattleUtility.SpawnAttackEffect(effect);
@@ -842,24 +838,24 @@ public class BattlePipeline
                     switch (turnData.Ability.Direction)
                     {
                         case UsabilityDirection.AllTeam:
-                            yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
+                            yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
                             break;
                         case UsabilityDirection.Teammate:
-                            yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, turnData.CharacterBuffer));
+                            yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, currentCharacter, turnData.CharacterBuffer));
                             break;
                         case UsabilityDirection.AllEnemys:
-                            yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.Enemys.ToArray()));
+                            yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, currentCharacter, Data.Enemys.ToArray()));
                             break;
                         case UsabilityDirection.Enemy:
-                            yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, turnData.EnemyBuffer));
+                            yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, currentCharacter, turnData.EnemyBuffer));
                             break;
                         case UsabilityDirection.Any:
-                            yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, turnData.EntityBuffer));
+                            yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, currentCharacter, turnData.EntityBuffer));
                             break;
                         case UsabilityDirection.All:
-                            yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
+                            yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
 
-                            yield return _battle.StartCoroutine(usingService.UseAbility(turnData.Ability, currentCharacter, Data.Enemys.ToArray()));
+                            yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, currentCharacter, Data.Enemys.ToArray()));
                             break;
                     }
 
@@ -898,24 +894,24 @@ public class BattlePipeline
                             switch (consumed.Direction)
                             {
                                 case UsabilityDirection.AllTeam:
-                                    yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
+                                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
                                     break;
                                 case UsabilityDirection.Teammate:
-                                    yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, turnData.CharacterBuffer));
+                                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, currentCharacter, turnData.CharacterBuffer));
                                     break;
                                 case UsabilityDirection.AllEnemys:
-                                    yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, Data.Enemys.ToArray()));
+                                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, currentCharacter, Data.Enemys.ToArray()));
                                     break;
                                 case UsabilityDirection.Enemy:
-                                    yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, turnData.EnemyBuffer));
+                                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, currentCharacter, turnData.EnemyBuffer));
                                     break;
                                 case UsabilityDirection.Any:
-                                    yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, turnData.EntityBuffer));
+                                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, currentCharacter, turnData.EntityBuffer));
                                     break;
                                 case UsabilityDirection.All:
-                                    yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
+                                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, currentCharacter, Data.TurnsData.Select(i => i.Character).ToArray()));
 
-                                    yield return _battle.StartCoroutine(usingService.UseItem(consumed, currentCharacter, Data.Enemys.ToArray()));
+                                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, currentCharacter, Data.Enemys.ToArray()));
                                     break;
                             }
                         }

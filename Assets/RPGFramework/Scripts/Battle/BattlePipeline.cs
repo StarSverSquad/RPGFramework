@@ -99,7 +99,6 @@ public class BattlePipeline
 
     private void NextCharacter()
     {
-        Debug.Log($"NEXT INDEX: {CurrentTurnDataIndex}");
         _battle.UI.CharacterBox.Boxes[CurrentTurnDataIndex].ChangeAct(Data.TurnsData[CurrentTurnDataIndex].BattleAction);
 
         UI.CharacterQuery.NextPosition();
@@ -110,7 +109,6 @@ public class BattlePipeline
     }
     private void PreviewCharacter()
     {
-        Debug.Log($"PREV INDEX: {CurrentTurnDataIndex}");
         _battle.UI.CharacterBox.Boxes[CurrentTurnDataIndex].ChangeAct(TurnAction.None);
 
         CurrentTurnDataIndex--;
@@ -544,7 +542,7 @@ public class BattlePipeline
 
         foreach (var enemy in Data.Enemys)
         {
-            if (enemy.States.Any(i => i.SkipTurn))
+            if (enemy.States.Any(i => i.SkipTurn) || !enemy.Patterns.Any())
                 continue;
 
             BattleAttackPatternBase pattern = enemy.Patterns[Random.Range(0, enemy.Patterns.Count)];
@@ -622,7 +620,7 @@ public class BattlePipeline
 
             _common.MessageBox.Write(new MessageInfo()
             {
-                text = "* Ваша команда проебала!",
+                text = "* Ваша команда проиграла!",
                 closeWindow = true,
             });
 

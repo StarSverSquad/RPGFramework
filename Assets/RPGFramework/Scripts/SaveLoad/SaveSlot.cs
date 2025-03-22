@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class SaveSlot
+public class GameSaveSlot
 {
     public int Id;
 
@@ -24,7 +24,7 @@ public class SaveSlot
 
     public List<CharacterSaveInfo> SavedCharacters;
 
-    public SaveSlot()
+    public GameSaveSlot()
     {
         IntValues = new CustomDictionary<int>();
         FloatValues = new CustomDictionary<float>();

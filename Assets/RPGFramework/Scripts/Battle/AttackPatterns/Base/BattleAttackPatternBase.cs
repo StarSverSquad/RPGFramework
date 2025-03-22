@@ -6,9 +6,10 @@ using UnityEngine;
 
 public abstract class BattleAttackPatternBase : RPGFrameworkBehaviour
 {
+    public string PatternTag = "";
+
     [Tooltip("Длительность паттерна во времни")]
     public float PatternTime = 1f;
-
     [Tooltip("Ожидать завершения паттерна?")]
     public bool WaitEnd = false;
 

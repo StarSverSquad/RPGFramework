@@ -136,7 +136,7 @@ public class ManageVarNode : ActionNodeWrapper<ManageVarAction>
                 hor1.Add(label);
                 hor1.Add(stringField);
                 break;
-            case ManageVarAction.VarType.PlayerPrefs:
+            case ManageVarAction.VarType.FastSave:
 
                 EnumField opField2 = new EnumField(ManageVarAction.OperationType.Set);
 

@@ -11,19 +11,29 @@ public class SaveLoadManager
     private readonly DirectoryInfo PlaceForSaves;
     private readonly GameManager Game;
 
+    public CustomDictionary<int> fastSaves;
+
+    public int CurrentSlotId { get; private set; }
+
+
     public SaveLoadManager(GameManager game)
     {
         PlaceForSaves = new(Application.dataPath + @"\Saves");
+
+        CurrentSlotId = 0;
+        fastSaves = new();
 
         if (!PlaceForSaves.Exists) PlaceForSaves.Create();
         Game = game;
     }
 
-    public void Save(int slotId)
+    public void GameSave(int slotId)
     {
+        SaveFastSaves();
+
         string PathToSave = PlaceForSaves.FullName + @"\Slot" + slotId.ToString() + ".glaksave";
 
-        SaveSlot CellForSave = new()
+        GameSaveSlot CellForSave = new()
         {
             Id = slotId,
             IntValues = Game.GameData.IntValues,
@@ -48,15 +58,17 @@ public class SaveLoadManager
 
         File.WriteAllText(PathToSave, JSONSave);
     }
-    public void Load(int slotId)
+    public void GameLoad(int slotId)
     {
+        LoadFastSaves();
+
         string PathToLoad = PlaceForSaves.FullName + @"\Slot" + slotId.ToString() + ".glaksave";
 
         if (!File.Exists(PathToLoad)) return;
 
         string JSONSave = File.ReadAllText(PathToLoad);
 
-        SaveSlot slot = JsonUtility.FromJson<SaveSlot>(JSONSave);
+        GameSaveSlot slot = JsonUtility.FromJson<GameSaveSlot>(JSONSave);
 
         Game.GameData.IntValues = slot.IntValues;
         Game.GameData.FloatValues = slot.FloatValues;
@@ -78,7 +90,38 @@ public class SaveLoadManager
 
         LocationInfo location = Game.LocationManager.LoadLocationInfoByName(slot.LocationName);
 
+        CurrentSlotId = slotId;
+
         Game.LocationManager.ChangeLocation(location, slot.PlayerPosition, slot.PlayerDirection);
+    }
+
+    public bool HasFastSaveKey(string key)
+    {
+        string trueKey = $"SLOT{CurrentSlotId}_{key}";
+
+        bool hasKey = fastSaves.HaveKey(trueKey);
+
+        return hasKey;
+    }
+    public int GetFastSave(string key)
+    {
+        string trueKey = $"SLOT{CurrentSlotId}_{key}";
+
+        if (!HasFastSaveKey(key))
+        {
+            Debug.LogError("Fast save item is not found!");
+            return -1;
+        }
+
+        return fastSaves[trueKey];
+    }
+    public void SetFastSave(string key, int value)
+    {
+        string trueKey = $"SLOT{CurrentSlotId}_{key}";
+
+        fastSaves[trueKey] = value;
+
+        SaveFastSaves();
     }
 
     public void SaveConfig(GameConfig gameConfig)
@@ -193,5 +236,20 @@ public class SaveLoadManager
 
         Game.Character.GetRegisteredCharacter(Glek).Heal = SavedCharacter.Heal;
         Game.Character.GetRegisteredCharacter(Glek).Mana = SavedCharacter.Mana;
+    }
+
+    private void LoadFastSaves()
+    {
+        string PathToSaves = PlaceForSaves.FullName + @"\FS.glaksave";
+
+        if (!File.Exists(PathToSaves)) return;
+
+
+    }
+    private void SaveFastSaves()
+    {
+        string PathToSaves = PlaceForSaves.FullName + @"\FS.glaksave";
+
+        File.WriteAllText(PathToSaves, JsonUtility.ToJson(fastSaves));
     }
 }

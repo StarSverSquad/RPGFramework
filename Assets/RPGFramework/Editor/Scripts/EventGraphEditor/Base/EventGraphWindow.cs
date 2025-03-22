@@ -38,7 +38,7 @@ public class EventGraphWindow : EditorWindow
 
         Button sch = new Button(Save)
         {
-            text = "Save changes"
+            text = "GameSave changes"
         };
 
         toolbar.Add(sch);

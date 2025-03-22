@@ -79,6 +79,6 @@ public class GameManager : ContentManagerBase
     }
     public void LoadGame(int slotId)
     {
-        SaveLoad.Load(slotId);
+        SaveLoad.GameLoad(slotId);
     }
 }

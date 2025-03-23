@@ -9,6 +9,8 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 {
     [SerializeField]
     private EnemySelector _enemySelector;
+    [SerializeField]
+    private BattleUIEnemyInformation _enemyInformation;
 
     public BattleData Data => BattleManager.Data;
     public BattleAudioManager BattleAudio => BattleManager.Instance.BattleAudio;
@@ -34,6 +36,7 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
     public override void Initialize()
     {
         _enemySelector.Initialize();
+        _enemyInformation.Initialize();
     }
 
     private void Start()
@@ -102,6 +105,7 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
         BattleManager.Instance.UI.Description.SetActive(false);
 
         _enemySelector.Dispose();
+        _enemyInformation.HideInformation();
     }
 
     private void Choice_OnCanceled()
@@ -109,6 +113,7 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
         BattleAudio.PlaySound(Data.Cancel);
 
         _enemySelector.Dispose();
+        _enemyInformation.HideInformation();
     }
 
     private void Choice_OnSellectionChanged()
@@ -128,10 +133,12 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
             if (battleChoice.CurrentUIElement.Value is RPGEnemy enemy)
             {
                 _enemySelector.Select(Battle.EnemyModels.GetModel(enemy));
+                _enemyInformation.ShowInformation(enemy);
             }
             else
             {
                 _enemySelector.Dispose();
+                _enemyInformation.HideInformation();
             }
         }
     }
@@ -182,12 +189,22 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceEnemy()
     {
+        BattleTurnData current = Battle.Pipeline.CurrentTurnData;
+
         List<ChoiceUI.Element> choiceElements = Data.Enemys.Select(enemy =>
         {
+            bool locked = false;
+
+            if (current.BattleAction == TurnAction.Act)
+            {
+                locked = !enemy.Acts.Any();
+            }
+
             return new ChoiceUI.Element()
             {
                 Name = enemy.Name,
-                Value = enemy
+                Value = enemy,
+                locked = locked
             };
         }).ToList();
 
@@ -254,7 +271,7 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
             new ChoiceUI.Element()
             {
                 Name = "Действие",
-                Value = 0
+                Value = 0,
             },
             new ChoiceUI.Element()
             {
@@ -356,25 +373,13 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceInteraction()
     {
-        List<ChoiceUI.Element> choiceElements = new List<ChoiceUI.Element>
-        {
-            new ChoiceUI.Element()
-            {
-                Name = "Проверить",
-                Description = "Проверить текущего врага",
-                Value = new RPGEnemy.EnemyAct()
-                {
-                    Name = "Check"
-                }
-            }
-        };
+        List<ChoiceUI.Element> choiceElements = new();
 
         BattleTurnData currentCharacter = Battle.Pipeline.CurrentTurnData;
 
         foreach (var act in currentCharacter.EnemyBuffer.Acts)
         {
-
-            ChoiceUI.Element elementInfo = new ChoiceUI.Element()
+            ChoiceUI.Element elementInfo = new()
             {
                 Name = act.Name,
                 Description = act.Description,
@@ -391,7 +396,6 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
                     break;
                 }
             }
-
 
             choiceElements.Add(elementInfo);
         }

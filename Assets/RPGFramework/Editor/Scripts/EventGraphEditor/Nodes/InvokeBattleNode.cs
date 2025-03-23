@@ -22,7 +22,7 @@ public class InvokeBattleNode : ActionNodeWrapper<InvokeBattleAction>
 
         if (Action.fleePort)
         {
-            CreateOutputPort("Flee", Color.yellow);
+            CreateOutputPort("Defence", Color.yellow);
         }
 
         if (Action.battle != null && Action.battle.CanLose)

@@ -12,7 +12,7 @@ public class BattleData : MonoBehaviour, IDisposable
     [HideInInspector]
     public List<BattleTurnData> TurnsData = new List<BattleTurnData>();
 
-    [Tooltip("Attack, Act, Item, Flee, Ability, Defence")]
+    [Tooltip("Attack, Act, Item, Defence, Ability, Defence")]
     [SerializeField]
     private Sprite[] actionIcons = new Sprite[6];
 

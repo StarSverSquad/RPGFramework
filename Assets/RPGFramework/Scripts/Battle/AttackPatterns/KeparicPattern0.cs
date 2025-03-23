@@ -11,8 +11,7 @@ public class KeparicPattern0 : BattleAttackPatternBase
 
     protected override IEnumerator PatternCoroutine()
     {
-        Battle.BattleField.Resize(new Vector2(0.5f, 0.5f));
-        Battle.BattleField.Resize(new Vector2(1.5f, 3), 4f);
+        Battle.BattleField.Resize(new Vector2(1.5f, 3));
 
         bool right = true;
 

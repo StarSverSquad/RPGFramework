@@ -29,7 +29,7 @@ public class ChangeEnemyStatsNode : ActionNodeWrapper<ChangeEnemyStatsAction>
             MakeDirty();
         });
 
-        IntegerField defenceField = new IntegerField("Flee");
+        IntegerField defenceField = new IntegerField("Defence");
 
         defenceField.SetValueWithoutNotify(Action.newDefance);
         defenceField.RegisterValueChangedCallback(i =>

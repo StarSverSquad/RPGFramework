@@ -11,7 +11,7 @@ public class BattlePipeline
     public enum ChoiceAction
     {
         Primary, Special, Act, Ability, Entity, Teammate, Enemy,
-        Item, Flee, Battle
+        Item, Defence
     }
 
     private readonly BattleManager _battle;
@@ -574,7 +574,9 @@ public class BattlePipeline
         }
 
         _battle.Player.SetActive(true);
+
         _battle.BattleField.SetActive(true);
+        _battle.BattleField.Show();
 
         _battle.Pattern.Invoke(patterns.Count <= 1);
 
@@ -590,6 +592,10 @@ public class BattlePipeline
         }
 
         _battle.Player.SetActive(false);
+        _battle.BattleField.Hide();
+
+        yield return new WaitForSeconds(0.25f);
+
         _battle.BattleField.SetActive(false);
 
         UI.CharacterBox.Hide();
@@ -777,11 +783,8 @@ public class BattlePipeline
             case ChoiceAction.Item:
                 yield return HandleItemChoice(turnData);
                 break;
-            case ChoiceAction.Flee:
-                yield return HandleFleeChoice(turnData);
-                break;
-            case ChoiceAction.Battle:
-                yield return HandleBattleChoice(turnData);
+            case ChoiceAction.Defence:
+                yield return HandleDefenceChoice(turnData);
                 break;
         }
     }
@@ -813,7 +816,8 @@ public class BattlePipeline
             {
                 // Выбрана битва
                 case 0:
-                    choiceActions.Add(ChoiceAction.Battle);
+                    turnData.BattleAction = TurnAction.Attack;
+                    choiceActions.Add(ChoiceAction.Enemy);
                     break;
                 // Выбрано дейтсвие
                 case 1:
@@ -827,7 +831,7 @@ public class BattlePipeline
                     break;
                 // Выбрана побег
                 case 3:
-                    choiceActions.Add(ChoiceAction.Flee);
+                    choiceActions.Add(ChoiceAction.Defence);
                     break;
                 // Неизветсное действие
                 default:
@@ -1075,16 +1079,9 @@ public class BattlePipeline
         else
             PreviewAction();
     }
-    private IEnumerator HandleFleeChoice(BattleTurnData turnData)
+    private IEnumerator HandleDefenceChoice(BattleTurnData turnData)
     {
-        turnData.BattleAction = TurnAction.Flee;
-        NextCharacter();
-
-        yield break;
-    }
-    private IEnumerator HandleBattleChoice(BattleTurnData turnData)
-    {
-        _battle.Choice.InvokeChoiceBattle();
+        _battle.Choice.InvokeChoiceDefence();
 
         yield return new WaitWhile(() => _battle.Choice.IsChoicing);
 
@@ -1092,25 +1089,23 @@ public class BattlePipeline
             PreviewAction();
         else
         {
-            int result = (int)_battle.Choice.CurrentItem.Value;
-
-            if (result == 0)
-            {
-                turnData.BattleAction = TurnAction.Attack;
-
-                choiceActions.Add(ChoiceAction.Enemy);
-            }
-            else if (result == 1)
+            if ((int)_battle.Choice.CurrentItem.Value == 0)
             {
                 Utility.AddConcetration(Data.AdditionConcentrationOnDefence);
                 turnData.ReservedConcentration = Data.AdditionConcentrationOnDefence;
                 turnData.BattleAction = TurnAction.Defence;
-
-                NextCharacter();
+            } 
+            else
+            {
+                turnData.BattleAction = TurnAction.Flee;
             }
+
+            NextCharacter();
         }
 
         _battle.Choice.CleanUp();
+
+        yield break;
     }
 
     #endregion
@@ -1193,32 +1188,16 @@ public class BattlePipeline
     }
     private IEnumerator HandleActAction(BattleTurnData turnData, RPGCharacter character)
     {
-        if (turnData.InteractionAct.Name == "Check")
-        {
-            _common.MessageBox.Write(new MessageInfo()
-            {
-                text = $"АТАКА: {turnData.EnemyBuffer.Damage}" +
-                       $", ЗАЩИТА: {turnData.EnemyBuffer.Defence}" +
-                       $", ЗДОРОВЬЕ: {turnData.EnemyBuffer.Heal}<\\:>\n" +
-                       $"{turnData.EnemyBuffer.Description}",
-                closeWindow = true,
-                wait = true
-            });
-
-            yield return new WaitWhile(() => _common.MessageBox.IsWriting);
-        }
-        else
-        {
+        if (turnData.InteractionAct.Event != null)
             turnData.InteractionAct.Event.Invoke(_battle);
 
-            if (turnData.InteractionAct.Minigame != null)
-            {
-                _battle.Minigame.InvokeMinigame(turnData.InteractionAct.Minigame);
-                yield return new WaitWhile(() => _battle.Minigame.MinigameIsPlay);
-            }
-
-            yield return new WaitWhile(() => turnData.InteractionAct.Event.IsPlaying);
+        if (turnData.InteractionAct.Minigame != null)
+        {
+            _battle.Minigame.InvokeMinigame(turnData.InteractionAct.Minigame);
+            yield return new WaitWhile(() => _battle.Minigame.MinigameIsPlay);
         }
+
+        yield return new WaitWhile(() => turnData.InteractionAct.Event.IsPlaying);
     }
     private IEnumerator HandleAbilityAction(BattleTurnData turnData, RPGCharacter character)
     {

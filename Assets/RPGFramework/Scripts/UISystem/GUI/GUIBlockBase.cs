@@ -48,6 +48,9 @@ namespace RPGF.GUI
 
         public void Activate()
         {
+            if (IsActivated)
+                return;
+
             if (_enableOnActivate)
                 gameObject.SetActive(true);
 
@@ -58,6 +61,9 @@ namespace RPGF.GUI
         }
         public void Diativate()
         {
+            if (!IsActivated)
+                return;
+
             OnDiativate();
             OnDiativateEvent?.Invoke();
 

@@ -94,12 +94,25 @@ namespace RPGF.Character
         
         public void MoveTo(Vector2 position, float time)
         {
-            DisposeMoveTween();
-
             Vector2 vectorDiretion = (position - (Vector2)transform.position).normalized;
-
             ViewDirection viewDiretion = DirectionConverter.GetViewDirectionByVector(vectorDiretion);
+
             RotateTo(viewDiretion);
+
+            MoveToNotRotate(position, time);
+        }
+        public void MoveToRelative(Vector2 offset, float time)
+        {
+            MoveTo((Vector2)transform.position + offset, time);
+        }
+
+        #endregion
+
+        #region ADDATIVE API
+
+        public void MoveToNotRotate(Vector2 position, float time)
+        {
+            DisposeMoveTween();
 
             moveTween = transform.DOMove(position, time).SetEase(Ease.Linear).Play();
 
@@ -118,14 +131,10 @@ namespace RPGF.Character
                 OnStartMoveEvent?.Invoke();
             };
         }
-        public void MoveToRelative(Vector2 offset, float time)
+        public void MoveToRelativeNotRotate(Vector2 offset, float time)
         {
-            MoveTo((Vector2)transform.position + offset, time);
+            MoveToNotRotate((Vector2)transform.position + offset, time);
         }
-
-        #endregion
-
-        #region ADDATIVE API
 
         public void RotateToPlayer()
         {
@@ -157,6 +166,15 @@ namespace RPGF.Character
 
             OnResumeMove();
             OnResumeMoveEvent?.Invoke();
+        }
+        public void StopMove()
+        {
+            DisposeMoveTween();
+
+            MoveIsPaused = false;
+
+            OnEndMove();
+            OnEndMoveEvent?.Invoke();
         }
 
         protected void DisposeMoveTween()

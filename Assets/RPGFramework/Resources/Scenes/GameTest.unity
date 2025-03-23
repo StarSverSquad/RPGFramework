@@ -2906,10 +2906,6 @@ MonoBehaviour:
       outputPortName: Output
       outputNodeGUID: de23da73ab792ae4989232511263366a
     - inputPortName: Input
-      inputNodeGUID: 5bfb12cec3a724641979d539769c71c8
-      outputPortName: Output
-      outputNodeGUID: 37e092fc0d023b3438dd855562f18e29
-    - inputPortName: Input
       inputNodeGUID: 25ba84a41edc86a448d94aa3cf693f37
       outputPortName: Output
       outputNodeGUID: 307e9f46185678c4eab505b38ef6eaf3
@@ -2917,6 +2913,10 @@ MonoBehaviour:
       inputNodeGUID: 52724e1bec48ff343ae6faa6ded52509
       outputPortName: Output
       outputNodeGUID: 25ba84a41edc86a448d94aa3cf693f37
+    - inputPortName: Input
+      inputNodeGUID: 5bfb12cec3a724641979d539769c71c8
+      outputPortName: Output
+      outputNodeGUID: 37e092fc0d023b3438dd855562f18e29
     - inputPortName: Input
       inputNodeGUID: 37e092fc0d023b3438dd855562f18e29
       outputPortName: Output
@@ -2987,10 +2987,11 @@ MonoBehaviour:
         CharacterInScene: {fileID: 1709161115110982532}
         ReplaceInstantly: 0
         Wait: 1
-        Speed: 4
+        WithRotation: 0
+        Time: 2
         Offset: {x: -2, y: 0}
         Point: {fileID: 0}
-        Direction: 1
+        Direction: 0
         Type: 1
     - rid: 1267146796664094903
       type: {class: TranslateCharacterAction, ns: , asm: Assembly-CSharp}
@@ -3002,7 +3003,8 @@ MonoBehaviour:
         CharacterInScene: {fileID: 0}
         ReplaceInstantly: 0
         Wait: 1
-        Speed: 1
+        WithRotation: 1
+        Time: 2
         Offset: {x: 2, y: 0}
         Point: {fileID: 0}
         Direction: 1

@@ -25,6 +25,13 @@ public class TittleMenuMainBlock : GUIChoicableBlock
     [SerializeField]
     private float _bgAnimtionTime = 0.5f;
 
+    private Coroutine openAnimation;
+    private Coroutine closeAnimation;
+
+    private Tween bgTween;
+    private Tween panelTween;
+    private Tween solidClrTween;
+
     public override void Initialize(GUIManagerBase manager)
     {
         base.Initialize(manager);
@@ -37,50 +44,84 @@ public class TittleMenuMainBlock : GUIChoicableBlock
         _solidColorBg.color = solidClr;
     }
 
-    protected override void OnActivate()
+    protected override void OnFocus()
     {
-        _panel?.DOKill();
-        _panel.DOAnchorPosY(0, _panelAnimationTime)
-            .SetEase(Ease.OutSine)
-            .Play();
+        if (openAnimation != null)
+            StopCoroutine(openAnimation);
 
-        _solidColorBg?.DOKill();
-        Color solidClr = _solidColorBg.color; solidClr.a = _solidColorBgAlpha;
-        _solidColorBg.DOColor(solidClr, _bgAnimtionTime).Play();
-
-        _wordsBg?.DOKill();
-        _wordsBg.DOAnchorPos(Vector2.zero, _bgAnimtionTime).Play();
-
-        base.OnActivate();
+        openAnimation = StartCoroutine(OpenAnimation());
     }
 
     public override void OnCanceled()
     {
-        _solidColorBg?.DOKill();
+        if (closeAnimation != null)
+            StopCoroutine(closeAnimation);
+
+        closeAnimation = StartCoroutine(CloseAnimation());
+    }
+
+    private IEnumerator OpenAnimation()
+    {
+        DisposeTweens();
+
+        yield return new WaitForFixedUpdate();
+
+        panelTween = _panel.DOAnchorPosY(0, _panelAnimationTime)
+            .SetEase(Ease.OutSine)
+            .Play();
+
+        Color solidClr = _solidColorBg.color; solidClr.a = _solidColorBgAlpha;
+        solidClrTween = _solidColorBg.DOColor(solidClr, _bgAnimtionTime).Play();
+
+        bgTween = _wordsBg.DOAnchorPos(Vector2.zero, _bgAnimtionTime).Play();
+
+        yield return new WaitForSeconds(_bgAnimtionTime);
+
+        DisposeTweens();
+
+        StartChoice();
+
+        openAnimation = null;
+    }
+
+    private IEnumerator CloseAnimation()
+    {
+        DisposeTweens();
+
+        yield return new WaitForFixedUpdate();
+
         Color solidClr = _solidColorBg.color; solidClr.a = 0;
-        _solidColorBg.DOColor(solidClr, _bgAnimtionTime).Play();
+        solidClrTween = _solidColorBg.DOColor(solidClr, _bgAnimtionTime).Play();
 
-        _wordsBg?.DOKill();
-        _wordsBg.DOAnchorPos(_wordsBgOutPosition, _bgAnimtionTime).Play();
+        bgTween = _wordsBg.DOAnchorPos(_wordsBgOutPosition, _bgAnimtionTime).Play();
 
-        _panel?.DOKill();
-        var panelAnim = _panel
+        panelTween = _panel
             .DOAnchorPosY(_panelHideOffset, _panelAnimationTime)
             .SetEase(Ease.InSine)
             .Play();
 
-        panelAnim.onComplete += () =>
-        {
-            Preview();
-        };
+        yield return new WaitForSeconds(_bgAnimtionTime);
+
+        DisposeTweens();
+
+        Preview();
+
+        closeAnimation = null;
+    }
+
+    private void DisposeTweens()
+    {
+        bgTween?.Kill();
+        panelTween?.Kill();
+        solidClrTween?.Kill();
+
+        bgTween = null;
+        panelTween = null;
+        solidClrTween = null;
     }
 
     protected override void OnDisable()
     {
-        base.OnDisable();
-
-        _wordsBg?.DOKill();
-        _panel?.DOKill();
-        _solidColorBg?.DOKill();
+        DisposeTweens();
     }
 }

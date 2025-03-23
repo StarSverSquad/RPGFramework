@@ -23,6 +23,8 @@ public class TittleMenuMainButton : GUIElementBase
 
     private Image underlineImage;
 
+    private Tween underlineTween;
+
     private void OnEnable()
     {
         _underline.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
@@ -49,23 +51,32 @@ public class TittleMenuMainButton : GUIElementBase
         if (focus)
         {
             _textMesh.color = _focusedColor;
-            _underline.DOKill();
-            _underline
+
+            DisposeTweens();
+            underlineTween = _underline
                 .DOSizeDelta(new Vector2(_textMesh.GetPreferredValues().x, _underline.sizeDelta.y), _underlineAnimationTime)
                 .Play();
         }
         else
         {
             _textMesh.color = _unfocusedColor;
-            _underline.DOKill();
-            _underline
+
+            DisposeTweens();
+            underlineTween = _underline
                 .DOSizeDelta(new Vector2(0, _underline.sizeDelta.y), _underlineAnimationTime)
                 .Play();
         }
     }
 
+    private void DisposeTweens()
+    {
+        underlineTween?.Kill();
+
+        underlineTween = null;
+    }
+
     private void OnDisable()
     {
-        _underline.DOKill();
+        DisposeTweens();
     }
 }

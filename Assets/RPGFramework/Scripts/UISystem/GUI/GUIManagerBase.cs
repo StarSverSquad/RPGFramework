@@ -57,7 +57,7 @@ namespace RPGF.GUI
         {
             var block = GUIStack.Pop();
 
-            block.SetFocus(block);
+            block.SetFocus(false);
             block.Diativate();
 
             if (GUIStack.Count > 0)

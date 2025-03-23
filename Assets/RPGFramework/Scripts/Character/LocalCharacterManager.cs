@@ -160,10 +160,10 @@ public class LocalCharacterManager : RPGFrameworkBehaviour
 
     private void OnSomeEventStarted()
     {
-        foreach (var model in models)
+        foreach (var item in models)
         {
-            model.SetRotationAnimation(PlayerMovement.ViewDirection);
-            model.SetMoveAnimation(false);
+            item.StopMove();
+            item.SetRunAnimation(false);
         }
     }
 

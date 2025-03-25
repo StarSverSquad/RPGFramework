@@ -164,12 +164,31 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
 
     public void InvokeChoiceEntity()
     {
+        BattleTurnData current = Battle.Pipeline.CurrentTurnData;
+        RPGConsumed consumed = current.Item as RPGConsumed;
+
         battleChoice.AppendTitle("Персонаж", TMPro.TextAlignmentOptions.Center);
 
-        var choices = Data.TurnsData.Select(item => new ChoiceUI.Element
+        var choices = Data.TurnsData.Select(turnData =>
         {
-            Name = item.Character.Name,
-            Value = item.Character
+            ChoiceUI.Element info = new()
+            {
+                Name = turnData.Character.Name,
+                Value = turnData.Character,
+                locked = false
+            };
+
+            if (current.BattleAction == TurnAction.Item)
+            {
+                info.locked = !(current.IsConsumed &&
+                    (turnData.IsDead && consumed.ForDeath) || (!turnData.IsDead && consumed.ForAlive));
+            }
+            else if (current.BattleAction == TurnAction.Act)
+            {
+                info.locked = turnData.IsDead;
+            }
+
+            return info;
         }).ToList();
 
         battleChoice.AppendElements(choices.ToArray());

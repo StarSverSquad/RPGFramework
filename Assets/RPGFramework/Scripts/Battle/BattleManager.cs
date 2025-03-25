@@ -14,7 +14,7 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
     public BattleAudioManager BattleAudio;
     public BattlePlayerManager Player;
     public AttackQTEManager AttackQTE;
-    public EnemyModelsManager EnemyModels;
+    public BattleEnemyModelsManager EnemyModels;
     public BattleEnemyBehaviourManager EnemyBehaviour;
     public BattleVisualTransmitionManager VisualTransmition;
     public BattleUIShake Shaker;

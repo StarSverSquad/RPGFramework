@@ -427,7 +427,7 @@ public class BattlePipeline
 
                 for (int i = 0; i < deads.Length; i++)
                 {
-                    yield return new WaitWhile(() => _battle.EnemyModels.GetModel(deads[i]).IsAnimatingEffect);
+                    yield return new WaitWhile(() => _battle.EnemyModels.GetModel(deads[i]).IsAnyEffectPlaying);
 
                     BattleManager.BattleUtility.RemoveEnemy(deads[i]);
                 }
@@ -518,15 +518,15 @@ public class BattlePipeline
 
             enemy.UpdateAllStates();
 
-            EnemyModel model = _battle.EnemyModels.GetModel(enemy);
+            BattleEnemyModel model = _battle.EnemyModels.GetModel(enemy);
 
             if (enemy.Heal < oldHeal)
             {
-                BattleManager.BattleUtility.SpawnFallingText(model.DamageTextGlobalPoint, (oldHeal - enemy.Heal).ToString(), Color.white, Color.red);
+                BattleManager.BattleUtility.SpawnFallingText(model.DamageTextWorldPoint, (oldHeal - enemy.Heal).ToString(), Color.white, Color.red);
             }
             else if (enemy.Heal > oldHeal)
             {
-                BattleManager.BattleUtility.SpawnFallingText(model.DamageTextGlobalPoint, (oldHeal - enemy.Heal).ToString(), Color.white, Color.green);
+                BattleManager.BattleUtility.SpawnFallingText(model.DamageTextWorldPoint, (oldHeal - enemy.Heal).ToString(), Color.white, Color.green);
             }
         }
     }
@@ -1159,7 +1159,7 @@ public class BattlePipeline
             effect = BattleManager.BattleUtility.SpawnAttackEffect(effect);
         else
         {
-            Vector2 attackPos = _battle.EnemyModels.GetModel(turnData.EnemyBuffer).AttackGlobalPoint;
+            Vector2 attackPos = _battle.EnemyModels.GetModel(turnData.EnemyBuffer).AttackWorldPoint;
 
             effect = BattleManager.BattleUtility.SpawnAttackEffect(effect, attackPos);
         }

@@ -23,13 +23,13 @@ public class EnemySelector : RPGFrameworkBehaviour, IDisposable
         _selector.gameObject.SetActive(false);
     }
 
-    public void Select(EnemyModel model)
+    public void Select(BattleEnemyModel model)
     {
         Dispose();
 
         _selector.gameObject.SetActive(true);
 
-        _selector.transform.position = model.AttackGlobalPoint;
+        _selector.transform.position = model.AttackWorldPoint;
 
         rotateTween = _selector
             .DORotate(new Vector3(0, 0, 360), RotationTime, RotateMode.FastBeyond360)

@@ -28,7 +28,7 @@ public class ChangeEnemyModelAnimationAction : GraphActionBase
                 if (enemy == null)
                     throw new ApplicationException("Enemy not found!");
 
-                EnemyModel model = BattleManager.Instance.EnemyModels.GetModel(enemy);
+                BattleEnemyModel model = BattleManager.Instance.EnemyModels.GetModel(enemy);
 
                 if (model == null)
                     throw new ApplicationException("Enemy model not found!");

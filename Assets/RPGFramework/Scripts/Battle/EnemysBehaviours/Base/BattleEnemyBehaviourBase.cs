@@ -41,8 +41,6 @@ public abstract class BattleEnemyBehaviourBase : RPGFrameworkBehaviour, IDisposa
 
     protected GameObject CreateObjectRelativeCenter(GameObject obj, Vector2 offset)
     {
-        Debug.Log(Owner);
-
         if (obj.TryGetComponent(out PatternBulletBase pb))
             pb.enemy = Owner;
 
@@ -50,8 +48,6 @@ public abstract class BattleEnemyBehaviourBase : RPGFrameworkBehaviour, IDisposa
     }
     protected GameObject CreateObjectRelativeBattleField(GameObject obj, Vector2 offset)
     {
-        Debug.Log(Owner);
-
         if (obj.TryGetComponent(out PatternBulletBase pb))
             pb.enemy = Owner;
 
@@ -59,15 +55,13 @@ public abstract class BattleEnemyBehaviourBase : RPGFrameworkBehaviour, IDisposa
     }
     protected GameObject CreateObjectInWorldSpace(GameObject obj, Vector2 position)
     {
-        Debug.Log(Owner);
-
         if (obj.TryGetComponent(out PatternBulletBase pb))
             pb.enemy = Owner;
 
         return BattleManager.Instance.EnemyBehaviour.CreateObjectInWorldSpace(obj, position);
     }
 
-    protected EnemyModel GetEnemyModel()
+    protected BattleEnemyModel GetEnemyModel()
     {
         return Battle.EnemyModels.GetModel(Owner);
     }

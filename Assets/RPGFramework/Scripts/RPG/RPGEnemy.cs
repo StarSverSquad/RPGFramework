@@ -20,7 +20,7 @@ namespace RPGF.RPG
             public static EnemyAct NullAct => new() { Name = "NULL" };
         }
 
-        public EnemyModel EnemyModel;
+        public BattleEnemyModel EnemyModel;
 
         public List<BattleEnemyBehaviourBase> Behaviours = new();
 

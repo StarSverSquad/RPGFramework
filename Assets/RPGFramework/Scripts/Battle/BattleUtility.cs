@@ -57,7 +57,7 @@ public class BattleUtility
     }
     public void DamageEnemy(RPGCharacter who, RPGEnemy enemy, float damageFactor = 1f)
     {
-        EnemyModel model = BattleManager.Instance.EnemyModels.GetModel(enemy);
+        BattleEnemyModel model = BattleManager.Instance.EnemyModels.GetModel(enemy);
 
         int dmg = enemy.GiveDamage(who, damageFactor, true);
 
@@ -76,12 +76,12 @@ public class BattleUtility
                 BattleManager.Instance.BattleAudio.PlaySound(Data.EnemyDamage);
             }
 
-            SpawnFallingText(model.DamageTextGlobalPoint, dmg.ToString(), Color.white, Color.red);
+            SpawnFallingText(model.DamageTextWorldPoint, dmg.ToString(), Color.white, Color.red);
         }
         else
         {
             BattleManager.Instance.BattleAudio.PlaySound(Data.Miss);
-            SpawnFallingText(model.DamageTextGlobalPoint, "ПРОМАХ");
+            SpawnFallingText(model.DamageTextWorldPoint, "ПРОМАХ");
         }
     }
 
@@ -236,14 +236,14 @@ public class BattleUtility
         // Запускает еффекты битвы на врагах
         if (targets.Any(i => i is RPGEnemy) && usable.VisualEffect != null)
         {
-            EnemyModel model = _battle.EnemyModels.GetModel(targets.Where(i => i is RPGEnemy).First() as RPGEnemy);
+            BattleEnemyModel model = _battle.EnemyModels.GetModel(targets.Where(i => i is RPGEnemy).First() as RPGEnemy);
 
             BattleAttackEffect effect;
 
             if (targets.Where(i => i is RPGEnemy).Count() == 1)
                 effect = SpawnAttackEffect(usable.VisualEffect);
             else
-                effect = SpawnAttackEffect(usable.VisualEffect, model.AttackGlobalPoint);
+                effect = SpawnAttackEffect(usable.VisualEffect, model.AttackWorldPoint);
 
             effect.Invoke();
 
@@ -296,7 +296,7 @@ public class BattleUtility
                 if (!_battle.Data.Enemys.Contains(enemy))
                     continue;
 
-                EnemyModel model = _battle.EnemyModels.GetModel(enemy);
+                BattleEnemyModel model = _battle.EnemyModels.GetModel(enemy);
 
                 if (healDif < 0)
                 {
@@ -314,7 +314,7 @@ public class BattleUtility
 
                 for (int i = 0; i < states.Length; i++)
                 {
-                    SpawnFallingText(model.AttackGlobalPoint + new Vector2(0, 0.2f + (0.2f * i)), states[i].Name,
+                    SpawnFallingText(model.AttackWorldPoint + new Vector2(0, 0.2f + (0.2f * i)), states[i].Name,
                         Color.white, states[i].Color);
                 }
 

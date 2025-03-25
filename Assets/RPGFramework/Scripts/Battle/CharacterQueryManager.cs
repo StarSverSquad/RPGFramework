@@ -38,9 +38,9 @@ public class CharacterQueryManager : RPGFrameworkBehaviour, IDisposable
     {
         Dispose();
 
-        for (int i = 0; i < BattleManager.Data.TurnsData.Count; i++)
+        for (int i = 0; i < BattleManager._Data.TurnsData.Count; i++)
         {
-            var turnsData = BattleManager.Data.TurnsData[i];
+            var turnsData = BattleManager._Data.TurnsData[i];
 
             GameObject instance = Instantiate(_elementPrefab, transform);
 

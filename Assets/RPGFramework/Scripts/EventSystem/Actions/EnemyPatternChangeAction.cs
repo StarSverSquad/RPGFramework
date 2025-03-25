@@ -12,7 +12,7 @@ public class EnemyPatternChangeAction : GraphActionBase
     public string EnemyTag;
     public string PatternTag;
 
-    public BattleAttackPatternBase Pattern;
+    public BattleEnemyBehaviourBase Pattern;
 
     public ChangeType Type;
 
@@ -34,7 +34,7 @@ public class EnemyPatternChangeAction : GraphActionBase
             yield break;
         }
             
-        var enemy = BattleManager.Data.Enemys.FirstOrDefault(enemy => enemy.Tag == EnemyTag);
+        var enemy = BattleManager._Data.Enemys.FirstOrDefault(enemy => enemy.Tag == EnemyTag);
 
         if (enemy == null)
         {
@@ -45,10 +45,10 @@ public class EnemyPatternChangeAction : GraphActionBase
         switch (Type)
         {
             case ChangeType.DeleteAll:
-                enemy.Patterns.Clear();
+                enemy.Behaviours.Clear();
                 break;
             case ChangeType.Delete:
-                var delPattern = enemy.Patterns.FindIndex(pat => pat.PatternTag == PatternTag);
+                var delPattern = enemy.Behaviours.FindIndex(pat => pat.BehaviourTag == PatternTag);
 
                 if (delPattern == -1)
                 {
@@ -56,10 +56,10 @@ public class EnemyPatternChangeAction : GraphActionBase
                     yield break;
                 }
 
-                enemy.Patterns.RemoveAt(delPattern);
+                enemy.Behaviours.RemoveAt(delPattern);
                 break;
             case ChangeType.Add:
-                enemy.Patterns.Add(Pattern);
+                enemy.Behaviours.Add(Pattern);
                 break;
         }
     }

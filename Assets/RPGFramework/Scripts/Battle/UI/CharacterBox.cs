@@ -62,7 +62,7 @@ public class CharacterBox : RPGFrameworkBehaviour, IDisposable
     {
         actImage.enabled = action != BattleTurnData.TurnAction.None;
 
-        actImage.sprite = Battle.data.GetActionIcon(action);
+        actImage.sprite = Battle.Data.GetActionIcon(action);
     }
 
     public void MarkTarget(bool mark)

@@ -29,7 +29,7 @@ public class AttackQTE : MonoBehaviour
     private float damageFactor = 0;
     public float DamageFactor => damageFactor;
 
-    [Header("Data")]
+    [Header("_Data")]
     [SerializeField]
     private bool isWorking = false;
     public bool IsWorking => isWorking;

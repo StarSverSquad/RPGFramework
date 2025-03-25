@@ -22,7 +22,7 @@ public class EnemyModelsManager : MonoBehaviour, IDisposable
         if (HasModel(enemy))
             return;
 
-        GameObject obj = Instantiate(enemy.EnemyModel, transform, false);
+        GameObject obj = Instantiate(enemy.EnemyModel.gameObject, transform, false);
 
         RectTransform rect = obj.GetComponent<RectTransform>();
         EnemyModel mod = obj.GetComponent<EnemyModel>();

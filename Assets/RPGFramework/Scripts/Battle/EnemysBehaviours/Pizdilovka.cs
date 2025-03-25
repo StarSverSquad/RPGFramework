@@ -1,14 +1,14 @@
 using System.Collections;
 using UnityEngine;
 
-public class Pizdilovka : BattleAttackPatternBase
+public class Pizdilovka : BattleEnemyBehaviourBase
 {
     [SerializeField] // Аттрибут, который позволяет юнити обращаться к приватным полям
     private GameObject bulletPrefabH; // Поле для хранения привата пули 
 
     [SerializeField] 
     private GameObject bulletPrefabV;
-    protected override IEnumerator PatternCoroutine() // Метод основного цикла битвы
+    protected override IEnumerator BehaviourCoroutine() // Метод основного цикла битвы
     {
         BattleManager.Instance.BattleField.Resize(new Vector2 (3, 2), 3);
 
@@ -21,4 +21,4 @@ public class Pizdilovka : BattleAttackPatternBase
             CreateObjectRelativeBattleField(bulletPrefabV, new Vector2(Random.Range(-1.5f, 1.5f), 4));
         }
     }
-}/// сосал???? маму твою ебал!!!
+}

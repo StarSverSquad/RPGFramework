@@ -42,7 +42,7 @@ public class BattlePipeline
 
     #region READONLY PROPS
 
-    public BattleData Data => _battle.data;
+    public BattleData Data => _battle.Data;
     public BattleChoiceManager Choice => _battle.Choice;
     public BattleUtility Utility => _battle.Utility;
     public BattleVisualTransmitionManager VisualTransmition => _battle.VisualTransmition;
@@ -370,9 +370,9 @@ public class BattlePipeline
                 choiceActions.Add(ChoiceAction.Primary);
 
             if (choiceActions.Last() == ChoiceAction.Primary)
-                _battle.spashWriter.WriteSpash();
+                _battle.SpashWriter.WriteSpash();
             else
-                _battle.spashWriter.Dispose();
+                _battle.SpashWriter.Dispose();
 
             if (currentTurnData.ReservedConcentration != 0)
             {
@@ -383,7 +383,7 @@ public class BattlePipeline
             yield return HandleChoiceAction(currentTurnData);
         }
 
-        _battle.spashWriter.Dispose();
+        _battle.SpashWriter.Dispose();
 
         UI.CharacterSide.Hide();
         UI.PlayerTurnSide.Hide();
@@ -537,26 +537,20 @@ public class BattlePipeline
 
         yield return new WaitForSeconds(0.5f);
 
-        List<BattleAttackPatternBase> patterns = new List<BattleAttackPatternBase>();
         List<BattleTurnData> targets = new List<BattleTurnData>();
 
         foreach (var enemy in Data.Enemys)
         {
-            if (enemy.States.Any(i => i.SkipTurn) || !enemy.Patterns.Any())
+            if (enemy.States.Any(i => i.SkipTurn) || !enemy.Behaviours.Any())
                 continue;
 
-            BattleAttackPatternBase pattern = enemy.Patterns[Random.Range(0, enemy.Patterns.Count)];
-            pattern.enemy = enemy;
+            BattleEnemyBehaviourBase pattern = enemy.Behaviours[Random.Range(0, enemy.Behaviours.Count)];
 
-            patterns.Add(pattern);
+            _battle.EnemyBehaviour.AddBehaviour(pattern, enemy);
         }
 
-        foreach (var pattern in patterns)
-            _battle.Pattern.AddPattern(pattern);
-
-        int chars = Random.Range(1, Data.TurnsData.Where(i => !i.IsDead).Count() + 1);
-
-        for (int i = 0; i < chars; i++)
+        int targetedCharacterCount = Random.Range(1, Data.TurnsData.Where(i => !i.IsDead).Count() + 1);
+        for (int i = 0; i < targetedCharacterCount; i++)
         {
             BattleTurnData turnData = Data.TurnsData[Random.Range(0, Data.TurnsData.Count)];
 
@@ -578,12 +572,12 @@ public class BattlePipeline
         _battle.BattleField.SetActive(true);
         _battle.BattleField.Show();
 
-        _battle.Pattern.Invoke(patterns.Count <= 1);
+        _battle.EnemyBehaviour.Invoke();
 
-        yield return new WaitWhile(() => _battle.Pattern.IsAttack && !loseKey && !breakKey);
+        yield return new WaitWhile(() => _battle.EnemyBehaviour.IsWorking && !loseKey && !breakKey);
 
         if (loseKey || breakKey)
-            _battle.Pattern.Break();
+            _battle.EnemyBehaviour.Break();
 
         foreach (var item in targets)
         {

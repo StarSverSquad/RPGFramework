@@ -20,13 +20,10 @@ namespace RPGF.RPG
             public static EnemyAct NullAct => new() { Name = "NULL" };
         }
 
-        [Tooltip("—юда нужны объекты которые имеют RPGAttackPattern!")]
-        public List<BattleAttackPatternBase> Patterns = new List<BattleAttackPatternBase>();
+        public EnemyModel EnemyModel;
 
-        public List<EnemyAct> Acts = new List<EnemyAct>();
+        public List<BattleEnemyBehaviourBase> Behaviours = new();
 
-        public GameObject EnemyModel;
+        public List<EnemyAct> Acts = new();
     }
-
-
 }

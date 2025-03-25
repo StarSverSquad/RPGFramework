@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class TestPattern : BattleAttackPatternBase
+public class TestPattern : BattleEnemyBehaviourBase
 {
     [SerializeField]
     private PatternBulletBase SomeBullet;
@@ -10,9 +10,17 @@ public class TestPattern : BattleAttackPatternBase
     public int BulletsCount = 15;
     public float TimeOffset = 1f;
 
-    protected override IEnumerator PatternCoroutine()
+    protected override IEnumerator BehaviourCoroutine()
     {
-        float time = Mathf.Abs(PatternTime - TimeOffset) / (BulletsCount + 1);
+        if (IsSingle)
+            yield return MainPattern();
+        else
+            yield return TinyPatternCoroutine();
+    }
+
+    private IEnumerator MainPattern()
+    {
+        float time = Mathf.Abs(Time - TimeOffset) / (BulletsCount + 1);
 
         StartCoroutine(MoveField());
 
@@ -26,9 +34,9 @@ public class TestPattern : BattleAttackPatternBase
         }
     }
 
-    protected override IEnumerator TinyPatternCoroutine()
+    private IEnumerator TinyPatternCoroutine()
     {
-        float time = Mathf.Abs(PatternTime - TimeOffset) / (BulletsCount + 1);
+        float time = Mathf.Abs(Time - TimeOffset) / (BulletsCount + 1);
 
         while (true)
         {

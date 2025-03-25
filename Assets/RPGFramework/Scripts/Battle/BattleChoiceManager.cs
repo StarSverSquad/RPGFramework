@@ -12,7 +12,7 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
     [SerializeField]
     private BattleUIEnemyInformation _enemyInformation;
 
-    public BattleData Data => BattleManager.Data;
+    public BattleData Data => BattleManager._Data;
     public BattleAudioManager BattleAudio => BattleManager.Instance.BattleAudio;
     public BattlePipeline Pipeline => BattleManager.Instance.Pipeline;
 

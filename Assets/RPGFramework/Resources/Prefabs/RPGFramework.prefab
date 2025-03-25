@@ -6444,7 +6444,7 @@ GameObject:
   - component: {fileID: 3390857815096997663}
   - component: {fileID: 1811330783257758164}
   m_Layer: 0
-  m_Name: Pattern
+  m_Name: EnemyBehaviours
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6477,8 +6477,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b8564724513a424e8f5a7325ea11c49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  patternObjects: []
-  patterns: []
+  waitWithoutBehaviours: 3
 --- !u!1 &5105275203236459110
 GameObject:
   m_ObjectHideFlags: 0
@@ -8417,13 +8416,13 @@ MonoBehaviour:
   Player: {fileID: 8449253130758582169}
   AttackQTE: {fileID: 204827173952449386}
   EnemyModels: {fileID: 7468379098809381390}
-  Pattern: {fileID: 1811330783257758164}
+  EnemyBehaviour: {fileID: 1811330783257758164}
   VisualTransmition: {fileID: 3447483504139707677}
   Shaker: {fileID: 179258461875434390}
   UI: {fileID: 3834372777945536817}
   Minigame: {fileID: 8405943389438414826}
-  data: {fileID: 6341244355187613983}
-  spashWriter: {fileID: 1488958187577538652}
+  Data: {fileID: 6341244355187613983}
+  SpashWriter: {fileID: 1488958187577538652}
 --- !u!114 &1492566794163858137
 MonoBehaviour:
   m_ObjectHideFlags: 0

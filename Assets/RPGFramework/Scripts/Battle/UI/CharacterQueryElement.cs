@@ -46,7 +46,7 @@ public class CharacterQueryElement : RPGFrameworkBehaviour
     private LineBar manaBar;
 
     private RPGCharacter linkedCharacter;
-    private BattleTurnData CharacterTurnData => Battle.data.TurnsData.First(i => i.Character == linkedCharacter);
+    private BattleTurnData CharacterTurnData => Battle.Data.TurnsData.First(i => i.Character == linkedCharacter);
 
     public float moveDuration = 0.2f;
 
@@ -87,7 +87,7 @@ public class CharacterQueryElement : RPGFrameworkBehaviour
     {
         if (!FallIsActive)
         {
-            Sprite acitonSprite = Battle.data.GetActionIcon(CharacterTurnData.BattleAction);
+            Sprite acitonSprite = Battle.Data.GetActionIcon(CharacterTurnData.BattleAction);
 
             actionImage.sprite = acitonSprite;
             actionImage.gameObject.SetActive(acitonSprite != null);

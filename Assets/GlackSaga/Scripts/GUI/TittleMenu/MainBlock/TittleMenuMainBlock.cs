@@ -25,6 +25,9 @@ public class TittleMenuMainBlock : GUIChoicableBlock
     [SerializeField]
     private float _bgAnimtionTime = 0.5f;
 
+    [SerializeField]
+    private CharacterInformationManager _characterInformation;
+
     private Coroutine openAnimation;
     private Coroutine closeAnimation;
 
@@ -50,6 +53,14 @@ public class TittleMenuMainBlock : GUIChoicableBlock
             StopCoroutine(openAnimation);
 
         openAnimation = StartCoroutine(OpenAnimation());
+
+        _characterInformation.Initialize();
+        _characterInformation.Show();
+    }
+
+    protected override void OnLostFocus()
+    {
+        _characterInformation.Hide();
     }
 
     public override void OnCanceled()
@@ -99,6 +110,8 @@ public class TittleMenuMainBlock : GUIChoicableBlock
             .DOAnchorPosY(_panelHideOffset, _panelAnimationTime)
             .SetEase(Ease.InSine)
             .Play();
+
+        _characterInformation.Hide();
 
         yield return new WaitForSeconds(_bgAnimtionTime);
 

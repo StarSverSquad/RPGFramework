@@ -11,9 +11,9 @@ namespace RPGF.RPG
         [Header("Настройки персонажа")]
         public List<string> Classes = new();
 
-        public Sprite CommonImage;
+        public Sprite Icon;
         public Sprite BattleImage;
-        public Sprite BattleSmallImage;
+        public Sprite BattleQueryImage;
 
         public Color Color;
 

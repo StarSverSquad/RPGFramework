@@ -57,7 +57,7 @@ public class CharacterQueryElement : RPGFrameworkBehaviour
     public void Initialize(RPGCharacter character)
     {
         gradient.color = character.Color;
-        icon.sprite = character.BattleSmallImage;
+        icon.sprite = character.BattleQueryImage;
 
         characterNameTxt.text = character.Name;
 

@@ -65,7 +65,7 @@ public class GameManager : ContentManagerBase
         GameConfig.Load();
         GameConfig.Apply();
 
-        Localization = new LocalizationManager();
+        Localization = new LocalizationManager(GameConfig);
     }
 
     public void NewGame()

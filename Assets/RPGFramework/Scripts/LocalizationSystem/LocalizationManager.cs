@@ -5,16 +5,20 @@ namespace RPGF.Localization
 {
     public class LocalizationManager
     {
+        private readonly GameConfigManager _gameConfig;
+
         private LocalizationSheet[] sheets;
 
-        public LocalizationManager()
+        public LocalizationManager(GameConfigManager gameConfig)
         {
+            _gameConfig = gameConfig;
+
             sheets = Resources.LoadAll<LocalizationSheet>("Localizations/");
         }
 
         public string GetLocale(string tag)
         {
-            LocalizationLanguage language = GameManager.Instance.GameConfig.Config.Language;
+            LocalizationLanguage language = _gameConfig.Config.Language;
 
             LocalizationSheet[] actualSheets = sheets
                 .OrderBy(i => i.Order)

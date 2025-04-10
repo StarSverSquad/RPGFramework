@@ -1,41 +1,40 @@
 ﻿using System.Linq;
 using UnityEngine;
 
-public class LocalizationManager
+namespace RPGF.Localization
 {
-    private LocalizationSheet[] sheets;
-
-    public LocalizationManager()
+    public class LocalizationManager
     {
-        sheets = Resources.LoadAll<LocalizationSheet>("Localizations/");
-    }
+        private LocalizationSheet[] sheets;
 
-    public string GetLocale(string tag)
-    {
-        LocalizationLanguage language = GameManager.Instance.GameConfig.Config.Language;
-
-        LocalizationSheet[] actualSheets = sheets
-            .Where(i => i.Language == language)
-            .OrderBy(i => i.Order)   
-            .ToArray();
-
-        if (actualSheets.Length == 0)
-            actualSheets = sheets
-                .Where(sheet => sheet.IsDefault)
-                .OrderBy(i => i.Order)            
-                .ToArray();
-
-        for (int i = 0; i < actualSheets.Length; i++)
+        public LocalizationManager()
         {
-            if (actualSheets[i].locales.HaveKey(tag))
-                return actualSheets[i].locales[tag];
+            sheets = Resources.LoadAll<LocalizationSheet>("Localizations/");
         }
 
-        return tag;
+        public string GetLocale(string tag)
+        {
+            LocalizationLanguage language = GameManager.Instance.GameConfig.Config.Language;
+
+            LocalizationSheet[] actualSheets = sheets
+                .OrderBy(i => i.Order)
+                .ToArray();
+
+            if (actualSheets.Length == 0)
+                actualSheets = sheets
+                    .Where(sheet => sheet.IsDefault)
+                    .OrderBy(i => i.Order)
+                    .ToArray();
+
+            for (int i = 0; i < actualSheets.Length; i++)
+            {
+                if (actualSheets[i].locales.HaveKey(tag))
+                    return actualSheets[i].locales[tag].Get(language);
+            }
+
+            return tag;
+        }
     }
+
 }
 
-public enum LocalizationLanguage
-{
-    ENG, RUS
-}

@@ -1,9 +1,7 @@
-﻿using System;
+﻿using RPGF.Localization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -13,6 +11,8 @@ public class LocalizationEditorWindow : EditorWindow
 
     private string tagBuffer;
     private Vector2 scroll;
+
+    private Dictionary<string, bool> localeFoldouts = new Dictionary<string, bool>();
 
     public static LocalizationEditorWindow Create(LocalizationSheet sheet)
     {
@@ -29,10 +29,14 @@ public class LocalizationEditorWindow : EditorWindow
         scroll = EditorGUILayout.BeginScrollView(scroll);
 
         for (int i = 0; i < sheet.locales.Count(); i++)
+        {
+            if (!localeFoldouts.Keys.Any(key => key == sheet.locales.data[i].Key))
+                localeFoldouts.Add(sheet.locales.data[i].Key, false);
+
             LocaleElement(sheet.locales.data[i].Key, sheet.locales.data[i].Value);
+        }
 
         GUILayout.BeginHorizontal();
-        
 
         tagBuffer = EditorGUILayout.TextField(tagBuffer);
 
@@ -49,9 +53,8 @@ public class LocalizationEditorWindow : EditorWindow
                 return;
             }
 
-            sheet.locales.Add(tagBuffer, "");
+            sheet.locales.Add(tagBuffer, new Locale());
         }
-
         
         GUILayout.EndHorizontal();
 
@@ -61,16 +64,38 @@ public class LocalizationEditorWindow : EditorWindow
         if (GUI.changed)
         {
             EditorUtility.SetDirty(sheet);
+            Undo.RecordObject(this, "LEW changed");
+        }
+
+        Event e = Event.current;
+        if (e.type == EventType.KeyDown && e.keyCode == KeyCode.Z && e.control)
+        {
+            Undo.PerformUndo(); // Выполняем отмену
+            e.Use(); // Помечаем событие как обработанное
         }
     }
 
-    private void LocaleElement(string tag, string value)
+    private void LocaleElement(string tag, Locale value)
     {
         EditorGUILayout.BeginVertical(GUI.skin.box);
 
         EditorGUILayout.SelectableLabel($"<%{tag}>");
         EditorGUILayout.Space(3);
-        sheet.locales[tag] = EditorGUILayout.TextArea(value);
+
+        var localeFields = value.GetType().GetFields()
+            .Where(field => field.CustomAttributes
+                .Any(attr => attr.AttributeType == typeof(LocalizationField)));
+
+        localeFoldouts[tag] = EditorGUILayout.BeginFoldoutHeaderGroup(localeFoldouts[tag], "Языки");
+        if (localeFoldouts[tag])
+        {
+            foreach (var field in localeFields)
+            {
+                GUILayout.Label(field.Name);
+                field.SetValue(value, EditorGUILayout.TextArea(field.GetValue(value) as string));
+            }
+        }
+        EditorGUILayout.EndFoldoutHeaderGroup();
 
         GUILayout.BeginHorizontal();
 

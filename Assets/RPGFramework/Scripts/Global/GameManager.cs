@@ -1,4 +1,5 @@
 using DG.Tweening;
+using RPGF.Localization;
 using UnityEngine;
 
 /// <summary>

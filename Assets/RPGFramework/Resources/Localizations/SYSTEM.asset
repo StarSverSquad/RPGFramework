@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1235e5fd30784ea47820947db022c79a, type: 3}
+  m_Name: SYSTEM
+  m_EditorClassIdentifier: 
+  locales:
+    data:
+    - Key: SYS_MONEY
+      Value:
+        Russian: "\u0422\u0443\u0433."
+        English: Tug.
+    - Key: SYS_DMG
+      Value:
+        Russian: "\u0421\u0418\u041B\u0410"
+        English: POWER
+    - Key: SYS_DEF
+      Value:
+        Russian: "\u0417\u0410\u0429\u0418\u0422\u0410"
+        English: DEFENCE
+    - Key: SYS_AGI
+      Value:
+        Russian: "\u041B\u041E\u0412\u041A\u041E\u0421\u0422\u042C"
+        English: AGILITY
+    - Key: SYS_LUCK
+      Value:
+        Russian: "\u0423\u0414\u0410\u0427\u0410"
+        English: LUCK
+  Order: -1
+  IsDefault: 1

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using RPGF.RPG;
 using static BattleTurnData;
+using RPGF.Localization;
 
 public class BattlePipeline
 {

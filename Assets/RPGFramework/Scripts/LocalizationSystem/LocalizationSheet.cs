@@ -1,14 +1,20 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 
-[CreateAssetMenu(fileName = "Localization", menuName = "RPGFramework/Localization")]
-public class LocalizationSheet : ScriptableObject
+namespace RPGF.Localization
 {
-    public CustomDictionary<string> locales = new CustomDictionary<string>();
-
-    [Header("Настройки")]
-    public int Order = 0;
-
-    public bool IsDefault = false;
-
-    public LocalizationLanguage Language;
+    [CreateAssetMenu(fileName = "Localization", menuName = "RPGFramework/Localization")]
+    public class LocalizationSheet : ScriptableObject
+    {
+        [Tooltip("Словарь локалей")]
+        public CustomDictionary<Locale> locales = new CustomDictionary<Locale>();
+        [Space]
+        [Header("Настройки")]
+        [Tooltip("Порядок")]
+        public int Order = 0;
+        [Tooltip("Стандартный?")]
+        public bool IsDefault = false;
+    }
 }
+

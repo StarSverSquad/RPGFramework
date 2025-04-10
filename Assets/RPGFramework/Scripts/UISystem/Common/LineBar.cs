@@ -19,4 +19,9 @@ public class LineBar : MonoBehaviour
         else
             Bar.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, value * refRect.sizeDelta.y);
     }
+
+    public void SetValue(float value, float maxValue)
+    {
+        SetValue(value / maxValue);
+    }
 }

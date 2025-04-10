@@ -43,6 +43,7 @@ public class BattlePipeline
     #region READONLY PROPS
 
     public BattleData Data => _battle.Data;
+    public LocalizationManager Localization => GameManager.Instance.Localization;
     public BattleChoiceManager Choice => _battle.Choice;
     public BattleUtility Utility => _battle.Utility;
     public BattleVisualTransmitionManager VisualTransmition => _battle.VisualTransmition;
@@ -286,11 +287,11 @@ public class BattlePipeline
 
         if (Data.BattleInfo.ShowStartMessage)
         {
-            string rusMultiText = Data.BattleInfo.enemySquad.Enemies.Count > 1 ? "вступают в битву" : "вступает в битву";
+            string numeriticDifText = Data.BattleInfo.enemySquad.Enemies.Count > 1 ? Localization.GetLocale("SYS_BATTLE_ENCOUNTER_MULTI") : Localization.GetLocale("SYS_BATTLE_ENCOUNTER_SIGNLE");
 
             _common.MessageBox.Write(new MessageInfo()
             {
-                text = $"* {Data.BattleInfo.enemySquad.Name} {rusMultiText}!",
+                text = $"* {Data.BattleInfo.enemySquad.Name} {numeriticDifText}!",
                 closeWindow = true
             });
 
@@ -620,7 +621,7 @@ public class BattlePipeline
 
             _common.MessageBox.Write(new MessageInfo()
             {
-                text = "* Ваша команда проиграла!",
+                text = $"* {Localization.GetLocale("SYS_BATTLE_LOSE")}",
                 closeWindow = true,
             });
 
@@ -656,7 +657,7 @@ public class BattlePipeline
             {
                 character.Character.LevelUp();
 
-                lvlUpText += $"* {character.Character.Name} становиться сильнее!\n";
+                lvlUpText += $"* {character.Character.Name} {Localization.GetLocale("SYS_LEVELUP")}\n";
             }
         }
 
@@ -669,7 +670,7 @@ public class BattlePipeline
 
             GameManager.Instance.GameData.Money += money;
 
-            moneyText += $"* Вы получили {money} {GameManager.ILocalization.GetLocale("Base_Money")}!\n";
+            moneyText += $"* {Localization.GetLocale("SYS_BATTLE_YOU_GOT")} {money} {Localization.GetLocale("SYS_MONEY")}!\n";
         }
 
         bool first = true;
@@ -686,7 +687,7 @@ public class BattlePipeline
 
             if (first)
             {
-                dropText += $"* Вы получили {drop.item.Name}{countText}";
+                dropText += $"* {Localization.GetLocale("SYS_BATTLE_YOU_GOT")} {drop.item.Name}{countText}";
 
                 first = false;
             }
@@ -705,7 +706,7 @@ public class BattlePipeline
 
             _common.MessageBox.Write(new MessageInfo()
             {
-                text = "* Ваша команда одержала победу<!>",
+                text = $"* {Localization.GetLocale("SYS_BATTLE_WIN")}<!>",
                 closeWindow = true
             });
 

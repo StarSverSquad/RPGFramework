@@ -16,11 +16,13 @@ namespace RPGF.GUI
         public virtual void Cancel()
         {
             OnCancel?.Invoke();
+            OnCanceled();
         }
 
         public virtual void Select()
         {
             OnSelect?.Invoke();
+            OnSelected();
         }
 
         public virtual void SetFocus(bool focus)
@@ -28,9 +30,25 @@ namespace RPGF.GUI
             Focused = focus;
 
             if (focus)
+            {
                 OnFocus?.Invoke();
+                OnFocused();
+            }
             else
+            {
                 OnUnfocus?.Invoke();
+                OnUnfocused();
+            }
+                
         }
+
+        #region VIRTUALS 
+
+        public virtual void OnCanceled() { }
+        public virtual void OnSelected() { }
+        public virtual void OnFocused() { }
+        public virtual void OnUnfocused() { }
+
+        #endregion
     }
 }

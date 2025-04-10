@@ -9227,6 +9227,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1339939139109319007, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -20.470001
+      objectReference: {fileID: 0}
     - target: {fileID: 1736847258508491885, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -9267,17 +9271,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2424023579416831690, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 7.4400024
-      objectReference: {fileID: 0}
     - target: {fileID: 2427118352529543545, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: OnCanceledEvent.m_PersistentCalls.m_Calls.Array.size
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2961885038018233076, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -95.479996
       objectReference: {fileID: 0}
     - target: {fileID: 3339828495551438545, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -9299,13 +9295,13 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0.00024414062
       objectReference: {fileID: 0}
-    - target: {fileID: 4597126536109806219, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+    - target: {fileID: 4093224919480984948, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4912012069315207336, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 7.4400024
+    - target: {fileID: 4597126536109806219, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5114348691609866395, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_Name
@@ -9335,10 +9331,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -0.00024414062
       objectReference: {fileID: 0}
-    - target: {fileID: 6510990177978463640, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 7.4400024
-      objectReference: {fileID: 0}
     - target: {fileID: 6653017777265320983, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -9347,9 +9339,9 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7134161797968578145, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+    - target: {fileID: 6801035833240939533, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 7.4400024
+      value: 0.015625
       objectReference: {fileID: 0}
     - target: {fileID: 7427866169965658193, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_PlaneDistance
@@ -9387,10 +9379,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1627620487790945280, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
-    m_RemovedGameObjects:
-    - {fileID: 751710352884944624, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}

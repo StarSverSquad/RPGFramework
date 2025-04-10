@@ -12,6 +12,7 @@ namespace RPGF.RPG
         public List<string> Classes = new();
 
         public Sprite Icon;
+        public Sprite TitleImage;
         public Sprite BattleImage;
         public Sprite BattleQueryImage;
 

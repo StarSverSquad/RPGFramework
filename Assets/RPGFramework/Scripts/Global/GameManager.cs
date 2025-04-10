@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 /// <summary>
@@ -80,5 +81,10 @@ public class GameManager : ContentManagerBase
     public void LoadGame(int slotId)
     {
         SaveLoad.GameLoad(slotId);
+    }
+
+    private void OnApplicationQuit()
+    {
+        DOTween.KillAll();
     }
 }

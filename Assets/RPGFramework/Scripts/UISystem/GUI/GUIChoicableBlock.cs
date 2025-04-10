@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,6 +17,7 @@ namespace RPGF.GUI
         private bool _isHorizontal = true;
 
         public GUIElementBase CurrentElement => _elements[index];
+        public int CurrentElementIndex => index;
 
         private int index = 0;
         private Coroutine choiceCoroutine = null;
@@ -66,6 +68,11 @@ namespace RPGF.GUI
                 StopCoroutine(choiceCoroutine);
                 choiceCoroutine = null;
             }
+        }
+
+        public void SetElements(params GUIElementBase[] elements)
+        {
+            _elements = elements.ToList();
         }
 
         protected void ChangeSelect(int newIndex)

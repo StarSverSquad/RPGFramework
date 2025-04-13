@@ -34,10 +34,13 @@ namespace RPGF.GUI
 
         public virtual void SetFocus(bool focus)
         {
-            Focused = focus;
-
             if (!gameObject.activeInHierarchy)
+            {
+                Debug.LogWarning("Can't set focus on deactivated element");
                 return;
+            }
+
+            Focused = focus;
 
             if (focus)
             {

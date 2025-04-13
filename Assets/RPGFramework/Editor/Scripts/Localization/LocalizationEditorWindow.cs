@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
@@ -12,7 +13,9 @@ public class LocalizationEditorWindow : EditorWindow
     private string tagBuffer;
     private Vector2 scroll;
 
-    private Dictionary<string, bool> localeFoldouts = new Dictionary<string, bool>();
+    private string searchText;
+
+    private Dictionary<string, bool> localeFoldouts = new();
 
     public static LocalizationEditorWindow Create(LocalizationSheet sheet)
     {
@@ -25,20 +28,10 @@ public class LocalizationEditorWindow : EditorWindow
 
     private void OnGUI()
     {
-        GUILayout.BeginVertical();
-        scroll = EditorGUILayout.BeginScrollView(scroll);
-
-        for (int i = 0; i < sheet.locales.Count(); i++)
-        {
-            if (!localeFoldouts.Keys.Any(key => key == sheet.locales.data[i].Key))
-                localeFoldouts.Add(sheet.locales.data[i].Key, false);
-
-            LocaleElement(sheet.locales.data[i].Key, sheet.locales.data[i].Value);
-        }
+        searchText = EditorGUILayout.TextField("Поиск:", searchText);
 
         GUILayout.BeginHorizontal();
-
-        tagBuffer = EditorGUILayout.TextField(tagBuffer);
+        tagBuffer = EditorGUILayout.TextField("Тег:", tagBuffer);
 
         if (GUILayout.Button("Создать"))
         {
@@ -55,11 +48,27 @@ public class LocalizationEditorWindow : EditorWindow
 
             sheet.locales.Add(tagBuffer, new Locale());
         }
-        
         GUILayout.EndHorizontal();
+
+        GUILayout.BeginVertical();
+        scroll = EditorGUILayout.BeginScrollView(scroll);
+
+        var locales = sheet.locales.data.Where(locale => Regex.IsMatch(locale.Key, @$"\w*{searchText}\w*")).ToList();
+        for (int i = 0; i < locales.Count; i++)
+        {
+            var locale = locales[i];
+
+            if (!localeFoldouts.Keys.Any(key => key == locale.Key))
+                localeFoldouts.Add(locale.Key, false);
+
+            LocaleElement(locale.Key, locale.Value);
+        }
+
 
         GUILayout.EndScrollView();
         GUILayout.EndVertical();
+
+
 
         if (GUI.changed)
         {

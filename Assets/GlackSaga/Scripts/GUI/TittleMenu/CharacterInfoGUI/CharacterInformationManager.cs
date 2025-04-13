@@ -47,7 +47,7 @@ class CharacterInformationManager : RPGFrameworkBehaviour, IDisposable
 
     public void Dispose()
     {
-        //DisposeTween();
+        DisposeTween();
     }
 
     private void DisposeTween()

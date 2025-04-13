@@ -88,16 +88,17 @@ namespace RPGF.GUI
                 OnDispose();
                 OnDisposeEvent?.Invoke();
             }
-
-            Diativate();
         }
 
         public void SetFocus(bool focus)
         {
-            IsFocused = focus;
-
             if (!gameObject.activeInHierarchy)
+            {
+                Debug.LogWarning("Can't set focus on deactivated block");
                 return;
+            }
+
+            IsFocused = focus;
 
             if (focus)
             {

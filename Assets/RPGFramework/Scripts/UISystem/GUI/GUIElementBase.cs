@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace RPGF.GUI
@@ -15,12 +16,18 @@ namespace RPGF.GUI
 
         public virtual void Cancel()
         {
+            if (!gameObject.activeInHierarchy)
+                return;
+
             OnCancel?.Invoke();
             OnCanceled();
         }
 
         public virtual void Select()
         {
+            if (!gameObject.activeInHierarchy)
+                return;
+
             OnSelect?.Invoke();
             OnSelected();
         }
@@ -28,6 +35,9 @@ namespace RPGF.GUI
         public virtual void SetFocus(bool focus)
         {
             Focused = focus;
+
+            if (!gameObject.activeInHierarchy)
+                return;
 
             if (focus)
             {

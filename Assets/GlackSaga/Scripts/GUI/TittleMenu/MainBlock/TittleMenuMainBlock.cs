@@ -15,6 +15,8 @@ public class TittleMenuMainBlock : GUIChoicableBlock
 
     [Space]
     [SerializeField]
+    private MoneyGUI _money;
+    [SerializeField]
     private Image _solidColorBg;
     [SerializeField]
     private RectTransform _wordsBg;
@@ -75,6 +77,8 @@ public class TittleMenuMainBlock : GUIChoicableBlock
     {
         DisposeTweens();
 
+        _money.Initialize();
+
         yield return new WaitForFixedUpdate();
 
         panelTween = _panel.DOAnchorPosY(0, _panelAnimationTime)
@@ -98,6 +102,8 @@ public class TittleMenuMainBlock : GUIChoicableBlock
     private IEnumerator CloseAnimation()
     {
         DisposeTweens();
+
+        _money.Dispose();
 
         yield return new WaitForFixedUpdate();
 

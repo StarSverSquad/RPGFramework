@@ -38,6 +38,33 @@ namespace RPGF.Localization
 
             return tag;
         }
+
+        public bool TryGetLocale(string tag, out string result)
+        {
+            LocalizationLanguage language = _gameConfig.Config.Language;
+            LocalizationSheet[] actualSheets = sheets
+                .OrderBy(i => i.Order)
+                .ToArray();
+
+            if (actualSheets.Length == 0)
+                actualSheets = sheets
+                    .Where(sheet => sheet.IsDefault)
+                    .OrderBy(i => i.Order)
+                    .ToArray();
+
+            for (int i = 0; i < actualSheets.Length; i++)
+            {
+                if (actualSheets[i].locales.HaveKey(tag))
+                {
+                    result = actualSheets[i].locales[tag].Get(language);
+                    return true;
+                }
+            }
+
+            result = tag;
+
+            return false;
+        }
     }
 
 }

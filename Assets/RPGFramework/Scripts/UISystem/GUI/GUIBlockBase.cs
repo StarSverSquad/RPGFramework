@@ -54,8 +54,11 @@ namespace RPGF.GUI
             if (_enableOnActivate)
                 gameObject.SetActive(true);
 
-            OnActivate();
-            OnActivateEvent?.Invoke();
+            if (gameObject.activeInHierarchy)
+            {
+                OnActivate();
+                OnActivateEvent?.Invoke();
+            }
 
             IsActivated = true;
         }
@@ -64,8 +67,11 @@ namespace RPGF.GUI
             if (!IsActivated)
                 return;
 
-            OnDiativate();
-            OnDiativateEvent?.Invoke();
+            if (gameObject.activeInHierarchy)
+            {
+                OnDiativate();
+                OnDiativateEvent?.Invoke();
+            }
 
             if (_disableOnDiactivate)
             {
@@ -77,15 +83,21 @@ namespace RPGF.GUI
 
         public void Dispose()
         {
-            Diativate();
+            if (gameObject.activeInHierarchy)
+            {
+                OnDispose();
+                OnDisposeEvent?.Invoke();
+            }
 
-            OnDispose();
-            OnDisposeEvent?.Invoke();
+            Diativate();
         }
 
         public void SetFocus(bool focus)
         {
             IsFocused = focus;
+
+            if (!gameObject.activeInHierarchy)
+                return;
 
             if (focus)
             {

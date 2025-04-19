@@ -13,8 +13,6 @@ namespace RPGF.Localization
         [Header("Настройки")]
         [Tooltip("Порядок")]
         public int Order = 0;
-        [Tooltip("Стандартный?")]
-        public bool IsDefault = false;
     }
 }
 

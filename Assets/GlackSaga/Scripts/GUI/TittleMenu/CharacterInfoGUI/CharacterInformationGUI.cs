@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace GlackSaga.GUI.TitleMenu
 {
-    class CharacterInformationGUI : MonoBehaviour
+    class CharacterInformationGUI : RPGFrameworkBehaviour
     {
         [SerializeField]
         private LineBar _hpBar;
@@ -31,7 +31,7 @@ namespace GlackSaga.GUI.TitleMenu
             _hpText.text = $"{character.Heal} / {character.MaxHeal}";
             _mpText.text = $"{character.Mana} / {character.MaxMana}";
 
-            _name.text = character.Name;
+            _name.text = GetLocale(character.Name);
 
             _icon.sprite = character.Icon;
         }

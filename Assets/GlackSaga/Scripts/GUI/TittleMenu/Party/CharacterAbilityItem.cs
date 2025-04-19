@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace GlackSaga.GUI.TitleMenu.Party
 {
-    public class CharacterAbilityItem : MonoBehaviour
+    public class CharacterAbilityItem : RPGFrameworkBehaviour
     {
         [SerializeField]
         private Image _icon;
@@ -15,7 +15,7 @@ namespace GlackSaga.GUI.TitleMenu.Party
         public void SetData(RPGAbility ability)
         {
             _icon.sprite = ability.Icon;
-            _name.text = ability.Name;
+            _name.text = GetLocale(ability.Name);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace GlackSaga.GUI.TitleMenu.Party
         {
             _image.sprite = character.TitleImage;
             _gradient.color = character.Color;
-            _name.text = character.Name;
+            _name.text = GetLocale(character.Name);
         }
 
         public override void OnFocused()

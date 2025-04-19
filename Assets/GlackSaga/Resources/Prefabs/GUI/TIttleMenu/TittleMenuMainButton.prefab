@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 771630970558781867}
   - component: {fileID: 5971578813871168403}
   - component: {fileID: 2035358483498372409}
+  - component: {fileID: 1523758992294089872}
   m_Layer: 0
   m_Name: TittleMenuMainButton
   m_TagString: Untagged
@@ -112,7 +113,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
@@ -168,6 +169,19 @@ MonoBehaviour:
   _selectedColor: {r: 1, g: 0.55486983, b: 0, a: 1}
   _underline: {fileID: 774604615971959492}
   _underlineAnimationTime: 0.25
+--- !u!114 &1523758992294089872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3715717550345654339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01aec2be2ee125a408ebefd458a01119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _warnOnNotFound: 1
 --- !u!1 &4492027629201751997
 GameObject:
   m_ObjectHideFlags: 0

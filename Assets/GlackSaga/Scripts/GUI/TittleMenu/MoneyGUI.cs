@@ -3,25 +3,29 @@ using System;
 using TMPro;
 using UnityEngine;
 
-public class MoneyGUI : RPGFrameworkBehaviour, IDisposable
+namespace GlackSaga.GUI.TitleMenu
 {
-    [SerializeField]
-    private TextMeshProUGUI _moneyText;
-    [SerializeField]
-    private RectTransform _selfRect;
-
-    [SerializeField]
-    private float _animationDuration = 0.2f;
-
-    public override void Initialize()
+    public class MoneyGUI : RPGFrameworkBehaviour, IDisposable
     {
-        _moneyText.text = $"{Game.GameData.Money} {Game.Localization.GetLocale("SYS_MONEY")}";
+        [SerializeField]
+        private TextMeshProUGUI _moneyText;
+        [SerializeField]
+        private RectTransform _selfRect;
 
-        _selfRect.DOAnchorPosX(-130, _animationDuration).SetEase(Ease.OutCubic).From(new Vector2(130, -54)).Play();
-    }
+        [SerializeField]
+        private float _animationDuration = 0.2f;
 
-    public void Dispose()
-    {
-        _selfRect.DOAnchorPosX(130, _animationDuration).SetEase(Ease.OutCubic).From(new Vector2(-130, -54)).Play();
+        public override void Initialize()
+        {
+            _moneyText.text = $"{Game.GameData.Money} {Game.Localization.GetLocale("SYS_MONEY")}";
+
+            _selfRect.DOAnchorPosX(-130, _animationDuration).SetEase(Ease.OutCubic).From(new Vector2(130, -54)).Play();
+        }
+
+        public void Dispose()
+        {
+            _selfRect.DOAnchorPosX(130, _animationDuration).SetEase(Ease.OutCubic).From(new Vector2(-130, -54)).Play();
+        }
     }
 }
+

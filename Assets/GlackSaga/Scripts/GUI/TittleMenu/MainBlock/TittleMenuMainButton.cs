@@ -4,79 +4,82 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TittleMenuMainButton : GUIElementBase
+namespace GlackSaga.GUI.TitleMenu.Main
 {
-    [Space]
-    [SerializeField]
-    private TextMeshProUGUI _textMesh;
-    [SerializeField]
-    private Color _unfocusedColor;
-    [SerializeField]
-    private Color _focusedColor;
-    [SerializeField]
-    private Color _selectedColor;
-    [Space]
-    [SerializeField]
-    private RectTransform _underline;
-    [SerializeField]
-    private float _underlineAnimationTime;
-
-    private Image underlineImage;
-
-    private Tween underlineTween;
-
-    private void OnEnable()
+    public class TittleMenuMainButton : GUIElementBase
     {
-        _underline.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
+        [Space]
+        [SerializeField]
+        private TextMeshProUGUI _textMesh;
+        [SerializeField]
+        private Color _unfocusedColor;
+        [SerializeField]
+        private Color _focusedColor;
+        [SerializeField]
+        private Color _selectedColor;
+        [Space]
+        [SerializeField]
+        private RectTransform _underline;
+        [SerializeField]
+        private float _underlineAnimationTime;
 
-        underlineImage = _underline.GetComponent<Image>();
+        private Image underlineImage;
 
-        underlineImage.color = _focusedColor;
-    }
+        private Tween underlineTween;
 
-    public override void Select()
-    {
-        base.Select();
-
-        _textMesh.color = _selectedColor;
-        underlineImage.color = _selectedColor;
-    }
-
-    public override void SetFocus(bool focus)
-    {
-        base.SetFocus(focus);
-
-        underlineImage.color = _focusedColor;
-
-        if (focus)
+        private void OnEnable()
         {
-            _textMesh.color = _focusedColor;
+            _underline.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
 
-            DisposeTweens();
-            underlineTween = _underline
-                .DOSizeDelta(new Vector2(_textMesh.GetPreferredValues().x, _underline.sizeDelta.y), _underlineAnimationTime)
-                .Play();
+            underlineImage = _underline.GetComponent<Image>();
+
+            underlineImage.color = _focusedColor;
         }
-        else
+
+        public override void Select()
         {
-            _textMesh.color = _unfocusedColor;
+            base.Select();
 
-            DisposeTweens();
-            underlineTween = _underline
-                .DOSizeDelta(new Vector2(0, _underline.sizeDelta.y), _underlineAnimationTime)
-                .Play();
+            _textMesh.color = _selectedColor;
+            underlineImage.color = _selectedColor;
         }
-    }
 
-    private void DisposeTweens()
-    {
-        underlineTween?.Kill();
+        public override void SetFocus(bool focus)
+        {
+            base.SetFocus(focus);
 
-        underlineTween = null;
-    }
+            underlineImage.color = _focusedColor;
 
-    private void OnDisable()
-    {
-        DisposeTweens();
+            if (focus)
+            {
+                _textMesh.color = _focusedColor;
+
+                DisposeTweens();
+                underlineTween = _underline
+                    .DOSizeDelta(new Vector2(_textMesh.GetPreferredValues().x, _underline.sizeDelta.y), _underlineAnimationTime)
+                    .Play();
+            }
+            else
+            {
+                _textMesh.color = _unfocusedColor;
+
+                DisposeTweens();
+                underlineTween = _underline
+                    .DOSizeDelta(new Vector2(0, _underline.sizeDelta.y), _underlineAnimationTime)
+                    .Play();
+            }
+        }
+
+        private void DisposeTweens()
+        {
+            underlineTween?.Kill();
+
+            underlineTween = null;
+        }
+
+        private void OnDisable()
+        {
+            DisposeTweens();
+        }
     }
 }

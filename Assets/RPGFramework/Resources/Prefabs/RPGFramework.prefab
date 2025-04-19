@@ -5714,6 +5714,15 @@ MonoBehaviour:
   OnNextEvent:
     m_PersistentCalls:
       m_Calls: []
+  _charImage: {fileID: 0}
+  _charName: {fileID: 0}
+  _charDescription: {fileID: 0}
+  _charClass: {fileID: 0}
+  _charLevel: {fileID: 0}
+  _charDmg: {fileID: 0}
+  _charDef: {fileID: 0}
+  _charAgi: {fileID: 0}
+  _charLuck: {fileID: 0}
 --- !u!1 &3476964397444746198
 GameObject:
   m_ObjectHideFlags: 0
@@ -16857,7 +16866,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5971578813871168403, guid: 6bb813b8522c0d648aa09132e2c8bff0, type: 3}
       propertyPath: m_text
-      value: "\u0412\u044B\u0445\u043E\u0434"
+      value: TITLEMENU_EXIT_BTN
       objectReference: {fileID: 0}
     - target: {fileID: 9005984755098632299, guid: 6bb813b8522c0d648aa09132e2c8bff0, type: 3}
       propertyPath: m_Pivot.x
@@ -17466,7 +17475,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5971578813871168403, guid: 6bb813b8522c0d648aa09132e2c8bff0, type: 3}
       propertyPath: m_text
-      value: "\u0428\u043C\u043E\u0442"
+      value: TITLEMENU_GEAR_BTN
       objectReference: {fileID: 0}
     - target: {fileID: 9005984755098632299, guid: 6bb813b8522c0d648aa09132e2c8bff0, type: 3}
       propertyPath: m_Pivot.x
@@ -17615,7 +17624,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5971578813871168403, guid: 6bb813b8522c0d648aa09132e2c8bff0, type: 3}
       propertyPath: m_text
-      value: "\u041A\u043E\u0434\u043B\u043E\n"
+      value: TITLEMENU_PARTY_BTN
       objectReference: {fileID: 0}
     - target: {fileID: 9005984755098632299, guid: 6bb813b8522c0d648aa09132e2c8bff0, type: 3}
       propertyPath: m_Pivot.x
@@ -18279,6 +18288,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5058734164189295680}
     m_Modifications:
+    - target: {fileID: 1947759179737083623, guid: 039859374a15b1446bae273e000a0d53, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 10.299999
+      objectReference: {fileID: 0}
     - target: {fileID: 5214977296197854689, guid: 039859374a15b1446bae273e000a0d53, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -18667,6 +18680,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5058734164189295680}
     m_Modifications:
+    - target: {fileID: 1947759179737083623, guid: 039859374a15b1446bae273e000a0d53, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 10.299999
+      objectReference: {fileID: 0}
     - target: {fileID: 5214977296197854689, guid: 039859374a15b1446bae273e000a0d53, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -18769,6 +18786,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5058734164189295680}
     m_Modifications:
+    - target: {fileID: 1947759179737083623, guid: 039859374a15b1446bae273e000a0d53, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 10.299999
+      objectReference: {fileID: 0}
     - target: {fileID: 5214977296197854689, guid: 039859374a15b1446bae273e000a0d53, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -19677,7 +19698,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5971578813871168403, guid: 6bb813b8522c0d648aa09132e2c8bff0, type: 3}
       propertyPath: m_text
-      value: "\u0412\u0435\u0449\u0438"
+      value: TITLEMENU_ITEMS_BTN
       objectReference: {fileID: 0}
     - target: {fileID: 9005984755098632299, guid: 6bb813b8522c0d648aa09132e2c8bff0, type: 3}
       propertyPath: m_Pivot.x
@@ -19951,11 +19972,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3715717550345654339, guid: 6bb813b8522c0d648aa09132e2c8bff0, type: 3}
       propertyPath: m_Name
-      value: OptionsButton
+      value: SettingsButton
       objectReference: {fileID: 0}
     - target: {fileID: 5971578813871168403, guid: 6bb813b8522c0d648aa09132e2c8bff0, type: 3}
       propertyPath: m_text
-      value: "\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438"
+      value: TITLEMENU_SETTINGS_BTN
       objectReference: {fileID: 0}
     - target: {fileID: 9005984755098632299, guid: 6bb813b8522c0d648aa09132e2c8bff0, type: 3}
       propertyPath: m_Pivot.x
@@ -21042,6 +21063,10 @@ PrefabInstance:
     - target: {fileID: 3715717550345654339, guid: 6bb813b8522c0d648aa09132e2c8bff0, type: 3}
       propertyPath: m_Name
       value: LoadButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 5971578813871168403, guid: 6bb813b8522c0d648aa09132e2c8bff0, type: 3}
+      propertyPath: m_text
+      value: TITLEMENU_LOADING_BTN
       objectReference: {fileID: 0}
     - target: {fileID: 9005984755098632299, guid: 6bb813b8522c0d648aa09132e2c8bff0, type: 3}
       propertyPath: m_Pivot.x

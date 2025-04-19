@@ -2,60 +2,63 @@
 using System;
 using UnityEngine;
 
-class CharacterInformationManager : RPGFrameworkBehaviour, IDisposable
+namespace GlackSaga.GUI.TitleMenu
 {
-    [SerializeField]
-    private CharacterInformationGUI[] _charactersGUI = new CharacterInformationGUI[4];
-    [Space]
-    [SerializeField]
-    private RectTransform _root;
-    [SerializeField]
-    private float _animationTime;
-
-    private Tween animTween;
-
-    public override void Initialize()
+    class CharacterInformationManager : RPGFrameworkBehaviour, IDisposable
     {
-        for (int i = 0; i < _charactersGUI.Length; i++)
+        [SerializeField]
+        private CharacterInformationGUI[] _charactersGUI = new CharacterInformationGUI[4];
+        [Space]
+        [SerializeField]
+        private RectTransform _root;
+        [SerializeField]
+        private float _animationTime;
+
+        private Tween animTween;
+
+        public override void Initialize()
         {
-            if (i < Game.Character.Characters.Length)
+            for (int i = 0; i < _charactersGUI.Length; i++)
             {
-                _charactersGUI[i].gameObject.SetActive(true);
-                _charactersGUI[i].Initialize(Game.Character.Characters[i]);
-            }
-            else
-            {
-                _charactersGUI[i].gameObject.SetActive(false);
+                if (i < Game.Character.Characters.Length)
+                {
+                    _charactersGUI[i].gameObject.SetActive(true);
+                    _charactersGUI[i].Initialize(Game.Character.Characters[i]);
+                }
+                else
+                {
+                    _charactersGUI[i].gameObject.SetActive(false);
+                }
             }
         }
-    }
 
-    public void Show()
-    {
-        DisposeTween();
-        animTween = _root
-            .DOAnchorPosY(_root.sizeDelta.y, _animationTime)
-            .Play();
-    }
-    public void Hide()
-    {
-        DisposeTween();
-        animTween = _root
-            .DOAnchorPosY(0, _animationTime)
-            .Play();
-    }
-
-    public void Dispose()
-    {
-        DisposeTween();
-    }
-
-    private void DisposeTween()
-    {
-        if (animTween != null)
+        public void Show()
         {
-            animTween.Kill();
-            animTween = null;
+            DisposeTween();
+            animTween = _root
+                .DOAnchorPosY(_root.sizeDelta.y, _animationTime)
+                .Play();
+        }
+        public void Hide()
+        {
+            DisposeTween();
+            animTween = _root
+                .DOAnchorPosY(0, _animationTime)
+                .Play();
+        }
+
+        public void Dispose()
+        {
+            DisposeTween();
+        }
+
+        private void DisposeTween()
+        {
+            if (animTween != null)
+            {
+                animTween.Kill();
+                animTween = null;
+            }
         }
     }
 }

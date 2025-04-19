@@ -1,3 +1,4 @@
+using GlackSaga.GUI.TitleMenu.FullInfo;
 using RPGF.GUI;
 using System.Linq;
 using UnityEngine;
@@ -6,6 +7,8 @@ namespace GlackSaga.GUI.TitleMenu.Party
 {
     public class PartyGUIBlock : GUIChoicableBlock
     {
+        [SerializeField]
+        private FullInfoBlockGUI _fullInfoGUI;
         [SerializeField]
         private PartyItemGUIElement[] Items = new PartyItemGUIElement[4];
 
@@ -31,6 +34,16 @@ namespace GlackSaga.GUI.TitleMenu.Party
 
             base.OnActivate();
         }
-    }
 
+        public override void OnChoiced(int index)
+        {
+            _fullInfoGUI.SetData(Game.Character.Characters[index]);
+            Next(_fullInfoGUI);
+        }
+
+        protected override void OnFocus()
+        {
+            StartChoice();
+        }
+    }
 }

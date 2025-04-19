@@ -9,10 +9,11 @@ namespace RPGF.RPG
     public class RPGCharacter : RPGEntity
     {
         [Header("Настройки персонажа")]
-        public List<string> Classes = new();
+        public string Class = string.Empty;
 
         public Sprite Icon;
         public Sprite TitleImage;
+        public Sprite BattleTinyIcon;
         public Sprite BattleImage;
         public Sprite BattleQueryImage;
 

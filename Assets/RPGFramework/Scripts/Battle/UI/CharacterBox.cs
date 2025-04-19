@@ -47,7 +47,7 @@ public class CharacterBox : RPGFrameworkBehaviour, IDisposable
         UpdateHeal();
         UpdateMana();
 
-        characterImage.sprite = character.BattleImage;
+        characterImage.sprite = character.BattleTinyIcon;
         nameText.text = character.Name;
 
         SetDead(false);

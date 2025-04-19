@@ -32,8 +32,9 @@ namespace GlackSaga.GUI.TitleMenu.Main
             _underline.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 0);
 
             underlineImage = _underline.GetComponent<Image>();
+            underlineImage.color = _unfocusedColor;
 
-            underlineImage.color = _focusedColor;
+            _textMesh.color = _unfocusedColor;
         }
 
         public override void Select()

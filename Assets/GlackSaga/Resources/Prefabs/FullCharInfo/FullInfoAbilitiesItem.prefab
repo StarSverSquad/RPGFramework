@@ -245,8 +245,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 286.94, y: 10.3}
-  m_SizeDelta: {x: 99.21, y: 25.1}
+  m_AnchoredPosition: {x: 264.44, y: 10.3}
+  m_SizeDelta: {x: 144.21, y: 25.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1293432600283542700
 CanvasRenderer:
@@ -303,8 +303,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 22
+  m_fontSizeBase: 22
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -381,8 +381,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 286.54, y: 37.45}
-  m_SizeDelta: {x: 100, y: 25.1}
+  m_AnchoredPosition: {x: 263.86, y: 37.45}
+  m_SizeDelta: {x: 145.36, y: 25.1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &374350904102822420
 CanvasRenderer:
@@ -439,8 +439,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 22
+  m_fontSizeBase: 22
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -494,6 +494,7 @@ GameObject:
   - component: {fileID: 5214977296197854689}
   - component: {fileID: 552923045019597644}
   - component: {fileID: 815038797861639696}
+  - component: {fileID: 6694924209983424074}
   m_Layer: 0
   m_Name: FullInfoAbilitiesItem
   m_TagString: Untagged
@@ -563,6 +564,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1.5
+--- !u!114 &6694924209983424074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7402888916201351012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7b240f5a0377834f9c4c78126b0a207, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _icon: {fileID: 6267196789450642202}
+  _name: {fileID: 1388751156605316062}
+  _description: {fileID: 5078257188901338102}
+  _mana: {fileID: 2031818425885767029}
+  _concentration: {fileID: 5902950423707773674}
 --- !u!1 &8494720652517514378
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,4 +9,6 @@ public class RPGFrameworkBehaviour : MonoBehaviour, IManagerInitialize
     protected BattleManager Battle => BattleManager.Instance;
 
     public virtual void Initialize() { }
+
+    protected string GetLocale(string tag) => Game.Localization.GetLocale(tag);
 }

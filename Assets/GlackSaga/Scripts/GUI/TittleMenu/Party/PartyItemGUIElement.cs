@@ -39,6 +39,8 @@ namespace GlackSaga.GUI.TitleMenu.Party
 
         public override void OnFocused()
         {
+            Dispose();
+
             bgTween = DOTween.Sequence();
 
             bgTween

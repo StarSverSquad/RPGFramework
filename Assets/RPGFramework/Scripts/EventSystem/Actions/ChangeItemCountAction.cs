@@ -1,4 +1,5 @@
-﻿using RPGF.RPG;
+﻿using RPGF.Inventory;
+using RPGF.RPG;
 using System;
 using System.Collections;
 
@@ -10,7 +11,7 @@ public class ChangeItemCountAction : GraphActionBase
 
     public bool IsSet;
 
-    private InventoryManager Inventory => GameManager.Instance.Inventory;
+    private InventoryService Inventory => GameManager.Instance.Inventory;
 
     public ChangeItemCountAction() : base("ChangeItemCount")
     {

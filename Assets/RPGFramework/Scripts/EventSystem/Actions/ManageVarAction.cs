@@ -28,7 +28,7 @@ public class ManageVarAction : GraphActionBase
     public string StringBuffer;
     public float FloatBuffer;
 
-    private SaveLoadManager SaveLoad => GameManager.Instance.SaveLoad;
+    private SaveLoadService SaveLoad => GameManager.Instance.SaveLoad;
     private GameData GameData => GameData;
 
     public ManageVarAction() : base("ManageVar")

@@ -2,9 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
-public class GlobalCharacterManager : IDisposable
+public class CharacterService : IDisposable
 {
     public event Action OnCharaterListChanged;
 
@@ -14,7 +13,7 @@ public class GlobalCharacterManager : IDisposable
     private List<RPGCharacter> registredCharacters;
     public RPGCharacter[] RegistredCharacters => characters.ToArray();
 
-    public GlobalCharacterManager()
+    public CharacterService()
     {
         characters = new List<RPGCharacter>();
         registredCharacters = new List<RPGCharacter>();

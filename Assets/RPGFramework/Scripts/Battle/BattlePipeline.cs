@@ -44,7 +44,7 @@ public class BattlePipeline
     #region READONLY PROPS
 
     public BattleData Data => _battle.Data;
-    public LocalizationManager Localization => GameManager.Instance.Localization;
+    public LocalizationService Localization => GameManager.Instance.Localization;
     public BattleChoiceManager Choice => _battle.Choice;
     public BattleUtility Utility => _battle.Utility;
     public BattleVisualTransmitionManager VisualTransmition => _battle.VisualTransmition;

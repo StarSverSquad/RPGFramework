@@ -1,15 +1,16 @@
-﻿using System.Linq;
+﻿using RPGF.SaveLoad;
+using System.Linq;
 using UnityEngine;
 
 namespace RPGF.Localization
 {
-    public class LocalizationManager
+    public class LocalizationService
     {
-        private readonly GameConfigManager _gameConfig;
+        private readonly GameConfigService _gameConfig;
 
         private LocalizationSheet[] sheets;
 
-        public LocalizationManager(GameConfigManager gameConfig)
+        public LocalizationService(GameConfigService gameConfig)
         {
             _gameConfig = gameConfig;
 

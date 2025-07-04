@@ -28,7 +28,7 @@ public class TranslateCharacterAction : GraphActionBase
 
     public TranslateType Type;
 
-    private LocalCharacterManager Character => LocalManager.Instance.Character;
+    private CharacterManager Character => LocalManager.Instance.Character;
     private PlayerExplorerManager Player => ExplorerManager.Instance.PlayerManager;
 
     public TranslateCharacterAction() : base("TranslateCharater")

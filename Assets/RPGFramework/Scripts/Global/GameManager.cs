@@ -1,5 +1,7 @@
 using DG.Tweening;
+using RPGF.Inventory;
 using RPGF.Localization;
+using RPGF.SaveLoad;
 using UnityEngine;
 
 /// <summary>
@@ -18,15 +20,18 @@ public class GameManager : ContentManagerBase
     [SerializeField, Space]
     private LocationInfo newGameLocation;
 
-    public LocalizationManager Localization {  get; private set; }
-    public InventoryManager Inventory { get; private set; }
-    public GlobalCharacterManager Character { get; private set; }
-    public SaveLoadManager SaveLoad { get; private set; }
+    public LocalizationService Localization {  get; private set; }
+    public InventoryService Inventory { get; private set; }
+    public CharacterService Character { get; private set; }
+    public SaveLoadService SaveLoad { get; private set; }
+    public GameConfigService GameConfig { get; private set; }
+
+    public GameFilesService FilesService { get; private set; }
+
     public BaseOptions BaseOptions { get; private set; }
     public GameData GameData { get; private set; }
-    public GameConfigManager GameConfig { get; private set; }
 
-    public static LocalizationManager ILocalization => Instance.Localization;
+    public static LocalizationService ILocalization => Instance.Localization;
 
     private void Awake()
     {
@@ -50,22 +55,24 @@ public class GameManager : ContentManagerBase
 
     public override void InitializeChild()
     {
-        Character = new GlobalCharacterManager();
+        FilesService = new GameFilesService();
 
-        Inventory = new InventoryManager();
+        Character = new CharacterService();
+
+        Inventory = new InventoryService();
 
         BaseOptions = Resources.Load<BaseOptions>("Options");
 
         GameData = new GameData(this);
 
-        SaveLoad = new SaveLoadManager(this);
+        SaveLoad = new SaveLoadService(this, FilesService);
 
-        GameConfig = new GameConfigManager(SaveLoad);
+        GameConfig = new GameConfigService(SaveLoad);
 
         GameConfig.Load();
         GameConfig.Apply();
 
-        Localization = new LocalizationManager(GameConfig);
+        Localization = new LocalizationService(GameConfig);
     }
 
     public void NewGame()

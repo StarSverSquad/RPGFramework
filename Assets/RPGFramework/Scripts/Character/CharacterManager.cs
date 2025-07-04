@@ -4,7 +4,7 @@ using RPGF.Character;
 using RPGF;
 using RPGF.RPG;
 
-public class LocalCharacterManager : RPGFrameworkBehaviour
+public class CharacterManager : RPGFrameworkBehaviour
 {
     [SerializeField]
     private float _updateTargetsDistance = 1f;

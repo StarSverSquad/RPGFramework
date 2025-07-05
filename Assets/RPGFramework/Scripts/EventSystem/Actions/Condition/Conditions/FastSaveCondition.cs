@@ -17,13 +17,13 @@ public class FastSaveCondition : ConditionBase
 
     public override bool Invoke()
     {
-        if (!GameManager.Instance.SaveLoad.HasFastSaveKey(Key))
+        if (!Game.FastSave.HaveKey(Key))
         {
             Debug.LogWarning($"{Key} переменная не найдена в FastSaves!");
             return false;
         }
 
-        int savedValue = GameManager.Instance.SaveLoad.GetFastSave(Key);
+        int savedValue = Game.FastSave[Key];
 
         return Operation switch
         {

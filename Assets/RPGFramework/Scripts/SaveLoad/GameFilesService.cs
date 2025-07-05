@@ -18,20 +18,32 @@ namespace RPGF.SaveLoad
         {
             SavePath = new(Application.dataPath + @"\Saves");
 
-            if (!Directory.Exists(SavePath.FullName))
-                Directory.CreateDirectory(SavePath.FullName);
+            if (!SavePath.Exists)
+                SavePath.Create();
         }
 
         #region LOAD
 
         public object LoadFile(string filename)
         {
-            string rawData = File.ReadAllText(Path.Combine(SavePath.FullName, filename));
+            try
+            {
+                string rawData = File.ReadAllText(Path.Combine(SavePath.FullName, filename));
 
-            return JsonUtility.FromJson<object>(rawData);
+                return JsonUtility.FromJson<object>(rawData);
+            }
+            catch (FileNotFoundException)
+            {
+                return null;
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public T LoadFile<T>(string filename)
+            where T : class
         {
             return (T)LoadFile(filename);
         }
@@ -57,12 +69,12 @@ namespace RPGF.SaveLoad
 
         public void SaveFile(string filename, object content)
         {
-            File.WriteAllText(Path.Combine(SavePath.FullName, filename), JsonUtility.ToJson(content));
+            File.WriteAllText(Path.Combine(SavePath.FullName, filename), JsonUtility.ToJson(content, true));
         }
 
-        public T SaveFile<T>(string filename, T content)
+        public void SaveFile<T>(string filename, T content)
         {
-            return SaveFile(filename, content);
+            SaveFile(filename, content as object);
         }
 
         public void SaveSlot(string slotName, GameSlotData data)
@@ -70,7 +82,7 @@ namespace RPGF.SaveLoad
             SaveFile($"{slotName}.{SLOTFORMAT}", data);
         }
 
-        public void LoadCommon(GameCommonData data)
+        public void SaveCommon(GameCommonData data)
         {
             SaveFile($"{COMMONNAME}.{COMMONFORMAT}", data);
         }

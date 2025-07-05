@@ -25,10 +25,10 @@ public class GameData : IDisposable
     {
         Manager = manager;
 
-        UpdateData();
+        ApplyDataFromBaseOptions();
     }
 
-    private void UpdateData()
+    private void ApplyDataFromBaseOptions()
     {
         IntValues = new CustomDictionary<int>();
         FloatValues = new CustomDictionary<float>();
@@ -54,6 +54,6 @@ public class GameData : IDisposable
 
     public void Dispose()
     {
-        UpdateData();
+        ApplyDataFromBaseOptions();
     }
 }

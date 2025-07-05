@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : RPGFrameworkBehaviour
 {
     [Header("Источники:")]
     [SerializeField] 

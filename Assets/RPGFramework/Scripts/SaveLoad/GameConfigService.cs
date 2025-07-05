@@ -8,35 +8,36 @@ namespace RPGF.SaveLoad
     [Serializable]
     public class GameConfigService
     {
-        public event Action OnConfigUpdated;
+        private readonly GameFilesService _gameFiles;
+        private readonly AudioManager _audio;
 
         public GameConfigData Config { get; private set; }
 
-        private SaveLoadService saveLoad;
 
-        public GameConfigService(SaveLoadService saveLoad)
+        public event Action OnConfigUpdated;
+
+        public GameConfigService(GameFilesService gameFiles, AudioManager audio)
         {
-            this.saveLoad = saveLoad;
+            _gameFiles = gameFiles;
+            _audio = audio;
         }
 
         public void Apply()
         {
-            GameManager.Instance.GameAudio.SetBGMMixerVolume(Config.BGMVolume);
-            GameManager.Instance.GameAudio.SetBGSMixerVolume(Config.BGSVolume);
-            GameManager.Instance.GameAudio.SetSEMixerVolume(Config.SEVolume);
-            GameManager.Instance.GameAudio.SetMEMixerVolume(Config.MEVolume);
+            _audio.SetBGMMixerVolume(Config.BGMVolume);
+            _audio.SetBGSMixerVolume(Config.BGSVolume);
+            _audio.SetSEMixerVolume(Config.SEVolume);
+            _audio.SetMEMixerVolume(Config.MEVolume);
 
             Screen.SetResolution(Config.ResolutionX, Config.ResolutionY, Config.Fullscreen);
         }
 
         public void Load()
         {
-            GameConfigData? raw = saveLoad.LoadConfig();
+            GameConfigData raw = _gameFiles.LoadConfig();
 
             if (raw is not null)
-            {
-                Config = (GameConfigData)raw;
-            }
+                Config = raw;
             else
             {
                 Config = CreateNew();
@@ -46,9 +47,15 @@ namespace RPGF.SaveLoad
             OnConfigUpdated?.Invoke();
         }
 
+        public void LoadAndApply()
+        {
+            Load();
+            Apply();
+        }
+
         public void Save()
         {
-            saveLoad.SaveConfig(Config);
+            _gameFiles.SaveConfig(Config);
 
             OnConfigUpdated?.Invoke();
         }

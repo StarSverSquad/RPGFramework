@@ -8,9 +8,9 @@ public class BaseOptions : ScriptableObject
     public KeyCode MoveDown = KeyCode.DownArrow;
     public KeyCode MoveLeft = KeyCode.LeftArrow;
     public KeyCode MoveRight = KeyCode.RightArrow;
-
+    [Space]
     public KeyCode Run = KeyCode.LeftShift;
-
+    [Space]
     public KeyCode Accept = KeyCode.Z;
     public KeyCode Cancel = KeyCode.X;
     public KeyCode Additional = KeyCode.C;

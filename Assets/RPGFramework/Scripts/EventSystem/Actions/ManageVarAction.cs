@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RPGF.SaveLoad;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ public class ManageVarAction : GraphActionBase
     public string StringBuffer;
     public float FloatBuffer;
 
-    private SaveLoadService SaveLoad => GameManager.Instance.SaveLoad;
+    private FastSaveService FastSave => GameManager.Instance.FastSave;
     private GameData GameData => GameData;
 
     public ManageVarAction() : base("ManageVar")
@@ -78,9 +79,9 @@ public class ManageVarAction : GraphActionBase
                 break;
             case VarType.FastSave:
                 if (Operation == OperationType.Set)
-                    SaveLoad.SetFastSave(VarName, IntBuffer);
+                    FastSave[VarName] = IntBuffer;
                 else
-                    SaveLoad.SetFastSave(VarName, SaveLoad.GetFastSave(VarName) + IntBuffer);
+                    FastSave[VarName] += IntBuffer;
                 break;
         }
 

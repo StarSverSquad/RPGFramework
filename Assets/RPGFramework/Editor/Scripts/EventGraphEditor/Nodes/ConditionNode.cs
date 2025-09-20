@@ -37,6 +37,20 @@ public class ConditionNode : ActionNodeWrapper<ConditionAction>
         };
     }
 
+    public string FormatOperationListEnum(ConditionOperation index)
+    {
+        return index switch
+        {
+            ConditionOperation.Equals => "==",
+            ConditionOperation.NotEquals => "!=",
+            ConditionOperation.More => ">",
+            ConditionOperation.Less => "<",
+            ConditionOperation.MoreOrEquals => ">=",
+            ConditionOperation.LessOrEquals => "<=",
+            _ => "UNDEF",
+        };
+    }
+
     public override void PortContructor()
     {
         CreateInputPort("Input");
@@ -436,7 +450,7 @@ public class ConditionNode : ActionNodeWrapper<ConditionAction>
                         conditionBlock.Add(horizontal1);
                     }
                     break;
-                case PlayerPrefsCondition pref:
+                case FastSaveCondition fastSave:
                     {
                         VisualElement horizontal0 = new VisualElement();
                         horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
@@ -454,33 +468,27 @@ public class ConditionNode : ActionNodeWrapper<ConditionAction>
                         horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
                         horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
 
-                        TextField namefield = new TextField();
-                        namefield.SetValueWithoutNotify(pref.Key);
-                        namefield.RegisterValueChangedCallback(i =>
-                        {
-                            pref.Key = i.newValue;
-
-                            MakeDirty();
-                        });
+                        TextField namefield = BuildTextField(
+                            fastSave.Key,
+                            val => fastSave.Key = val
+                            );
 
                         horizontal1.Add(namefield);
 
-                        Label lbl = new Label("==");
+                        var opers = BuildEnumField(
+                            fastSave.Operation,
+                            val => fastSave.Operation = val,
+                            FormatOperationListEnum
+                            );
 
-                        horizontal1.Add(lbl);
+                        horizontal1.Add(opers);
 
-                        IntegerField charField = new IntegerField();
+                        IntegerField valField = BuildIntegerField(
+                            fastSave.Value,
+                            val => fastSave.Value = val
+                            );
 
-                        charField.SetValueWithoutNotify(pref.Value);
-                        charField.RegisterValueChangedCallback(i =>
-                        {
-                            pref.Value = i.newValue;
-
-                            MakeDirty();
-                        });
-
-                        horizontal1.Add(charField);
-
+                        horizontal1.Add(valField);
                         conditionBlock.Add(horizontal1);
                     }
                     break;

@@ -14,7 +14,7 @@ public class ChangeStateEffect : EffectBase
     {
         if (BattleManager.IsBattle 
             && target is RPGCharacter character
-            && BattleManager.Data.TurnsData.First(i => i.Character == character).IsDead)
+            && BattleManager._Data.TurnsData.First(i => i.Character == character).IsDead)
             yield break;
 
         if (IsAddState)

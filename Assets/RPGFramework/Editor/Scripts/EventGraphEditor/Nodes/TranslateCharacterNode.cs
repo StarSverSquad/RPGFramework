@@ -13,63 +13,53 @@ public class TranslateCharacterNode : ActionNodeWrapper<TranslateCharacterAction
 
     public override void UIContructor()
     {
-        EnumField TypeEnum = new EnumField(Action.Type);
+        var TypeEnum = BuildEnumField(
+            Action.Type,
+            value => Action.Type = value,
+            i =>
+            {
+                return i switch
+                {
+                    TranslateCharacterAction.TranslateType.Move => "Переместить",
+                    TranslateCharacterAction.TranslateType.MoveRelative => "Относительное перемещение",
+                    TranslateCharacterAction.TranslateType.Rotate => "Повернуть",
+                    TranslateCharacterAction.TranslateType.RotateToPlayer => "Повернуть к игроку",
+                    _ => "Unknown"
+                };
+            },
+            updateUI: true
+            );
 
-        TypeEnum.SetValueWithoutNotify(Action.Type);
-        TypeEnum.RegisterValueChangedCallback(i =>
-        {
-            Action.Type = (TranslateCharacterAction.TranslateType)i.newValue;
+        AddToExtensionContainer(TypeEnum);
 
-            MakeDirty();
-            UpdateUI();
-        });
+        Toggle InpartyToggle = BuildToggle(
+            Action.InParty,
+            value => Action.InParty = value,
+            "Персонаж в группе?",
+            updateUI: true
+            );
 
-        extensionContainer.Add(TypeEnum);
-
-        Toggle InpartyToggle = new Toggle("Персонаж в партии");
-
-        InpartyToggle.SetValueWithoutNotify(Action.InParty);
-        InpartyToggle.RegisterValueChangedCallback(i =>
-        {
-            Action.InParty = i.newValue;
-
-            MakeDirty();
-            UpdateUI();
-        });
-
-        extensionContainer.Add(InpartyToggle);
+        AddToExtensionContainer(InpartyToggle);
 
         if (Action.InParty)
         {
-            TextField TagField = new TextField("Тег персонажа");
+            TextField TagField = BuildTextField(
+                Action.CharacterTag,
+                value => Action.CharacterTag = value,
+                "Тег персонажа:"
+                );
 
-            TagField.SetValueWithoutNotify(Action.CharacterTag);
-            TagField.RegisterValueChangedCallback(i =>
-            {
-                Action.CharacterTag = i.newValue;
-
-                MakeDirty();
-            });
-
-            extensionContainer.Add(TagField);
+            AddToExtensionContainer(TagField);
         }
         else
         {
-            ObjectField CharacterField = new ObjectField("Персонаж")
-            {
-                allowSceneObjects = true,
-                objectType = typeof(CharacterModelControllerBase)
-            };
+            ObjectField CharacterField = BuildObjectField(
+                Action.CharacterInScene,
+                value => Action.CharacterInScene = value,
+                "Персонаж на сцене:"
+                );
 
-            CharacterField.SetValueWithoutNotify(Action.CharacterInScene);
-            CharacterField.RegisterValueChangedCallback(i =>
-            {
-                Action.CharacterInScene = (CharacterModelControllerBase)i.newValue;
-
-                MakeDirty();
-            });
-
-            extensionContainer.Add(CharacterField);
+            AddToExtensionContainer(CharacterField);
         }
 
         switch (Action.Type)
@@ -77,98 +67,85 @@ public class TranslateCharacterNode : ActionNodeWrapper<TranslateCharacterAction
             case TranslateCharacterAction.TranslateType.Move:
             case TranslateCharacterAction.TranslateType.MoveRelative:
                 {
-                    Toggle ReplaceInstanceToggle = new Toggle("Резко?");
+                    Toggle ReplaceInstanceToggle = BuildToggle(
+                        Action.ReplaceInstantly,
+                        value => Action.ReplaceInstantly = value,
+                        "Резко переместить?",
+                        updateUI: true
+                        );
 
-                    ReplaceInstanceToggle.SetValueWithoutNotify(Action.ReplaceInstantly);
-                    ReplaceInstanceToggle.RegisterValueChangedCallback(i =>
-                    {
-                        Action.ReplaceInstantly = i.newValue;
+                    var withRotationToggle = BuildToggle(
+                        Action.WithRotation, 
+                        value => Action.WithRotation = value,
+                        "С вращением?"
+                        );
 
-                        MakeDirty();
-                        UpdateUI();
-                    });
-
-                    extensionContainer.Add(ReplaceInstanceToggle);
+                    AddToExtensionContainer(withRotationToggle);
+                    AddToExtensionContainer(ReplaceInstanceToggle);
 
                     if (!Action.ReplaceInstantly)
                     {
-                        FloatField SpeedField = new FloatField("Скорость");
+                        FloatField timeField = BuildFloatField(
+                            Action.Time,
+                            value => Action.Time = value,
+                            "Время перемещения:"
+                            );
 
-                        SpeedField.SetValueWithoutNotify(Action.Speed);
-                        SpeedField.RegisterValueChangedCallback(i =>
-                        {
-                            Action.Speed = i.newValue;
+                        AddToExtensionContainer(timeField);
 
-                            MakeDirty();
-                            UpdateUI();
-                        });
+                        Toggle WaitToggle = BuildToggle(
+                            Action.Wait,
+                            value => Action.Wait = value,
+                            "Ждать завершения?"
+                            );
 
-                        extensionContainer.Add(SpeedField);
-
-                        Toggle WaitToggle = new Toggle("Ждать?");
-
-                        WaitToggle.SetValueWithoutNotify(Action.Wait);
-                        WaitToggle.RegisterValueChangedCallback(i =>
-                        {
-                            Action.Wait = i.newValue;
-
-                            MakeDirty();
-                        });
-
-                        extensionContainer.Add(WaitToggle);
+                        AddToExtensionContainer(WaitToggle);
                     }
 
                     if (Action.Type == TranslateCharacterAction.TranslateType.MoveRelative)
                     {
-                        Label OffsetLabel = new Label("Перемещение");
+                        Label OffsetLabel = new Label("Смещение:");
 
-                        extensionContainer.Add(OffsetLabel);
+                        Vector2Field OffsetField = BuildVector2Field(
+                            Action.Offset,
+                            value => Action.Offset = value
+                            );
 
-                        Vector2Field OffsetField = new Vector2Field();
-
-                        OffsetField.SetValueWithoutNotify(Action.Offset);
-                        OffsetField.RegisterValueChangedCallback(i =>
-                        {
-                            Action.Offset = i.newValue;
-
-                            MakeDirty();
-                        });
-
-                        extensionContainer.Add(OffsetField);
+                        AddToExtensionContainer(OffsetLabel);
+                        AddToExtensionContainer(OffsetField);
                     }
                     else
                     {
-                        ObjectField TransofrmField = new ObjectField("Точка")
-                        {
-                            allowSceneObjects = true,
-                            objectType = typeof(Transform)
-                        };
+                        ObjectField TransofrmField = BuildObjectField(
+                            Action.Point,
+                            value => Action.Point = value,
+                            "Точка перемещения:"
+                            );
 
-                        TransofrmField.SetValueWithoutNotify(Action.Point);
-                        TransofrmField.RegisterValueChangedCallback(i =>
-                        {
-                            Action.Point = (Transform)i.newValue;
-
-                            MakeDirty();
-                        });
-
-                        extensionContainer.Add(TransofrmField);
+                        AddToExtensionContainer(TransofrmField);
                     }
                 }
                 break;
             case TranslateCharacterAction.TranslateType.Rotate:
                 {
-                    EnumField DiretionEnum = new EnumField("Сторона", Action.Direction);
+                    var DiretionEnum = BuildEnumField(
+                        Action.Direction,
+                        value => Action.Direction = value,
+                        i =>
+                        {
+                            return i switch
+                            {
+                                ViewDirection.Down => "Вниз",
+                                ViewDirection.Left => "Влево",
+                                ViewDirection.Right => "Вправо",
+                                ViewDirection.Up => "Вверх",
+                                _ => "Unknown"
+                            };
+                        },
+                        "Направление поворота:"
+                        );
 
-                    DiretionEnum.SetValueWithoutNotify(Action.Direction);
-                    DiretionEnum.RegisterValueChangedCallback(i =>
-                    {
-                        Action.Direction = (ViewDirection)i.newValue;
-
-                        MakeDirty();
-                    });
-
-                    extensionContainer.Add(DiretionEnum);
+                    AddToExtensionContainer(DiretionEnum);
                 }
                 break;
         }

@@ -21,8 +21,8 @@ MonoBehaviour:
   DefaultDefence: 2
   DefaultAgility: 3
   DefaultLuck: 3
-  Patterns:
-  - {fileID: 4869993089437226105, guid: df5e4ea55872b2840a69542afd50538e, type: 3}
+  EnemyModel: {fileID: 663759740531968399, guid: d6038442376efda4aa728ada49fb12a8, type: 3}
+  Behaviours:
   - {fileID: 3581836680113462952, guid: cae5c9089092f6246ac7c41fd677b08d, type: 3}
+  - {fileID: 4869993089437226105, guid: df5e4ea55872b2840a69542afd50538e, type: 3}
   Acts: []
-  EnemyModel: {fileID: 6372225342885846398, guid: d6038442376efda4aa728ada49fb12a8, type: 3}

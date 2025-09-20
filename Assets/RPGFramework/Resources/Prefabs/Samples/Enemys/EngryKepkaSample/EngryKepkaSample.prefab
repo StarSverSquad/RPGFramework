@@ -229,7 +229,9 @@ MonoBehaviour:
   attackPoint: {fileID: 2854925121998487310}
   deathEffect: {fileID: 5771179949149026439}
   damageEffect: {fileID: 2186035709222933572}
-  animators: []
+  animators:
+  - Animator: {fileID: 0}
+    Tag: 
 --- !u!114 &2186035709222933572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -242,7 +244,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb0e811300bcfaa498aea034d9d227ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 4
+  _bodyTransofrm: {fileID: 7274181129357817207}
+  _duration: 0.35
+  _strength: 20
+  _vibrato: 15
+  _randomness: 1
 --- !u!114 &5771179949149026439
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -295,7 +301,7 @@ RectTransform:
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &8642740539813419865
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -309,6 +315,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1

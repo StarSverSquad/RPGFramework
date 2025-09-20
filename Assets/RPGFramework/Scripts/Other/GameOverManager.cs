@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameOverManager : MonoBehaviour
+public class GameOverManager : RPGFrameworkBehaviour
 {
     [SerializeField]
     private RectTransform heart;
@@ -38,8 +38,10 @@ public class GameOverManager : MonoBehaviour
 
         yield return new WaitForSeconds(.5f);
 
-        // Я такой даун, въебал 40 минут на то что бы самому разработать анимацию и забыл что у меня есть DoTween
-        var anim0 = heart.transform.DOMove(Vector3.zero, 2).SetEase(Ease.InOutCubic).SetLoops(0).Play();
+        var anim0 = heart.transform
+            .DOMove(Vector3.zero, 2)
+            .SetEase(Ease.InOutCubic)
+            .SetLoops(0).Play();
 
         yield return new WaitWhile(() => anim0.active);
 
@@ -74,6 +76,6 @@ public class GameOverManager : MonoBehaviour
 
         yield return new WaitForSeconds(2.25f);
 
-        GameManager.Instance.LoadGame(0);
+        Game.SaveLoad.FastLoad();
     }
 }

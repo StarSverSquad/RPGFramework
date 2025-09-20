@@ -1,6 +1,7 @@
 ﻿using DG.Tweening;
 using System;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class BattleFieldManager : MonoBehaviour, IActive, IDisposable
 {
@@ -16,6 +17,8 @@ public class BattleFieldManager : MonoBehaviour, IActive, IDisposable
     private SpriteRenderer background;
 
     [Header("Настройки:")]
+    [SerializeField]
+    private float _animationTime = 0.25f;
     [SerializeField]
     private float Margin = 0.1f;
     [SerializeField]
@@ -40,7 +43,7 @@ public class BattleFieldManager : MonoBehaviour, IActive, IDisposable
             Resize(new Vector2(3, 3));
             Rotate(0);
             MoveTo(StartPosition);
-        }   
+        }
     }
 
     #region API
@@ -120,6 +123,23 @@ public class BattleFieldManager : MonoBehaviour, IActive, IDisposable
     public void MoveRelative(Vector2 offset, float time = 0, Ease ease = Ease.Linear)
     {
         MoveTo((Vector2)transform.position + offset, time, ease);
+    }
+
+    public void Show()
+    {
+        background?.DOKill();
+        background.DOColor(Color.white, _animationTime).From(Color.clear).Play();
+
+        background?.transform.DOKill();
+        background.transform.DOScale(Vector3.one, _animationTime).From(new Vector2(1.5f, 1.5f)).Play();
+    }
+    public void Hide()
+    {
+        background?.DOKill();
+        background.DOColor(Color.clear, _animationTime).Play();
+
+        background?.transform.DOKill();
+        background.transform.DOScale(new Vector2(1.5f, 1.5f), _animationTime).Play();
     }
 
     #endregion

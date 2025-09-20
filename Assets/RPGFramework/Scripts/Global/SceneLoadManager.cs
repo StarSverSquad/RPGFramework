@@ -1,10 +1,9 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneLoadManager : MonoBehaviour
+public class SceneLoadManager : RPGFrameworkBehaviour
 {
     [SerializeField]
     private bool isLoading = false;
@@ -28,29 +27,29 @@ public class SceneLoadManager : MonoBehaviour
     {
         isLoading = true;
 
-        GameManager.Instance.GameAudio.StopBGM(1f);
-        GameManager.Instance.GameAudio.StopBGS(1f);
+        Game.GameAudio.StopBGM(1f);
+        Game.GameAudio.StopBGS(1f);
 
-        GameManager.Instance.LoadingScreen.ActivatePart1();
+        Game.LoadingScreen.ActivatePart1();
 
-        yield return new WaitWhile(() => GameManager.Instance.LoadingScreen.BgIsFade);
+        yield return new WaitWhile(() => Game.LoadingScreen.BgIsFade);
 
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(scene);
 
         asyncOperation.allowSceneActivation = true;
 
-        GameManager.Instance.LoadingScreen.ActivatePart2();
+        Game.LoadingScreen.ActivatePart2();
 
         while (!asyncOperation.isDone)
         {
-            GameManager.Instance.LoadingScreen.LoadingProgress = asyncOperation.progress;
+            Game.LoadingScreen.LoadingProgress = asyncOperation.progress;
 
             yield return null;
         }
 
-        GameManager.Instance.LoadingScreen.DeactivatePart2();
+        Game.LoadingScreen.DeactivatePart2();
 
-        GameManager.Instance.LoadingScreen.DeactivatePart1();
+        Game.LoadingScreen.DeactivatePart1();
 
         isLoading = false;
 
@@ -65,16 +64,16 @@ public class SceneLoadManager : MonoBehaviour
 
         asyncOperation.allowSceneActivation = true;
 
-        GameManager.Instance.LoadingScreen.ActivatePart2();
+        Game.LoadingScreen.ActivatePart2();
 
         while (!asyncOperation.isDone || ExplorerManager.Instance == null)
         {
-            GameManager.Instance.LoadingScreen.LoadingProgress = asyncOperation.progress;
+            Game.LoadingScreen.LoadingProgress = asyncOperation.progress;
 
             yield return null;
         }
 
-        GameManager.Instance.LoadingScreen.DeactivatePart2();
+        Game.LoadingScreen.DeactivatePart2();
 
         isLoading = false;
 

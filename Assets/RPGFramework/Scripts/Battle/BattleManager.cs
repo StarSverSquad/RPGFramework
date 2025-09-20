@@ -14,13 +14,14 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
     public BattleAudioManager BattleAudio;
     public BattlePlayerManager Player;
     public AttackQTEManager AttackQTE;
-    public EnemyModelsManager EnemyModels;
-    public BattlePatternManager Pattern;
+    public BattleEnemyModelsManager EnemyModels;
+    public BattleEnemyBehaviourManager EnemyBehaviour;
     public BattleVisualTransmitionManager VisualTransmition;
     public BattleUIShake Shaker;
     public BattleUIManager UI;
     public MinigameManager Minigame;
-    public BattleData data;
+    public BattleData Data;
+    public BattleSpashMessageWriter SpashWriter;
 
 
     public BattlePipeline Pipeline { get; private set; }
@@ -29,7 +30,7 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
     public static BattleUtility BattleUtility => Instance.Utility;
 
     // TRASH
-    public static BattleData Data => Instance.data;
+    public static BattleData _Data => Instance.Data;
 
     public static bool IsBattle => Instance.Pipeline.MainIsWorking;
 
@@ -47,6 +48,10 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
     {
         Pipeline = new BattlePipeline(this, CommonManager.Instance);
         Utility = new BattleUtility(this);
+
+        Choice.Initialize();
+
+        SpashWriter.Initialize();
 
         Player.SetActive(false);
     }

@@ -1,0 +1,133 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1235e5fd30784ea47820947db022c79a, type: 3}
+  m_Name: SYSTEM
+  m_EditorClassIdentifier: 
+  locales:
+    data:
+    - Key: SYS_MONEY
+      Value:
+        Russian: "\u0422\u0443\u0433."
+        English: Tug.
+    - Key: SYS_DMG
+      Value:
+        Russian: "\u0421\u0418\u041B\u0410"
+        English: POWER
+    - Key: SYS_DEF
+      Value:
+        Russian: "\u0417\u0410\u0429\u0418\u0422\u0410"
+        English: DEFENCE
+    - Key: SYS_AGI
+      Value:
+        Russian: "\u041B\u041E\u0412\u041A\u041E\u0421\u0422\u042C"
+        English: AGILITY
+    - Key: SYS_LUCK
+      Value:
+        Russian: "\u0423\u0414\u0410\u0427\u0410"
+        English: LUCK
+    - Key: SYS_WEAR_SLOT_WEAPON
+      Value:
+        Russian: "\u041E\u0440\u0443\u0436\u0438\u0435"
+        English: Weapon
+    - Key: SYS_WEAR_SLOT_WEAPON_S
+      Value:
+        Russian: "\u041E\u0420\u0423\u0416"
+        English: WEAP
+    - Key: SYS_WEAR_SLOT_BODY
+      Value:
+        Russian: "\u0422\u0435\u043B\u043E"
+        English: Body
+    - Key: SYS_WEAR_SLOT_BODY_S
+      Value:
+        Russian: "\u0422\u0415\u041B\u041E"
+        English: BODY
+    - Key: SYS_WEAR_SLOT_HEAD
+      Value:
+        Russian: "\u0413\u043E\u043B\u043E\u0432\u0430"
+        English: Head
+    - Key: SYS_WEAR_SLOT_HEAD_S
+      Value:
+        Russian: "\u0413\u041E\u041B\u041E\u0412\u0410"
+        English: HEAD
+    - Key: SYS_WEAR_SLOT_SHIELD
+      Value:
+        Russian: "\u0429\u0438\u0442"
+        English: Shield
+    - Key: SYS_WEAR_SLOT_SHIELD_S
+      Value:
+        Russian: "\u0429\u0418\u0422"
+        English: SHLD
+    - Key: SYS_WEAR_SLOT_TALISMAN
+      Value:
+        Russian: "\u0422\u0430\u043B\u0438\u0441\u043C\u0430\u043D"
+        English: Talisman
+    - Key: SYS_WEAR_SLOT_TALISMAN_S
+      Value:
+        Russian: "\u0422\u0410\u041B\u0421\u041C\u041D"
+        English: TALSMN
+    - Key: SYS_WEARS_TITLE
+      Value:
+        Russian: "\u042D\u043A\u0438\u043F\u0438\u0440\u043E\u0432\u043A\u0430"
+        English: Gear
+    - Key: SYS_ITEMS_TITLE
+      Value:
+        Russian: "\u0412\u0435\u0449\u0438"
+        English: Items
+    - Key: SYS_ABILITIES_TITLE
+      Value:
+        Russian: "\u0421\u043F\u043E\u0441\u043E\u0431\u043D\u043E\u0441\u0442\u0438"
+        English: Abilities
+    - Key: SYS_LEVELUP
+      Value:
+        Russian: "\u0441\u0442\u0430\u043D\u043E\u0432\u0438\u0442\u0441\u044F \u0441\u0438\u043B\u044C\u043D\u0435\u0435"
+        English: 
+    - Key: SYS_BATTLE_YOU_GOT
+      Value:
+        Russian: "\u0412\u044B \u043F\u043E\u043B\u0443\u0447\u0438\u043B\u0438"
+        English: You got
+    - Key: SYS_LEVEL
+      Value:
+        Russian: "\u0421\u0442\u0430\u0442\u0443\u0441"
+        English: Status
+    - Key: SYS_CLASS
+      Value:
+        Russian: "\u041A\u043B\u0430\u0441\u0441"
+        English: Class
+    - Key: SYS_MANA
+      Value:
+        Russian: "\u041C\u0430\u043D\u0430"
+        English: Mana
+    - Key: SYS_MANA_S
+      Value:
+        Russian: "\u041C\u041D"
+        English: MN
+    - Key: SYS_HEAL_S
+      Value:
+        Russian: "\u0417\u0414"
+        English: HP
+    - Key: SYS_HEAL
+      Value:
+        Russian: "\u0417\u0434\u043E\u0440\u043E\u0432\u044C\u0435"
+        English: Heath
+    - Key: SYS_CONCENTRATION
+      Value:
+        Russian: "\u041A\u043E\u043D\u0446\u0435\u0442\u0440\u0430\u0446\u0438\u044F"
+        English: Concentration
+    - Key: SYS_CONCENTRATION_S
+      Value:
+        Russian: "\u041A\u0426"
+        English: CT
+    - Key: SYS_EMPTY
+      Value:
+        Russian: "\u041F\u0443\u0441\u0442\u043E"
+        English: Empty
+  Order: -1

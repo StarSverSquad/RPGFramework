@@ -1,3 +1,9 @@
+using DG.Tweening;
+using RPGF;
+using RPGF.Inventory;
+using RPGF.Localization;
+using RPGF.SaveLoad;
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -13,18 +19,28 @@ public class GameManager : ContentManagerBase
     public LoadingScreenManager LoadingScreen;
     public SceneLoadManager SceneLoader;
 
+
+    /// <summary>
+    /// DEBUG - New Game Location
+    /// </summary>
     [SerializeField, Space]
     private LocationInfo newGameLocation;
 
-    public LocalizationManager Localization {  get; private set; }
-    public InventoryManager Inventory { get; private set; }
-    public GlobalCharacterManager Character { get; private set; }
-    public SaveLoadManager SaveLoad { get; private set; }
+    public LocalizationService Localization {  get; private set; }
+    public InventoryService Inventory { get; private set; }
+    public CharacterService Character { get; private set; }
+    public SaveLoadService SaveLoad { get; private set; }
+    public GameConfigService GameConfig { get; private set; }
+    public GameCommonDataService CommonDataService { get; private set; }
+    public GameFilesService FilesService { get; private set; }
+    public FastSaveService FastSave { get; private set; }
+
     public BaseOptions BaseOptions { get; private set; }
     public GameData GameData { get; private set; }
-    public GameConfigManager GameConfig { get; private set; }
 
-    public static LocalizationManager ILocalization => Instance.Localization;
+    public GameUtils Utils => new GameUtils(this);
+
+    public static LocalizationService ILocalization => Instance.Localization;
 
     private void Awake()
     {
@@ -42,43 +58,41 @@ public class GameManager : ContentManagerBase
 
     private void Update()
     {
+        // DEBUG - New Game Location start
         if (Input.GetKeyDown(KeyCode.N))
-            NewGame();
+            Utils.StartNewGame(newGameLocation);
     }
 
     public override void InitializeChild()
     {
-        Character = new GlobalCharacterManager();
+        FilesService = new GameFilesService();
 
-        Inventory = new InventoryManager();
+        Character = new CharacterService();
+
+        Inventory = new InventoryService();
 
         BaseOptions = Resources.Load<BaseOptions>("Options");
 
         GameData = new GameData(this);
 
-        SaveLoad = new SaveLoadManager(this);
+        GameConfig = new GameConfigService(FilesService, GameAudio);
+        GameConfig.LoadAndApply();
 
-        GameConfig = new GameConfigManager(SaveLoad);
+        CommonDataService = new GameCommonDataService(FilesService);
+        CommonDataService.Load();
 
-        GameConfig.Load();
-        GameConfig.Apply();
+        FastSave = new FastSaveService(CommonDataService);
 
-        Localization = new LocalizationManager();
+        Localization = new LocalizationService(GameConfig);
+
+        SaveLoad = new SaveLoadService(Character, GameData, LocationManager, Inventory, FilesService, CommonDataService);
     }
 
-    public void NewGame()
+    private void OnApplicationQuit()
     {
-        Inventory.Dispose();
-        Character.Dispose();
-        GameData.Dispose();
+        DOTween.KillAll();
 
-        PlayerPrefs.DeleteAll();
-        PlayerPrefs.Save();
-
-        LocationManager.ChangeLocation(newGameLocation);
-    }
-    public void LoadGame(int slotId)
-    {
-        SaveLoad.Load(slotId);
+        GameConfig.Save();
+        CommonDataService.Save();
     }
 }

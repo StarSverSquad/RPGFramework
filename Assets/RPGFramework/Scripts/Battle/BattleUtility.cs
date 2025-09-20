@@ -8,7 +8,7 @@ public class BattleUtility
 {
     private BattleManager _battle { get; set; }
 
-    public BattleData Data => _battle.data;
+    public BattleData Data => _battle.Data;
 
     public BattleUtility(BattleManager battle)
     {
@@ -20,6 +20,8 @@ public class BattleUtility
     public void StartBattle(RPGBattleInfo info)
     {
         Data.BattleInfo = info;
+
+        _battle.SpashWriter.SpashText = info.DefaultSpashMessage;
 
         foreach (var item in info.enemySquad.Enemies)
             AddEnemy(item.Enemy, item.ScreenPosition);
@@ -55,7 +57,7 @@ public class BattleUtility
     }
     public void DamageEnemy(RPGCharacter who, RPGEnemy enemy, float damageFactor = 1f)
     {
-        EnemyModel model = BattleManager.Instance.EnemyModels.GetModel(enemy);
+        BattleEnemyModel model = BattleManager.Instance.EnemyModels.GetModel(enemy);
 
         int dmg = enemy.GiveDamage(who, damageFactor, true);
 
@@ -74,12 +76,12 @@ public class BattleUtility
                 BattleManager.Instance.BattleAudio.PlaySound(Data.EnemyDamage);
             }
 
-            SpawnFallingText(model.DamageTextGlobalPoint, dmg.ToString(), Color.white, Color.red);
+            SpawnFallingText(model.DamageTextWorldPoint, dmg.ToString(), Color.white, Color.red);
         }
         else
         {
             BattleManager.Instance.BattleAudio.PlaySound(Data.Miss);
-            SpawnFallingText(model.DamageTextGlobalPoint, "ПРОМАХ");
+            SpawnFallingText(model.DamageTextWorldPoint, "ПРОМАХ");
         }
     }
 
@@ -234,14 +236,14 @@ public class BattleUtility
         // Запускает еффекты битвы на врагах
         if (targets.Any(i => i is RPGEnemy) && usable.VisualEffect != null)
         {
-            EnemyModel model = _battle.EnemyModels.GetModel(targets.Where(i => i is RPGEnemy).First() as RPGEnemy);
+            BattleEnemyModel model = _battle.EnemyModels.GetModel(targets.Where(i => i is RPGEnemy).First() as RPGEnemy);
 
             BattleAttackEffect effect;
 
             if (targets.Where(i => i is RPGEnemy).Count() == 1)
                 effect = SpawnAttackEffect(usable.VisualEffect);
             else
-                effect = SpawnAttackEffect(usable.VisualEffect, model.AttackGlobalPoint);
+                effect = SpawnAttackEffect(usable.VisualEffect, model.AttackWorldPoint);
 
             effect.Invoke();
 
@@ -257,7 +259,7 @@ public class BattleUtility
         {
             if (target is RPGCharacter chr)
             {
-                var turnData = _battle.data.TurnsData.First(i => i.Character == chr);
+                var turnData = _battle.Data.TurnsData.First(i => i.Character == chr);
 
                 if ((turnData.IsDead && !usable.ForDeath) || (!turnData.IsDead && !usable.ForAlive))
                 {
@@ -291,10 +293,10 @@ public class BattleUtility
 
             if (target is RPGEnemy enemy)
             {
-                if (!_battle.data.Enemys.Contains(enemy))
+                if (!_battle.Data.Enemys.Contains(enemy))
                     continue;
 
-                EnemyModel model = _battle.EnemyModels.GetModel(enemy);
+                BattleEnemyModel model = _battle.EnemyModels.GetModel(enemy);
 
                 if (healDif < 0)
                 {
@@ -312,24 +314,24 @@ public class BattleUtility
 
                 for (int i = 0; i < states.Length; i++)
                 {
-                    SpawnFallingText(model.AttackGlobalPoint + new Vector2(0, 0.2f + (0.2f * i)), states[i].Name,
+                    SpawnFallingText(model.AttackWorldPoint + new Vector2(0, 0.2f + (0.2f * i)), states[i].Name,
                         Color.white, states[i].Color);
                 }
 
 
                 if (enemy.Heal <= 0)
                 {
-                    _battle.BattleAudio.PlaySound(_battle.data.EnemyDeath);
+                    _battle.BattleAudio.PlaySound(_battle.Data.EnemyDeath);
                     model.Death();
                 }
                 else if (healDif < 0)
-                    _battle.BattleAudio.PlaySound(_battle.data.EnemyDamage);
+                    _battle.BattleAudio.PlaySound(_battle.Data.EnemyDamage);
                 else
-                    _battle.BattleAudio.PlaySound(_battle.data.Heal);
+                    _battle.BattleAudio.PlaySound(_battle.Data.Heal);
             }
             else if (target is RPGCharacter character)
             {
-                var turnData = _battle.data.TurnsData.First(i => i.Character == character);
+                var turnData = _battle.Data.TurnsData.First(i => i.Character == character);
 
                 CharacterBox box = _battle.UI.CharacterBox.GetBox(character);
 
@@ -383,9 +385,9 @@ public class BattleUtility
                 }
 
                 if (healDif < 0)
-                    _battle.BattleAudio.PlaySound(_battle.data.Hurt);
+                    _battle.BattleAudio.PlaySound(_battle.Data.Hurt);
                 else
-                    _battle.BattleAudio.PlaySound(_battle.data.Heal);
+                    _battle.BattleAudio.PlaySound(_battle.Data.Heal);
             }
 
             yield return new WaitForSeconds(.5f);

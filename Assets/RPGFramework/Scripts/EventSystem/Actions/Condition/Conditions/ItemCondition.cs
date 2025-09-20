@@ -1,4 +1,5 @@
-﻿using RPGF.RPG;
+﻿using RPGF.Inventory;
+using RPGF.RPG;
 using UnityEngine;
 
 public class ItemCondition : ConditionBase
@@ -9,7 +10,7 @@ public class ItemCondition : ConditionBase
 
     public ConditionOperation Operation;
 
-    private InventoryManager Inventory => GameManager.Instance.Inventory;
+    private InventoryService Inventory => GameManager.Instance.Inventory;
 
     public ItemCondition()
     {
@@ -32,7 +33,7 @@ public class ItemCondition : ConditionBase
         if (!Inventory.HasItemSlot(Value))
             return false;
 
-        InventorySlot slot = Inventory.GetSlotByItemTag(Value.Tag);
+        InventorySlotData slot = Inventory.GetSlotByItemTag(Value.Tag);
 
         return Operation switch
         {

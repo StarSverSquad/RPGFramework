@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -221,6 +222,35 @@ public class ActionNodeWrapper<T> : ActionNode
         field.RegisterValueChangedCallback(val =>
         {
             onChangedCallback.Invoke(val.newValue);
+
+            if (updateUI)
+                UpdateUI();
+
+            if (makeDirty)
+                MakeDirty();
+        });
+
+        return field;
+    }
+
+    protected PopupField<string> BuildEnumField<K>(K defaultValue, Action<K> onChangedCallback, Func<K, string> formatValueCallback,
+    string label = "", string tooltip = "", bool updateUI = false, bool makeDirty = true) where K : Enum
+    {
+        var names = Enum.GetNames(typeof(K)).ToList();
+
+        PopupField<string> field = new(
+            names, 
+            names.IndexOf(defaultValue.ToString()),
+            val => formatValueCallback.Invoke((K)Enum.Parse(typeof(K), val)),
+            val => formatValueCallback.Invoke((K)Enum.Parse(typeof(K), val)))
+        {
+            tooltip = tooltip,
+            label = label
+        };
+
+        field.RegisterValueChangedCallback(val =>
+        {
+            onChangedCallback.Invoke((K)Enum.Parse(typeof(K), val.newValue));
 
             if (updateUI)
                 UpdateUI();

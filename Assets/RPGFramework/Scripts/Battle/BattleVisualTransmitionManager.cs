@@ -11,48 +11,48 @@ public class BattleVisualTransmitionManager : MonoBehaviour
     private VisualBattleTransmitionEffectBase defaultEffect;
     public VisualBattleTransmitionEffectBase DefaultEffect => defaultEffect;
 
-    private VisualBattleTransmitionEffectBase customEffect;
-    private GameObject customEffectObject;
+    private VisualBattleTransmitionEffectBase effect;
+    private GameObject effectObject;
 
-    public VisualBattleTransmitionEffectBase CustomEffect => customEffect;
+    public VisualBattleTransmitionEffectBase CustomEffect => effect;
 
-    public void InitializeCustomEffect(VisualBattleTransmitionEffectBase effect)
+    public void InitializeEffect(VisualBattleTransmitionEffectBase effect)
     {
         if (effect == null)
             return;
 
-        if (customEffect != null)
-            DisposeCustomEffect();
+        if (this.effect != null)
+            DisposeEffect();
 
-        customEffectObject = Instantiate(effect.gameObject, transform);
+        effectObject = Instantiate(effect.gameObject, transform);
 
-        customEffect = customEffectObject.GetComponent<VisualBattleTransmitionEffectBase>();
+        this.effect = effectObject.GetComponent<VisualBattleTransmitionEffectBase>();
     }
 
-    public void DisposeCustomEffect()
+    public void DisposeEffect()
     {
-        if (customEffect == null)
+        if (effect == null)
             return;
 
-        Destroy(customEffectObject);
+        Destroy(effectObject);
 
-        customEffectObject = null;
-        customEffect = null;
+        effectObject = null;
+        effect = null;
     }
 
     public IEnumerator InvokePartOne()
     {
-        if (customEffect != null)
-            return customEffect.PartOne();
+        if (effect != null)
+            yield return effect.PartOne();
         else
-            return defaultEffect.PartOne();
+            yield return defaultEffect.PartOne();
     }
 
     public IEnumerator InvokePartTwo()
     {
-        if (customEffect != null)
-            return customEffect.PartTwo();
+        if (effect != null)
+            yield return effect.PartTwo();
         else
-            return defaultEffect.PartTwo();
+            yield return defaultEffect.PartTwo();
     }
 }

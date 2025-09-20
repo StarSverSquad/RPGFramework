@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RPGF.SaveLoad;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ public class ManageVarAction : GraphActionBase
 {
     public enum VarType
     {
-        Bool, Int, Float, String, PlayerPrefs
+        Bool, Int, Float, String, FastSave
     }
 
     public enum OperationType
@@ -28,6 +29,9 @@ public class ManageVarAction : GraphActionBase
     public string StringBuffer;
     public float FloatBuffer;
 
+    private FastSaveService FastSave => GameManager.Instance.FastSave;
+    private GameData GameData => GameData;
+
     public ManageVarAction() : base("ManageVar")
     {
         Var = VarType.Bool;
@@ -44,45 +48,40 @@ public class ManageVarAction : GraphActionBase
         switch (Var)
         {
             case VarType.Bool:
-                if (!GameManager.Instance.GameData.BoolValues.HaveKey(VarName))
-                    GameManager.Instance.GameData.BoolValues.Add(VarName, false);
+                if (!GameData.BoolValues.HaveKey(VarName))
+                    GameData.BoolValues.Add(VarName, false);
 
-                GameManager.Instance.GameData.BoolValues[VarName] = BoolBuffer;
+                GameData.BoolValues[VarName] = BoolBuffer;
                 break;
             case VarType.String:
-                if (!GameManager.Instance.GameData.StringValues.HaveKey(VarName))
-                    GameManager.Instance.GameData.StringValues.Add(VarName, string.Empty);
+                if (!GameData.StringValues.HaveKey(VarName))
+                    GameData.StringValues.Add(VarName, string.Empty);
 
-                GameManager.Instance.GameData.StringValues[VarName] = StringBuffer;
+                GameData.StringValues[VarName] = StringBuffer;
                 break;
             case VarType.Float:
-                if (!GameManager.Instance.GameData.FloatValues.HaveKey(VarName))
-                    GameManager.Instance.GameData.FloatValues.Add(VarName, 0);
+                if (!GameData.FloatValues.HaveKey(VarName))
+                    GameData.FloatValues.Add(VarName, 0);
 
                 if (Operation == OperationType.Set)
-                    GameManager.Instance.GameData.FloatValues[VarName] = FloatBuffer;
+                    GameData.FloatValues[VarName] = FloatBuffer;
                 else
-                    GameManager.Instance.GameData.FloatValues[VarName] += FloatBuffer;
+                    GameData.FloatValues[VarName] += FloatBuffer;
                 break;
             case VarType.Int:
-                if (!GameManager.Instance.GameData.IntValues.HaveKey(VarName))
-                    GameManager.Instance.GameData.IntValues.Add(VarName, 0);
+                if (!GameData.IntValues.HaveKey(VarName))
+                    GameData.IntValues.Add(VarName, 0);
 
                 if (Operation == OperationType.Set)
-                    GameManager.Instance.GameData.IntValues[VarName] = IntBuffer;
+                    GameData.IntValues[VarName] = IntBuffer;
                 else
-                    GameManager.Instance.GameData.IntValues[VarName] += IntBuffer;
+                    GameData.IntValues[VarName] += IntBuffer;
                 break;
-            case VarType.PlayerPrefs:
-                if (!PlayerPrefs.HasKey(VarName))
-                    PlayerPrefs.SetInt(VarName, 0);
-
+            case VarType.FastSave:
                 if (Operation == OperationType.Set)
-                    PlayerPrefs.SetInt(VarName, IntBuffer);
+                    FastSave[VarName] = IntBuffer;
                 else
-                    PlayerPrefs.SetInt(VarName, PlayerPrefs.GetInt(VarName) + IntBuffer);
-
-                PlayerPrefs.Save();
+                    FastSave[VarName] += IntBuffer;
                 break;
         }
 

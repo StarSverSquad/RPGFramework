@@ -47,7 +47,7 @@ public class CharacterBox : RPGFrameworkBehaviour, IDisposable
         UpdateHeal();
         UpdateMana();
 
-        characterImage.sprite = character.BattleImage;
+        characterImage.sprite = character.BattleTinyIcon;
         nameText.text = character.Name;
 
         SetDead(false);
@@ -62,7 +62,7 @@ public class CharacterBox : RPGFrameworkBehaviour, IDisposable
     {
         actImage.enabled = action != BattleTurnData.TurnAction.None;
 
-        actImage.sprite = Battle.data.GetActionIcon(action);
+        actImage.sprite = Battle.Data.GetActionIcon(action);
     }
 
     public void MarkTarget(bool mark)
@@ -92,15 +92,11 @@ public class CharacterBox : RPGFrameworkBehaviour, IDisposable
     public void UpdateStates(RPGEntityState state)
     {
         iconList.UpdateIcons(Character.States.Select(i => i.Icon).ToArray());
-
-        //SetStatesVisibility(iconList.HasIcons);
     }
 
     public void UpdateStates()
     {
         iconList.UpdateIcons(Character.States.Select(i => i.Icon).ToArray());
-
-        //SetStatesVisibility(iconList.HasIcons);
     }
 
     private void OnDestroy()

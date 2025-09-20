@@ -4,7 +4,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-public class BattlePlayerInteraction : MonoBehaviour
+public class BattlePlayerInteraction : RPGFrameworkBehaviour
 {
     public float HitCooldown = 1f;
 
@@ -62,9 +62,9 @@ public class BattlePlayerInteraction : MonoBehaviour
             if (!IsHitCooldown)
                 cooldownCorotine = StartCoroutine(CooldownCoroutine());
 
-            foreach (var item in BattleManager.Data.TurnsData.Where(i => i.IsTarget))
+            foreach (var item in Battle.Data.TurnsData.Where(i => i.IsTarget))
             {
-                BattleManager.BattleUtility.DamageCharacterByBullet(item, bullet);
+                Battle.Utility.DamageCharacterByBullet(item, bullet);
             }
         }
     }

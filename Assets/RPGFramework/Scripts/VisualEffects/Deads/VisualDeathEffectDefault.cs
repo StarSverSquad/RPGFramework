@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class VisualDeathEffectDefault : VisualDeathEffectBase
+public class VisualDeathEffectDefault : VisualEffectBase
 {
     private Image[] images;
 
@@ -14,13 +13,13 @@ public class VisualDeathEffectDefault : VisualDeathEffectBase
         images = GetComponentsInChildren<Image>();
     }
 
-    public override void Cleanup()
+    public override void Dispose()
     {
         foreach (var image in images)
             image.color = Color.white;
     }
 
-    protected override IEnumerator DeathCoroutine()
+    protected override IEnumerator EffectCoroutine()
     {
         Color from = new Color(0.75f, 0.1f, 0.1f, 1);
         Color to = new Color(0.5f, 0.5f, 0.5f, 0);
@@ -47,7 +46,5 @@ public class VisualDeathEffectDefault : VisualDeathEffectBase
 
             time -= Time.fixedDeltaTime;
         }
-
-        EndCoroutinePart();
     }
 }

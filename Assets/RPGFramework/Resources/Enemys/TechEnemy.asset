@@ -22,11 +22,12 @@ MonoBehaviour:
   DefaultDefence: 0
   DefaultAgility: 15
   DefaultLuck: 9999
-  Patterns:
+  EnemyModel: {fileID: 6558502782427937903, guid: b7e4590a01e594949923be37494a5cc3, type: 3}
+  Behaviours:
   - {fileID: 6485944619443737035, guid: a5e8375277aa73440999a8b6482717d7, type: 3}
   Acts:
   - Name: "\u0427\u0435\u043B\u0438\u043A"
     Description: "\u0414\u0430 \u043F\u043E\u0448\u0451\u043B \u0442\u044B \u043D\u0430\u0445\u0443\u0439"
     Event: {fileID: 11400000, guid: f6b72ad3265a0164fa854f6bcde7bf02, type: 2}
+    Minigame: {fileID: 0}
     OnlyOne: 1
-  EnemyModel: {fileID: 8909469327529892270, guid: b7e4590a01e594949923be37494a5cc3, type: 3}

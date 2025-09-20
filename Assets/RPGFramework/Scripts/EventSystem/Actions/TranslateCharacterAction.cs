@@ -1,7 +1,6 @@
 ﻿using RPGF;
 using RPGF.Character;
 using System.Collections;
-using System.Linq;
 using UnityEngine;
 
 public class TranslateCharacterAction : GraphActionBase
@@ -18,8 +17,9 @@ public class TranslateCharacterAction : GraphActionBase
 
     public bool ReplaceInstantly;
     public bool Wait;
+    public bool WithRotation;
 
-    public float Speed;
+    public float Time;
 
     public Vector2 Offset;
     public Transform Point;
@@ -28,7 +28,7 @@ public class TranslateCharacterAction : GraphActionBase
 
     public TranslateType Type;
 
-    private LocalCharacterManager Character => LocalManager.Instance.Character;
+    private CharacterManager Character => LocalManager.Instance.Character;
     private PlayerExplorerManager Player => ExplorerManager.Instance.PlayerManager;
 
     public TranslateCharacterAction() : base("TranslateCharater")
@@ -40,8 +40,9 @@ public class TranslateCharacterAction : GraphActionBase
 
         ReplaceInstantly = false;
         Wait = false;
+        WithRotation = true;
 
-        Speed = 0;
+        Time = 0;
 
         Offset = Vector2.zero;
         Direction = ViewDirection.Down;
@@ -93,15 +94,17 @@ public class TranslateCharacterAction : GraphActionBase
                 {
                     if (Type == TranslateType.Move)
                     {
-                        float time = Vector2.Distance(Point.transform.position, model.transform.position) / Speed;
-
-                        model.MoveTo(Point.transform.position, time);
+                        if (WithRotation)
+                            model.MoveTo(Point.transform.position, Time);
+                        else
+                            model.MoveToNotRotate(Point.transform.position, Time);
                     }
                     else
                     {
-                        float time = Offset.magnitude / Speed;
-
-                        model.MoveToRelative(Offset, time);
+                        if (WithRotation)
+                            model.MoveToRelative(Offset, Time);
+                        else 
+                            model.MoveToRelativeNotRotate(Offset, Time);
                     }
                         
 

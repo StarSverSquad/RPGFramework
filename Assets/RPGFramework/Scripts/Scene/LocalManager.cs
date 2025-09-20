@@ -7,7 +7,7 @@ public class LocalManager : ContentManagerBase
 
     [Header("Общие ссылки")]
     public MainCameraManager Camera;
-    public LocalCharacterManager Character;
+    public CharacterManager Character;
     public LocalLocationManager Location;
     public TittleMenuManager TittleMenu;
     public SunManager Sun;

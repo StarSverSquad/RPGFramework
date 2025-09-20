@@ -13,19 +13,17 @@ namespace RPGF.RPG
             public string Name;
             public string Description;
             public GraphEvent Event;
+            public MinigameBase Minigame;
 
             public bool OnlyOne;
 
-            public static EnemyAct NullAct => new EnemyAct() { Name = "NULL" };
+            public static EnemyAct NullAct => new() { Name = "NULL" };
         }
 
-        [Tooltip("—юда нужны объекты которые имеют RPGAttackPattern!")]
-        public List<BattleAttackPatternBase> Patterns = new List<BattleAttackPatternBase>();
+        public BattleEnemyModel EnemyModel;
 
-        public List<EnemyAct> Acts = new List<EnemyAct>();
+        public List<BattleEnemyBehaviourBase> Behaviours = new();
 
-        public GameObject EnemyModel;
+        public List<EnemyAct> Acts = new();
     }
-
-
 }

@@ -8,7 +8,7 @@ public class InvokeAnimationAction : GraphActionBase
 
     public string Trigger;
 
-    public InvokeAnimationAction() : base("StartAnimation")
+    public InvokeAnimationAction() : base("OpenAnimation")
     {
         ObjectAnimator = null;
 

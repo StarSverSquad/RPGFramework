@@ -19,10 +19,14 @@ namespace RPGF.RPG
         [Tooltip("Можно ли сбежать?")]
         public bool CanFlee = false;
 
-        [Tooltip("Стандартный вывод сообщений")]
+        [TextArea(2, 4)]
+        public string DefaultSpashMessage;
+
+        [Header("Стандартный вывод сообщений:")]
         public bool ShowStartMessage = true;
         public bool ShowEndMessage = true;
         public bool ShowDeadMessage = true;
+
 
         [Header("Настройки аудио")]
         public AudioClip BattleMusic;

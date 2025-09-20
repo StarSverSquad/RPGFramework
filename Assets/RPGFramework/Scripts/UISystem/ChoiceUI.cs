@@ -208,6 +208,7 @@ namespace RPGF.Choice
             else
             {
                 OnStart?.Invoke();
+                OnSellectionChanged?.Invoke();
 
                 CurrentUIElement.UIElement.SetFocus(true);
             }

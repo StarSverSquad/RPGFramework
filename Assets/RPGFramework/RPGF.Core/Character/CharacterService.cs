@@ -3,73 +3,76 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class CharacterService : IDisposable
+namespace RPGF.Core.Character
 {
-    public event Action OnCharaterListChanged;
-
-    private List<RPGCharacter> characters;
-    public RPGCharacter[] Characters => characters.ToArray();
-
-    private List<RPGCharacter> registredCharacters;
-    public RPGCharacter[] RegistredCharacters => characters.ToArray();
-
-    public CharacterService()
+    public class CharacterService : IDisposable
     {
-        characters = new List<RPGCharacter>();
-        registredCharacters = new List<RPGCharacter>();
-    }
+        public event Action OnCharaterListChanged;
 
-    public void AddCharacter(RPGCharacter character, bool initialize = true)
-    {
-        RPGCharacter trueCharacter = GetRegisteredCharacter(character);
+        private List<RPGCharacter> characters;
+        public RPGCharacter[] Characters => characters.ToArray();
 
-        if (characters.Contains(trueCharacter) || trueCharacter == null)
-            return;
+        private List<RPGCharacter> registredCharacters;
+        public RPGCharacter[] RegistredCharacters => characters.ToArray();
 
-        characters.Add(trueCharacter);
+        public CharacterService()
+        {
+            characters = new List<RPGCharacter>();
+            registredCharacters = new List<RPGCharacter>();
+        }
 
-        if (initialize)
-            trueCharacter.InitializeEntity();
+        public void AddCharacter(RPGCharacter character, bool initialize = true)
+        {
+            RPGCharacter trueCharacter = GetRegisteredCharacter(character);
 
-        OnCharaterListChanged?.Invoke();
-    }
+            if (characters.Contains(trueCharacter) || trueCharacter == null)
+                return;
 
-    public void RemoveCharacter(RPGCharacter character)
-    {
-        RPGCharacter trueCharacter = GetRegisteredCharacter(character);
+            characters.Add(trueCharacter);
 
-        if (trueCharacter == null || !characters.Contains(trueCharacter))
-            return;
+            if (initialize)
+                trueCharacter.InitializeEntity();
 
-        characters.Remove(trueCharacter);
+            OnCharaterListChanged?.Invoke();
+        }
 
-        OnCharaterListChanged?.Invoke();
-    }
+        public void RemoveCharacter(RPGCharacter character)
+        {
+            RPGCharacter trueCharacter = GetRegisteredCharacter(character);
 
-    public void RegisterCharacter(RPGCharacter character)
-    {
-        if (CharacterIsRegisted(character))
-            return;
+            if (trueCharacter == null || !characters.Contains(trueCharacter))
+                return;
 
-        registredCharacters.Add(character.Clone() as RPGCharacter);
-    }
+            characters.Remove(trueCharacter);
 
-    public bool CharacterIsRegisted(RPGCharacter character)
-    {
-        return registredCharacters.Any(i => i.Tag == character.Tag);
-    }
+            OnCharaterListChanged?.Invoke();
+        }
 
-    public RPGCharacter GetRegisteredCharacter(RPGCharacter character)
-    {
-        if (!CharacterIsRegisted(character))
-            RegisterCharacter(character);
+        public void RegisterCharacter(RPGCharacter character)
+        {
+            if (CharacterIsRegisted(character))
+                return;
 
-        return registredCharacters.FirstOrDefault(i => i.Tag == character.Tag);
-    }
+            registredCharacters.Add(character.Clone() as RPGCharacter);
+        }
 
-    public void Dispose()
-    {
-        registredCharacters.Clear();
-        characters.Clear();
+        public bool CharacterIsRegisted(RPGCharacter character)
+        {
+            return registredCharacters.Any(i => i.Tag == character.Tag);
+        }
+
+        public RPGCharacter GetRegisteredCharacter(RPGCharacter character)
+        {
+            if (!CharacterIsRegisted(character))
+                RegisterCharacter(character);
+
+            return registredCharacters.FirstOrDefault(i => i.Tag == character.Tag);
+        }
+
+        public void Dispose()
+        {
+            registredCharacters.Clear();
+            characters.Clear();
+        }
     }
 }

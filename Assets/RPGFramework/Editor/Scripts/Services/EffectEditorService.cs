@@ -1,14 +1,12 @@
-﻿using RPGF.RPG;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using RPGF.Core.RPGEffect;
+using RPGF.EventSystem;
+using RPGF.RPG;
 using UnityEditor;
-using UnityEngine;
 
 public class EffectEditorService
 {
-    public void BuildGUI(EffectBase effect)
+    /// БЛЯТЬ ЧТО ЗА КАЛЛ!
+    public void BuildGUI(RPGEffectBase effect)
     {
         switch (effect)
         {

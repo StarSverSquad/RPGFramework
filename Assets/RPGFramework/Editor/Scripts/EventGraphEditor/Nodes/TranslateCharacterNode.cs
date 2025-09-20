@@ -1,8 +1,6 @@
+using RPGF.Domain;
 using UnityEditor.UIElements;
-using UnityEngine;
 using UnityEngine.UIElements;
-using RPGF.Character;
-using RPGF;
 
 [UseActionNode(contextualMenuPath: "События исследования/Перемещение персонажа")]
 public class TranslateCharacterNode : ActionNodeWrapper<TranslateCharacterAction>

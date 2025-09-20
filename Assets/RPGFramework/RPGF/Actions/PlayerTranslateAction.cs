@@ -1,4 +1,6 @@
-﻿using RPGF;
+﻿using RPGF.Domain;
+using RPGF.EventSystem;
+using RPGF.Explorer;
 using System.Collections;
 using UnityEngine;
 

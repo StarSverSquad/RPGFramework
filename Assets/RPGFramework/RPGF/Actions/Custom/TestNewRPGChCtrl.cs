@@ -1,4 +1,5 @@
-﻿using RPGF.Character;
+﻿using RPGF.Core.Character;
+using RPGF.EventSystem;
 using System.Collections;
 using UnityEngine;
 

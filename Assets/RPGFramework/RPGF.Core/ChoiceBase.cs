@@ -1,8 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
+/// <summary>
+/// TODO: Избавиться!
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public abstract class ChoiceBase<T> : MonoBehaviour
 {
     protected List<T> choices = new List<T>();

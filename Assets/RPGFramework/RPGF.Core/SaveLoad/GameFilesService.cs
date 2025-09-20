@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using UnityEngine;
 
-namespace RPGF.SaveLoad
+namespace RPGF.Core.SaveLoad
 {
     public class GameFilesService
     {

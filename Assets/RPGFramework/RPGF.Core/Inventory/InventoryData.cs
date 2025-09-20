@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RPGF.Inventory
+namespace RPGF.Core.Inventory
 {
     public class InventoryData
     {

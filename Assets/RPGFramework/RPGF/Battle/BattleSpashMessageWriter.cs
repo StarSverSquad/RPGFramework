@@ -1,67 +1,70 @@
-﻿using DG.Tweening.Core.Easing;
+﻿using RPGF.Core.TextWriter;
 using System;
 using UnityEngine;
 
-public class BattleSpashMessageWriter : TextWriterBase, IDisposable
+namespace RPGF.Battle
 {
-    [SerializeField]
-    private AudioSource _writeSound;
-
-    public string SpashText { get; set; } = "";
-
-    public override void Initialize()
+    public class BattleSpashMessageWriter : TextWriterBase, IDisposable
     {
-        base.Initialize();
+        [SerializeField]
+        private AudioSource _writeSound;
 
-        Dispose();
-    }
+        public string SpashText { get; set; } = "";
 
-    public void WriteSpash()
-    {
-        base.InvokeWrite(new WriterMessage()
+        public override void Initialize()
         {
-            text = SpashText
-        });
-    }
-    public void WriteSplash(string text)
-    {
-        SpashText = text;
-        WriteSpash();
-    }
+            base.Initialize();
+
+            Dispose();
+        }
+
+        public void WriteSpash()
+        {
+            base.InvokeWrite(new WriterMessage()
+            {
+                text = SpashText
+            });
+        }
+        public void WriteSplash(string text)
+        {
+            SpashText = text;
+            WriteSpash();
+        }
 
 
-    public override bool ContinueCanExecute()
-    {
-        return true;
-    }
+        public override bool ContinueCanExecute()
+        {
+            return true;
+        }
 
-    public override bool SkipCanExecute()
-    {
-        return false;
-    }
+        public override bool SkipCanExecute()
+        {
+            return false;
+        }
 
-    public override void OnStartWriting()
-    {
-        base.OnStartWriting();
-    }
+        public override void OnStartWriting()
+        {
+            base.OnStartWriting();
+        }
 
-    public override void OnEndWriting()
-    {
-        base.OnEndWriting();
-    }
+        public override void OnEndWriting()
+        {
+            base.OnEndWriting();
+        }
 
-    public override void OnEveryLetter(char letter)
-    {
-        base.OnEveryLetter(letter);
+        public override void OnEveryLetter(char letter)
+        {
+            base.OnEveryLetter(letter);
 
-        if (_writeSound.clip != null)
-            _writeSound.Play();
-    }
+            if (_writeSound.clip != null)
+                _writeSound.Play();
+        }
 
-    public void Dispose()
-    {
-        CancelWrite();
+        public void Dispose()
+        {
+            CancelWrite();
 
-        textMeshPro.text = "";
+            textMeshPro.text = "";
+        }
     }
 }

@@ -1,28 +1,29 @@
-﻿using System;
+﻿using RPGF.Domain.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
-public class LocalLocationManager : MonoBehaviour, IManagerInitialize
+namespace RPGF.Core.Location
 {
-    [SerializeField]
-    private List<LocationController> Locations = new List<LocationController>();
-
-    public LocationController Current => GetLocationByInfo(GameManager.Instance.LocationManager.CurrentLocation);
-
-    public void Initialize()
+    public class LocalLocationManager : MonoBehaviour, IManagerInitialize
     {
-        GameObject locationContainer = GameObject.FindGameObjectWithTag("LocationsContainer");
+        [SerializeField]
+        private List<LocationController> Locations = new();
 
-        LocationController[] locations = locationContainer.GetComponentsInChildren<LocationController>();
+        public LocationController Current => GetLocationByInfo(GameManager.Instance.LocationManager.CurrentLocation);
 
-        Locations.AddRange(locations);
-    }
+        public void Initialize()
+        {
+            GameObject locationContainer = GameObject.FindGameObjectWithTag("LocationsContainer");
 
-    public LocationController GetLocationByInfo(LocationInfo info)
-    {
-        return Locations.FirstOrDefault(i => i.Info == info);
+            LocationController[] locations = locationContainer.GetComponentsInChildren<LocationController>();
+
+            Locations.AddRange(locations);
+        }
+
+        public LocationController GetLocationByInfo(RpgfLocationInfo info)
+        {
+            return Locations.FirstOrDefault(i => i.Info == info);
+        }
     }
 }

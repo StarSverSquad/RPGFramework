@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace RPGF.SaveLoad
+namespace RPGF.Core.SaveLoad
 {
     [Serializable]
     public class CharacterSaveData

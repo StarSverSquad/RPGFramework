@@ -1,6 +1,7 @@
-﻿using RPGF.Inventory;
+﻿using RPGF;
+using RPGF.Core.Inventory;
+using RPGF.EventSystem;
 using RPGF.RPG;
-using System;
 using System.Collections;
 
 public class ChangeItemCountAction : GraphActionBase

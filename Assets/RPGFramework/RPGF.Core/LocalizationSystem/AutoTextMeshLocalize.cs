@@ -1,41 +1,45 @@
 ﻿using TMPro;
 using UnityEngine;
 
-[RequireComponent(typeof(TextMeshProUGUI))]
-public class AutoTextMeshLocalize : RPGFrameworkBehaviour
+namespace RPGF.Core.Localization
 {
-    [SerializeField]
-    private bool _warnOnNotFound = true;
-
-    private TextMeshProUGUI textMeshProUGUI;
-
-    private bool isTryLocalize = false;
-
-    public bool HasLocale { get; private set; } = false;
-
-    private void OnEnable()
+    [RequireComponent(typeof(TextMeshProUGUI))]
+    public class AutoTextMeshLocalize : RPGFrameworkBehaviour
     {
-        if (Game == null || !gameObject.activeInHierarchy)
-            return;
+        [SerializeField]
+        private bool _warnOnNotFound = true;
 
-        textMeshProUGUI = GetComponent<TextMeshProUGUI>();
+        private TextMeshProUGUI textMeshProUGUI;
 
-        if (!isTryLocalize)
+        private bool isTryLocalize = false;
+
+        public bool HasLocale { get; private set; } = false;
+
+        private void OnEnable()
         {
-            string localeText = string.Empty;
-
-            HasLocale = Game.Localization.TryGetLocale(textMeshProUGUI.text, out localeText);
+            if (Game == null || !gameObject.activeInHierarchy)
+                return;
 
             textMeshProUGUI = GetComponent<TextMeshProUGUI>();
-            textMeshProUGUI.text = localeText;
 
-            if (!HasLocale && _warnOnNotFound)
+            if (!isTryLocalize)
             {
-                Debug.LogWarning($"Localization not found for: {textMeshProUGUI.text}");
-            }
+                string localeText = string.Empty;
 
-            isTryLocalize = true;
+                HasLocale = Game.Localization.TryGetLocale(textMeshProUGUI.text, out localeText);
+
+                textMeshProUGUI = GetComponent<TextMeshProUGUI>();
+                textMeshProUGUI.text = localeText;
+
+                if (!HasLocale && _warnOnNotFound)
+                {
+                    Debug.LogWarning($"Localization not found for: {textMeshProUGUI.text}");
+                }
+
+                isTryLocalize = true;
+            }
         }
     }
-}
 
+
+}

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using RPGF.EventSystem;
+using System.Collections;
 using UnityEngine;
 
 public class WaitAction : GraphActionBase

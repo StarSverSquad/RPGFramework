@@ -1,9 +1,12 @@
 using DG.Tweening;
-using RPGF.Attributes;
+using RPGF.Domain;
+using RPGF.Domain.Attributes;
+using RPGF.EventSystem;
+using RPGF.Explorer;
 using System;
 using UnityEngine;
 
-namespace RPGF.Character
+namespace RPGF.Core.Character
 {
     public abstract class CharacterModelControllerBase : RPGFrameworkBehaviour, IDisposable, ICharacterModelController
     {

@@ -1,5 +1,4 @@
-﻿using RPGF.Localization;
-using System;
+﻿using RPGF.Core.Localization;
 using UnityEditor;
 using UnityEngine;
 

@@ -1,291 +1,296 @@
-﻿using RPGF.Choice;
+﻿using RPGF.Battle.Enums;
+using RPGF.Battle.UI;
+using RPGF.Choice;
+using RPGF.Core;
 using RPGF.RPG;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static BattleTurnData;
+using static RPGF.Battle.BattleTurnData;
 
-public class BattleChoiceManager : RPGFrameworkBehaviour
+namespace RPGF.Battle
 {
-    [SerializeField]
-    private EnemySelector _enemySelector;
-    [SerializeField]
-    private BattleUIEnemyInformation _enemyInformation;
-
-    public BattleData Data => BattleManager._Data;
-    public BattleAudioManager BattleAudio => BattleManager.Instance.BattleAudio;
-    public BattlePipeline Pipeline => BattleManager.Instance.Pipeline;
-
-    [SerializeField]
-    private ScrollableChoiceUI battleChoice;
-    public ScrollableChoiceUI BattleChoice => battleChoice;
-
-    [SerializeField]
-    private PrimaryBattleChoiceUI primaryChoice;
-    public PrimaryBattleChoiceUI PrimaryChoice => primaryChoice;
-
-    public bool IsChoicing => battleChoice.IsChoicing || primaryChoice.IsChoicing;
-
-    public bool IsCanceled => battleChoice.IsCanceled;
-    public bool IsPrimaryCanceled => primaryChoice.IsCanceled;
-
-    public ChoiceUI.Element CurrentItem => battleChoice.CurrentUIElement;
-
-    public int PrimaryCurrentIndex => primaryChoice.Choice;
-
-    public override void Initialize()
+    public class BattleChoiceManager : RPGFrameworkBehaviour
     {
-        _enemySelector.Initialize();
-        _enemyInformation.Initialize();
-    }
+        [SerializeField]
+        private EnemySelector _enemySelector;
+        [SerializeField]
+        private BattleUIEnemyInformation _enemyInformation;
 
-    private void Start()
-    {
-        battleChoice.OnSuccess += Choice_OnSuccess;
-        battleChoice.OnDeny += Choice_OnDeny;
-        battleChoice.OnSellectionChanged += Choice_OnSellectionChanged;
-        battleChoice.OnCanceled += Choice_OnCanceled;
-        battleChoice.OnEnd += Choice_OnEndChoice;
-        battleChoice.OnStart += Choice_OnStartChoice;
+        public BattleData Data => BattleManager._Data;
+        public BattleAudioManager BattleAudio => BattleManager.Instance.BattleAudio;
+        public BattlePipeline Pipeline => BattleManager.Instance.Pipeline;
 
-        primaryChoice.OnSellectionChanged += PrimaryChoice_OnSellectionChanged;
-        primaryChoice.OnSuccess += PrimaryChoice_OnSuccess;
-        primaryChoice.OnCanceled += PrimaryChoice_OnCanceled;
-    }
+        [SerializeField]
+        private ScrollableChoiceUI battleChoice;
+        public ScrollableChoiceUI BattleChoice => battleChoice;
 
-    private void OnDestroy()
-    {
-        battleChoice.OnSuccess -= Choice_OnSuccess;
-        battleChoice.OnDeny -= Choice_OnDeny;
-        battleChoice.OnSellectionChanged -= Choice_OnSellectionChanged;
-        battleChoice.OnCanceled -= Choice_OnCanceled;
-        battleChoice.OnEnd -= Choice_OnEndChoice;
-        battleChoice.OnStart -= Choice_OnStartChoice;
+        [SerializeField]
+        private PrimaryBattleChoiceUI primaryChoice;
+        public PrimaryBattleChoiceUI PrimaryChoice => primaryChoice;
 
-        primaryChoice.OnSellectionChanged -= PrimaryChoice_OnSellectionChanged;
-        primaryChoice.OnSuccess -= PrimaryChoice_OnSuccess;
-        primaryChoice.OnCanceled -= PrimaryChoice_OnCanceled;
+        public bool IsChoicing => battleChoice.IsChoicing || primaryChoice.IsChoicing;
 
-        _enemySelector.Dispose();
-    }
+        public bool IsCanceled => battleChoice.IsCanceled;
+        public bool IsPrimaryCanceled => primaryChoice.IsCanceled;
 
-    #region Primary choice callbacks
+        public ChoiceUI.Element CurrentItem => battleChoice.CurrentUIElement;
 
-    private void PrimaryChoice_OnCanceled()
-    {
-        BattleAudio.PlaySound(Data.Cancel);
-    }
+        public int PrimaryCurrentIndex => primaryChoice.Choice;
 
-    private void PrimaryChoice_OnSuccess()
-    {
-        BattleAudio.PlaySound(Data.Sellect);
-    }
-
-    private void PrimaryChoice_OnSellectionChanged()
-    {
-        BattleAudio.PlaySound(Data.Hover);
-    }
-
-    #endregion
-
-    #region Choice callbacks
-
-    private void Choice_OnStartChoice()
-    {
-        if (Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Ability ||
-            Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Act ||
-            Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Item)
+        public override void Initialize()
         {
-            ShowDescriptionFor(CurrentItem);
-        }
-    }
-
-    private void Choice_OnEndChoice()
-    {
-        BattleManager.Instance.UI.Description.SetActive(false);
-
-        _enemySelector.Dispose();
-        _enemyInformation.HideInformation();
-    }
-
-    private void Choice_OnCanceled()
-    {
-        BattleAudio.PlaySound(Data.Cancel);
-
-        _enemySelector.Dispose();
-        _enemyInformation.HideInformation();
-    }
-
-    private void Choice_OnSellectionChanged()
-    {
-        BattleAudio.PlaySound(Data.Hover);
-
-        if (Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Ability ||
-            Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Act ||
-            Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Item)
-        {
-            ShowDescriptionFor(CurrentItem);
+            _enemySelector.Initialize();
+            _enemyInformation.Initialize();
         }
 
-        if (Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Enemy ||
-            Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Entity)
+        private void Start()
         {
-            if (battleChoice.CurrentUIElement.Value is RPGEnemy enemy)
+            battleChoice.OnSuccess += Choice_OnSuccess;
+            battleChoice.OnDeny += Choice_OnDeny;
+            battleChoice.OnSellectionChanged += Choice_OnSellectionChanged;
+            battleChoice.OnCanceled += Choice_OnCanceled;
+            battleChoice.OnEnd += Choice_OnEndChoice;
+            battleChoice.OnStart += Choice_OnStartChoice;
+
+            primaryChoice.OnSellectionChanged += PrimaryChoice_OnSellectionChanged;
+            primaryChoice.OnSuccess += PrimaryChoice_OnSuccess;
+            primaryChoice.OnCanceled += PrimaryChoice_OnCanceled;
+        }
+
+        private void OnDestroy()
+        {
+            battleChoice.OnSuccess -= Choice_OnSuccess;
+            battleChoice.OnDeny -= Choice_OnDeny;
+            battleChoice.OnSellectionChanged -= Choice_OnSellectionChanged;
+            battleChoice.OnCanceled -= Choice_OnCanceled;
+            battleChoice.OnEnd -= Choice_OnEndChoice;
+            battleChoice.OnStart -= Choice_OnStartChoice;
+
+            primaryChoice.OnSellectionChanged -= PrimaryChoice_OnSellectionChanged;
+            primaryChoice.OnSuccess -= PrimaryChoice_OnSuccess;
+            primaryChoice.OnCanceled -= PrimaryChoice_OnCanceled;
+
+            _enemySelector.Dispose();
+        }
+
+        #region Primary choice callbacks
+
+        private void PrimaryChoice_OnCanceled()
+        {
+            BattleAudio.PlaySound(Data.Cancel);
+        }
+
+        private void PrimaryChoice_OnSuccess()
+        {
+            BattleAudio.PlaySound(Data.Sellect);
+        }
+
+        private void PrimaryChoice_OnSellectionChanged()
+        {
+            BattleAudio.PlaySound(Data.Hover);
+        }
+
+        #endregion
+
+        #region Choice callbacks
+
+        private void Choice_OnStartChoice()
+        {
+            if (Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Ability ||
+                Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Act ||
+                Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Item)
             {
-                _enemySelector.Select(Battle.EnemyModels.GetModel(enemy));
-                _enemyInformation.ShowInformation(enemy);
-            }
-            else
-            {
-                _enemySelector.Dispose();
-                _enemyInformation.HideInformation();
+                ShowDescriptionFor(CurrentItem);
             }
         }
-    }
 
-    private void Choice_OnDeny()
-    {
-        BattleAudio.PlaySound(Data.Deny);
-    }
-
-    private void Choice_OnSuccess()
-    {
-        BattleAudio.PlaySound(Data.Sellect);
-    }
-
-    #endregion
-
-    #region Choice invokers
-
-    public void InvokePrimaryChoice(int startIndex = 0)
-    {
-        primaryChoice.InvokeChoice(startIndex);
-    }
-
-    public void InvokeChoiceEntity()
-    {
-        BattleTurnData current = Battle.Pipeline.CurrentTurnData;
-        RPGConsumed consumed = current.Item as RPGConsumed;
-
-        battleChoice.AppendTitle("Персонаж", TMPro.TextAlignmentOptions.Center);
-
-        var choices = Data.TurnsData.Select(turnData =>
+        private void Choice_OnEndChoice()
         {
-            ChoiceUI.Element info = new()
-            {
-                Name = turnData.Character.Name,
-                Value = turnData.Character,
-                locked = false
-            };
+            BattleManager.Instance.UI.Description.SetActive(false);
 
-            if (current.BattleAction == TurnAction.Item)
+            _enemySelector.Dispose();
+            _enemyInformation.HideInformation();
+        }
+
+        private void Choice_OnCanceled()
+        {
+            BattleAudio.PlaySound(Data.Cancel);
+
+            _enemySelector.Dispose();
+            _enemyInformation.HideInformation();
+        }
+
+        private void Choice_OnSellectionChanged()
+        {
+            BattleAudio.PlaySound(Data.Hover);
+
+            if (Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Ability ||
+                Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Act ||
+                Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Item)
             {
-                info.locked = !(current.IsConsumed &&
-                    (turnData.IsDead && consumed.ForDeath) || (!turnData.IsDead && consumed.ForAlive));
-            }
-            else if (current.BattleAction == TurnAction.Act)
-            {
-                info.locked = turnData.IsDead;
+                ShowDescriptionFor(CurrentItem);
             }
 
-            return info;
-        }).ToList();
-
-        battleChoice.AppendElements(choices.ToArray());
-
-        battleChoice.AppendTitle("Противник", TMPro.TextAlignmentOptions.Center);
-
-        var enemyChoices = Data.Enemys.Select(item => new ChoiceUI.Element
-        {
-            Name = item.Name,
-            Value = item
-        }).ToList();
-
-        battleChoice.AppendElements(enemyChoices.ToArray());
-
-        battleChoice.InvokeChoice();
-    }
-
-    public void InvokeChoiceEnemy()
-    {
-        BattleTurnData current = Battle.Pipeline.CurrentTurnData;
-
-        List<ChoiceUI.Element> choiceElements = Data.Enemys.Select(enemy =>
-        {
-            bool locked = false;
-
-            if (current.BattleAction == TurnAction.Act)
+            if (Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Enemy ||
+                Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Entity)
             {
-                locked = !enemy.Acts.Any();
+                if (battleChoice.CurrentUIElement.Value is RPGEnemy enemy)
+                {
+                    _enemySelector.Select(Battle.EnemyModels.GetModel(enemy));
+                    _enemyInformation.ShowInformation(enemy);
+                }
+                else
+                {
+                    _enemySelector.Dispose();
+                    _enemyInformation.HideInformation();
+                }
             }
+        }
 
-            return new ChoiceUI.Element()
-            {
-                Name = enemy.Name,
-                Value = enemy,
-                locked = locked
-            };
-        }).ToList();
-
-        battleChoice.AppendElements(choiceElements.ToArray());
-
-        battleChoice.InvokeChoice();
-    }
-
-    public void InvokeChoiceTeammate()
-    {
-        BattleTurnData current = Battle.Pipeline.CurrentTurnData;
-        RPGConsumed consumed = current.Item as RPGConsumed;
-
-        var choices = Data.TurnsData.Select(turnData =>
+        private void Choice_OnDeny()
         {
-            ChoiceUI.Element info = new()
-            {
-                Name = turnData.Character.Name,
-                Value = turnData.Character,
-                locked = false
-            };
+            BattleAudio.PlaySound(Data.Deny);
+        }
 
-            if (current.BattleAction == TurnAction.Item)
-            {
-                info.locked = !(current.IsConsumed &&
-                    (turnData.IsDead && consumed.ForDeath) || (!turnData.IsDead && consumed.ForAlive));
-            }
-            else if (current.BattleAction == TurnAction.Act)
-            {
-                info.locked = turnData.IsDead;
-            }
-
-            return info;
-        }).ToList();
-
-        battleChoice.AppendElements(choices.ToArray());
-
-        battleChoice.InvokeChoice();
-    }
-
-    public void InvokeChoiceAbility()
-    {
-        var choices = Pipeline.CurrentTurnData.Character.Abilities.Select(item =>
+        private void Choice_OnSuccess()
         {
-            return new ChoiceUI.Element()
+            BattleAudio.PlaySound(Data.Sellect);
+        }
+
+        #endregion
+
+        #region Choice invokers
+
+        public void InvokePrimaryChoice(int startIndex = 0)
+        {
+            primaryChoice.InvokeChoice(startIndex);
+        }
+
+        public void InvokeChoiceEntity()
+        {
+            BattleTurnData current = Battle.Pipeline.CurrentTurnData;
+            RPGConsumed consumed = current.Item as RPGConsumed;
+
+            battleChoice.AppendTitle("Персонаж", TMPro.TextAlignmentOptions.Center);
+
+            var choices = Data.TurnsData.Select(turnData =>
+            {
+                ChoiceUI.Element info = new()
+                {
+                    Name = turnData.Character.Name,
+                    Value = turnData.Character,
+                    locked = false
+                };
+
+                if (current.BattleAction == TurnAction.Item)
+                {
+                    info.locked = !(current.IsConsumed &&
+                        (turnData.IsDead && consumed.ForDeath) || (!turnData.IsDead && consumed.ForAlive));
+                }
+                else if (current.BattleAction == TurnAction.Act)
+                {
+                    info.locked = turnData.IsDead;
+                }
+
+                return info;
+            }).ToList();
+
+            battleChoice.AppendElements(choices.ToArray());
+
+            battleChoice.AppendTitle("Противник", TMPro.TextAlignmentOptions.Center);
+
+            var enemyChoices = Data.Enemys.Select(item => new ChoiceUI.Element
             {
                 Name = item.Name,
-                Description = item.Description + "\n" + (item.ManaCost > 0 ? $"[<color=#0081FF>Мана: {item.ManaCost}</color>] " : "") + (item.ConcentrationCost > 0 ? $"[<color=#06C100>Конц.: {item.ConcentrationCost}</color>]" : ""),
-                Value = item,
-                locked = Pipeline.CurrentTurnData.Character.Mana < item.ManaCost || Data.Concentration < item.ConcentrationCost,
-                Icon = item.Icon
-            };
-        }).ToArray();
+                Value = item
+            }).ToList();
 
-        battleChoice.AppendElements(choices);
+            battleChoice.AppendElements(enemyChoices.ToArray());
 
-        battleChoice.InvokeChoice();
-    }
+            battleChoice.InvokeChoice();
+        }
 
-    public void InvokeChoiceAct()
-    {
-        List<ChoiceUI.Element> choices = new List<ChoiceUI.Element>()
+        public void InvokeChoiceEnemy()
+        {
+            BattleTurnData current = Battle.Pipeline.CurrentTurnData;
+
+            List<ChoiceUI.Element> choiceElements = Data.Enemys.Select(enemy =>
+            {
+                bool locked = false;
+
+                if (current.BattleAction == TurnAction.Act)
+                {
+                    locked = !enemy.Acts.Any();
+                }
+
+                return new ChoiceUI.Element()
+                {
+                    Name = enemy.Name,
+                    Value = enemy,
+                    locked = locked
+                };
+            }).ToList();
+
+            battleChoice.AppendElements(choiceElements.ToArray());
+
+            battleChoice.InvokeChoice();
+        }
+
+        public void InvokeChoiceTeammate()
+        {
+            BattleTurnData current = Battle.Pipeline.CurrentTurnData;
+            RPGConsumed consumed = current.Item as RPGConsumed;
+
+            var choices = Data.TurnsData.Select(turnData =>
+            {
+                ChoiceUI.Element info = new()
+                {
+                    Name = turnData.Character.Name,
+                    Value = turnData.Character,
+                    locked = false
+                };
+
+                if (current.BattleAction == TurnAction.Item)
+                {
+                    info.locked = !(current.IsConsumed &&
+                        (turnData.IsDead && consumed.ForDeath) || (!turnData.IsDead && consumed.ForAlive));
+                }
+                else if (current.BattleAction == TurnAction.Act)
+                {
+                    info.locked = turnData.IsDead;
+                }
+
+                return info;
+            }).ToList();
+
+            battleChoice.AppendElements(choices.ToArray());
+
+            battleChoice.InvokeChoice();
+        }
+
+        public void InvokeChoiceAbility()
+        {
+            var choices = Pipeline.CurrentTurnData.Character.Abilities.Select(item =>
+            {
+                return new ChoiceUI.Element()
+                {
+                    Name = item.Name,
+                    Description = item.Description + "\n" + (item.ManaCost > 0 ? $"[<color=#0081FF>Мана: {item.ManaCost}</color>] " : "") + (item.ConcentrationCost > 0 ? $"[<color=#06C100>Конц.: {item.ConcentrationCost}</color>]" : ""),
+                    Value = item,
+                    locked = Pipeline.CurrentTurnData.Character.Mana < item.ManaCost || Data.Concentration < item.ConcentrationCost,
+                    Icon = item.Icon
+                };
+            }).ToArray();
+
+            battleChoice.AppendElements(choices);
+
+            battleChoice.InvokeChoice();
+        }
+
+        public void InvokeChoiceAct()
+        {
+            List<ChoiceUI.Element> choices = new List<ChoiceUI.Element>()
         {
             new ChoiceUI.Element()
             {
@@ -300,14 +305,14 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
             }
         };
 
-        battleChoice.AppendElements(choices.ToArray());
+            battleChoice.AppendElements(choices.ToArray());
 
-        battleChoice.InvokeChoice();
-    }
+            battleChoice.InvokeChoice();
+        }
 
-    public void InvokeChoiceDefence()
-    {
-        List<ChoiceUI.Element> choices = new List<ChoiceUI.Element>()
+        public void InvokeChoiceDefence()
+        {
+            List<ChoiceUI.Element> choices = new List<ChoiceUI.Element>()
         {
             new ChoiceUI.Element()
             {
@@ -316,58 +321,58 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
             }
         };
 
-        if (Data.BattleInfo.CanFlee)
-        {
-            choices.Add(new ChoiceUI.Element()
+            if (Data.BattleInfo.CanFlee)
             {
-                Name = "Бегство",
-                Value = 1
-            });
-        }
-
-        battleChoice.AppendElements(choices.ToArray());
-
-        battleChoice.InvokeChoice();
-    }
-
-    public void InvokeChoiceItem()
-    {
-        List<ChoiceUI.Element> choices = new List<ChoiceUI.Element>();
-
-        foreach (var slot in GameManager.Instance.Inventory.Slots)
-        {
-            if (slot.Item.Usage == Usability.Noway ||
-                slot.Item.Usage == Usability.Explorer)
-                continue;
-
-            int alreadyUsing = 0;
-            if (slot.Item is RPGConsumed)
-            {
-                foreach (var item in Data.TurnsData)
-                    alreadyUsing += item.Item == slot.Item ? 1 : 0;
+                choices.Add(new ChoiceUI.Element()
+                {
+                    Name = "Бегство",
+                    Value = 1
+                });
             }
 
-            ChoiceUI.Element element = new ChoiceUI.Element()
-            {
-                Name = slot.Item.Name,
-                Description = slot.Item.Description,
-                Icon = slot.Item.Icon,
-                CounterText = slot.Count - alreadyUsing == 1 ? "" : $"{slot.Count - alreadyUsing}x",
-                Value = slot.Item,
-                locked = alreadyUsing >= slot.Count
-            };
+            battleChoice.AppendElements(choices.ToArray());
 
-            choices.Add(element);
+            battleChoice.InvokeChoice();
         }
 
-        battleChoice.AppendElements(choices.ToArray());
+        public void InvokeChoiceItem()
+        {
+            List<ChoiceUI.Element> choices = new List<ChoiceUI.Element>();
 
-        battleChoice.InvokeChoice();
-    }
+            foreach (var slot in GameManager.Instance.Inventory.Slots)
+            {
+                if (slot.Item.Usage == Usability.Noway ||
+                    slot.Item.Usage == Usability.Explorer)
+                    continue;
 
-    public void InvokeChoiceBattle()
-    {
-        List<ChoiceUI.Element> choices = new List<ChoiceUI.Element>()
+                int alreadyUsing = 0;
+                if (slot.Item is RPGConsumed)
+                {
+                    foreach (var item in Data.TurnsData)
+                        alreadyUsing += item.Item == slot.Item ? 1 : 0;
+                }
+
+                ChoiceUI.Element element = new ChoiceUI.Element()
+                {
+                    Name = slot.Item.Name,
+                    Description = slot.Item.Description,
+                    Icon = slot.Item.Icon,
+                    CounterText = slot.Count - alreadyUsing == 1 ? "" : $"{slot.Count - alreadyUsing}x",
+                    Value = slot.Item,
+                    locked = alreadyUsing >= slot.Count
+                };
+
+                choices.Add(element);
+            }
+
+            battleChoice.AppendElements(choices.ToArray());
+
+            battleChoice.InvokeChoice();
+        }
+
+        public void InvokeChoiceBattle()
+        {
+            List<ChoiceUI.Element> choices = new List<ChoiceUI.Element>()
         {
             new ChoiceUI.Element()
             {
@@ -376,61 +381,62 @@ public class BattleChoiceManager : RPGFrameworkBehaviour
             }
         };
 
-        if (Data.BattleInfo.CanFlee)
-        {
-            choices.Add(new ChoiceUI.Element()
+            if (Data.BattleInfo.CanFlee)
             {
-                Name = "Защита",
-                Value = 1
-            });
-        }
-
-        battleChoice.AppendElements(choices.ToArray());
-
-        battleChoice.InvokeChoice();
-    }
-
-    public void InvokeChoiceInteraction()
-    {
-        List<ChoiceUI.Element> choiceElements = new();
-
-        BattleTurnData currentCharacter = Battle.Pipeline.CurrentTurnData;
-
-        foreach (var act in currentCharacter.EnemyBuffer.Acts)
-        {
-            ChoiceUI.Element elementInfo = new()
-            {
-                Name = act.Name,
-                Description = act.Description,
-                Value = act,
-                locked = false
-            };
-
-            foreach (var character in Data.TurnsData)
-            {
-                if (character.EnemyBuffer == currentCharacter.EnemyBuffer
-                    && character.InteractionAct.Name == act.Name && act.OnlyOne)
+                choices.Add(new ChoiceUI.Element()
                 {
-                    elementInfo.locked = true;
-                    break;
-                }
+                    Name = "Защита",
+                    Value = 1
+                });
             }
 
-            choiceElements.Add(elementInfo);
+            battleChoice.AppendElements(choices.ToArray());
+
+            battleChoice.InvokeChoice();
         }
 
-        battleChoice.AppendElements(choiceElements.ToArray());
+        public void InvokeChoiceInteraction()
+        {
+            List<ChoiceUI.Element> choiceElements = new();
 
-        battleChoice.InvokeChoice();
-    }
+            BattleTurnData currentCharacter = Battle.Pipeline.CurrentTurnData;
 
-    #endregion
+            foreach (var act in currentCharacter.EnemyBuffer.Acts)
+            {
+                ChoiceUI.Element elementInfo = new()
+                {
+                    Name = act.Name,
+                    Description = act.Description,
+                    Value = act,
+                    locked = false
+                };
 
-    public void CleanUp() => battleChoice.Dispose();
+                foreach (var character in Data.TurnsData)
+                {
+                    if (character.EnemyBuffer == currentCharacter.EnemyBuffer
+                        && character.InteractionAct.Name == act.Name && act.OnlyOne)
+                    {
+                        elementInfo.locked = true;
+                        break;
+                    }
+                }
 
-    private void ShowDescriptionFor(ChoiceUI.Element element)
-    {
-        BattleManager.Instance.UI.Description.SetActive(true);
-        BattleManager.Instance.UI.Description.Text = element.Description;
+                choiceElements.Add(elementInfo);
+            }
+
+            battleChoice.AppendElements(choiceElements.ToArray());
+
+            battleChoice.InvokeChoice();
+        }
+
+        #endregion
+
+        public void CleanUp() => battleChoice.Dispose();
+
+        private void ShowDescriptionFor(ChoiceUI.Element element)
+        {
+            BattleManager.Instance.UI.Description.SetActive(true);
+            BattleManager.Instance.UI.Description.Text = element.Description;
+        }
     }
 }

@@ -1,7 +1,7 @@
 using RPGF.RPG;
 using System;
 
-namespace RPGF.Inventory
+namespace RPGF.Core.Inventory
 {
     [Serializable]
     public class InventorySlotData
@@ -10,5 +10,4 @@ namespace RPGF.Inventory
 
         public int Count;
     }
-
 }

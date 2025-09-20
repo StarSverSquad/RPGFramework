@@ -1,9 +1,12 @@
-﻿using RPGF;
+﻿using RPGF.Domain;
 using UnityEngine;
 
-public class LocationSpawnPoint : MonoBehaviour
+namespace RPGF.Core.Location
 {
-    public string Name;
+    public class LocationSpawnPoint : MonoBehaviour
+    {
+        public string Name;
 
-    public ViewDirection SpawnDirection;
+        public ViewDirection SpawnDirection;
+    }
 }

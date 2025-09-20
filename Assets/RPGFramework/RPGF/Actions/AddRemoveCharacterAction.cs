@@ -1,4 +1,6 @@
-﻿using RPGF.Character;
+﻿using RPGF;
+using RPGF.Core.Character;
+using RPGF.EventSystem;
 using RPGF.RPG;
 using System.Collections;
 

@@ -1,11 +1,15 @@
-﻿using UnityEngine;
+﻿using RPGF.Battle.UI;
+using UnityEngine;
 
-public class BattleUIManager : MonoBehaviour
+namespace RPGF.Battle
 {
-    public CharacterBoxManager CharacterBox;
-    public BattleUIDescription Description;
-    public BattleUIPlayerTurnSide PlayerTurnSide;
-    public BattleUICharacterSide CharacterSide;
-    public BattleUIConcentration Concentration;
-    public CharacterQueryManager CharacterQuery;
+    public class BattleUIManager : MonoBehaviour
+    {
+        public CharacterBoxManager CharacterBox;
+        public BattleUIDescription Description;
+        public BattleUIPlayerTurnSide PlayerTurnSide;
+        public BattleUICharacterSide CharacterSide;
+        public BattleUIConcentration Concentration;
+        public CharacterQueryManager CharacterQuery;
+    }
 }

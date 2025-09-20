@@ -1,6 +1,6 @@
-﻿using RPGF;
+﻿using RPGF.Core;
+using RPGF.Domain.Interfaces;
 using RPGF.RPG;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

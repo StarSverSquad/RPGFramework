@@ -1,4 +1,6 @@
 ﻿using RPGF;
+using RPGF.Core.Location;
+using RPGF.Domain;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
@@ -13,14 +15,14 @@ public class LocationTrasmitionNode : ActionNodeWrapper<LocationTrasmitionAction
     {
         ObjectField locationField = new ObjectField("Локация")
         {
-            objectType = typeof(LocationInfo),
+            objectType = typeof(RpgfLocationInfo),
             allowSceneObjects = false
         };
 
         locationField.SetValueWithoutNotify(Action.Message.Location);
         locationField.RegisterValueChangedCallback(value =>
         {
-            Action.Message.Location = (LocationInfo)value.newValue;
+            Action.Message.Location = (RpgfLocationInfo)value.newValue;
 
             MakeDirty();
         });

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using RPGF.Domain.Attributes;
 using UnityEditor;
 using UnityEngine;
 

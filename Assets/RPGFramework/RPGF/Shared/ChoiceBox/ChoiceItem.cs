@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using RPGF.Domain.Interfaces;
 using TMPro;
 using UnityEngine;
 

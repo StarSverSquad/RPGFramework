@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
+﻿using RPGF;
+using System;
 
 [Serializable]
 public abstract class ConditionBase

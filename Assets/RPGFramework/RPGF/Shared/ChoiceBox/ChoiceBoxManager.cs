@@ -1,7 +1,9 @@
+using RPGF;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//TODO: оепедекюрэ!
 public class ChoiceBoxManager : ChoiceBase<string>
 {
     public enum Position

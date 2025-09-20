@@ -1,4 +1,5 @@
-﻿using RPGF.RPG;
+﻿using RPGF.Core.RPGEffect;
+using RPGF.RPG;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,7 @@ public class RPGConsumedEditor : Editor
         List<string> names = new List<string>();
         foreach (Type t in types)
         {
-            EffectBase effect = consumed.GetType().Assembly.CreateInstance(t.Name) as EffectBase;
+            var effect = consumed.GetType().Assembly.CreateInstance(t.Name) as RPGEffectBase;
 
             names.Add(effect.GetName());
         }
@@ -43,7 +44,7 @@ public class RPGConsumedEditor : Editor
         selected = EditorGUILayout.Popup(selected, names.ToArray());
 
         if (GUILayout.Button("Добавить"))
-            consumed.Effects.Add(consumed.GetType().Assembly.CreateInstance(types[selected].Name) as EffectBase);
+            consumed.Effects.Add(consumed.GetType().Assembly.CreateInstance(types[selected].Name) as RPGEffectBase);
 
 
         for (int i = 0; i < consumed.Effects.Count; i++)

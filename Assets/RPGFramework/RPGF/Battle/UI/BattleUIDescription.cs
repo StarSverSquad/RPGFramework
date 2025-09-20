@@ -1,22 +1,26 @@
-﻿using TMPro;
+﻿using RPGF.Domain.Interfaces;
+using TMPro;
 using UnityEngine;
 
-public class BattleUIDescription : MonoBehaviour, IActive
+namespace RPGF.Battle.UI
 {
-    [SerializeField]
-    private TextMeshProUGUI txt;
-
-    [SerializeField]
-    private GameObject container;
-    
-    public string Text
+    public class BattleUIDescription : MonoBehaviour, IActive
     {
-        get => txt.text;
-        set => txt.text = value;
-    }
+        [SerializeField]
+        private TextMeshProUGUI txt;
 
-    public void SetActive(bool active)
-    {
-        container.SetActive(active);
+        [SerializeField]
+        private GameObject container;
+
+        public string Text
+        {
+            get => txt.text;
+            set => txt.text = value;
+        }
+
+        public void SetActive(bool active)
+        {
+            container.SetActive(active);
+        }
     }
 }

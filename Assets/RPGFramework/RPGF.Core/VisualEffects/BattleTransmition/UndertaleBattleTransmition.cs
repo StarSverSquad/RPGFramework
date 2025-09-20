@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine;
 using DG.Tweening;
+using RPGF.Explorer;
 
 public class UndertaleBattleTransmition : VisualBattleTransmitionEffectBase
 {

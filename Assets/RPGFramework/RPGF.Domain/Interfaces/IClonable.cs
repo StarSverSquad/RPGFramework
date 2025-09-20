@@ -1,4 +1,7 @@
-﻿public interface ICloneable<T>
+﻿namespace RPGF.Domain.Interfaces
 {
-    public T Clone();
+    public interface ICloneable<T>
+    {
+        public T Clone();
+    }
 }

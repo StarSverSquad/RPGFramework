@@ -2,47 +2,50 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleAttackEffect : MonoBehaviour
+namespace RPGF.Battle
 {
-    [SerializeField]
-    private Image spriteRenderer;
-    [SerializeField]
-    private AudioSource audioSource;
-    [SerializeField]
-    private Animator animator;
-
-    [Space]
-    [SerializeField]
-    private string animatorTriggerName = "START";
-    [SerializeField]
-    private string animatorIdleStateName = "IDLE";
-
-    [Space]
-    [Tooltip("Ёффект будет происходить по центру экрана")]
-    [SerializeField]
-    private bool locateInCenter = false;
-    public bool LocaleInCenter => locateInCenter;
-
-    private bool isAnimating = false;
-    public bool IsAnimating => isAnimating;
-
-    public void Invoke()
+    public class BattleAttackEffect : MonoBehaviour
     {
-        StartCoroutine(AnimationCoroutine());
-    }
+        [SerializeField]
+        private Image spriteRenderer;
+        [SerializeField]
+        private AudioSource audioSource;
+        [SerializeField]
+        private Animator animator;
 
-    private IEnumerator AnimationCoroutine()
-    {
-        isAnimating = true;
+        [Space]
+        [SerializeField]
+        private string animatorTriggerName = "START";
+        [SerializeField]
+        private string animatorIdleStateName = "IDLE";
 
-        animator.SetTrigger(animatorTriggerName);
+        [Space]
+        [Tooltip("Ёффект будет происходить по центру экрана")]
+        [SerializeField]
+        private bool locateInCenter = false;
+        public bool LocaleInCenter => locateInCenter;
 
-        audioSource.Play();
+        private bool isAnimating = false;
+        public bool IsAnimating => isAnimating;
 
-        yield return new WaitForSeconds(0.01f);
+        public void Invoke()
+        {
+            StartCoroutine(AnimationCoroutine());
+        }
 
-        yield return new WaitWhile(() => !animator.GetCurrentAnimatorStateInfo(0).IsName(animatorIdleStateName));
+        private IEnumerator AnimationCoroutine()
+        {
+            isAnimating = true;
 
-        isAnimating = false;
+            animator.SetTrigger(animatorTriggerName);
+
+            audioSource.Play();
+
+            yield return new WaitForSeconds(0.01f);
+
+            yield return new WaitWhile(() => !animator.GetCurrentAnimatorStateInfo(0).IsName(animatorIdleStateName));
+
+            isAnimating = false;
+        }
     }
 }

@@ -4,1039 +4,845 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using RPGF.RPG;
-using static BattleTurnData;
-using RPGF.Localization;
 using RPGF.Shared;
+using RPGF.Battle.Enums;
+using RPGF.Battle.UI;
+using RPGF.Core.Localization;
 
-public class BattlePipeline
+namespace RPGF.Battle
 {
-    public enum ChoiceAction
+    public class BattlePipeline
     {
-        Primary, Special, Act, Ability, Entity, Teammate, Enemy,
-        Item, Defence
-    }
-
-    private readonly BattleManager _battle;
-    private readonly SharedManager _common;
-
-    #region PROPS
-
-    public bool IsWin { get; private set; }
-    public bool IsLose { get; private set; }
-    public bool IsFlee { get; private set; }
-
-    public bool IsPlayerTurn { get; private set; } = false;
-    public bool IsEnemyTurn { get; private set; } = false;
-
-    public int TurnCounter { get; private set; }
-    public int CurrentTurnDataIndex { get; private set; }
-
-    #endregion
-
-    private List<ChoiceAction> choiceActions = new();
-
-    private bool loseKey, winKey, fleeKey, breakKey;
-    private bool isCancelChoice;
-    private bool isFlee;
-    private int actionIndex;
-
-    private Coroutine main = null;
-
-    #region READONLY PROPS
-
-    public BattleData Data => _battle.Data;
-    public LocalizationService Localization => GameManager.Instance.Localization;
-    public BattleChoiceManager Choice => _battle.Choice;
-    public BattleUtility Utility => _battle.Utility;
-    public BattleVisualTransmitionManager VisualTransmition => _battle.VisualTransmition;
-    public BattleUIManager UI => _battle.UI;
-
-    public bool MainIsWorking => main != null;
-
-    public ChoiceAction CurrentChoiceAction => choiceActions.Last();
-
-    public BattleTurnData CurrentTurnData => Data.TurnsData[CurrentTurnDataIndex];
-
-    private bool AllKeysFalse => !loseKey && !winKey && !fleeKey && !breakKey;
-
-    #endregion
-
-    public BattlePipeline(BattleManager battle, SharedManager common)
-    {
-        _battle = battle;
-        _common = common;
-
-        TurnCounter = 0;
-        CurrentTurnDataIndex = 0;
-    }
-
-    #region API
-
-    public void InvokeMainPipeline()
-    {
-        if (!MainIsWorking)
-            main = _battle.StartCoroutine(MainPipeline());
-    }
-
-    public void InvokeLose()
-    {
-        loseKey = true;
-    }
-
-    public void InvokeWin()
-    {
-        winKey = true;
-    }
-
-    public void InvokeFlee()
-    {
-        fleeKey = true;
-    }
-
-    public void InvokeBreak()
-    {
-        breakKey = true;
-    }
-
-    #endregion
-
-    private void NextCharacter()
-    {
-        _battle.UI.CharacterBox.Boxes[CurrentTurnDataIndex].ChangeAct(Data.TurnsData[CurrentTurnDataIndex].BattleAction);
-
-        UI.CharacterQuery.NextPosition();
-
-        CurrentTurnDataIndex++;
-
-        choiceActions.Clear();
-    }
-    private void PreviewCharacter()
-    {
-        _battle.UI.CharacterBox.Boxes[CurrentTurnDataIndex].ChangeAct(TurnAction.None);
-
-        CurrentTurnDataIndex--;
-
-        UI.CharacterQuery.PreviewPosition();
-    }
-
-    private void PreviewAction()
-    {
-        choiceActions.Remove(choiceActions.Last());
-    }
-
-    private bool ShouldSkipTurn(BattleTurnData turnData)
-    {
-        if (turnData.IsDead || turnData.Character.States.Any(i => i.SkipTurn) || !turnData.Character.CanMoveInBattle)
+        public enum ChoiceAction
         {
-            if (isCancelChoice && CurrentTurnDataIndex != 0)
-            {
-                CurrentTurnDataIndex--;
-
-                UI.CharacterQuery.PreviewPosition();
-            }
-            else
-            {
-                turnData.BattleAction = TurnAction.None;
-                
-                CurrentTurnDataIndex++;
-
-                UI.CharacterQuery.NextPosition();
-
-                isCancelChoice = false;
-
-            }
-            return true;
+            Primary, Special, Act, Ability, Entity, Teammate, Enemy,
+            Item, Defence
         }
 
-        return false;
-    }
+        private readonly BattleManager _battle;
+        private readonly SharedManager _common;
 
-    private IEnumerator MainPipeline()
-    {
-        loseKey = false; winKey = false; fleeKey = false; breakKey = false;
+        #region PROPS
 
-        IsFlee = false; IsWin = false; IsLose = false;
+        public bool IsWin { get; private set; }
+        public bool IsLose { get; private set; }
+        public bool IsFlee { get; private set; }
 
-        TurnCounter = 0;
+        public bool IsPlayerTurn { get; private set; } = false;
+        public bool IsEnemyTurn { get; private set; } = false;
 
-        yield return BattleEnter();
-
-        yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnBattleStart);
-
-        if (Data.BattleInfo.EnemyStart)
-        {
-            yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnEnemyTurn, true);
-
-            yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.EveryEnemyTurn);
-
-            yield return EnemyTurn();
-
-            yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLessCharacterHeal);
-
-            TurnCounter++;
-        }
-
-        while (true)
-        {
-            if (Data.Enemys.Count == 0)
-                InvokeWin();
-
-            if (Data.TurnsData.All(i => i.Character.Heal <= 0))
-                InvokeLose();
-
-            if (!AllKeysFalse)
-                break;
-
-            yield return UpdateEntitysStates();
-
-            yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnPlayerTurn, true);
-
-            yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.EveryPlayerTurn);
-
-            if (!AllKeysFalse)
-                break;
-
-            yield return PlayerTurn();
-
-            if (Data.Enemys.Count == 0)
-                InvokeWin();
-
-            yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnEnemyTurn, true);
-
-            yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.EveryEnemyTurn);
-
-            if (!AllKeysFalse)
-                break;
-
-            yield return EnemyTurn();
-
-            yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLessCharacterHeal);
-
-            TurnCounter++;
-        }
-
-        UI.Concentration.Hide();
-        UI.CharacterSide.Hide();
-        UI.PlayerTurnSide.Hide();
-        UI.CharacterBox.Hide();
-
-        if (fleeKey)
-        {
-            yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnFlee);
-
-            yield return Flee();
-        }
-
-        if (winKey)
-        {
-            yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnWin);
-
-            yield return Win();
-        }
-
-        if (loseKey)
-        {
-            yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLose);
-
-            yield return Lose();
-        }
-
-        yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnBattleEnd);
-
-        yield return BattleExit();
-
-        main = null;
-    }
-
-    private IEnumerator BattleEnter()
-    {
-        foreach (var character in GameManager.Instance.Character.Characters)
-        {
-            if (character.ParticipateInBattle)
-                Data.TurnsData.Add(new BattleTurnData(character));
-        }
-
-        if (Data.BattleInfo.StopGlobalMusic)
-            GameManager.Instance.GameAudio.PauseBGM(0.2f);
-
-        if (Data.BattleInfo.StopGlobalMusic)
-            GameManager.Instance.GameAudio.PauseBGS();
-
-        VisualTransmition.InitializeEffect(Data.BattleInfo.BattleEnterEffect);
-
-        yield return VisualTransmition.InvokePartOne();
-
-        _battle.SetActive(true);
-
-        yield return new WaitForFixedUpdate();
-
-        _battle.UI.CharacterBox.Initialize(Data.TurnsData.Select(i => i.Character).ToArray());
-
-        Choice.PrimaryChoice.SetActive(false);
-
-        _battle.UI.Description.SetActive(false);
-
-        _battle.UI.Concentration.SetConcentration(0);
-
-        _battle.Background.CreateBackground(Data.BattleInfo.Background);
-
-        if (Data.BattleInfo.BattleMusic != null)
-            _battle.BattleAudio.PlayMusic(Data.BattleInfo.BattleMusic, Data.BattleInfo.MusicVolume);
-
-        yield return VisualTransmition.InvokePartTwo();
-
-        VisualTransmition.DisposeEffect();
-
-        if (Data.BattleInfo.ShowStartMessage)
-        {
-            string numeriticDifText = Data.BattleInfo.enemySquad.Enemies.Count > 1 ? Localization.GetLocale("SYS_BATTLE_ENCOUNTER_MULTI") : Localization.GetLocale("SYS_BATTLE_ENCOUNTER_SIGNLE");
-
-            _common.MessageBox.Write(new MessageInfo()
-            {
-                text = $"* {Data.BattleInfo.enemySquad.Name} {numeriticDifText}!",
-                closeWindow = true
-            });
-
-            yield return new WaitWhile(() => _common.MessageBox.IsWriting);
-        }
-    }
-
-    private IEnumerator BattleExit()
-    {
-        VisualTransmition.InitializeEffect(Data.BattleInfo.BattleExitEffect);
-
-        yield return _battle.StartCoroutine(VisualTransmition.InvokePartOne());
-
-        foreach (var item in Data.TurnsData)
-        {
-            if (item.Character.Heal <= 0)
-                item.Character.Heal = 1;
-
-            item.Character.RemoveNonBattleStates();
-        }
-
-
-        if (Data.BattleInfo.StopGlobalMusic)
-            GameManager.Instance.GameAudio.ResumeBGM();
-
-        if (Data.BattleInfo.StopGlobalMusic)
-            GameManager.Instance.GameAudio.ResumeBGS();
-
-        Data.Dispose();
-
-        _battle.SetActive(false);
-
-        _battle.UI.CharacterBox.Dispose();
-
-        _battle.EnemyModels.Dispose();
-
-        _battle.UI.CharacterQuery.Dispose();
-
-        yield return _battle.StartCoroutine(VisualTransmition.InvokePartTwo());
-
-        VisualTransmition.DisposeEffect();
-    }
-
-    private IEnumerator PlayerTurn()
-    {
-        IsPlayerTurn = true;
-
-        choiceActions.Clear();
-
-        Data.TurnsData.ForEach(i => i.CleanUp());
-
-        CurrentTurnDataIndex = 0;
-
-        UI.CharacterSide.Show();
-        UI.PlayerTurnSide.Show();
-        UI.Concentration.Show();
-        UI.CharacterQuery.Show();
-
-        Choice.PrimaryChoice.SetActive(true);
-
-        actionIndex = 0;
-        isCancelChoice = false;
-
-        for (int i = 0; i < Data.TurnsData.Count; i++)
-            _battle.UI.CharacterBox.Boxes[i].ChangeAct(TurnAction.None);
-
-        while (CurrentTurnDataIndex < Data.TurnsData.Count)
-        {
-            BattleTurnData currentTurnData = Data.TurnsData[CurrentTurnDataIndex];
-
-            if (ShouldSkipTurn(currentTurnData))
-                continue;
-
-            isCancelChoice = false;
-
-            if (choiceActions.Count == 0)
-                choiceActions.Add(ChoiceAction.Primary);
-
-            if (choiceActions.Last() == ChoiceAction.Primary)
-                _battle.SpashWriter.WriteSpash();
-            else
-                _battle.SpashWriter.Dispose();
-
-            if (currentTurnData.ReservedConcentration != 0)
-            {
-                Utility.AddConcetration(-currentTurnData.ReservedConcentration);
-                currentTurnData.ReservedConcentration = 0;
-            }
-
-            yield return HandleChoiceAction(currentTurnData);
-        }
-
-        _battle.SpashWriter.Dispose();
-
-        UI.CharacterSide.Hide();
-        UI.PlayerTurnSide.Hide();
-        UI.CharacterQuery.Hide();
-        UI.Concentration.NearWindow();
-
-        yield return new WaitForSeconds(.5f);
-
-        UI.CharacterBox.Show();
-
-        yield return new WaitForSeconds(UI.CharacterBox.TraslateContainerTime);
-
-        Choice.PrimaryChoice.SetActive(false);
-
-        /// ЦИКЛ ПОСЛЕДСВИЙ ВЫБОРА
-        for (int charIndex = 0; charIndex < Data.TurnsData.Count; charIndex++)
-        {
-            var turnData = Data.TurnsData[charIndex];
-
-            isFlee = false;
-
-            RPGCharacter currentCharacter = turnData.Character;
-
-            // Если персонаж пал или пропускает ход или не может ничего делать в битве, то его надо пропустить 
-            if (turnData.IsDead || currentCharacter.States.Any(i => i.SkipTurn) || !currentCharacter.CanMoveInBattle)
-                continue;
-
-            UI.CharacterBox.FocusBox(currentCharacter);
-
-            yield return new WaitForSeconds(UI.CharacterBox.TraslateBoxTime);
-
-            turnData.ReservedConcentration = 0;
-
-            yield return HandleBattleAction(turnData, currentCharacter);
-
-            UI.CharacterBox.UnfocusBox(currentCharacter);
-
-            if (Data.Enemys.Any(i => i.Heal <= 0))
-            {
-                RPGEnemy[] deads = Data.Enemys.Where(i => i.Heal <= 0).ToArray();
-
-                for (int i = 0; i < deads.Length; i++)
-                {
-                    yield return new WaitWhile(() => _battle.EnemyModels.GetModel(deads[i]).IsAnyEffectPlaying);
-
-                    BattleManager.BattleUtility.RemoveEnemy(deads[i]);
-                }
-            }
-
-            if (Data.Enemys.Count == 0 || isFlee)
-                break;
-        }
-
-        _battle.AttackQTE.Hide();
-
-        IsPlayerTurn = false;
-    }
-
-    private IEnumerator InvokeBattleEvent(RPGBattleEvent.InvokePeriod period, bool byTurn = false, string byEntity = "")
-    {
-        List<RPGBattleEvent> events = Data.BattleInfo.Events;
-
-        if (byTurn)
-            events = events.Where(i => i.Turn == TurnCounter).ToList();
-
-        if (!string.IsNullOrEmpty(byEntity))
-        {
-            events = events.Where(i => i.EntityTag == byEntity).ToList();
-        }
-
-        events = events.Where(i => i.Period == period).ToList();
-
-        if (period == RPGBattleEvent.InvokePeriod.OnLessCharacterHeal)
-        {
-            events = events.Where(i => Data.TurnsData.Select(i => i.Character).Any(ch => ch.Heal <= i.Heal && i.EntityTag == ch.Tag)).ToList();
-        }
-        else if (period == RPGBattleEvent.InvokePeriod.OnLessEnemyHeal)
-        {
-            events = events.Where(i => Data.Enemys.Any(enem => enem.Heal <= i.Heal && i.EntityTag == enem.Tag)).ToList();
-        }
-
-        foreach (var @event in events)
-        {
-            @event.Event.Invoke(_battle);
-
-            yield return new WaitWhile(() => @event.Event.IsPlaying);
-        }
-
-        yield break;
-    }
-
-    private IEnumerator UpdateEntitysStates()
-    {
-        foreach (var turnData in Data.TurnsData)
-        {
-            if (turnData.Character.States.Length == 0)
-                continue;
-
-            foreach (var state in turnData.Character.States)
-            {
-                if (state.Event != null)
-                {
-                    state.Event.Invoke(_battle);
-
-                    yield return new WaitWhile(() => state.Event.IsPlaying);
-                }
-            }
-
-            int oldHeal = turnData.Character.Heal;
-
-            turnData.Character.UpdateAllStates();
-
-            CharacterBox box = _battle.UI.CharacterBox.GetBox(turnData.Character);
-
-            if (turnData.Character.Heal < oldHeal)
-            {
-                BattleManager.BattleUtility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f), (oldHeal - turnData.Character.Heal).ToString(), Color.white, Color.red);
-            }
-            else if (turnData.Character.Heal > oldHeal)
-            {
-                BattleManager.BattleUtility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f), (oldHeal - turnData.Character.Heal).ToString(), Color.white, Color.green);
-            } 
-
-        }
-
-        foreach (var enemy in Data.Enemys)
-        {
-            if (enemy.States.Length == 0)
-                continue;
-
-            int oldHeal = enemy.Heal;
-
-            enemy.UpdateAllStates();
-
-            BattleEnemyModel model = _battle.EnemyModels.GetModel(enemy);
-
-            if (enemy.Heal < oldHeal)
-            {
-                BattleManager.BattleUtility.SpawnFallingText(model.DamageTextWorldPoint, (oldHeal - enemy.Heal).ToString(), Color.white, Color.red);
-            }
-            else if (enemy.Heal > oldHeal)
-            {
-                BattleManager.BattleUtility.SpawnFallingText(model.DamageTextWorldPoint, (oldHeal - enemy.Heal).ToString(), Color.white, Color.green);
-            }
-        }
-    }
-
-    private IEnumerator EnemyTurn()
-    {
-        IsEnemyTurn = true;
-
-        yield return new WaitForSeconds(0.5f);
-
-        List<BattleTurnData> targets = new List<BattleTurnData>();
-
-        foreach (var enemy in Data.Enemys)
-        {
-            if (enemy.States.Any(i => i.SkipTurn) || !enemy.Behaviours.Any())
-                continue;
-
-            BattleEnemyBehaviourBase pattern = enemy.Behaviours[Random.Range(0, enemy.Behaviours.Count)];
-
-            _battle.EnemyBehaviour.AddBehaviour(pattern, enemy);
-        }
-
-        int targetedCharacterCount = Random.Range(1, Data.TurnsData.Where(i => !i.IsDead).Count() + 1);
-        for (int i = 0; i < targetedCharacterCount; i++)
-        {
-            BattleTurnData turnData = Data.TurnsData[Random.Range(0, Data.TurnsData.Count)];
-
-            if (turnData.IsTarget || turnData.IsDead)
-            {
-                i--;
-                continue;
-            }
-
-            turnData.IsTarget = true;
-
-            _battle.UI.CharacterBox.GetBox(turnData.Character).MarkTarget(true);
-
-            targets.Add(turnData);
-        }
-
-        _battle.Player.SetActive(true);
-
-        _battle.BattleField.SetActive(true);
-        _battle.BattleField.Show();
-
-        _battle.EnemyBehaviour.Invoke();
-
-        yield return new WaitWhile(() => _battle.EnemyBehaviour.IsWorking && !loseKey && !breakKey);
-
-        if (loseKey || breakKey)
-            _battle.EnemyBehaviour.Break();
-
-        foreach (var item in targets)
-        {
-            item.IsTarget = false;
-            _battle.UI.CharacterBox.GetBox(item.Character).MarkTarget(false);
-        }
-
-        _battle.Player.SetActive(false);
-        _battle.BattleField.Hide();
-
-        yield return new WaitForSeconds(0.3f);
-
-        _battle.BattleField.SetActive(false);
-
-        UI.CharacterBox.Hide();
-
-        IsEnemyTurn = false;
-    }
-
-    private IEnumerator Lose()
-    {
-        IsLose = true;
-
-        UI.Concentration.Hide();
-        UI.CharacterSide.Hide();
-        UI.PlayerTurnSide.Hide();
-        UI.CharacterBox.Hide();
-
-        PlayerPrefs.SetFloat("DeadX", _battle.Player.transform.position.x - Camera.main.transform.position.x);
-        PlayerPrefs.SetFloat("DeadY", _battle.Player.transform.position.y - Camera.main.transform.position.y);
-        PlayerPrefs.Save();
-
-        _battle.BattleAudio.StopMusic();
-
-        if (Data.BattleInfo.ShowDeadMessage)
-        {
-            _battle.BattleAudio.PlaySound(Data.Lose);
-
-            _battle.UI.CharacterBox.SetActive(false);
-
-            _common.MessageBox.Write(new MessageInfo()
-            {
-                text = $"* {Localization.GetLocale("SYS_BATTLE_LOSE")}",
-                closeWindow = true,
-            });
-
-            yield return new WaitWhile(() => _common.MessageBox.IsWriting);
-        }
-
-        if (!Data.BattleInfo.CanLose)
-            SceneManager.LoadScene(Data.GameOverSceneName);
-    }
-
-    private IEnumerator Win()
-    {
-        IsWin = true;
-
-        _battle.BattleAudio.StopMusic();
-
-        #region ДРОП
-
-        string lvlUpText = string.Empty;
-        string moneyText = string.Empty;
-        string dropText = string.Empty;
-
-        foreach (var character in Data.TurnsData)
-        {
-            int addExp = Data.BattleInfo.enemySquad.Expireance;
-
-            if (!Data.BattleInfo.enemySquad.ExpConstDrop)
-                addExp = Mathf.RoundToInt(Random.Range(addExp * 0.75f, addExp * 1.25f));
-
-            character.Character.Expireance += addExp;
-
-            if (character.Character.LevelUpCanExecute())
-            {
-                character.Character.LevelUp();
-
-                lvlUpText += $"* {character.Character.Name} {Localization.GetLocale("SYS_LEVELUP")}\n";
-            }
-        }
-
-        if (Data.BattleInfo.enemySquad.Money > 0)
-        {
-            int money = Data.BattleInfo.enemySquad.Money;
-
-            if (Data.BattleInfo.enemySquad.MoneyConstDrop)
-                money = Mathf.RoundToInt(Random.Range(money * 0.65f, money * 1.35f));
-
-            GameManager.Instance.GameData.Money += money;
-
-            moneyText += $"* {Localization.GetLocale("SYS_BATTLE_YOU_GOT")} {money} {Localization.GetLocale("SYS_MONEY")}!\n";
-        }
-
-        bool first = true;
-        foreach (var drop in Data.BattleInfo.enemySquad.EnemiesDrop)
-        {
-            if (Random.Range(0f, 1f) > drop.Chance)
-                continue;
-
-            int count = Mathf.RoundToInt(Random.Range(drop.Count - drop.CountRange, drop.Count + drop.CountRange));
-
-            GameManager.Instance.Inventory.AddToItemCount(drop.item, count);
-
-            string countText = count > 1 ? $" {count}x" : "";
-
-            if (first)
-            {
-                dropText += $"* {Localization.GetLocale("SYS_BATTLE_YOU_GOT")} {drop.item.Name}{countText}";
-
-                first = false;
-            }
-            else
-                dropText += $", {drop.item.Name}{countText}";
-        }
-
-        if (!first)
-            dropText += "!\n";
+        public int TurnCounter { get; private set; }
+        public int CurrentTurnDataIndex { get; private set; }
 
         #endregion
 
-        if (Data.BattleInfo.ShowEndMessage)
+        private List<ChoiceAction> choiceActions = new();
+
+        private bool loseKey, winKey, fleeKey, breakKey;
+        private bool isCancelChoice;
+        private bool isFlee;
+        private int actionIndex;
+
+        private Coroutine main = null;
+
+        #region READONLY PROPS
+
+        public BattleData Data => _battle.Data;
+        public LocalizationService Localization => GameManager.Instance.Localization;
+        public BattleChoiceManager Choice => _battle.Choice;
+        public BattleUtility Utility => _battle.Utility;
+        public BattleVisualTransmitionManager VisualTransmition => _battle.VisualTransmition;
+        public BattleUIManager UI => _battle.UI;
+
+        public bool MainIsWorking => main != null;
+
+        public ChoiceAction CurrentChoiceAction => choiceActions.Last();
+
+        public BattleTurnData CurrentTurnData => Data.TurnsData[CurrentTurnDataIndex];
+
+        private bool AllKeysFalse => !loseKey && !winKey && !fleeKey && !breakKey;
+
+        #endregion
+
+        public BattlePipeline(BattleManager battle, SharedManager common)
         {
-            _battle.BattleAudio.PlaySound(Data.Win);
+            _battle = battle;
+            _common = common;
 
-            _common.MessageBox.Write(new MessageInfo()
+            TurnCounter = 0;
+            CurrentTurnDataIndex = 0;
+        }
+
+        #region API
+
+        public void InvokeMainPipeline()
+        {
+            if (!MainIsWorking)
+                main = _battle.StartCoroutine(MainPipeline());
+        }
+
+        public void InvokeLose()
+        {
+            loseKey = true;
+        }
+
+        public void InvokeWin()
+        {
+            winKey = true;
+        }
+
+        public void InvokeFlee()
+        {
+            fleeKey = true;
+        }
+
+        public void InvokeBreak()
+        {
+            breakKey = true;
+        }
+
+        #endregion
+
+        private void NextCharacter()
+        {
+            _battle.UI.CharacterBox.Boxes[CurrentTurnDataIndex].ChangeAct(Data.TurnsData[CurrentTurnDataIndex].BattleAction);
+
+            UI.CharacterQuery.NextPosition();
+
+            CurrentTurnDataIndex++;
+
+            choiceActions.Clear();
+        }
+        private void PreviewCharacter()
+        {
+            _battle.UI.CharacterBox.Boxes[CurrentTurnDataIndex].ChangeAct(TurnAction.None);
+
+            CurrentTurnDataIndex--;
+
+            UI.CharacterQuery.PreviewPosition();
+        }
+
+        private void PreviewAction()
+        {
+            choiceActions.Remove(choiceActions.Last());
+        }
+
+        private bool ShouldSkipTurn(BattleTurnData turnData)
+        {
+            if (turnData.IsDead || turnData.Character.States.Any(i => i.SkipTurn) || !turnData.Character.CanMoveInBattle)
             {
-                text = $"* {Localization.GetLocale("SYS_BATTLE_WIN")}<!>",
-                closeWindow = true
-            });
+                if (isCancelChoice && CurrentTurnDataIndex != 0)
+                {
+                    CurrentTurnDataIndex--;
 
-            yield return new WaitWhile(() => _common.MessageBox.IsWriting);
+                    UI.CharacterQuery.PreviewPosition();
+                }
+                else
+                {
+                    turnData.BattleAction = TurnAction.None;
 
-            if (dropText != string.Empty || moneyText != string.Empty)
+                    CurrentTurnDataIndex++;
+
+                    UI.CharacterQuery.NextPosition();
+
+                    isCancelChoice = false;
+
+                }
+                return true;
+            }
+
+            return false;
+        }
+
+        private IEnumerator MainPipeline()
+        {
+            loseKey = false; winKey = false; fleeKey = false; breakKey = false;
+
+            IsFlee = false; IsWin = false; IsLose = false;
+
+            TurnCounter = 0;
+
+            yield return BattleEnter();
+
+            yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnBattleStart);
+
+            if (Data.BattleInfo.EnemyStart)
             {
+                yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnEnemyTurn, true);
+
+                yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.EveryEnemyTurn);
+
+                yield return EnemyTurn();
+
+                yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLessCharacterHeal);
+
+                TurnCounter++;
+            }
+
+            while (true)
+            {
+                if (Data.Enemys.Count == 0)
+                    InvokeWin();
+
+                if (Data.TurnsData.All(i => i.Character.Heal <= 0))
+                    InvokeLose();
+
+                if (!AllKeysFalse)
+                    break;
+
+                yield return UpdateEntitysStates();
+
+                yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnPlayerTurn, true);
+
+                yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.EveryPlayerTurn);
+
+                if (!AllKeysFalse)
+                    break;
+
+                yield return PlayerTurn();
+
+                if (Data.Enemys.Count == 0)
+                    InvokeWin();
+
+                yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnEnemyTurn, true);
+
+                yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.EveryEnemyTurn);
+
+                if (!AllKeysFalse)
+                    break;
+
+                yield return EnemyTurn();
+
+                yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLessCharacterHeal);
+
+                TurnCounter++;
+            }
+
+            UI.Concentration.Hide();
+            UI.CharacterSide.Hide();
+            UI.PlayerTurnSide.Hide();
+            UI.CharacterBox.Hide();
+
+            if (fleeKey)
+            {
+                yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnFlee);
+
+                yield return Flee();
+            }
+
+            if (winKey)
+            {
+                yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnWin);
+
+                yield return Win();
+            }
+
+            if (loseKey)
+            {
+                yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLose);
+
+                yield return Lose();
+            }
+
+            yield return InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnBattleEnd);
+
+            yield return BattleExit();
+
+            main = null;
+        }
+
+        private IEnumerator BattleEnter()
+        {
+            foreach (var character in GameManager.Instance.Character.Characters)
+            {
+                if (character.ParticipateInBattle)
+                    Data.TurnsData.Add(new BattleTurnData(character));
+            }
+
+            if (Data.BattleInfo.StopGlobalMusic)
+                GameManager.Instance.GameAudio.PauseBGM(0.2f);
+
+            if (Data.BattleInfo.StopGlobalMusic)
+                GameManager.Instance.GameAudio.PauseBGS();
+
+            VisualTransmition.InitializeEffect(Data.BattleInfo.BattleEnterEffect);
+
+            yield return VisualTransmition.InvokePartOne();
+
+            _battle.SetActive(true);
+
+            yield return new WaitForFixedUpdate();
+
+            _battle.UI.CharacterBox.Initialize(Data.TurnsData.Select(i => i.Character).ToArray());
+
+            Choice.PrimaryChoice.SetActive(false);
+
+            _battle.UI.Description.SetActive(false);
+
+            _battle.UI.Concentration.SetConcentration(0);
+
+            _battle.Background.CreateBackground(Data.BattleInfo.Background);
+
+            if (Data.BattleInfo.BattleMusic != null)
+                _battle.BattleAudio.PlayMusic(Data.BattleInfo.BattleMusic, Data.BattleInfo.MusicVolume);
+
+            yield return VisualTransmition.InvokePartTwo();
+
+            VisualTransmition.DisposeEffect();
+
+            if (Data.BattleInfo.ShowStartMessage)
+            {
+                string numeriticDifText = Data.BattleInfo.enemySquad.Enemies.Count > 1 ? Localization.GetLocale("SYS_BATTLE_ENCOUNTER_MULTI") : Localization.GetLocale("SYS_BATTLE_ENCOUNTER_SIGNLE");
+
                 _common.MessageBox.Write(new MessageInfo()
                 {
-                    text = moneyText + dropText,
+                    text = $"* {Data.BattleInfo.enemySquad.Name} {numeriticDifText}!",
                     closeWindow = true
                 });
 
                 yield return new WaitWhile(() => _common.MessageBox.IsWriting);
             }
+        }
 
-            if (lvlUpText != string.Empty)
+        private IEnumerator BattleExit()
+        {
+            VisualTransmition.InitializeEffect(Data.BattleInfo.BattleExitEffect);
+
+            yield return _battle.StartCoroutine(VisualTransmition.InvokePartOne());
+
+            foreach (var item in Data.TurnsData)
             {
+                if (item.Character.Heal <= 0)
+                    item.Character.Heal = 1;
+
+                item.Character.RemoveNonBattleStates();
+            }
+
+
+            if (Data.BattleInfo.StopGlobalMusic)
+                GameManager.Instance.GameAudio.ResumeBGM();
+
+            if (Data.BattleInfo.StopGlobalMusic)
+                GameManager.Instance.GameAudio.ResumeBGS();
+
+            Data.Dispose();
+
+            _battle.SetActive(false);
+
+            _battle.UI.CharacterBox.Dispose();
+
+            _battle.EnemyModels.Dispose();
+
+            _battle.UI.CharacterQuery.Dispose();
+
+            yield return _battle.StartCoroutine(VisualTransmition.InvokePartTwo());
+
+            VisualTransmition.DisposeEffect();
+        }
+
+        private IEnumerator PlayerTurn()
+        {
+            IsPlayerTurn = true;
+
+            choiceActions.Clear();
+
+            Data.TurnsData.ForEach(i => i.CleanUp());
+
+            CurrentTurnDataIndex = 0;
+
+            UI.CharacterSide.Show();
+            UI.PlayerTurnSide.Show();
+            UI.Concentration.Show();
+            UI.CharacterQuery.Show();
+
+            Choice.PrimaryChoice.SetActive(true);
+
+            actionIndex = 0;
+            isCancelChoice = false;
+
+            for (int i = 0; i < Data.TurnsData.Count; i++)
+                _battle.UI.CharacterBox.Boxes[i].ChangeAct(TurnAction.None);
+
+            while (CurrentTurnDataIndex < Data.TurnsData.Count)
+            {
+                BattleTurnData currentTurnData = Data.TurnsData[CurrentTurnDataIndex];
+
+                if (ShouldSkipTurn(currentTurnData))
+                    continue;
+
+                isCancelChoice = false;
+
+                if (choiceActions.Count == 0)
+                    choiceActions.Add(ChoiceAction.Primary);
+
+                if (choiceActions.Last() == ChoiceAction.Primary)
+                    _battle.SpashWriter.WriteSpash();
+                else
+                    _battle.SpashWriter.Dispose();
+
+                if (currentTurnData.ReservedConcentration != 0)
+                {
+                    Utility.AddConcetration(-currentTurnData.ReservedConcentration);
+                    currentTurnData.ReservedConcentration = 0;
+                }
+
+                yield return HandleChoiceAction(currentTurnData);
+            }
+
+            _battle.SpashWriter.Dispose();
+
+            UI.CharacterSide.Hide();
+            UI.PlayerTurnSide.Hide();
+            UI.CharacterQuery.Hide();
+            UI.Concentration.NearWindow();
+
+            yield return new WaitForSeconds(.5f);
+
+            UI.CharacterBox.Show();
+
+            yield return new WaitForSeconds(UI.CharacterBox.TraslateContainerTime);
+
+            Choice.PrimaryChoice.SetActive(false);
+
+            /// ЦИКЛ ПОСЛЕДСВИЙ ВЫБОРА
+            for (int charIndex = 0; charIndex < Data.TurnsData.Count; charIndex++)
+            {
+                var turnData = Data.TurnsData[charIndex];
+
+                isFlee = false;
+
+                RPGCharacter currentCharacter = turnData.Character;
+
+                // Если персонаж пал или пропускает ход или не может ничего делать в битве, то его надо пропустить 
+                if (turnData.IsDead || currentCharacter.States.Any(i => i.SkipTurn) || !currentCharacter.CanMoveInBattle)
+                    continue;
+
+                UI.CharacterBox.FocusBox(currentCharacter);
+
+                yield return new WaitForSeconds(UI.CharacterBox.TraslateBoxTime);
+
+                turnData.ReservedConcentration = 0;
+
+                yield return HandleBattleAction(turnData, currentCharacter);
+
+                UI.CharacterBox.UnfocusBox(currentCharacter);
+
+                if (Data.Enemys.Any(i => i.Heal <= 0))
+                {
+                    RPGEnemy[] deads = Data.Enemys.Where(i => i.Heal <= 0).ToArray();
+
+                    for (int i = 0; i < deads.Length; i++)
+                    {
+                        yield return new WaitWhile(() => _battle.EnemyModels.GetModel(deads[i]).IsAnyEffectPlaying);
+
+                        BattleManager.BattleUtility.RemoveEnemy(deads[i]);
+                    }
+                }
+
+                if (Data.Enemys.Count == 0 || isFlee)
+                    break;
+            }
+
+            _battle.AttackQTE.Hide();
+
+            IsPlayerTurn = false;
+        }
+
+        private IEnumerator InvokeBattleEvent(RPGBattleEvent.InvokePeriod period, bool byTurn = false, string byEntity = "")
+        {
+            List<RPGBattleEvent> events = Data.BattleInfo.Events;
+
+            if (byTurn)
+                events = events.Where(i => i.Turn == TurnCounter).ToList();
+
+            if (!string.IsNullOrEmpty(byEntity))
+            {
+                events = events.Where(i => i.EntityTag == byEntity).ToList();
+            }
+
+            events = events.Where(i => i.Period == period).ToList();
+
+            if (period == RPGBattleEvent.InvokePeriod.OnLessCharacterHeal)
+            {
+                events = events.Where(i => Data.TurnsData.Select(i => i.Character).Any(ch => ch.Heal <= i.Heal && i.EntityTag == ch.Tag)).ToList();
+            }
+            else if (period == RPGBattleEvent.InvokePeriod.OnLessEnemyHeal)
+            {
+                events = events.Where(i => Data.Enemys.Any(enem => enem.Heal <= i.Heal && i.EntityTag == enem.Tag)).ToList();
+            }
+
+            foreach (var @event in events)
+            {
+                @event.Event.Invoke(_battle);
+
+                yield return new WaitWhile(() => @event.Event.IsPlaying);
+            }
+
+            yield break;
+        }
+
+        private IEnumerator UpdateEntitysStates()
+        {
+            foreach (var turnData in Data.TurnsData)
+            {
+                if (turnData.Character.States.Length == 0)
+                    continue;
+
+                foreach (var state in turnData.Character.States)
+                {
+                    if (state.Event != null)
+                    {
+                        state.Event.Invoke(_battle);
+
+                        yield return new WaitWhile(() => state.Event.IsPlaying);
+                    }
+                }
+
+                int oldHeal = turnData.Character.Heal;
+
+                turnData.Character.UpdateAllStates();
+
+                CharacterBox box = _battle.UI.CharacterBox.GetBox(turnData.Character);
+
+                if (turnData.Character.Heal < oldHeal)
+                {
+                    BattleManager.BattleUtility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f), (oldHeal - turnData.Character.Heal).ToString(), Color.white, Color.red);
+                }
+                else if (turnData.Character.Heal > oldHeal)
+                {
+                    BattleManager.BattleUtility.SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f), (oldHeal - turnData.Character.Heal).ToString(), Color.white, Color.green);
+                }
+
+            }
+
+            foreach (var enemy in Data.Enemys)
+            {
+                if (enemy.States.Length == 0)
+                    continue;
+
+                int oldHeal = enemy.Heal;
+
+                enemy.UpdateAllStates();
+
+                var model = _battle.EnemyModels.GetModel(enemy);
+
+                if (enemy.Heal < oldHeal)
+                {
+                    BattleManager.BattleUtility.SpawnFallingText(model.DamageTextWorldPoint, (oldHeal - enemy.Heal).ToString(), Color.white, Color.red);
+                }
+                else if (enemy.Heal > oldHeal)
+                {
+                    BattleManager.BattleUtility.SpawnFallingText(model.DamageTextWorldPoint, (oldHeal - enemy.Heal).ToString(), Color.white, Color.green);
+                }
+            }
+        }
+
+        private IEnumerator EnemyTurn()
+        {
+            IsEnemyTurn = true;
+
+            yield return new WaitForSeconds(0.5f);
+
+            List<BattleTurnData> targets = new List<BattleTurnData>();
+
+            foreach (var enemy in Data.Enemys)
+            {
+                if (enemy.States.Any(i => i.SkipTurn) || !enemy.Behaviours.Any())
+                    continue;
+
+                var pattern = enemy.Behaviours[Random.Range(0, enemy.Behaviours.Count)];
+
+                _battle.EnemyBehaviour.AddBehaviour(pattern, enemy);
+            }
+
+            int targetedCharacterCount = Random.Range(1, Data.TurnsData.Where(i => !i.IsDead).Count() + 1);
+            for (int i = 0; i < targetedCharacterCount; i++)
+            {
+                var turnData = Data.TurnsData[Random.Range(0, Data.TurnsData.Count)];
+
+                if (turnData.IsTarget || turnData.IsDead)
+                {
+                    i--;
+                    continue;
+                }
+
+                turnData.IsTarget = true;
+
+                _battle.UI.CharacterBox.GetBox(turnData.Character).MarkTarget(true);
+
+                targets.Add(turnData);
+            }
+
+            _battle.Player.SetActive(true);
+
+            _battle.BattleField.SetActive(true);
+            _battle.BattleField.Show();
+
+            _battle.EnemyBehaviour.Invoke();
+
+            yield return new WaitWhile(() => _battle.EnemyBehaviour.IsWorking && !loseKey && !breakKey);
+
+            if (loseKey || breakKey)
+                _battle.EnemyBehaviour.Break();
+
+            foreach (var item in targets)
+            {
+                item.IsTarget = false;
+                _battle.UI.CharacterBox.GetBox(item.Character).MarkTarget(false);
+            }
+
+            _battle.Player.SetActive(false);
+            _battle.BattleField.Hide();
+
+            yield return new WaitForSeconds(0.3f);
+
+            _battle.BattleField.SetActive(false);
+
+            UI.CharacterBox.Hide();
+
+            IsEnemyTurn = false;
+        }
+
+        private IEnumerator Lose()
+        {
+            IsLose = true;
+
+            UI.Concentration.Hide();
+            UI.CharacterSide.Hide();
+            UI.PlayerTurnSide.Hide();
+            UI.CharacterBox.Hide();
+
+            PlayerPrefs.SetFloat("DeadX", _battle.Player.transform.position.x - Camera.main.transform.position.x);
+            PlayerPrefs.SetFloat("DeadY", _battle.Player.transform.position.y - Camera.main.transform.position.y);
+            PlayerPrefs.Save();
+
+            _battle.BattleAudio.StopMusic();
+
+            if (Data.BattleInfo.ShowDeadMessage)
+            {
+                _battle.BattleAudio.PlaySound(Data.Lose);
+
+                _battle.UI.CharacterBox.SetActive(false);
+
                 _common.MessageBox.Write(new MessageInfo()
                 {
-                    text = lvlUpText,
-                    closeWindow = true
+                    text = $"* {Localization.GetLocale("SYS_BATTLE_LOSE")}",
+                    closeWindow = true,
                 });
 
                 yield return new WaitWhile(() => _common.MessageBox.IsWriting);
             }
+
+            if (!Data.BattleInfo.CanLose)
+                SceneManager.LoadScene(Data.GameOverSceneName);
         }
 
-        _battle.UI.CharacterBox.SetActive(false);
-
-    }
-
-    private IEnumerator Flee()
-    {
-        _battle.BattleAudio.StopMusic();
-
-        IsFlee = true;
-
-        yield break;
-    }
-
-    #region HANDLE CHOICES
-
-    private IEnumerator HandleChoiceAction(BattleTurnData turnData)
-    {
-        switch (choiceActions.Last())
+        private IEnumerator Win()
         {
-            case ChoiceAction.Primary:
-                yield return HandlePrimaryChoice(turnData);
-                break;
-            case ChoiceAction.Special:
-                yield return HandleSpecialChoice(turnData);
-                break;
-            case ChoiceAction.Act:
-                yield return HandleActChoice(turnData);
-                break;
-            case ChoiceAction.Ability:
-                yield return HandleAbilityChoice(turnData);
-                break;
-            case ChoiceAction.Entity:
-                yield return HandleEntityChoice(turnData);
-                break;
-            case ChoiceAction.Teammate:
-                yield return HandleTeammateChoice(turnData);
-                break;
-            case ChoiceAction.Enemy:
-                yield return HandleEnemyChoice(turnData);
-                break;
-            case ChoiceAction.Item:
-                yield return HandleItemChoice(turnData);
-                break;
-            case ChoiceAction.Defence:
-                yield return HandleDefenceChoice(turnData);
-                break;
-        }
-    }
+            IsWin = true;
 
-    private IEnumerator HandlePrimaryChoice(BattleTurnData turnData)
-    {
-        UI.CharacterSide.Setup(turnData.Character);
+            _battle.BattleAudio.StopMusic();
 
-        turnData.CleanUp();
+            #region ДРОП
 
-        Choice.InvokePrimaryChoice(actionIndex);
+            string lvlUpText = string.Empty;
+            string moneyText = string.Empty;
+            string dropText = string.Empty;
 
-        yield return new WaitWhile(() => Choice.IsChoicing);
-
-        if (Choice.IsPrimaryCanceled)
-        {
-            if (CurrentTurnDataIndex > 0)
+            foreach (var character in Data.TurnsData)
             {
-                PreviewCharacter();
+                int addExp = Data.BattleInfo.enemySquad.Expireance;
 
-                isCancelChoice = true;
+                if (!Data.BattleInfo.enemySquad.ExpConstDrop)
+                    addExp = Mathf.RoundToInt(Random.Range(addExp * 0.75f, addExp * 1.25f));
+
+                character.Character.Expireance += addExp;
+
+                if (character.Character.LevelUpCanExecute())
+                {
+                    character.Character.LevelUp();
+
+                    lvlUpText += $"* {character.Character.Name} {Localization.GetLocale("SYS_LEVELUP")}\n";
+                }
+            }
+
+            if (Data.BattleInfo.enemySquad.Money > 0)
+            {
+                int money = Data.BattleInfo.enemySquad.Money;
+
+                if (Data.BattleInfo.enemySquad.MoneyConstDrop)
+                    money = Mathf.RoundToInt(Random.Range(money * 0.65f, money * 1.35f));
+
+                GameManager.Instance.GameData.Money += money;
+
+                moneyText += $"* {Localization.GetLocale("SYS_BATTLE_YOU_GOT")} {money} {Localization.GetLocale("SYS_MONEY")}!\n";
+            }
+
+            bool first = true;
+            foreach (var drop in Data.BattleInfo.enemySquad.EnemiesDrop)
+            {
+                if (Random.Range(0f, 1f) > drop.Chance)
+                    continue;
+
+                int count = Mathf.RoundToInt(Random.Range(drop.Count - drop.CountRange, drop.Count + drop.CountRange));
+
+                GameManager.Instance.Inventory.AddToItemCount(drop.item, count);
+
+                string countText = count > 1 ? $" {count}x" : "";
+
+                if (first)
+                {
+                    dropText += $"* {Localization.GetLocale("SYS_BATTLE_YOU_GOT")} {drop.item.Name}{countText}";
+
+                    first = false;
+                }
+                else
+                    dropText += $", {drop.item.Name}{countText}";
+            }
+
+            if (!first)
+                dropText += "!\n";
+
+            #endregion
+
+            if (Data.BattleInfo.ShowEndMessage)
+            {
+                _battle.BattleAudio.PlaySound(Data.Win);
+
+                _common.MessageBox.Write(new MessageInfo()
+                {
+                    text = $"* {Localization.GetLocale("SYS_BATTLE_WIN")}<!>",
+                    closeWindow = true
+                });
+
+                yield return new WaitWhile(() => _common.MessageBox.IsWriting);
+
+                if (dropText != string.Empty || moneyText != string.Empty)
+                {
+                    _common.MessageBox.Write(new MessageInfo()
+                    {
+                        text = moneyText + dropText,
+                        closeWindow = true
+                    });
+
+                    yield return new WaitWhile(() => _common.MessageBox.IsWriting);
+                }
+
+                if (lvlUpText != string.Empty)
+                {
+                    _common.MessageBox.Write(new MessageInfo()
+                    {
+                        text = lvlUpText,
+                        closeWindow = true
+                    });
+
+                    yield return new WaitWhile(() => _common.MessageBox.IsWriting);
+                }
+            }
+
+            _battle.UI.CharacterBox.SetActive(false);
+
+        }
+
+        private IEnumerator Flee()
+        {
+            _battle.BattleAudio.StopMusic();
+
+            IsFlee = true;
+
+            yield break;
+        }
+
+        #region HANDLE CHOICES
+
+        private IEnumerator HandleChoiceAction(BattleTurnData turnData)
+        {
+            switch (choiceActions.Last())
+            {
+                case ChoiceAction.Primary:
+                    yield return HandlePrimaryChoice(turnData);
+                    break;
+                case ChoiceAction.Special:
+                    yield return HandleSpecialChoice(turnData);
+                    break;
+                case ChoiceAction.Act:
+                    yield return HandleActChoice(turnData);
+                    break;
+                case ChoiceAction.Ability:
+                    yield return HandleAbilityChoice(turnData);
+                    break;
+                case ChoiceAction.Entity:
+                    yield return HandleEntityChoice(turnData);
+                    break;
+                case ChoiceAction.Teammate:
+                    yield return HandleTeammateChoice(turnData);
+                    break;
+                case ChoiceAction.Enemy:
+                    yield return HandleEnemyChoice(turnData);
+                    break;
+                case ChoiceAction.Item:
+                    yield return HandleItemChoice(turnData);
+                    break;
+                case ChoiceAction.Defence:
+                    yield return HandleDefenceChoice(turnData);
+                    break;
             }
         }
-        else
+
+        private IEnumerator HandlePrimaryChoice(BattleTurnData turnData)
         {
-            actionIndex = Choice.PrimaryCurrentIndex;
+            UI.CharacterSide.Setup(turnData.Character);
 
-            switch (actionIndex)
+            turnData.CleanUp();
+
+            Choice.InvokePrimaryChoice(actionIndex);
+
+            yield return new WaitWhile(() => Choice.IsChoicing);
+
+            if (Choice.IsPrimaryCanceled)
             {
-                // Выбрана битва
-                case 0:
-                    turnData.BattleAction = TurnAction.Attack;
-                    choiceActions.Add(ChoiceAction.Enemy);
-                    break;
-                // Выбрано дейтсвие
-                case 1:
-                    choiceActions.Add(ChoiceAction.Special);
-                    break;
-                // Выбраны вещи
-                case 2:
-                    turnData.BattleAction = TurnAction.Item;
+                if (CurrentTurnDataIndex > 0)
+                {
+                    PreviewCharacter();
 
-                    choiceActions.Add(ChoiceAction.Item);
-                    break;
-                // Выбрана побег
-                case 3:
-                    choiceActions.Add(ChoiceAction.Defence);
-                    break;
-                // Неизветсное действие
-                default:
-                    Debug.LogWarning("Unknown battle action!");
-                    break;
-            }
-        }
-    }
-    private IEnumerator HandleSpecialChoice(BattleTurnData turnData)
-    {
-        _battle.Choice.InvokeChoiceAct();
-
-        yield return new WaitWhile(() => _battle.Choice.IsChoicing);
-
-        if (_battle.Choice.IsCanceled)
-            PreviewAction();
-        else
-        {
-            if ((int)Choice.CurrentItem.Value == 0)
-            {
-                turnData.BattleAction = TurnAction.Act;
-                choiceActions.Add(ChoiceAction.Enemy);
+                    isCancelChoice = true;
+                }
             }
             else
             {
-                turnData.BattleAction = TurnAction.Ability;
-                choiceActions.Add(ChoiceAction.Ability);
+                actionIndex = Choice.PrimaryCurrentIndex;
+
+                switch (actionIndex)
+                {
+                    // Выбрана битва
+                    case 0:
+                        turnData.BattleAction = TurnAction.Attack;
+                        choiceActions.Add(ChoiceAction.Enemy);
+                        break;
+                    // Выбрано дейтсвие
+                    case 1:
+                        choiceActions.Add(ChoiceAction.Special);
+                        break;
+                    // Выбраны вещи
+                    case 2:
+                        turnData.BattleAction = TurnAction.Item;
+
+                        choiceActions.Add(ChoiceAction.Item);
+                        break;
+                    // Выбрана побег
+                    case 3:
+                        choiceActions.Add(ChoiceAction.Defence);
+                        break;
+                    // Неизветсное действие
+                    default:
+                        Debug.LogWarning("Unknown battle action!");
+                        break;
+                }
             }
         }
-
-        _battle.Choice.CleanUp();
-    }
-    private IEnumerator HandleActChoice(BattleTurnData turnData)
-    {
-        _battle.Choice.InvokeChoiceInteraction();
-
-        yield return new WaitWhile(() => _battle.Choice.IsChoicing);
-
-        if (_battle.Choice.IsCanceled)
+        private IEnumerator HandleSpecialChoice(BattleTurnData turnData)
         {
-            turnData.InteractionAct = RPGEnemy.EnemyAct.NullAct;
-
-            turnData.EnemyBuffer = null;
-
-            PreviewAction();
-        }
-        else
-        {
-            turnData.InteractionAct = (RPGEnemy.EnemyAct)Choice.CurrentItem.Value;
-
-            NextCharacter();
-        }
-
-        Choice.CleanUp();
-    }
-    private IEnumerator HandleAbilityChoice(BattleTurnData turnData)
-    {
-        Choice.InvokeChoiceAbility();
-
-        yield return new WaitWhile(() => Choice.IsChoicing);
-
-        if (Choice.IsCanceled)
-        {
-            turnData.Ability = null;
-
-            PreviewAction();
-        }
-        else
-        {
-            turnData.Ability = (RPGAbility)Choice.CurrentItem.Value;
-
-            switch (turnData.Ability.Direction)
-            {
-                case UsabilityDirection.All:
-                case UsabilityDirection.AllEnemys:
-                case UsabilityDirection.AllTeam:
-                    turnData.ReservedConcentration = -turnData.Ability.ConcentrationCost;
-                    Utility.AddConcetration(-turnData.Ability.ConcentrationCost);
-
-                    NextCharacter();
-                    break;
-                case UsabilityDirection.Teammate:
-                    choiceActions.Add(ChoiceAction.Teammate);
-                    break;
-                case UsabilityDirection.Enemy:
-                    choiceActions.Add(ChoiceAction.Enemy);
-                    break;
-                case UsabilityDirection.Any:
-                    choiceActions.Add(ChoiceAction.Entity);
-                    break;
-            }
-        }
-
-        _battle.Choice.CleanUp();
-    }
-    private IEnumerator HandleEntityChoice(BattleTurnData turnData)
-    {
-        _battle.Choice.InvokeChoiceEntity();
-
-        yield return new WaitWhile(() => _battle.Choice.IsChoicing);
-
-        if (_battle.Choice.IsCanceled)
-        {
-            if (turnData.BattleAction == TurnAction.Item)
-                turnData.Item = null;
-
-            PreviewAction();
-        }
-        else
-        {
-            turnData.EntityBuffer = (RPGEntity)_battle.Choice.CurrentItem.Value;
-
-            switch (turnData.BattleAction)
-            {
-                case TurnAction.Act:
-                    choiceActions.Add(ChoiceAction.Act);
-
-                    break;
-                case TurnAction.Ability:
-                    turnData.ReservedConcentration = -turnData.Ability.ConcentrationCost;
-                    Utility.AddConcetration(-turnData.Ability.ConcentrationCost);
-
-                    NextCharacter();
-                    break;
-                default:
-                    NextCharacter();
-                    break;
-            }
-        }
-
-        _battle.Choice.CleanUp();
-    }
-    private IEnumerator HandleTeammateChoice(BattleTurnData turnData)
-    {
-        Choice.InvokeChoiceTeammate();
-
-        yield return new WaitWhile(() => Choice.IsChoicing);
-
-        if (Choice.IsCanceled)
-        {
-            if (turnData.BattleAction == TurnAction.Item)
-                turnData.Item = null;
-
-            PreviewAction();
-        }
-        else
-        {
-            turnData.CharacterBuffer = (RPGCharacter)Choice.CurrentItem.Value;
-
-            switch (turnData.BattleAction)
-            {
-                case TurnAction.Ability:
-                    turnData.ReservedConcentration = -turnData.Ability.ConcentrationCost;
-                    Utility.AddConcetration(-turnData.Ability.ConcentrationCost);
-                    break;
-            }
-
-            NextCharacter();
-        }
-
-        Choice.CleanUp();
-    }
-    private IEnumerator HandleEnemyChoice(BattleTurnData turnData)
-    {
-        _battle.Choice.InvokeChoiceEnemy();
-
-        yield return new WaitWhile(() => _battle.Choice.IsChoicing);
-
-        if (_battle.Choice.IsCanceled)
-        {
-            if (turnData.BattleAction == TurnAction.Item)
-                turnData.Item = null;
-
-            turnData.EnemyBuffer = null;
-
-            PreviewAction();
-        }
-        else
-        {
-            turnData.EnemyBuffer = (RPGEnemy)Choice.CurrentItem.Value;
-
-            switch (turnData.BattleAction)
-            {
-                case TurnAction.Act:
-                    choiceActions.Add(ChoiceAction.Act);
-
-                    break;
-                case TurnAction.Ability:
-                    turnData.ReservedConcentration = -turnData.Ability.ConcentrationCost;
-                    Utility.AddConcetration(-turnData.Ability.ConcentrationCost);
-
-                    NextCharacter();
-                    break;
-                default:
-                    NextCharacter();
-                    break;
-            }
-        }
-
-        _battle.Choice.CleanUp();
-    }
-    private IEnumerator HandleItemChoice(BattleTurnData turnData)
-    {
-        if (GameManager.Instance.Inventory.Slots
-                    .Where(i => i.Item.Usage == Usability.Battle ||
-                                i.Item.Usage == Usability.Any).Count() > 0)
-        {
-            _battle.Choice.InvokeChoiceItem();
+            _battle.Choice.InvokeChoiceAct();
 
             yield return new WaitWhile(() => _battle.Choice.IsChoicing);
 
@@ -1044,292 +850,490 @@ public class BattlePipeline
                 PreviewAction();
             else
             {
-                turnData.Item = _battle.Choice.CurrentItem.Value as RPGCollectable;
-                turnData.IsConsumed = turnData.Item is RPGConsumed;
-
-                if (turnData.Item is RPGConsumed consumed)
+                if ((int)Choice.CurrentItem.Value == 0)
                 {
-                    switch (consumed.Direction)
-                    {
-                        case UsabilityDirection.AllEnemys:
-                        case UsabilityDirection.AllTeam:
-                        case UsabilityDirection.All:
-                            NextCharacter();
-                            break;
-                        case UsabilityDirection.Teammate:
-                            choiceActions.Add(ChoiceAction.Teammate);
-                            break;
-                        case UsabilityDirection.Enemy:
-                            choiceActions.Add(ChoiceAction.Enemy);
-                            break;
-                        case UsabilityDirection.Any:
-                            choiceActions.Add(ChoiceAction.Entity);
-                            break;
-                    }
+                    turnData.BattleAction = TurnAction.Act;
+                    choiceActions.Add(ChoiceAction.Enemy);
                 }
                 else
-                    NextCharacter();
+                {
+                    turnData.BattleAction = TurnAction.Ability;
+                    choiceActions.Add(ChoiceAction.Ability);
+                }
             }
 
             _battle.Choice.CleanUp();
         }
-        else
-            PreviewAction();
-    }
-    private IEnumerator HandleDefenceChoice(BattleTurnData turnData)
-    {
-        _battle.Choice.InvokeChoiceDefence();
-
-        yield return new WaitWhile(() => _battle.Choice.IsChoicing);
-
-        if (_battle.Choice.IsCanceled)
-            PreviewAction();
-        else
+        private IEnumerator HandleActChoice(BattleTurnData turnData)
         {
-            if ((int)_battle.Choice.CurrentItem.Value == 0)
+            _battle.Choice.InvokeChoiceInteraction();
+
+            yield return new WaitWhile(() => _battle.Choice.IsChoicing);
+
+            if (_battle.Choice.IsCanceled)
             {
-                Utility.AddConcetration(Data.AdditionConcentrationOnDefence);
-                turnData.ReservedConcentration = Data.AdditionConcentrationOnDefence;
-                turnData.BattleAction = TurnAction.Defence;
-            } 
+                turnData.InteractionAct = RPGEnemy.EnemyAct.NullAct;
+
+                turnData.EnemyBuffer = null;
+
+                PreviewAction();
+            }
             else
             {
-                turnData.BattleAction = TurnAction.Flee;
+                turnData.InteractionAct = (RPGEnemy.EnemyAct)Choice.CurrentItem.Value;
+
+                NextCharacter();
             }
 
-            NextCharacter();
+            Choice.CleanUp();
         }
-
-        _battle.Choice.CleanUp();
-
-        yield break;
-    }
-
-    #endregion
-
-    #region HANDLE BATTLE ACTS
-
-    private IEnumerator HandleBattleAction(BattleTurnData turnData, RPGCharacter character)
-    {
-        switch (turnData.BattleAction)
+        private IEnumerator HandleAbilityChoice(BattleTurnData turnData)
         {
-            case TurnAction.Attack:
-                yield return HandleAttackAction(turnData, character);
-                break;
-            case TurnAction.Act:
-                yield return HandleActAction(turnData, character);
-                break;
-            case TurnAction.Ability:
-                yield return HandleAbilityAction(turnData, character);
-                break;
-            case TurnAction.Item:
-                yield return HandleItemAction(turnData, character);
-                break;
-            case TurnAction.Flee:
-                yield return HandleFleeAction(turnData, character);
-                break;
-            case TurnAction.Defence:
-            case TurnAction.None:
-            default:
-                break;
-        }
-    }
+            Choice.InvokeChoiceAbility();
 
-    private IEnumerator HandleAttackAction(BattleTurnData turnData, RPGCharacter character)
-    {
-        if (!Data.Enemys.Contains(turnData.EnemyBuffer))
-        {
-            if (Data.Enemys.Count != 0)
-                turnData.EnemyBuffer = Data.Enemys[0];
-            else 
-                yield break;
-        }
+            yield return new WaitWhile(() => Choice.IsChoicing);
 
-        _battle.AttackQTE.Show();
-
-        if (!_battle.AttackQTE.IsShowed)
-            yield return new WaitForSeconds(1f);
-
-        _battle.AttackQTE.Invoke();
-
-        yield return new WaitWhile(() => _battle.AttackQTE.QTE.IsWorking);
-
-        yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.BeforeHit, false, turnData.EnemyBuffer.Tag));
-
-        BattleAttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.VisualEffect;
-
-        if (effect.LocaleInCenter)
-            effect = BattleManager.BattleUtility.SpawnAttackEffect(effect);
-        else
-        {
-            Vector2 attackPos = _battle.EnemyModels.GetModel(turnData.EnemyBuffer).AttackWorldPoint;
-
-            effect = BattleManager.BattleUtility.SpawnAttackEffect(effect, attackPos);
-        }
-
-        effect.Invoke();
-
-        yield return new WaitWhile(() => effect.IsAnimating);
-
-        yield return new WaitForSeconds(0.5f);
-
-        Object.Destroy(effect.gameObject);
-
-        _battle.AttackQTE.Hide();
-
-        BattleManager.BattleUtility.DamageEnemy(character, turnData.EnemyBuffer, _battle.AttackQTE.QTE.DamageFactor);
-
-        yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.AfterHit, false, turnData.EnemyBuffer.Tag));
-
-        yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLessEnemyHeal, false, turnData.EnemyBuffer.Tag));
-    }
-    private IEnumerator HandleActAction(BattleTurnData turnData, RPGCharacter character)
-    {
-        if (turnData.InteractionAct.Event != null)
-            turnData.InteractionAct.Event.Invoke(_battle);
-
-        if (turnData.InteractionAct.Minigame != null)
-        {
-            _battle.Minigame.InvokeMinigame(turnData.InteractionAct.Minigame);
-            yield return new WaitWhile(() => _battle.Minigame.MinigameIsPlay);
-        }
-
-        yield return new WaitWhile(() => turnData.InteractionAct.Event.IsPlaying);
-    }
-    private IEnumerator HandleAbilityAction(BattleTurnData turnData, RPGCharacter character)
-    {
-        character.Mana -= turnData.Ability.ManaCost;
-
-        if (turnData.Ability.StartEvent != null)
-        {
-            turnData.Ability.StartEvent.Invoke(_battle);
-
-            yield return new WaitWhile(() => turnData.Ability.StartEvent.IsPlaying);
-        }
-
-        switch (turnData.Ability.Direction)
-        {
-            case UsabilityDirection.AllTeam:
-                yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, Data.TurnsData.Select(i => i.Character).ToArray()));
-                break;
-            case UsabilityDirection.Teammate:
-                yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, turnData.CharacterBuffer));
-                break;
-            case UsabilityDirection.AllEnemys:
-                yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, Data.Enemys.ToArray()));
-                break;
-            case UsabilityDirection.Enemy:
-                yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, turnData.EnemyBuffer));
-                break;
-            case UsabilityDirection.Any:
-                yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, turnData.EntityBuffer));
-                break;
-            case UsabilityDirection.All:
-                yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, Data.TurnsData.Select(i => i.Character).ToArray()));
-
-                yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, Data.Enemys.ToArray()));
-                break;
-        }
-
-        if (turnData.Ability.EndEvent != null)
-        {
-            turnData.Ability.EndEvent.Invoke(_battle);
-
-            yield return new WaitWhile(() => turnData.Ability.EndEvent.IsPlaying);
-        }
-    }
-    private IEnumerator HandleItemAction(BattleTurnData turnData, RPGCharacter character)
-    {
-        if (turnData.Item.Event != null)
-        {
-            turnData.Item.InvokeEvent();
-
-            yield return new WaitWhile(() => turnData.Item.Event.IsPlaying);
-        }
-
-        if (turnData.IsConsumed && turnData.Item is RPGConsumed consumed)
-        {
-            if (consumed.WriteMessage)
+            if (Choice.IsCanceled)
             {
-                _common.MessageBox.Write(new MessageInfo()
+                turnData.Ability = null;
+
+                PreviewAction();
+            }
+            else
+            {
+                turnData.Ability = (RPGAbility)Choice.CurrentItem.Value;
+
+                switch (turnData.Ability.Direction)
                 {
-                    text = $"* {character.Name} использует {consumed.Name}!",
-                    closeWindow = true,
-                });
+                    case UsabilityDirection.All:
+                    case UsabilityDirection.AllEnemys:
+                    case UsabilityDirection.AllTeam:
+                        turnData.ReservedConcentration = -turnData.Ability.ConcentrationCost;
+                        Utility.AddConcetration(-turnData.Ability.ConcentrationCost);
 
-                yield return new WaitWhile(() => _common.MessageBox.IsWriting);
-                yield return new WaitForSeconds(.25f);
+                        NextCharacter();
+                        break;
+                    case UsabilityDirection.Teammate:
+                        choiceActions.Add(ChoiceAction.Teammate);
+                        break;
+                    case UsabilityDirection.Enemy:
+                        choiceActions.Add(ChoiceAction.Enemy);
+                        break;
+                    case UsabilityDirection.Any:
+                        choiceActions.Add(ChoiceAction.Entity);
+                        break;
+                }
+            }
+
+            _battle.Choice.CleanUp();
+        }
+        private IEnumerator HandleEntityChoice(BattleTurnData turnData)
+        {
+            _battle.Choice.InvokeChoiceEntity();
+
+            yield return new WaitWhile(() => _battle.Choice.IsChoicing);
+
+            if (_battle.Choice.IsCanceled)
+            {
+                if (turnData.BattleAction == TurnAction.Item)
+                    turnData.Item = null;
+
+                PreviewAction();
             }
             else
-                yield return new WaitForSeconds(.5f);
+            {
+                turnData.EntityBuffer = (RPGEntity)_battle.Choice.CurrentItem.Value;
 
-            switch (consumed.Direction)
+                switch (turnData.BattleAction)
+                {
+                    case TurnAction.Act:
+                        choiceActions.Add(ChoiceAction.Act);
+
+                        break;
+                    case TurnAction.Ability:
+                        turnData.ReservedConcentration = -turnData.Ability.ConcentrationCost;
+                        Utility.AddConcetration(-turnData.Ability.ConcentrationCost);
+
+                        NextCharacter();
+                        break;
+                    default:
+                        NextCharacter();
+                        break;
+                }
+            }
+
+            _battle.Choice.CleanUp();
+        }
+        private IEnumerator HandleTeammateChoice(BattleTurnData turnData)
+        {
+            Choice.InvokeChoiceTeammate();
+
+            yield return new WaitWhile(() => Choice.IsChoicing);
+
+            if (Choice.IsCanceled)
+            {
+                if (turnData.BattleAction == TurnAction.Item)
+                    turnData.Item = null;
+
+                PreviewAction();
+            }
+            else
+            {
+                turnData.CharacterBuffer = (RPGCharacter)Choice.CurrentItem.Value;
+
+                switch (turnData.BattleAction)
+                {
+                    case TurnAction.Ability:
+                        turnData.ReservedConcentration = -turnData.Ability.ConcentrationCost;
+                        Utility.AddConcetration(-turnData.Ability.ConcentrationCost);
+                        break;
+                }
+
+                NextCharacter();
+            }
+
+            Choice.CleanUp();
+        }
+        private IEnumerator HandleEnemyChoice(BattleTurnData turnData)
+        {
+            _battle.Choice.InvokeChoiceEnemy();
+
+            yield return new WaitWhile(() => _battle.Choice.IsChoicing);
+
+            if (_battle.Choice.IsCanceled)
+            {
+                if (turnData.BattleAction == TurnAction.Item)
+                    turnData.Item = null;
+
+                turnData.EnemyBuffer = null;
+
+                PreviewAction();
+            }
+            else
+            {
+                turnData.EnemyBuffer = (RPGEnemy)Choice.CurrentItem.Value;
+
+                switch (turnData.BattleAction)
+                {
+                    case TurnAction.Act:
+                        choiceActions.Add(ChoiceAction.Act);
+
+                        break;
+                    case TurnAction.Ability:
+                        turnData.ReservedConcentration = -turnData.Ability.ConcentrationCost;
+                        Utility.AddConcetration(-turnData.Ability.ConcentrationCost);
+
+                        NextCharacter();
+                        break;
+                    default:
+                        NextCharacter();
+                        break;
+                }
+            }
+
+            _battle.Choice.CleanUp();
+        }
+        private IEnumerator HandleItemChoice(BattleTurnData turnData)
+        {
+            if (GameManager.Instance.Inventory.Slots
+                        .Where(i => i.Item.Usage == Usability.Battle ||
+                                    i.Item.Usage == Usability.Any).Count() > 0)
+            {
+                _battle.Choice.InvokeChoiceItem();
+
+                yield return new WaitWhile(() => _battle.Choice.IsChoicing);
+
+                if (_battle.Choice.IsCanceled)
+                    PreviewAction();
+                else
+                {
+                    turnData.Item = _battle.Choice.CurrentItem.Value as RPGCollectable;
+                    turnData.IsConsumed = turnData.Item is RPGConsumed;
+
+                    if (turnData.Item is RPGConsumed consumed)
+                    {
+                        switch (consumed.Direction)
+                        {
+                            case UsabilityDirection.AllEnemys:
+                            case UsabilityDirection.AllTeam:
+                            case UsabilityDirection.All:
+                                NextCharacter();
+                                break;
+                            case UsabilityDirection.Teammate:
+                                choiceActions.Add(ChoiceAction.Teammate);
+                                break;
+                            case UsabilityDirection.Enemy:
+                                choiceActions.Add(ChoiceAction.Enemy);
+                                break;
+                            case UsabilityDirection.Any:
+                                choiceActions.Add(ChoiceAction.Entity);
+                                break;
+                        }
+                    }
+                    else
+                        NextCharacter();
+                }
+
+                _battle.Choice.CleanUp();
+            }
+            else
+                PreviewAction();
+        }
+        private IEnumerator HandleDefenceChoice(BattleTurnData turnData)
+        {
+            _battle.Choice.InvokeChoiceDefence();
+
+            yield return new WaitWhile(() => _battle.Choice.IsChoicing);
+
+            if (_battle.Choice.IsCanceled)
+                PreviewAction();
+            else
+            {
+                if ((int)_battle.Choice.CurrentItem.Value == 0)
+                {
+                    Utility.AddConcetration(Data.AdditionConcentrationOnDefence);
+                    turnData.ReservedConcentration = Data.AdditionConcentrationOnDefence;
+                    turnData.BattleAction = TurnAction.Defence;
+                }
+                else
+                {
+                    turnData.BattleAction = TurnAction.Flee;
+                }
+
+                NextCharacter();
+            }
+
+            _battle.Choice.CleanUp();
+
+            yield break;
+        }
+
+        #endregion
+
+        #region HANDLE BATTLE ACTS
+
+        private IEnumerator HandleBattleAction(BattleTurnData turnData, RPGCharacter character)
+        {
+            switch (turnData.BattleAction)
+            {
+                case TurnAction.Attack:
+                    yield return HandleAttackAction(turnData, character);
+                    break;
+                case TurnAction.Act:
+                    yield return HandleActAction(turnData, character);
+                    break;
+                case TurnAction.Ability:
+                    yield return HandleAbilityAction(turnData, character);
+                    break;
+                case TurnAction.Item:
+                    yield return HandleItemAction(turnData, character);
+                    break;
+                case TurnAction.Flee:
+                    yield return HandleFleeAction(turnData, character);
+                    break;
+                case TurnAction.Defence:
+                case TurnAction.None:
+                default:
+                    break;
+            }
+        }
+
+        private IEnumerator HandleAttackAction(BattleTurnData turnData, RPGCharacter character)
+        {
+            if (!Data.Enemys.Contains(turnData.EnemyBuffer))
+            {
+                if (Data.Enemys.Count != 0)
+                    turnData.EnemyBuffer = Data.Enemys[0];
+                else
+                    yield break;
+            }
+
+            _battle.AttackQTE.Show();
+
+            if (!_battle.AttackQTE.IsShowed)
+                yield return new WaitForSeconds(1f);
+
+            _battle.AttackQTE.Invoke();
+
+            yield return new WaitWhile(() => _battle.AttackQTE.QTE.IsWorking);
+
+            yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.BeforeHit, false, turnData.EnemyBuffer.Tag));
+
+            BattleAttackEffect effect = character.WeaponSlot == null ? Data.DefaultEffect : character.WeaponSlot.VisualEffect;
+
+            if (effect.LocaleInCenter)
+                effect = BattleManager.BattleUtility.SpawnAttackEffect(effect);
+            else
+            {
+                Vector2 attackPos = _battle.EnemyModels.GetModel(turnData.EnemyBuffer).AttackWorldPoint;
+
+                effect = BattleManager.BattleUtility.SpawnAttackEffect(effect, attackPos);
+            }
+
+            effect.Invoke();
+
+            yield return new WaitWhile(() => effect.IsAnimating);
+
+            yield return new WaitForSeconds(0.5f);
+
+            Object.Destroy(effect.gameObject);
+
+            _battle.AttackQTE.Hide();
+
+            BattleManager.BattleUtility.DamageEnemy(character, turnData.EnemyBuffer, _battle.AttackQTE.QTE.DamageFactor);
+
+            yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.AfterHit, false, turnData.EnemyBuffer.Tag));
+
+            yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLessEnemyHeal, false, turnData.EnemyBuffer.Tag));
+        }
+        private IEnumerator HandleActAction(BattleTurnData turnData, RPGCharacter character)
+        {
+            if (turnData.InteractionAct.Event != null)
+                turnData.InteractionAct.Event.Invoke(_battle);
+
+            if (turnData.InteractionAct.Minigame != null)
+            {
+                _battle.Minigame.InvokeMinigame(turnData.InteractionAct.Minigame);
+                yield return new WaitWhile(() => _battle.Minigame.MinigameIsPlay);
+            }
+
+            yield return new WaitWhile(() => turnData.InteractionAct.Event.IsPlaying);
+        }
+        private IEnumerator HandleAbilityAction(BattleTurnData turnData, RPGCharacter character)
+        {
+            character.Mana -= turnData.Ability.ManaCost;
+
+            if (turnData.Ability.StartEvent != null)
+            {
+                turnData.Ability.StartEvent.Invoke(_battle);
+
+                yield return new WaitWhile(() => turnData.Ability.StartEvent.IsPlaying);
+            }
+
+            switch (turnData.Ability.Direction)
             {
                 case UsabilityDirection.AllTeam:
-                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, Data.TurnsData.Select(i => i.Character).ToArray()));
+                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, Data.TurnsData.Select(i => i.Character).ToArray()));
                     break;
                 case UsabilityDirection.Teammate:
-                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, turnData.CharacterBuffer));
+                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, turnData.CharacterBuffer));
                     break;
                 case UsabilityDirection.AllEnemys:
-                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, Data.Enemys.ToArray()));
+                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, Data.Enemys.ToArray()));
                     break;
                 case UsabilityDirection.Enemy:
-                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, turnData.EnemyBuffer));
+                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, turnData.EnemyBuffer));
                     break;
                 case UsabilityDirection.Any:
-                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, turnData.EntityBuffer));
+                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, turnData.EntityBuffer));
                     break;
                 case UsabilityDirection.All:
-                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, Data.TurnsData.Select(i => i.Character).ToArray()));
+                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, Data.TurnsData.Select(i => i.Character).ToArray()));
 
-                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, Data.Enemys.ToArray()));
+                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, Data.Enemys.ToArray()));
                     break;
             }
+
+            if (turnData.Ability.EndEvent != null)
+            {
+                turnData.Ability.EndEvent.Invoke(_battle);
+
+                yield return new WaitWhile(() => turnData.Ability.EndEvent.IsPlaying);
+            }
         }
-    }
-    private IEnumerator HandleFleeAction(BattleTurnData turnData, RPGCharacter character)
-    {
-        _battle.BattleAudio.PlaySound(Data.Flee);
-
-        _battle.BattleAudio.PauseMusic();
-
-        _common.MessageBox.Write(new MessageInfo()
+        private IEnumerator HandleItemAction(BattleTurnData turnData, RPGCharacter character)
         {
-            text = $"* {character.Name} пытаеться сбежать<\\:>.<\\:>.<\\:>.",
-            closeWindow = true,
-        });
+            if (turnData.Item.Event != null)
+            {
+                turnData.Item.InvokeEvent();
 
-        yield return new WaitWhile(() => _common.MessageBox.IsWriting);
+                yield return new WaitWhile(() => turnData.Item.Event.IsPlaying);
+            }
 
-        yield return new WaitForSeconds(.5f);
+            if (turnData.IsConsumed && turnData.Item is RPGConsumed consumed)
+            {
+                if (consumed.WriteMessage)
+                {
+                    _common.MessageBox.Write(new MessageInfo()
+                    {
+                        text = $"* {character.Name} использует {consumed.Name}!",
+                        closeWindow = true,
+                    });
 
-        int totalEnemysAgility, totalCharactersAgility;
+                    yield return new WaitWhile(() => _common.MessageBox.IsWriting);
+                    yield return new WaitForSeconds(.25f);
+                }
+                else
+                    yield return new WaitForSeconds(.5f);
 
-        totalCharactersAgility = Data.TurnsData.Select(i => i.Character.Agility).Sum();
-        totalEnemysAgility = Data.Enemys.Select(i => i.Agility).Sum();
+                switch (consumed.Direction)
+                {
+                    case UsabilityDirection.AllTeam:
+                        yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, Data.TurnsData.Select(i => i.Character).ToArray()));
+                        break;
+                    case UsabilityDirection.Teammate:
+                        yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, turnData.CharacterBuffer));
+                        break;
+                    case UsabilityDirection.AllEnemys:
+                        yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, Data.Enemys.ToArray()));
+                        break;
+                    case UsabilityDirection.Enemy:
+                        yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, turnData.EnemyBuffer));
+                        break;
+                    case UsabilityDirection.Any:
+                        yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, turnData.EntityBuffer));
+                        break;
+                    case UsabilityDirection.All:
+                        yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, Data.TurnsData.Select(i => i.Character).ToArray()));
 
-        int randNum = Random.Range(0, totalCharactersAgility + totalEnemysAgility);
-
-        if (randNum - totalCharactersAgility < 0)
-        {
-            isFlee = true;
-
-            InvokeFlee();
+                        yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, Data.Enemys.ToArray()));
+                        break;
+                }
+            }
         }
-        else
+        private IEnumerator HandleFleeAction(BattleTurnData turnData, RPGCharacter character)
         {
-            _battle.BattleAudio.UnPauseMusic();
+            _battle.BattleAudio.PlaySound(Data.Flee);
+
+            _battle.BattleAudio.PauseMusic();
 
             _common.MessageBox.Write(new MessageInfo()
             {
-                text = $"* Но сбежать не удалось",
+                text = $"* {character.Name} пытаеться сбежать<\\:>.<\\:>.<\\:>.",
                 closeWindow = true,
             });
 
             yield return new WaitWhile(() => _common.MessageBox.IsWriting);
-        }
-    }
 
-    #endregion
+            yield return new WaitForSeconds(.5f);
+
+            int totalEnemysAgility, totalCharactersAgility;
+
+            totalCharactersAgility = Data.TurnsData.Select(i => i.Character.Agility).Sum();
+            totalEnemysAgility = Data.Enemys.Select(i => i.Agility).Sum();
+
+            int randNum = Random.Range(0, totalCharactersAgility + totalEnemysAgility);
+
+            if (randNum - totalCharactersAgility < 0)
+            {
+                isFlee = true;
+
+                InvokeFlee();
+            }
+            else
+            {
+                _battle.BattleAudio.UnPauseMusic();
+
+                _common.MessageBox.Write(new MessageInfo()
+                {
+                    text = $"* Но сбежать не удалось",
+                    closeWindow = true,
+                });
+
+                yield return new WaitWhile(() => _common.MessageBox.IsWriting);
+            }
+        }
+
+        #endregion
+    }
 }

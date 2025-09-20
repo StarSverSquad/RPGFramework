@@ -1,31 +1,35 @@
+using RPGF.Core.Location;
 using System.Linq;
 using UnityEngine;
 
-public class PlayerExplorerManager : MonoBehaviour
+namespace RPGF.Explorer.Player
 {
-    public PlayerExplorerMovement movement;
-    public PlayerExplorerInteraction interaction;
-
-    public void TeleportToPoint(string pointname)
+    public class PlayerExplorerManager : MonoBehaviour
     {
-        LocationSpawnPoint point = LocalManager.GetCurrentLocation().SpawnPoints.FirstOrDefault(i => i.Name == pointname);
+        public PlayerExplorerMovement movement;
+        public PlayerExplorerInteraction interaction;
 
-        if (point == null)
+        public void TeleportToPoint(string pointname)
         {
-            Debug.LogError("Точка не найдена");
+            LocationSpawnPoint point = LocalManager.GetCurrentLocation().SpawnPoints.FirstOrDefault(i => i.Name == pointname);
 
-            return;
+            if (point == null)
+            {
+                Debug.LogError("Точка не найдена");
+
+                return;
+            }
+
+            transform.position = point.transform.position;
+
+            LocalManager.Instance.Character.RebuildModels();
+
+            movement.RotateTo(point.SpawnDirection);
         }
 
-        transform.position = point.transform.position;
-
-        LocalManager.Instance.Character.RebuildModels();
-
-        movement.RotateTo(point.SpawnDirection);
-    }
-
-    public void TeleportToVector(Vector2 position)
-    {
-        transform.position = position;
+        public void TeleportToVector(Vector2 position)
+        {
+            transform.position = position;
+        }
     }
 }

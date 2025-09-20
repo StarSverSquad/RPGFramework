@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using RPGF.Domain;
 using UnityEngine;
 
-namespace RPGF.Localization
+namespace RPGF.Core.Localization
 {
     [CreateAssetMenu(fileName = "Localization", menuName = "RPGFramework/Localization")]
     public class LocalizationSheet : ScriptableObject

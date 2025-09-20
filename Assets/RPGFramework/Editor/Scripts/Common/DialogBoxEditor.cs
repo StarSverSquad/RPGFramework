@@ -1,7 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
+using RPGF.Shared;
 using UnityEditor;
-using UnityEngine;
 
 [CustomEditor(typeof(MessageBoxManager))]
 public class DialogBoxEditor : Editor

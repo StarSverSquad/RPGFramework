@@ -1,88 +1,91 @@
 ﻿using DG.Tweening;
+using RPGF.Domain.Interfaces;
 using RPGF.RPG;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class CharacterBoxManager : MonoBehaviour, IDisposable, IActive
+namespace RPGF.Battle.UI
 {
-    [SerializeField]
-    private RectTransform container;
-
-    [SerializeField]
-    private CharacterBox[] boxes = new CharacterBox[4];
-    public CharacterBox[] Boxes => boxes;
-
-    public Vector2[] BoxesGlobalPositions => boxes.Select(i => (Vector2)i.transform.position).ToArray();
-
-    public float TraslateContainerTime => 0.6f;
-    public float TraslateBoxTime => 0.25f;
-
-    private void Start()
+    public class CharacterBoxManager : MonoBehaviour, IDisposable, IActive
     {
-        Dispose();
-    }
+        [SerializeField]
+        private RectTransform container;
 
-    public void Initialize(params RPGCharacter[] characters)
-    {
-        SetActive(true);
+        [SerializeField]
+        private CharacterBox[] boxes = new CharacterBox[4];
+        public CharacterBox[] Boxes => boxes;
 
-        int count = Mathf.Min(characters.Length, boxes.Length);
-        for (int i = 0; i < count; i++)
+        public Vector2[] BoxesGlobalPositions => boxes.Select(i => (Vector2)i.transform.position).ToArray();
+
+        public float TraslateContainerTime => 0.6f;
+        public float TraslateBoxTime => 0.25f;
+
+        private void Start()
         {
-            boxes[i].gameObject.SetActive(true);
-            boxes[i].Initialize(characters[i]);
-        }
-    }
-
-    public CharacterBox GetBox(RPGCharacter character) => boxes.First(i => i.Character == character);
-
-    public void Show()
-    {
-        container.DOAnchorPosY(105, TraslateContainerTime).SetEase(Ease.OutCirc).Play();
-    }
-    public void Hide()
-    {
-        container.DOAnchorPosY(-160, TraslateContainerTime).SetEase(Ease.InCirc).Play();
-    }
-
-    public void FocusBox(int index)
-    {
-        RectTransform rect = boxes[index].GetComponent<RectTransform>();
-
-        rect.DOAnchorPosY(160, TraslateBoxTime).SetEase(Ease.Linear).Play();
-    }
-    public void UnfocusBox(int index)
-    {
-        RectTransform rect = boxes[index].GetComponent<RectTransform>();
-
-        rect.DOAnchorPosY(108, TraslateBoxTime).SetEase(Ease.Linear).Play();
-    }
-
-    public void FocusBox(RPGCharacter character)
-    {
-        RectTransform rect = boxes.First(i => i.Character == character).GetComponent<RectTransform>();
-
-        rect.DOAnchorPosY(150, TraslateBoxTime).SetLoops(0).SetEase(Ease.OutSine).Play();
-    }
-    public void UnfocusBox(RPGCharacter character)
-    {
-        RectTransform rect = boxes.First(i => i.Character == character).GetComponent<RectTransform>();
-
-        rect.DOAnchorPosY(108, TraslateBoxTime).SetLoops(0).SetEase(Ease.OutSine).Play();
-    }
-
-    public void Dispose()
-    {
-        foreach (var item in boxes)
-        {
-            item.Dispose();
-            item.gameObject.SetActive(false);
+            Dispose();
         }
 
-        SetActive(false);
-    }
+        public void Initialize(params RPGCharacter[] characters)
+        {
+            SetActive(true);
 
-    public void SetActive(bool active) => container.gameObject.SetActive(active);
+            int count = Mathf.Min(characters.Length, boxes.Length);
+            for (int i = 0; i < count; i++)
+            {
+                boxes[i].gameObject.SetActive(true);
+                boxes[i].Initialize(characters[i]);
+            }
+        }
+
+        public CharacterBox GetBox(RPGCharacter character) => boxes.First(i => i.Character == character);
+
+        public void Show()
+        {
+            container.DOAnchorPosY(105, TraslateContainerTime).SetEase(Ease.OutCirc).Play();
+        }
+        public void Hide()
+        {
+            container.DOAnchorPosY(-160, TraslateContainerTime).SetEase(Ease.InCirc).Play();
+        }
+
+        public void FocusBox(int index)
+        {
+            RectTransform rect = boxes[index].GetComponent<RectTransform>();
+
+            rect.DOAnchorPosY(160, TraslateBoxTime).SetEase(Ease.Linear).Play();
+        }
+        public void UnfocusBox(int index)
+        {
+            RectTransform rect = boxes[index].GetComponent<RectTransform>();
+
+            rect.DOAnchorPosY(108, TraslateBoxTime).SetEase(Ease.Linear).Play();
+        }
+
+        public void FocusBox(RPGCharacter character)
+        {
+            RectTransform rect = boxes.First(i => i.Character == character).GetComponent<RectTransform>();
+
+            rect.DOAnchorPosY(150, TraslateBoxTime).SetLoops(0).SetEase(Ease.OutSine).Play();
+        }
+        public void UnfocusBox(RPGCharacter character)
+        {
+            RectTransform rect = boxes.First(i => i.Character == character).GetComponent<RectTransform>();
+
+            rect.DOAnchorPosY(108, TraslateBoxTime).SetLoops(0).SetEase(Ease.OutSine).Play();
+        }
+
+        public void Dispose()
+        {
+            foreach (var item in boxes)
+            {
+                item.Dispose();
+                item.gameObject.SetActive(false);
+            }
+
+            SetActive(false);
+        }
+
+        public void SetActive(bool active) => container.gameObject.SetActive(active);
+    }
 }

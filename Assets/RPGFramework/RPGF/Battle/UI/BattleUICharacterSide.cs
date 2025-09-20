@@ -1,57 +1,61 @@
 ﻿using DG.Tweening;
+using RPGF.GUI.Other;
 using RPGF.RPG;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleUICharacterSide : MonoBehaviour
+namespace RPGF.Battle.UI
 {
-    [SerializeField]
-    public TextMeshProUGUI charName;
-    [SerializeField]
-    public TextMeshProUGUI hpCounter;
-    [SerializeField]
-    public TextMeshProUGUI mnCounter;
-
-    [SerializeField]
-    public LineBar hpBar;
-    [SerializeField]
-    public LineBar mnBar;
-
-    [SerializeField]
-    public Image icon;
-
-    [SerializeField]
-    public IconList effectList;
-
-    [SerializeField]
-    private RectTransform rect;
-
-    public float TraslationTime => 0.7f;
-
-    public void Setup(RPGCharacter battleCharacterInfo)
+    public class BattleUICharacterSide : MonoBehaviour
     {
-        charName.text = battleCharacterInfo.Name;
+        [SerializeField]
+        public TextMeshProUGUI charName;
+        [SerializeField]
+        public TextMeshProUGUI hpCounter;
+        [SerializeField]
+        public TextMeshProUGUI mnCounter;
 
-        hpBar.SetValue((float)battleCharacterInfo.Heal / (float)battleCharacterInfo.MaxHeal);
-        mnBar.SetValue((float)battleCharacterInfo.Mana / (float)battleCharacterInfo.MaxMana);
+        [SerializeField]
+        public LineBar hpBar;
+        [SerializeField]
+        public LineBar mnBar;
 
-        hpCounter.text = $"{battleCharacterInfo.Heal} / {battleCharacterInfo.MaxHeal}";
-        mnCounter.text = $"{battleCharacterInfo.Mana} / {battleCharacterInfo.MaxMana}";
+        [SerializeField]
+        public Image icon;
 
-        icon.sprite = battleCharacterInfo.BattleImage;
+        [SerializeField]
+        public IconList effectList;
 
-        effectList.UpdateIcons(battleCharacterInfo.States.Select(i => i.Icon).ToArray());
-    }
+        [SerializeField]
+        private RectTransform rect;
 
-    public void Show()
-    {
-        rect.DOAnchorPosX(210, TraslationTime).SetEase(Ease.OutExpo).Play();
-    }
+        public float TraslationTime => 0.7f;
 
-    public void Hide()
-    {
-        rect.DOAnchorPosX(-350, TraslationTime).SetEase(Ease.OutExpo).Play();             
+        public void Setup(RPGCharacter battleCharacterInfo)
+        {
+            charName.text = battleCharacterInfo.Name;
+
+            hpBar.SetValue((float)battleCharacterInfo.Heal / (float)battleCharacterInfo.MaxHeal);
+            mnBar.SetValue((float)battleCharacterInfo.Mana / (float)battleCharacterInfo.MaxMana);
+
+            hpCounter.text = $"{battleCharacterInfo.Heal} / {battleCharacterInfo.MaxHeal}";
+            mnCounter.text = $"{battleCharacterInfo.Mana} / {battleCharacterInfo.MaxMana}";
+
+            icon.sprite = battleCharacterInfo.BattleImage;
+
+            effectList.UpdateIcons(battleCharacterInfo.States.Select(i => i.Icon).ToArray());
+        }
+
+        public void Show()
+        {
+            rect.DOAnchorPosX(210, TraslationTime).SetEase(Ease.OutExpo).Play();
+        }
+
+        public void Hide()
+        {
+            rect.DOAnchorPosX(-350, TraslationTime).SetEase(Ease.OutExpo).Play();
+        }
     }
 }

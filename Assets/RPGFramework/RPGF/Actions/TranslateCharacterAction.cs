@@ -1,5 +1,9 @@
 ﻿using RPGF;
-using RPGF.Character;
+using RPGF.Core.Character;
+using RPGF.Domain;
+using RPGF.EventSystem;
+using RPGF.Explorer;
+using RPGF.Explorer.Player;
 using System.Collections;
 using UnityEngine;
 

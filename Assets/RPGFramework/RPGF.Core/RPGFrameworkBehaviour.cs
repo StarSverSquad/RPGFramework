@@ -1,15 +1,21 @@
-﻿using RPGF.Shared;
+﻿using RPGF.Battle;
+using RPGF.Domain.Interfaces;
+using RPGF.Explorer;
+using RPGF.Shared;
 using UnityEngine;
 
-public class RPGFrameworkBehaviour : MonoBehaviour, IManagerInitialize
+namespace RPGF.Core
 {
-    protected GameManager Game => GameManager.Instance;   
-    protected LocalManager Local => LocalManager.Instance;
-    protected ExplorerManager Explorer => ExplorerManager.Instance;
-    protected SharedManager Common => SharedManager.Instance;
-    protected BattleManager Battle => BattleManager.Instance;
+    public class RPGFrameworkBehaviour : MonoBehaviour, IManagerInitialize
+    {
+        protected GameManager Game => GameManager.Instance;
+        protected LocalManager Local => LocalManager.Instance;
+        protected ExplorerManager Explorer => ExplorerManager.Instance;
+        protected SharedManager Common => SharedManager.Instance;
+        protected BattleManager Battle => BattleManager.Instance;
 
-    public virtual void Initialize() { }
+        public virtual void Initialize() { }
 
-    protected string GetLocale(string tag) => Game.Localization.GetLocale(tag);
+        protected string GetLocale(string tag) => Game.Localization.GetLocale(tag);
+    }
 }

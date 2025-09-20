@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using RPGF.Domain.Interfaces;
 using UnityEngine;
 
 public abstract class ContentManagerBase : MonoBehaviour, IActive

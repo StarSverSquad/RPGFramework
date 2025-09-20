@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using RPGF;
+using RPGF.EventSystem;
+using System.Collections;
 
 public class GameEndAction : GraphActionBase
 {

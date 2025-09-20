@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-namespace RPGF
+namespace RPGF.Domain
 {
     public static class DirectionConverter
     {

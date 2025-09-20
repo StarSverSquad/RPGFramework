@@ -1,4 +1,7 @@
-﻿
+﻿using RPGF.Battle;
+using RPGF.Core.RPGEffect;
+using RPGF.EventSystem;
+using RPGF.Explorer;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,7 +28,7 @@ namespace RPGF.RPG
         [Space]
         [HideInInspector]
         [SerializeReference]
-        public List<EffectBase> Effects = new List<EffectBase>();
+        public List<RPGEffectBase> Effects = new();
 
         public void InvokeEvent(Action OnEnd = null)
         {

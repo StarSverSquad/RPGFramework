@@ -1,5 +1,5 @@
 using DG.Tweening;
-using RPGF;
+using RPGF.Domain.Interfaces;
 using RPGF.GUI;
 using RPGF.RPG;
 using System;

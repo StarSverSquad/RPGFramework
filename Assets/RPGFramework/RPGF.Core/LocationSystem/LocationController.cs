@@ -2,41 +2,44 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class LocationController : MonoBehaviour
+namespace RPGF.Core.Location
 {
-    public UnityEvent OnEnterLocation;
-    public UnityEvent OnLeaveLocation;
-
-    public LocationInfo Info;
-
-    public List<LocationSpawnPoint> SpawnPoints = new();
-
-    public Transform CameraPoint;
-    public GameObject MapContainer;
-
-    private void Awake()
+    public class LocationController : MonoBehaviour
     {
-        SpawnPoints.Clear();
+        public UnityEvent OnEnterLocation;
+        public UnityEvent OnLeaveLocation;
 
-        SpawnPoints.AddRange(GetComponentsInChildren<LocationSpawnPoint>());
-    }
+        public RpgfLocationInfo Info;
 
-    private void Start()
-    {
-        MapContainer.SetActive(false);
-    }
+        public List<LocationSpawnPoint> SpawnPoints = new();
 
-    public void OnEnter()
-    {
-        MapContainer.SetActive(true);
+        public Transform CameraPoint;
+        public GameObject MapContainer;
 
-        OnEnterLocation?.Invoke();
-    }
+        private void Awake()
+        {
+            SpawnPoints.Clear();
 
-    public void OnLeave()
-    {
-        MapContainer.SetActive(false);
+            SpawnPoints.AddRange(GetComponentsInChildren<LocationSpawnPoint>());
+        }
 
-        OnLeaveLocation?.Invoke();
+        private void Start()
+        {
+            MapContainer.SetActive(false);
+        }
+
+        public void OnEnter()
+        {
+            MapContainer.SetActive(true);
+
+            OnEnterLocation?.Invoke();
+        }
+
+        public void OnLeave()
+        {
+            MapContainer.SetActive(false);
+
+            OnLeaveLocation?.Invoke();
+        }
     }
 }

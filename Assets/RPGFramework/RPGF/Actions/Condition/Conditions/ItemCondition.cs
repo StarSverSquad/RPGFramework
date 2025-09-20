@@ -1,4 +1,5 @@
-﻿using RPGF.Inventory;
+﻿using RPGF;
+using RPGF.Core.Inventory;
 using RPGF.RPG;
 using UnityEngine;
 

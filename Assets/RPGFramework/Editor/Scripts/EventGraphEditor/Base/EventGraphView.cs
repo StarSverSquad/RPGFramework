@@ -1,3 +1,5 @@
+using RPGF.EventSystem;
+using RPGF.EventSystem.Default;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +8,6 @@ using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static TextActionBase;
 
 public class EventGraphView : GraphView
 {
@@ -147,7 +148,7 @@ public class EventGraphView : GraphView
             }
         }
 
-        /// Legacy code
+        /// Legacy code ÁËßÒÜ ÓÄÀËÈÒÜ ÄÀÂÍÎ ÏÎÐÀ ÝÒÎ ÃÎÂÍÎ
         evt.menu.AppendAction("Äèàëîã/Âûáîð", i => CreateNode(new ChoiceAction(), mousePosition));
 
         evt.menu.AppendAction("Âåòâëåíèå/Óñëîâèå", i => CreateNode(new ConditionAction(), mousePosition));

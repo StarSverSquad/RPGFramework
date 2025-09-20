@@ -1,4 +1,7 @@
-﻿public interface IActive
+﻿namespace RPGF.Domain.Interfaces
 {
-    void SetActive(bool active); 
+    public interface IActive
+    {
+        void SetActive(bool active);
+    }
 }

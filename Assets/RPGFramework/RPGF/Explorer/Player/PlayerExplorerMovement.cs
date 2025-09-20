@@ -1,189 +1,193 @@
 using DG.Tweening;
-using RPGF;
+using RPGF.Core;
+using RPGF.Domain;
 using System;
 using UnityEngine;
 
-public class PlayerExplorerMovement : MonoBehaviour
+namespace RPGF.Explorer.Player
 {
-    public bool CanWalk = true;
-    public bool CanRun = true;
-    public bool CanRotate = true;
-
-    public float Speed = 10f;
-    public float AccelerationFactor = 1.5f;
-
-    public Vector2 Velocity = Vector2.zero;
-    public Vector2 NormolizedVelocity = Vector2.zero;
-
-    public MoveDirection MoveDirection = MoveDirection.None;
-    public ViewDirection ViewDirection = ViewDirection.Down;
-
-    [SerializeField]
-    private Rigidbody2D rb;
-
-    #region PROPS
-
-    public float ResultSpeed => !IsRun ? Speed : Speed * AccelerationFactor;
-    public bool IsMoving { get; private set; }
-    public bool IsRun { get; private set; }
-    public bool IsAutoMoving => autoMoveTween != null;
-
-    #endregion
-
-    #region EVENTS
-    public event Action OnMoving;
-    public event Action OnStopMoving;
-    public event Action OnStartMoving;
-    public event Action OnStartRun;
-    public event Action OnStopRun;
-    public event Action<ViewDirection> OnRotate;
-    #endregion
-
-    private Tween autoMoveTween = null;
-
-    private void Update()
+    public class PlayerExplorerMovement : RPGFrameworkBehaviour
     {
-        if (IsAutoMoving)
+        public bool CanWalk = true;
+        public bool CanRun = true;
+        public bool CanRotate = true;
+
+        public float Speed = 10f;
+        public float AccelerationFactor = 1.5f;
+
+        public Vector2 Velocity = Vector2.zero;
+        public Vector2 NormolizedVelocity = Vector2.zero;
+
+        public MoveDirection MoveDirection = MoveDirection.None;
+        public ViewDirection ViewDirection = ViewDirection.Down;
+
+        [SerializeField]
+        private Rigidbody2D rb;
+
+        #region PROPS
+
+        public float ResultSpeed => !IsRun ? Speed : Speed * AccelerationFactor;
+        public bool IsMoving { get; private set; }
+        public bool IsRun { get; private set; }
+        public bool IsAutoMoving => autoMoveTween != null;
+
+        #endregion
+
+        #region EVENTS
+        public event Action OnMoving;
+        public event Action OnStopMoving;
+        public event Action OnStartMoving;
+        public event Action OnStartRun;
+        public event Action OnStopRun;
+        public event Action<ViewDirection> OnRotate;
+        #endregion
+
+        private Tween autoMoveTween = null;
+
+        private void Update()
         {
-            OnMoving?.Invoke();
+            if (IsAutoMoving)
+            {
+                OnMoving?.Invoke();
+            }
+            else
+            {
+                Move();
+            }
         }
-        else
+
+        public void SetMovementAccess(bool active)
         {
-            Move();
+            CanRun = active;
+            CanWalk = active;
+            CanRotate = active;
         }
-    }
 
-    public void SetMovementAccess(bool active)
-    {
-        CanRun = active;
-        CanWalk = active;
-        CanRotate = active;
-    }
-
-    public void TranslateBySpeed(Vector2 vec, float speed)
-    {
-        TranslateByTime(vec, vec.magnitude / speed);
-    }
-    public void TranslateByTime(Vector2 vec, float time)
-    {
-        DisposeAutoMoveTween();
-
-        ViewDirection moveDir = DirectionConverter.GetViewDirectionByVector(vec.normalized);
-
-        RotateTo(moveDir);
-
-        autoMoveTween = transform.DOMove(vec, time).SetRelative().SetEase(Ease.Linear);
-
-        autoMoveTween.onPlay += () =>
+        public void TranslateBySpeed(Vector2 vec, float speed)
         {
-            OnStartMoving?.Invoke();
-        };
-
-        autoMoveTween.onComplete += () =>
+            TranslateByTime(vec, vec.magnitude / speed);
+        }
+        public void TranslateByTime(Vector2 vec, float time)
         {
-            OnStopMoving?.Invoke();
             DisposeAutoMoveTween();
-        };
 
-        autoMoveTween.Play();
-    }
+            ViewDirection moveDir = DirectionConverter.GetViewDirectionByVector(vec.normalized);
 
-    public void RotateTo(ViewDirection direction)
-    {
-        ViewDirection = direction;
+            RotateTo(moveDir);
 
-        OnRotate?.Invoke(direction);
-    }
+            autoMoveTween = transform.DOMove(vec, time).SetRelative().SetEase(Ease.Linear);
 
-    private void Move()
-    {
-        Velocity = Vector2.zero;
-
-        MoveDirection = MoveDirection.None;
-        NormolizedVelocity = Vector2.zero;
-
-        ViewDirection? newViewDirection = null;
-
-        if (CanWalk && !ExplorerManager.Instance.EventHandler.EventRuning)
-        {
-
-            if (Input.GetKey(GameManager.Instance.BaseOptions.MoveRight))
+            autoMoveTween.onPlay += () =>
             {
-                MoveDirection = MoveDirection.Right;
-                newViewDirection = ViewDirection.Right;
-                Velocity += new Vector2(1, 0);
-            }
-
-            if (Input.GetKey(GameManager.Instance.BaseOptions.MoveLeft))
-            {
-                MoveDirection = MoveDirection.Left;
-                newViewDirection = ViewDirection.Left;
-                Velocity += new Vector2(-1, 0);
-            }
-
-            if (Input.GetKey(GameManager.Instance.BaseOptions.MoveUp))
-            {
-                MoveDirection = MoveDirection.Up;
-                newViewDirection = ViewDirection.Up;
-                Velocity += new Vector2(0, 1);
-            }
-
-            if (Input.GetKey(GameManager.Instance.BaseOptions.MoveDown))
-            {
-                MoveDirection = MoveDirection.Down;
-                newViewDirection = ViewDirection.Down;
-                Velocity += new Vector2(0, -1);
-            }
-        }
-
-        if (Velocity.magnitude > 0)
-        {
-            if (!IsMoving)
                 OnStartMoving?.Invoke();
+            };
 
-            IsMoving = true;
-
-            OnMoving?.Invoke();
-        }
-        else
-        {
-            IsMoving = false;
-
-            OnStopMoving?.Invoke();
-        }
-
-
-        if (CanRotate && newViewDirection.HasValue)
-        {
-            if (ViewDirection != newViewDirection)
+            autoMoveTween.onComplete += () =>
             {
-                ViewDirection = newViewDirection.Value;
-                OnRotate?.Invoke(newViewDirection.Value);
-            }
+                OnStopMoving?.Invoke();
+                DisposeAutoMoveTween();
+            };
+
+            autoMoveTween.Play();
         }
 
-        NormolizedVelocity = Velocity.normalized;
-
-        bool nRun = Input.GetKey(GameManager.Instance.BaseOptions.Run) && CanRun;
-
-        if (nRun && !IsRun)
-            OnStartRun?.Invoke();
-        else if (!nRun && IsRun)
-            OnStopRun?.Invoke();
-
-        IsRun = nRun;
-
-        Velocity = ResultSpeed * Velocity.normalized;
-
-        rb.linearVelocity = Velocity;
-    }
-
-    private void DisposeAutoMoveTween()
-    {
-        if (autoMoveTween != null)
+        public void RotateTo(ViewDirection direction)
         {
-            autoMoveTween.Kill();
-            autoMoveTween = null;
+            ViewDirection = direction;
+
+            OnRotate?.Invoke(direction);
+        }
+
+        private void Move()
+        {
+            Velocity = Vector2.zero;
+
+            MoveDirection = MoveDirection.None;
+            NormolizedVelocity = Vector2.zero;
+
+            ViewDirection? newViewDirection = null;
+
+            if (CanWalk && !ExplorerManager.Instance.EventHandler.EventRuning)
+            {
+
+                if (Input.GetKey(Game.BaseOptions.MoveRight))
+                {
+                    MoveDirection = MoveDirection.Right;
+                    newViewDirection = ViewDirection.Right;
+                    Velocity += new Vector2(1, 0);
+                }
+
+                if (Input.GetKey(Game.BaseOptions.MoveLeft))
+                {
+                    MoveDirection = MoveDirection.Left;
+                    newViewDirection = ViewDirection.Left;
+                    Velocity += new Vector2(-1, 0);
+                }
+
+                if (Input.GetKey(Game.BaseOptions.MoveUp))
+                {
+                    MoveDirection = MoveDirection.Up;
+                    newViewDirection = ViewDirection.Up;
+                    Velocity += new Vector2(0, 1);
+                }
+
+                if (Input.GetKey(Game.BaseOptions.MoveDown))
+                {
+                    MoveDirection = MoveDirection.Down;
+                    newViewDirection = ViewDirection.Down;
+                    Velocity += new Vector2(0, -1);
+                }
+            }
+
+            if (Velocity.magnitude > 0)
+            {
+                if (!IsMoving)
+                    OnStartMoving?.Invoke();
+
+                IsMoving = true;
+
+                OnMoving?.Invoke();
+            }
+            else
+            {
+                IsMoving = false;
+
+                OnStopMoving?.Invoke();
+            }
+
+
+            if (CanRotate && newViewDirection.HasValue)
+            {
+                if (ViewDirection != newViewDirection)
+                {
+                    ViewDirection = newViewDirection.Value;
+                    OnRotate?.Invoke(newViewDirection.Value);
+                }
+            }
+
+            NormolizedVelocity = Velocity.normalized;
+
+            bool nRun = Input.GetKey(Game.BaseOptions.Run) && CanRun;
+
+            if (nRun && !IsRun)
+                OnStartRun?.Invoke();
+            else if (!nRun && IsRun)
+                OnStopRun?.Invoke();
+
+            IsRun = nRun;
+
+            Velocity = ResultSpeed * Velocity.normalized;
+
+            rb.linearVelocity = Velocity;
+        }
+
+        private void DisposeAutoMoveTween()
+        {
+            if (autoMoveTween != null)
+            {
+                autoMoveTween.Kill();
+                autoMoveTween = null;
+            }
         }
     }
 }

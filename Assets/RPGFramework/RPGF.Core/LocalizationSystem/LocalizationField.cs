@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RPGF.Localization
+namespace RPGF.Core.Localization
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false)]
     public class LocalizationField : Attribute

@@ -1,3 +1,4 @@
+using RPGF.Core;
 using RPGF.RPG;
 using TMPro;
 using UnityEngine;

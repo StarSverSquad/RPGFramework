@@ -1,25 +1,29 @@
-﻿using System;
+﻿using RPGF.Core;
+using RPGF.Domain.Interfaces;
 using UnityEngine;
 
-public class BattlePlayerManager : MonoBehaviour, IActive
+namespace RPGF.Battle.Player
 {
-    [SerializeField]
-    private GameObject container;
-
-    public BattlePlayerBorder border;
-    public BattlePlayerInteraction interaction;
-    public BattlePlayerMovement movement;
-
-    public void SetActive(bool active)
+    public class BattlePlayerManager : RPGFrameworkBehaviour, IActive
     {
-        container.SetActive(active);
+        [SerializeField]
+        private GameObject container;
 
-        movement.CanMove = active;
+        public BattlePlayerBorder border;
+        public BattlePlayerInteraction interaction;
+        public BattlePlayerMovement movement;
 
-        if (active)
+        public void SetActive(bool active)
         {
-            movement.MoveSpeed = movement.DefaultMoveSpeed;
-            transform.position = BattleManager.Instance.BattleField.StartPosition;
+            container.SetActive(active);
+
+            movement.CanMove = active;
+
+            if (active)
+            {
+                movement.MoveSpeed = movement.DefaultMoveSpeed;
+                transform.position = Battle.BattleField.StartPosition;
+            }
         }
     }
 }

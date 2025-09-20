@@ -1,4 +1,5 @@
-﻿using RPGF.Shared;
+﻿using RPGF.EventSystem;
+using RPGF.Shared;
 using System.Collections;
 using UnityEngine;
 

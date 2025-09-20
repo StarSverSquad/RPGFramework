@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using RPGF.Domain;
+using UnityEngine;
 
-namespace RPGF.Character
+namespace RPGF.Core.Character
 {
     [RequireComponent(typeof(SpriteRenderer))]
     public class SimpleCharacterModelController : CharacterModelControllerBase

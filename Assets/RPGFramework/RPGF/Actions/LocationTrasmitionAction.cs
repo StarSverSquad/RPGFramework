@@ -1,4 +1,7 @@
-﻿using System;
+﻿using RPGF;
+using RPGF.Core.Location;
+using RPGF.EventSystem;
+using RPGF.Explorer;
 using System.Collections;
 using UnityEngine;
 

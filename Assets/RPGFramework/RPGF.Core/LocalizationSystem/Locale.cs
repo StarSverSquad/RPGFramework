@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace RPGF.Localization
+namespace RPGF.Core.Localization
 {
     public enum LocalizationLanguage
     {

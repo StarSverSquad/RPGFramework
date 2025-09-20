@@ -1,0 +1,25 @@
+﻿using RPGF.RPG;
+using System.Collections;
+using UnityEngine;
+
+namespace RPGF.Core.RPGEffect
+{
+    public class ChangeManaHealConstEffect : RPGEffectBase
+    {
+        public int Heal;
+        public int Mana;
+
+        public override IEnumerator Invoke(RPGEntity user, RPGEntity target)
+        {
+            target.Heal += Mathf.RoundToInt(Heal * Factor);
+            target.Mana += Mathf.RoundToInt(Mana * Factor);
+
+            yield break;
+        }
+
+        public override string GetName()
+        {
+            return "Изменить HP\\MP";
+        }
+    }
+}

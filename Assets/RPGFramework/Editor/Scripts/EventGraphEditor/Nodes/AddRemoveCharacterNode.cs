@@ -1,4 +1,4 @@
-﻿using RPGF.Character;
+﻿using RPGF.Core.Character;
 using RPGF.RPG;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;

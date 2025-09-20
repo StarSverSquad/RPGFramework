@@ -1,43 +1,45 @@
 ﻿using DG.Tweening;
-using System.Collections;
 using UnityEngine;
 
-public class AttackQTEManager : MonoBehaviour
+namespace RPGF.Battle
 {
-    [SerializeField]
-    private RectTransform qteContainer; 
-
-    [SerializeField]
-    private AttackQTE qte;
-    public AttackQTE QTE => qte;
-
-    [SerializeField]
-    private Vector2 hidenRectPosition;
-    [SerializeField]
-    private Vector2 showedRectPosition;
-
-    public bool IsShowed { get; private set; } = false;
-
-    public float TransmitionTime => 0.75f;
-        
-    public void Invoke()
+    public class AttackQTEManager : MonoBehaviour
     {
-        qte.Invoke();
-    }
+        [SerializeField]
+        private RectTransform qteContainer;
 
-    public void Show()
-    {
-        qteContainer.DOAnchorPos(showedRectPosition, TransmitionTime).SetEase(Ease.OutCirc).Play().onComplete = () =>
+        [SerializeField]
+        private AttackQTE qte;
+        public AttackQTE QTE => qte;
+
+        [SerializeField]
+        private Vector2 hidenRectPosition;
+        [SerializeField]
+        private Vector2 showedRectPosition;
+
+        public bool IsShowed { get; private set; } = false;
+
+        public float TransmitionTime => 0.75f;
+
+        public void Invoke()
         {
-            IsShowed = true;
-        };
-    }
+            qte.Invoke();
+        }
 
-    public void Hide()
-    {
-        qteContainer.DOAnchorPos(hidenRectPosition, TransmitionTime).SetEase(Ease.InCirc).Play().onComplete = () =>
+        public void Show()
         {
-            IsShowed = false;
-        };
+            qteContainer.DOAnchorPos(showedRectPosition, TransmitionTime).SetEase(Ease.OutCirc).Play().onComplete = () =>
+            {
+                IsShowed = true;
+            };
+        }
+
+        public void Hide()
+        {
+            qteContainer.DOAnchorPos(hidenRectPosition, TransmitionTime).SetEase(Ease.InCirc).Play().onComplete = () =>
+            {
+                IsShowed = false;
+            };
+        }
     }
 }

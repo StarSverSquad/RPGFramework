@@ -1,9 +1,9 @@
-﻿using RPGF.Localization;
+﻿using RPGF.Core.Localization;
 using System;
 using System.Linq;
 using UnityEngine;
 
-namespace RPGF.SaveLoad
+namespace RPGF.Core.SaveLoad
 {
     [Serializable]
     public class GameConfigService

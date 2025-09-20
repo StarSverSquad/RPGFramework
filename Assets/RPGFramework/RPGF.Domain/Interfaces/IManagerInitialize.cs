@@ -1,4 +1,7 @@
-public interface IManagerInitialize
+namespace RPGF.Domain.Interfaces
 {
-    public void Initialize();
+    public interface IManagerInitialize
+    {
+        public void Initialize();
+    }
 }

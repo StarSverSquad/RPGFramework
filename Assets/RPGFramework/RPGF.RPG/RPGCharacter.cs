@@ -1,4 +1,4 @@
-using RPGF.Character;
+using RPGF.Core.Character;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

@@ -1,5 +1,5 @@
+using RPGF.EventSystem;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class RandomAction : GraphActionBase

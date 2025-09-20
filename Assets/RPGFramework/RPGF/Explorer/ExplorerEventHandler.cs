@@ -1,41 +1,52 @@
+using RPGF.EventSystem;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class ExplorerEventHandler : MonoBehaviour
+namespace RPGF.Explorer
 {
-    [SerializeField]
-    private GraphEvent CurrentEvent;
-    public GraphEvent HandledEvent => CurrentEvent;
-
-    public event Action OnHandle;
-    public event Action OnUnhandle;
-
-    public bool EventRuning => CurrentEvent != null;
-
-    public void InvokeEvent(GraphEvent e)
+    public class ExplorerEventHandler : MonoBehaviour
     {
-        e.Invoke(this);
+        [SerializeField]
+        private GraphEvent CurrentEvent;
+        public GraphEvent HandledEvent => CurrentEvent;
 
-        HandleEvent(e);
-    }
+        public event Action OnHandle;
+        public event Action OnUnhandle;
 
-    public void HandleEvent(GraphEvent e)
-    {
-        if (!EventRuning)
+        public bool EventRuning => CurrentEvent != null;
+
+        public void InvokeEvent(GraphEvent e)
         {
-            CurrentEvent = e;
+            e.Invoke(this);
 
-            e.OnEnd += E_OnEnd;
-
-            OnHandle?.Invoke();
+            HandleEvent(e);
         }
-    }
 
-    public void ForceUnhandle()
-    {
-        if (EventRuning)
+        public void HandleEvent(GraphEvent e)
+        {
+            if (!EventRuning)
+            {
+                CurrentEvent = e;
+
+                e.OnEnd += E_OnEnd;
+
+                OnHandle?.Invoke();
+            }
+        }
+
+        public void ForceUnhandle()
+        {
+            if (EventRuning)
+            {
+                CurrentEvent.OnEnd -= E_OnEnd;
+
+                CurrentEvent = null;
+
+                OnUnhandle?.Invoke();
+            }
+        }
+
+        private void E_OnEnd()
         {
             CurrentEvent.OnEnd -= E_OnEnd;
 
@@ -45,12 +56,4 @@ public class ExplorerEventHandler : MonoBehaviour
         }
     }
 
-    private void E_OnEnd()
-    {
-        CurrentEvent.OnEnd -= E_OnEnd;
-
-        CurrentEvent = null;
-
-        OnUnhandle?.Invoke();
-    }
 }

@@ -1,32 +1,36 @@
 ﻿using DG.Tweening;
-using RPGF.Battle.Pattern;
+using RPGF.Battle.EnemyBehaviour;
+using RPGF.Core;
 using UnityEngine;
 
-public class BattlePlayerBorder : MonoBehaviour
+namespace RPGF.Battle.Player
 {
-    [SerializeField]
-    private SpriteRenderer spriteRenderer;
-    [SerializeField]
-    private AudioSource audioSource;
-
-    private void OnTriggerEnter2D(Collider2D collision)
+    public class BattlePlayerBorder : RPGFrameworkBehaviour
     {
-        if (collision.CompareTag("PatternBullet"))
+        [SerializeField]
+        private SpriteRenderer spriteRenderer;
+        [SerializeField]
+        private AudioSource audioSource;
+
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            PatternBulletBase bullet = collision.gameObject.GetComponent<PatternBulletBase>();
+            if (collision.CompareTag("PatternBullet"))
+            {
+                var bullet = collision.gameObject.GetComponent<EnemyBehaviourBulletBase>();
 
-            if (bullet.IsHitBorder)
-                return;
+                if (bullet.IsHitBorder)
+                    return;
 
-            bullet.IsHitBorder = true;
+                bullet.IsHitBorder = true;
 
-            bullet.OnHitBorder();
+                bullet.OnHitBorder();
 
-            audioSource.Play();
+                audioSource.Play();
 
-            spriteRenderer.DOColor(new Color(1, 1, 1, 0), 0.5f).From(Color.white).Play();
+                spriteRenderer.DOColor(new Color(1, 1, 1, 0), 0.5f).From(Color.white).Play();
 
-            BattleManager.BattleUtility.AddConcetration(bullet.AdditionConcentration);
+                Battle.Utility.AddConcetration(bullet.AdditionConcentration);
+            }
         }
     }
 }

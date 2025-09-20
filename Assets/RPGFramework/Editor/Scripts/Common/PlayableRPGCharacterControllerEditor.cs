@@ -1,6 +1,4 @@
-﻿
-
-using RPGF.Character;
+﻿using RPGF.Core.Character;
 using UnityEditor;
 
 [CustomEditor(typeof(PlayableCharacterModelController))]

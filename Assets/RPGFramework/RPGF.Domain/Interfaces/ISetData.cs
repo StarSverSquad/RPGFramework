@@ -1,4 +1,4 @@
-﻿namespace RPGF
+﻿namespace RPGF.Domain.Interfaces
 {
     public interface ISetData<T>
     {

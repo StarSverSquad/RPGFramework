@@ -1,58 +1,60 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
-public class BattleVisualTransmitionManager : MonoBehaviour
+namespace RPGF.Battle
 {
-    [SerializeField]
-    private Canvas currentCanvas;
-
-    [SerializeField]
-    private VisualBattleTransmitionEffectBase defaultEffect;
-    public VisualBattleTransmitionEffectBase DefaultEffect => defaultEffect;
-
-    private VisualBattleTransmitionEffectBase effect;
-    private GameObject effectObject;
-
-    public VisualBattleTransmitionEffectBase CustomEffect => effect;
-
-    public void InitializeEffect(VisualBattleTransmitionEffectBase effect)
+    public class BattleVisualTransmitionManager : MonoBehaviour
     {
-        if (effect == null)
-            return;
+        [SerializeField]
+        private Canvas currentCanvas;
 
-        if (this.effect != null)
-            DisposeEffect();
+        [SerializeField]
+        private VisualBattleTransmitionEffectBase defaultEffect;
+        public VisualBattleTransmitionEffectBase DefaultEffect => defaultEffect;
 
-        effectObject = Instantiate(effect.gameObject, transform);
+        private VisualBattleTransmitionEffectBase effect;
+        private GameObject effectObject;
 
-        this.effect = effectObject.GetComponent<VisualBattleTransmitionEffectBase>();
-    }
+        public VisualBattleTransmitionEffectBase CustomEffect => effect;
 
-    public void DisposeEffect()
-    {
-        if (effect == null)
-            return;
+        public void InitializeEffect(VisualBattleTransmitionEffectBase effect)
+        {
+            if (effect == null)
+                return;
 
-        Destroy(effectObject);
+            if (this.effect != null)
+                DisposeEffect();
 
-        effectObject = null;
-        effect = null;
-    }
+            effectObject = Instantiate(effect.gameObject, transform);
 
-    public IEnumerator InvokePartOne()
-    {
-        if (effect != null)
-            yield return effect.PartOne();
-        else
-            yield return defaultEffect.PartOne();
-    }
+            this.effect = effectObject.GetComponent<VisualBattleTransmitionEffectBase>();
+        }
 
-    public IEnumerator InvokePartTwo()
-    {
-        if (effect != null)
-            yield return effect.PartTwo();
-        else
-            yield return defaultEffect.PartTwo();
+        public void DisposeEffect()
+        {
+            if (effect == null)
+                return;
+
+            Destroy(effectObject);
+
+            effectObject = null;
+            effect = null;
+        }
+
+        public IEnumerator InvokePartOne()
+        {
+            if (effect != null)
+                yield return effect.PartOne();
+            else
+                yield return defaultEffect.PartOne();
+        }
+
+        public IEnumerator InvokePartTwo()
+        {
+            if (effect != null)
+                yield return effect.PartTwo();
+            else
+                yield return defaultEffect.PartTwo();
+        }
     }
 }

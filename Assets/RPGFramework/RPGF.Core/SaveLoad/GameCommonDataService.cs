@@ -1,4 +1,6 @@
-﻿namespace RPGF.SaveLoad
+﻿using RPGF.Domain;
+
+namespace RPGF.Core.SaveLoad
 {
     public class GameCommonDataService
     {

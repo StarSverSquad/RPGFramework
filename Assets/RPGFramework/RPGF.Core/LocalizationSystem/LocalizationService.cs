@@ -1,8 +1,8 @@
-﻿using RPGF.SaveLoad;
+﻿using RPGF.Core.SaveLoad;
 using System.Linq;
 using UnityEngine;
 
-namespace RPGF.Localization
+namespace RPGF.Core.Localization
 {
     public class LocalizationService
     {

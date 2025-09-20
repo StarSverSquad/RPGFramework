@@ -1,20 +1,22 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class BattleBackground : MonoBehaviour
+namespace RPGF.Battle.UI
 {
-    public GameObject BackGround;
-
-    public void CreateBackground(GameObject Background)
+    public class BattleBackground : MonoBehaviour
     {
-        BackGround = Instantiate(Background, transform, false);
-    }
+        public GameObject BackGround;
 
-    public void DestoyBackground()
-    {
-        if (BackGround != null)
-            Destroy(BackGround);
+        public void CreateBackground(GameObject Background)
+        {
+            BackGround = Instantiate(Background, transform, false);
+        }
 
-        BackGround = null;
+        public void DestoyBackground()
+        {
+            if (BackGround != null)
+                Destroy(BackGround);
+
+            BackGround = null;
+        }
     }
 }

@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using RPGF.Domain;
+using UnityEngine;
 
-namespace RPGF.Character
+namespace RPGF.Core.Character
 {
     [RequireComponent(typeof(Animator))]
     public class PlayableCharacterModelController : CharacterModelControllerBase

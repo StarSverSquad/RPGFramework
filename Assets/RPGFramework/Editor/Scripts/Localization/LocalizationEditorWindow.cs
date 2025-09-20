@@ -1,5 +1,4 @@
-﻿using RPGF.Localization;
-using System;
+﻿using RPGF.Core.Localization;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;

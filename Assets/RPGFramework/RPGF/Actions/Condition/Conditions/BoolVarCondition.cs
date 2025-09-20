@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+using RPGF;
 public class BoolVarCondition : ConditionBase
 {
     public string Var;

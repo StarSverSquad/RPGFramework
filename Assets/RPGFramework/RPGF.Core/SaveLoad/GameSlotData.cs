@@ -1,9 +1,10 @@
 using RPGF;
+using RPGF.Domain;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RPGF.SaveLoad
+namespace RPGF.Core.SaveLoad
 {
     [Serializable]
     public class GameSlotData

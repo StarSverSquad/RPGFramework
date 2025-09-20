@@ -1,4 +1,4 @@
-﻿namespace RPGF.SaveLoad
+﻿namespace RPGF.Core.SaveLoad
 {
     public class FastSaveService
     {

@@ -1,4 +1,6 @@
-﻿using RPGF.RPG;
+﻿using RPGF.Battle;
+using RPGF.EventSystem;
+using RPGF.RPG;
 using System;
 using System.Collections;
 using System.Linq;

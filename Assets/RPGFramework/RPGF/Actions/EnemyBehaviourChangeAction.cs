@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿using RPGF.Battle;
+using RPGF.Battle.EnemyBehaviour;
+using RPGF.EventSystem;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 

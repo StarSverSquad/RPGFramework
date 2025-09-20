@@ -1,9 +1,9 @@
+using RPGF.EventSystem;
 using System;
 using UnityEngine;
 
 namespace RPGF.RPG
 {
-
     [CreateAssetMenu(fileName = "EntityState", menuName = "RPG/EntityState")]
     public class RPGEntityState : ScriptableObject
     {

@@ -1,6 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 using RPGF.RPG;
+using RPGF.EventSystem;
 
 [CustomEditor(typeof(RPGBattleInfo))]
 public class RPGBattleInfoEditor : Editor

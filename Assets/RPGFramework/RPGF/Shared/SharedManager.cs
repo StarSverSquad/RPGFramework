@@ -1,3 +1,5 @@
+using RPGF.Domain.Interfaces;
+
 namespace RPGF.Shared
 {
     public class SharedManager : ContentManagerBase, IManagerInitialize

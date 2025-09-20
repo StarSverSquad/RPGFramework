@@ -1,37 +1,38 @@
 ﻿using System;
 using System.Linq;
 using UnityEditor;
-using UnityEngine;
-using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using RPGF.Core.Location;
+using RPGF;
+using UnityEngine;
 
-[CustomEditor(typeof(LocationInfo))]
+[CustomEditor(typeof(RpgfLocationInfo))]
 public class LocationInfoEditor : Editor
 {
-    private LocationInfo loc;
+    private RpgfLocationInfo location;
 
     private void OnEnable()
     {
-        loc = (LocationInfo)target;
+        location = (RpgfLocationInfo)target;
     }
 
     public override void OnInspectorGUI()
     {
-        loc.Name = EditorGUILayout.TextField("Название", loc.Name);
+        location.Name = EditorGUILayout.TextField("Название", location.Name);
 
         EditorGUILayout.LabelField("Описание");
-        loc.Description = EditorGUILayout.TextArea(loc.Description);
+        location.Description = EditorGUILayout.TextArea(location.Description);
 
-        loc.CameraCapture = (MainCameraManager.CaptureType)EditorGUILayout.EnumPopup("Камера", loc.CameraCapture);
+        location.CameraCapture = (MainCameraManager.CaptureType)EditorGUILayout.EnumPopup("Камера", location.CameraCapture);
 
         List<string> sceneNames = Resources.LoadAll<SceneAsset>("Scenes\\").Select(s => s.name).ToList();
 
-        int locIndex = EditorGUILayout.Popup("Сцена", sceneNames.IndexOf(loc.SceneName), sceneNames.ToArray());
+        int locIndex = EditorGUILayout.Popup("Сцена", sceneNames.IndexOf(location.SceneName), sceneNames.ToArray());
 
         if (locIndex >= 0 && locIndex < sceneNames.Count)
-            loc.SceneName = sceneNames[locIndex];
+            location.SceneName = sceneNames[locIndex];
 
         if (GUI.changed) 
-            EditorUtility.SetDirty(loc);
+            EditorUtility.SetDirty(location);
     }
 }

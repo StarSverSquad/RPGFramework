@@ -1,6 +1,7 @@
-﻿using System;
+﻿using RPGF.Domain;
+using System;
 
-namespace RPGF.SaveLoad
+namespace RPGF.Core.SaveLoad
 {
     [Serializable]
     public class GameCommonData

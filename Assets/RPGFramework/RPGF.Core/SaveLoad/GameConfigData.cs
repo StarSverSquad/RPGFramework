@@ -1,7 +1,7 @@
-﻿using RPGF.Localization;
+﻿using RPGF.Core.Localization;
 using System;
 
-namespace RPGF.SaveLoad
+namespace RPGF.Core.SaveLoad
 {
     [Serializable]
     public class GameConfigData

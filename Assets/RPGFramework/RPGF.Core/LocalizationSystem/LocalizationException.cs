@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RPGF.Localization
+namespace RPGF.Core.Localization
 {
     public class LocalizationException : ApplicationException
     {

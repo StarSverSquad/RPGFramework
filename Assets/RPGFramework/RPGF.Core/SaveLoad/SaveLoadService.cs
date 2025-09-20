@@ -1,9 +1,12 @@
-using RPGF.Inventory;
+using RPGF.Core.Character;
+using RPGF.Core.Inventory;
+using RPGF.Core.Location;
+using RPGF.Explorer;
 using RPGF.RPG;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace RPGF.SaveLoad
+namespace RPGF.Core.SaveLoad
 {
     public class SaveLoadService
     {
@@ -70,7 +73,7 @@ namespace RPGF.SaveLoad
             foreach (var item in slotData.InventoryItems.data)
                 _inventory.AddToItemCount(_gameData.Collectables.First(i => i.Tag == item.Key), item.Value);
 
-            LocationInfo location = _location.LoadLocationInfoByName(slotData.LocationName);
+            RpgfLocationInfo location = _location.LoadLocationInfoByName(slotData.LocationName);
 
             _location.ChangeLocation(location, slotData.PlayerPosition, slotData.PlayerDirection);
         }

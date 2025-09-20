@@ -178,9 +178,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 520946576085790213}
-  - component: {fileID: 663759740531968399}
   - component: {fileID: 2186035709222933572}
   - component: {fileID: 5771179949149026439}
+  - component: {fileID: 3033375627090181758}
   m_Layer: 0
   m_Name: EngryKepkaSample
   m_TagString: Untagged
@@ -211,27 +211,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0.000030518, y: 205}
   m_SizeDelta: {x: 257.31, y: 352.08}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &663759740531968399
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6372225342885846398}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6916e6f4060050246b4c1875063d884e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  modelContainer: {fileID: 6923576545620869932}
-  iconList: {fileID: 4958393298866439407}
-  damageTxtPoint: {fileID: 6547774065109381950}
-  attackPoint: {fileID: 2854925121998487310}
-  deathEffect: {fileID: 5771179949149026439}
-  damageEffect: {fileID: 2186035709222933572}
-  animators:
-  - Animator: {fileID: 0}
-    Tag: 
 --- !u!114 &2186035709222933572
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -262,6 +241,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 4
+--- !u!114 &3033375627090181758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6372225342885846398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbdcb4b150fbf3a429e9ee781da11bc1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modelContainer: {fileID: 6923576545620869932}
+  iconList: {fileID: 4958393298866439407}
+  damageTxtPoint: {fileID: 6547774065109381950}
+  attackPoint: {fileID: 2854925121998487310}
+  deathEffect: {fileID: 2186035709222933572}
+  damageEffect: {fileID: 2186035709222933572}
+  animators:
+  - Animator: {fileID: 8642740539813419865}
+    Tag: 
 --- !u!1 &6923576545620869932
 GameObject:
   m_ObjectHideFlags: 0

@@ -11294,30 +11294,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Enemys: []
   actionIcons:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  DefaultEffect: {fileID: 0}
-  DmgText: {fileID: 0}
+  - {fileID: 6674051819941947454, guid: 7718a304d2006c04a9863a6100cade02, type: 3}
+  - {fileID: -2141057946, guid: 7718a304d2006c04a9863a6100cade02, type: 3}
+  - {fileID: 5178810440651349108, guid: 7718a304d2006c04a9863a6100cade02, type: 3}
+  - {fileID: 1304362138, guid: 7718a304d2006c04a9863a6100cade02, type: 3}
+  - {fileID: 6789442188196459346, guid: 7718a304d2006c04a9863a6100cade02, type: 3}
+  - {fileID: 667584375, guid: 40745823e1aba59459ed47ebdfedc8aa, type: 3}
+  DefaultEffect: {fileID: 2429433655878315730, guid: 65fcf45a9d4420542a3cc46fa519c398, type: 3}
+  DmgText: {fileID: 8448606485995851385, guid: 9a20811517bb5bb43b6c618854a6d20b, type: 3}
   BattleCanvas: {fileID: 7427866169965658193}
-  MaxConcentration: 0
+  MaxConcentration: 100
   AdditionConcentrationOnDefence: 10
   GameOverSceneName: GameOver
-  Hover: {fileID: 0}
-  Sellect: {fileID: 0}
-  Cancel: {fileID: 0}
-  Deny: {fileID: 0}
-  Heal: {fileID: 0}
-  Hurt: {fileID: 0}
-  EnemyDamage: {fileID: 0}
-  EnemyDeath: {fileID: 0}
-  Miss: {fileID: 0}
-  Lose: {fileID: 0}
-  Win: {fileID: 0}
-  Flee: {fileID: 0}
+  Hover: {fileID: 8300000, guid: 4b6f63b613b616a40b6bb3c7f032f764, type: 3}
+  Sellect: {fileID: 8300000, guid: 96f836f1f1f7eb146a9c8c6a4581e3fa, type: 3}
+  Cancel: {fileID: 8300000, guid: 96f836f1f1f7eb146a9c8c6a4581e3fa, type: 3}
+  Deny: {fileID: 8300000, guid: 96f836f1f1f7eb146a9c8c6a4581e3fa, type: 3}
+  Heal: {fileID: 8300000, guid: 68d9bd2a3f4060d40bf0c63c4058bba1, type: 3}
+  Hurt: {fileID: 8300000, guid: 26e17df5c67bb7446a28c5fc604c8bfe, type: 3}
+  EnemyDamage: {fileID: 8300000, guid: 91b8e03fd31287848be86af34bda1100, type: 3}
+  EnemyDeath: {fileID: 8300000, guid: bf86ec7bbbf702d4eaba7f1cd517b070, type: 3}
+  Miss: {fileID: 8300000, guid: ac3311081883e694d977df8918246063, type: 3}
+  Lose: {fileID: 8300000, guid: a84c8591c405563469c4750db4c265c0, type: 3}
+  Win: {fileID: 8300000, guid: f68f166bd6663ee4bbce6e19ecd3a2c4, type: 3}
+  Flee: {fileID: 8300000, guid: 5793af13e9de1da4fb3f2d5c76061e7b, type: 3}
 --- !u!1 &6244354055022385376
 GameObject:
   m_ObjectHideFlags: 0

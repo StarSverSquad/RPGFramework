@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3968778831387389304}
   - component: {fileID: 6562053771889618133}
-  - component: {fileID: 6293563032936766995}
   - component: {fileID: 1648464197657614869}
+  - component: {fileID: -6459026647520146192}
   m_Layer: 7
   m_Name: ButtletSample
   m_TagString: PatternBullet
@@ -51,6 +51,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -86,27 +89,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &6293563032936766995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1400559474131543087}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dac93ed45e3da1e4194eb6c86adc313c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DamageModifier: 1
-  AdditionConcentration: 4
-  CanHitBorder: 1
-  DestroyAfterHit: 1
-  IgnoreHitCooldown: 0
-  AddState: 0
-  State: {fileID: 0}
-  enemy: {fileID: 0}
-  Direction: {x: 3, y: 0}
 --- !u!58 &1648464197657614869
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -115,6 +97,7 @@ CircleCollider2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1400559474131543087}
   m_Enabled: 1
+  serializedVersion: 3
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -138,7 +121,28 @@ CircleCollider2D:
     m_Bits: 4294967295
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
   m_Radius: 0.22222222
+--- !u!114 &-6459026647520146192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1400559474131543087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7615d5d20efa7d48bf235b795de5678, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DamageModifier: 1
+  AdditionConcentration: 4
+  CanHitBorder: 1
+  DestroyAfterHit: 1
+  IgnoreHitCooldown: 0
+  States: []
+  enemy: {fileID: 0}
+  model: {fileID: 0}
+  Direction: {x: 0, y: 1}

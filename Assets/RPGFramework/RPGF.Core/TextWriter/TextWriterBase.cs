@@ -34,8 +34,6 @@ namespace RPGF.Core.TextWriter
         private bool isPause = false;
         public bool IsPause => isPause;
 
-        private string previewText = string.Empty;
-
         private Coroutine writeCoroutine;
 
         [SerializeField]
@@ -51,16 +49,13 @@ namespace RPGF.Core.TextWriter
 
         public override void Initialize()
         {
-            string[] typenames = GetType()
-                .Assembly.GetTypes()
-                .Where(i => i.BaseType != null && i.BaseType.Name == "TextActionBase")
-                .Select(i => i.Name)
-                .ToArray();
+            var actionType = GetType().Assembly
+                                      .GetTypes()
+                                      .Where(i => i.BaseType != null && i.BaseType == typeof(TextActionBase));
 
-            foreach (string typename in typenames)
+            foreach (var type in actionType)
             {
-                TextActionBase actionBase =
-                    GetType().Assembly.CreateInstance(typename) as TextActionBase;
+                var actionBase = Activator.CreateInstance(type) as TextActionBase;
 
                 allActions.Add(actionBase);
             }

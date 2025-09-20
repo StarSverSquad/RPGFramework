@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8651007071577938199}
-  - component: {fileID: 4869993089437226105}
+  - component: {fileID: 4341717307213853840}
   m_Layer: 0
   m_Name: PatternSample
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4869993089437226105
+--- !u!114 &4341717307213853840
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,12 +41,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1505677408717991188}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff2a5dae2ca29a54fa9729cb6d4f6be3, type: 3}
+  m_Script: {fileID: 11500000, guid: ffbcc72137aa67840a680daaf20b3523, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BehaviourTag: TP
-  Time: 8
-  WaitEnd: 0
-  SomeBullet: {fileID: 6293563032936766995, guid: 175c648f77e888545ad2d494588f2cf6, type: 3}
+  BehaviourTag: 
+  Time: 5
+  WaitEnd: 1
+  SomeBullet: {fileID: -6459026647520146192, guid: 175c648f77e888545ad2d494588f2cf6, type: 3}
   BulletsCount: 30
-  TimeOffset: 0.18
+  TimeOffset: 0.2

@@ -1,4 +1,5 @@
 using DG.Tweening;
+using RPGF.Core;
 using System;
 using TMPro;
 using UnityEngine;

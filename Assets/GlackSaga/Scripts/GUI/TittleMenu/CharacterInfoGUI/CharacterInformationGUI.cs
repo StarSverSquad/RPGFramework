@@ -1,4 +1,6 @@
-﻿using RPGF.RPG;
+﻿using RPGF.Core;
+using RPGF.GUI.Other;
+using RPGF.RPG;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

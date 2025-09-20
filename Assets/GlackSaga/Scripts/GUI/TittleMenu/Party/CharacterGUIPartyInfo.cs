@@ -1,3 +1,5 @@
+using RPGF.Core;
+using RPGF.GUI.Other;
 using TMPro;
 using UnityEngine;
 

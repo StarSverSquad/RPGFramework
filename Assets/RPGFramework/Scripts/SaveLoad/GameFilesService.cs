@@ -24,13 +24,14 @@ namespace RPGF.SaveLoad
 
         #region LOAD
 
-        public object LoadFile(string filename)
+        public T LoadFile<T>(string filename)
+            where T : class
         {
             try
             {
                 string rawData = File.ReadAllText(Path.Combine(SavePath.FullName, filename));
 
-                return JsonUtility.FromJson<object>(rawData);
+                return JsonUtility.FromJson<T>(rawData);
             }
             catch (FileNotFoundException)
             {
@@ -38,14 +39,8 @@ namespace RPGF.SaveLoad
             }
             catch
             {
-                throw;
+                return null;
             }
-        }
-
-        public T LoadFile<T>(string filename)
-            where T : class
-        {
-            return (T)LoadFile(filename);
         }
 
         public GameSlotData LoadSlot(string slotName)

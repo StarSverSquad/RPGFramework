@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 using RPGF.RPG;
 using static BattleTurnData;
 using RPGF.Localization;
+using RPGF.Shared;
 
 public class BattlePipeline
 {
@@ -16,7 +17,7 @@ public class BattlePipeline
     }
 
     private readonly BattleManager _battle;
-    private readonly CommonManager _common;
+    private readonly SharedManager _common;
 
     #region PROPS
 
@@ -60,7 +61,7 @@ public class BattlePipeline
 
     #endregion
 
-    public BattlePipeline(BattleManager battle, CommonManager common)
+    public BattlePipeline(BattleManager battle, SharedManager common)
     {
         _battle = battle;
         _common = common;

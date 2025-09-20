@@ -1,4 +1,5 @@
 ﻿using RPGF.GUI;
+using RPGF.Shared;
 using UnityEngine;
 
 public class LocalManager : ContentManagerBase
@@ -18,7 +19,7 @@ public class LocalManager : ContentManagerBase
     [SerializeField]
     private ExplorerManager explorer;
     [SerializeField]
-    private CommonManager common;
+    private SharedManager common;
     [SerializeField]
     private BattleManager battle;
 

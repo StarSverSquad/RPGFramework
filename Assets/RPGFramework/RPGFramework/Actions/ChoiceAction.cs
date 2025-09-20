@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RPGF.Shared;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,13 +22,13 @@ public class ChoiceAction : GraphActionBase
 
     public override IEnumerator ActionCoroutine()
     {
-        CommonManager.Instance.ChoiceBox.ChangePosition(Position, CustomPosition);
+        SharedManager.Instance.ChoiceBox.ChangePosition(Position, CustomPosition);
 
-        CommonManager.Instance.ChoiceBox.Choice(Choices.ToArray());
+        SharedManager.Instance.ChoiceBox.Choice(Choices.ToArray());
 
-        yield return new WaitWhile(() => CommonManager.Instance.ChoiceBox.IsChoicing);
+        yield return new WaitWhile(() => SharedManager.Instance.ChoiceBox.IsChoicing);
 
-        nextIndex = CommonManager.Instance.ChoiceBox.Index;
+        nextIndex = SharedManager.Instance.ChoiceBox.Index;
     }
 
     public override string GetHeader()

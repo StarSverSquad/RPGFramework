@@ -1,4 +1,4 @@
-﻿using System;
+﻿using RPGF.Shared;
 using System.Collections;
 using UnityEngine;
 
@@ -13,9 +13,9 @@ public class MessageAction : GraphActionBase
 
     public override IEnumerator ActionCoroutine()
     {
-        CommonManager.Instance.MessageBox.Write(message);
+        SharedManager.Instance.MessageBox.Write(message);
 
-        yield return new WaitWhile(() => CommonManager.Instance.MessageBox.IsWriting);
+        yield return new WaitWhile(() => SharedManager.Instance.MessageBox.IsWriting);
     }
 
     public override string GetHeader()

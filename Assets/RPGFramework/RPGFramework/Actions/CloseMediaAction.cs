@@ -1,6 +1,5 @@
-﻿using System;
+﻿using RPGF.Shared;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CloseMediaAction : GraphActionBase
@@ -9,7 +8,7 @@ public class CloseMediaAction : GraphActionBase
 
     public bool IsWait;
 
-    private MediaManager Media => CommonManager.Instance.Media;
+    private MediaManager Media => SharedManager.Instance.Media;
 
     public CloseMediaAction() : base("CloseMedia")
     {

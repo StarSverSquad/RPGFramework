@@ -1,8 +1,5 @@
 using RPGF.RPG;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using RPGF.Shared;
 
 public class BattleManager : ContentManagerBase, IManagerInitialize
 {
@@ -46,7 +43,7 @@ public class BattleManager : ContentManagerBase, IManagerInitialize
 
     public override void InitializeChild()
     {
-        Pipeline = new BattlePipeline(this, CommonManager.Instance);
+        Pipeline = new BattlePipeline(this, SharedManager.Instance);
         Utility = new BattleUtility(this);
 
         Choice.Initialize();

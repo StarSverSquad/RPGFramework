@@ -1,23 +1,19 @@
-﻿using System;
+﻿using RPGF.Shared;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
-public class ShowImageAction : GraphActionBase
+public class ShowColorAction : GraphActionBase
 {
-    public Sprite ImageSprite;
+    public Color Color;
     public float FadeTime;
 
     public bool IsWait;
 
-    private MediaManager Media => CommonManager.Instance.Media;
+    private MediaManager Media => SharedManager.Instance.Media;
 
-    public ShowImageAction() : base("ShowImage")
+    public ShowColorAction() : base("ShowColor")
     {
-        ImageSprite = null;
+        Color = Color.white;
         FadeTime = 0;
 
         IsWait = true;
@@ -25,7 +21,7 @@ public class ShowImageAction : GraphActionBase
 
     public override IEnumerator ActionCoroutine()
     {
-        Media.ShowImage(ImageSprite, FadeTime);
+        Media.ShowColor(Color, FadeTime);
 
         if (IsWait)
             yield return new WaitWhile(() => Media.IsFade);

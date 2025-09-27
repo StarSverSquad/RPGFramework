@@ -1,3 +1,4 @@
+using RPGF.Core.Architecture;
 using RPGF.Domain;
 using System;
 using System.Collections;
@@ -7,8 +8,9 @@ using UnityEngine.SceneManagement;
 
 namespace RPGF.Core.Location
 {
-    public class GlobalLocationManager : RPGFrameworkBehaviour
+    public class GlobalLocationManager : GameSystemBase
     {
+        /// TODO: Íאהמ גûםוסעט ג מעהכüםûי פאיכ
         #region TransimitionMessage
         [Serializable]
         public class TransimitionMessage
@@ -34,11 +36,11 @@ namespace RPGF.Core.Location
         #endregion
 
         public RpgfLocationInfo CurrentLocation { get; private set; } = null;
-
-        private Coroutine changingCoroutine = null;
         public bool IsChanging => changingCoroutine != null;
 
         public event Action<RpgfLocationInfo> OnLocationChanged;
+
+        private Coroutine changingCoroutine = null;
 
         #region API
 
@@ -95,18 +97,20 @@ namespace RPGF.Core.Location
 
         private IEnumerator ChangeLocationCoroutine(TransimitionMessage message)
         {
-            Game.LoadingScreen.ActivatePart1();
+            Global.LoadingScreen.ShowBackground();
 
-            yield return new WaitWhile(() => Game.LoadingScreen.BgIsFade);
+            yield return new WaitWhile(() => Global.LoadingScreen.IsBackgroundFading);
 
             if (CurrentLocation != null && message.Location.SceneName == SceneManager.GetActiveScene().name)
                 Local.Location.GetLocationByInfo(CurrentLocation).OnLeave();
 
             if (message.Location.SceneName != SceneManager.GetActiveScene().name)
             {
-                Game.SceneLoader.LoadGameScene(message.Location.SceneName);
+                Global.LoadingScreen.ShowProggresBar();
 
-                yield return new WaitWhile(() => Game.SceneLoader.IsLoading);
+                Global.SceneLoader.LoadScene(message.Location.SceneName);
+
+                yield return new WaitWhile(() => Global.SceneLoader.IsLoading);
             }
 
             if (!Local)
@@ -115,7 +119,7 @@ namespace RPGF.Core.Location
                 yield break;
             }
 
-            LocationController location = Local.Location.GetLocationByInfo(message.Location);
+            var location = Local.Location.GetLocationByInfo(message.Location);
 
             location.OnEnter();
 
@@ -127,9 +131,8 @@ namespace RPGF.Core.Location
                     yield break;
                 }
 
-                LocationSpawnPoint spawnPoint =
-                    location.SpawnPoints.FirstOrDefault(obj => obj.Name == message.Point)
-                         ?? location.SpawnPoints[0];
+                var spawnPoint = location.SpawnPoints.FirstOrDefault(obj => obj.Name == message.Point)
+                                                     ?? location.SpawnPoints[0];
 
                 Explorer.PlayerManager.TeleportToVector(spawnPoint.transform.position);
 
@@ -166,9 +169,10 @@ namespace RPGF.Core.Location
 
             OnLocationChanged?.Invoke(message.Location);
 
-            Game.LoadingScreen.DeactivatePart1();
+            Global.LoadingScreen.HideBackground();
+            Global.LoadingScreen.HideProggresBar();
 
-            yield return new WaitWhile(() => Game.LoadingScreen.BgIsFade);
+            yield return new WaitWhile(() => Global.LoadingScreen.IsBackgroundFading);
 
             changingCoroutine = null;
         }

@@ -1,5 +1,5 @@
+using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,94 +9,78 @@ namespace RPGF
     public class LoadingScreenManager : MonoBehaviour
     {
         [SerializeField]
-        private GameObject partOneContainer;
+        private GameObject backgroundContainer;
         [SerializeField]
-        private GameObject partTwoContainer;
+        private GameObject proggresBarContainer;
 
         [SerializeField]
-        private Image bg;
+        private Image backgroundImage;
 
         [SerializeField]
-        private TextMeshProUGUI textLoadingIndicator;
+        private TextMeshProUGUI progressBarText;
 
-        [SerializeField]
-        private float loadingProgress = 0;
-        public float LoadingProgress
+        public float BackgroundFadeTime = 0.5f;
+
+        private float progress = 0;
+        public float Progress
         {
-            get => loadingProgress;
-            set => loadingProgress = value;
+            get => progress;
+            set
+            {
+                progress = value;
+                SetProgressBarValue(value);
+            }
         }
 
-        public float BgFadeTime = 0.5f;
+        public bool IsBackgroundFading => backgroundTween != null;
 
-        [SerializeField]
-        private bool bgIsFade = false;
-        public bool BgIsFade => bgIsFade;
+        private Tween backgroundTween = null;
 
         private void OnEnable()
         {
-            partOneContainer.SetActive(false);
-            partTwoContainer.SetActive(false);
+            backgroundContainer.SetActive(false);
+            proggresBarContainer.SetActive(false);
         }
 
-        private void Update()
+        public void ShowBackground()
         {
-            if (partTwoContainer.activeSelf)
-                textLoadingIndicator.text = $"Loading: {Mathf.Floor(loadingProgress * 100f)}%";
+            backgroundContainer.SetActive(true);
+
+            backgroundTween = backgroundImage.DOFade(1, BackgroundFadeTime)
+                                             .From(0)
+                                             .SetLoops(0)
+                                             .OnStepComplete(CleanBackgroudTween)
+                                             .Play();
         }
 
-        public void ActivatePart1()
+        public void HideBackground()
         {
-            partOneContainer.SetActive(true);
-
-            StartCoroutine(BgFadingCoroutine(true));
+            backgroundTween = backgroundImage.DOFade(0, BackgroundFadeTime)
+                                 .From(1)
+                                 .SetLoops(0)
+                                 .OnStepComplete(CleanBackgroudTween)
+                                 .Play();
         }
 
-        public void DeactivatePart1()
+        public void ShowProggresBar()
         {
-            StartCoroutine(BgFadingCoroutine(false));
+            proggresBarContainer.SetActive(true);
         }
 
-        public void ActivatePart2()
+        public void HideProggresBar()
         {
-            partTwoContainer.SetActive(true);
+            proggresBarContainer.SetActive(false);
         }
 
-        public void DeactivatePart2()
+        private void SetProgressBarValue(float value)
         {
-            partTwoContainer.SetActive(false);
+            if (proggresBarContainer.activeSelf)
+                progressBarText.text = $"Loading: {Mathf.Floor(value * 100f)}%";
         }
 
-        private IEnumerator BgFadingCoroutine(bool dir)
+        private void CleanBackgroudTween()
         {
-            bgIsFade = true;
-
-            Color bgcolor = bg.color;
-
-            bgcolor.a = dir ? 0 : 1;
-            bg.color = bgcolor;
-
-            float alphatarget = dir ? 1 : 0;
-
-            float speed = (alphatarget - bgcolor.a) / BgFadeTime;
-
-            float time = BgFadeTime;
-
-            while (time > 0)
-            {
-                yield return new WaitForFixedUpdate();
-
-                bgcolor.a += speed * Time.fixedDeltaTime;
-
-                bg.color = bgcolor;
-
-                time -= Time.fixedDeltaTime;
-            }
-
-            if (!dir)
-                partOneContainer.SetActive(false);
-
-            bgIsFade = false;
+            backgroundTween = null;
         }
     }
 }

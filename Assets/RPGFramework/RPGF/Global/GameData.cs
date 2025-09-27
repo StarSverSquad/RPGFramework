@@ -8,7 +8,7 @@ namespace RPGF
 {
     public class GameData : IDisposable
     {
-        private readonly GameManager _manager;
+        private readonly GlobalManager _manager;
 
         public CustomDictionary<int> IntValues;
         public CustomDictionary<float> FloatValues;
@@ -24,7 +24,7 @@ namespace RPGF
 
         public int Money = 0;
 
-        public GameData(GameManager manager)
+        public GameData(GlobalManager manager)
         {
             _manager = manager;
 

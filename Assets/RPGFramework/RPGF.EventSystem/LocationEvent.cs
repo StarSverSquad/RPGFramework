@@ -61,13 +61,13 @@ namespace RPGF.EventSystem
 
         public bool IsBlocked()
         {
-            return Game.GameData.BlockedLocationEvents.Contains(EventTag);
+            return Global.GameData.BlockedLocationEvents.Contains(EventTag);
         }
 
         public void BlockEvent()
         {
-            if (!Game.GameData.BlockedLocationEvents.Contains(EventTag))
-                Game.GameData.BlockedLocationEvents.Add(EventTag);
+            if (!Global.GameData.BlockedLocationEvents.Contains(EventTag))
+                Global.GameData.BlockedLocationEvents.Add(EventTag);
         }
 
         private void OnDestroy()

@@ -49,7 +49,7 @@ namespace GlackSaga.GUI.TitleMenu.FullInfo
 
         private void Update()
         {
-            if (IsActivated && Input.GetKeyDown(Game.BaseOptions.Cancel))
+            if (IsActivated && Input.GetKeyDown(Global.BaseOptions.Cancel))
             {
                 Preview();
             }

@@ -1,4 +1,5 @@
 using DG.Tweening;
+using RPGF.Core.Architecture;
 using RPGF.Core.Character;
 using RPGF.Core.Inventory;
 using RPGF.Core.Localization;
@@ -8,21 +9,15 @@ using UnityEngine;
 
 namespace RPGF
 {
-    public class GameManager : ContentManagerBase
+    public class GlobalManager : KernelManagerBase
     {
-        public static GameManager Instance;
+        public static GlobalManager Instance;
 
         [Header("Глобальные ссылки")]
         public GlobalLocationManager LocationManager;
         public AudioManager GameAudio;
-        public LoadingScreenManager LoadingScreen;
         public SceneLoadManager SceneLoader;
-
-        /// <summary>
-        /// DEBUG - New Game Location
-        /// </summary>
-        [SerializeField, Space]
-        private Core.Location.RpgfLocationInfo newGameLocation;
+        public LoadingScreenManager LoadingScreen;
 
         public LocalizationService Localization { get; private set; }
         public InventoryService Inventory { get; private set; }
@@ -54,11 +49,9 @@ namespace RPGF
                 Destroy(gameObject);
         }
 
-        private void Update()
+        public override void Initialize()
         {
-            // DEBUG - New Game Location start
-            if (Input.GetKeyDown(KeyCode.N))
-                Utils.StartNewGame(newGameLocation);
+            
         }
 
         public override void InitializeChild()

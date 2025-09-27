@@ -1,3 +1,4 @@
+using RPGF.Core.Architecture;
 using RPGF.Domain;
 using RPGF.Domain.Interfaces;
 using RPGF.Explorer.Player;
@@ -5,7 +6,7 @@ using UnityEngine;
 
 namespace RPGF.Explorer
 {
-    public class ExplorerManager : ContentManagerBase, IManagerInitialize
+    public class ExplorerManager : KernelManagerBase
     {
         public static ExplorerManager Instance;
 
@@ -15,7 +16,7 @@ namespace RPGF.Explorer
 
         public static PlayerExplorerMovement PlayerMovement => Instance.PlayerManager.movement;
 
-        public void Initialize()
+        public override void Initialize()
         {
             Instance = this;
 

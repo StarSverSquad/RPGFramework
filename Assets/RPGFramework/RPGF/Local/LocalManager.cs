@@ -1,4 +1,5 @@
 ﻿using RPGF.Battle;
+using RPGF.Core.Architecture;
 using RPGF.Core.Character;
 using RPGF.Core.Location;
 using RPGF.Explorer;
@@ -7,7 +8,7 @@ using UnityEngine;
 
 namespace RPGF
 {
-    public class LocalManager : ContentManagerBase
+    public class LocalManager : KernelManagerBase
     {
         public static LocalManager Instance;
 
@@ -28,6 +29,11 @@ namespace RPGF
         [SerializeField]
         private BattleManager battle;
 
+        public override void Initialize()
+        {
+            
+        }
+
         public void Start()
         {
             Instance = this;
@@ -35,9 +41,11 @@ namespace RPGF
             InitializeChild();
         }
 
+
         private void Update()
         {
-            if (Input.GetKeyDown(GameManager.Instance.BaseOptions.Additional)
+            /// 0_o
+            if (Input.GetKeyDown(GlobalManager.Instance.BaseOptions.Additional)
                 && !TittleMenu.IsOpened
                 && !explorer.EventHandler.EventRuning)
                 TittleMenu.Open();

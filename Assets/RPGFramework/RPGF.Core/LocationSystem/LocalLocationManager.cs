@@ -10,7 +10,7 @@ namespace RPGF.Core.Location
         [SerializeField]
         private List<LocationController> Locations = new();
 
-        public LocationController Current => GetLocationByInfo(GameManager.Instance.LocationManager.CurrentLocation);
+        public LocationController Current => GetLocationByInfo(GlobalManager.Instance.LocationManager.CurrentLocation);
 
         public void Initialize()
         {

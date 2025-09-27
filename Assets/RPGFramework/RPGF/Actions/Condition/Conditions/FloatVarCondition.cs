@@ -20,17 +20,17 @@ public class FloatVarCondition : ConditionBase
 
     public override bool Invoke()
     {
-        if (!GameManager.Instance.GameData.FloatValues.HaveKey(Var))
+        if (!GlobalManager.Instance.GameData.FloatValues.HaveKey(Var))
             return false;
 
         return Operation switch
         {
-            ConditionOperation.Equals => GameManager.Instance.GameData.FloatValues[Var] == Value,
-            ConditionOperation.NotEquals => GameManager.Instance.GameData.FloatValues[Var] != Value,
-            ConditionOperation.More => GameManager.Instance.GameData.FloatValues[Var] > Value,
-            ConditionOperation.Less => GameManager.Instance.GameData.FloatValues[Var] < Value,
-            ConditionOperation.MoreOrEquals => GameManager.Instance.GameData.FloatValues[Var] >= Value,
-            ConditionOperation.LessOrEquals => GameManager.Instance.GameData.FloatValues[Var] <= Value,
+            ConditionOperation.Equals => GlobalManager.Instance.GameData.FloatValues[Var] == Value,
+            ConditionOperation.NotEquals => GlobalManager.Instance.GameData.FloatValues[Var] != Value,
+            ConditionOperation.More => GlobalManager.Instance.GameData.FloatValues[Var] > Value,
+            ConditionOperation.Less => GlobalManager.Instance.GameData.FloatValues[Var] < Value,
+            ConditionOperation.MoreOrEquals => GlobalManager.Instance.GameData.FloatValues[Var] >= Value,
+            ConditionOperation.LessOrEquals => GlobalManager.Instance.GameData.FloatValues[Var] <= Value,
             _ => false,
         };
     }

@@ -4,7 +4,7 @@ using System;
 [Serializable]
 public abstract class ConditionBase
 {
-    protected GameManager Game => GameManager.Instance;
+    protected GlobalManager Game => GlobalManager.Instance;
     protected LocalManager Local => LocalManager.Instance;
 
     public abstract bool Invoke();

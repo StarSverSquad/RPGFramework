@@ -133,12 +133,12 @@ namespace RPGF.Shared
 
         public override bool ContinueCanExecute()
         {
-            return Input.GetKeyDown(GameManager.Instance.BaseOptions.Accept);
+            return Input.GetKeyDown(GlobalManager.Instance.BaseOptions.Accept);
         }
 
         public override bool SkipCanExecute()
         {
-            return Input.GetKeyDown(GameManager.Instance.BaseOptions.Cancel);
+            return Input.GetKeyDown(GlobalManager.Instance.BaseOptions.Cancel);
         }
 
         public override void OnEveryLetter(char letter)

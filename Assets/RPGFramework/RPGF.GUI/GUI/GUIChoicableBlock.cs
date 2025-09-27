@@ -97,29 +97,29 @@ namespace RPGF.GUI
 
                 if (_isHorizontal)
                 {
-                    if (Input.GetKeyDown(Game.BaseOptions.MoveLeft))
+                    if (Input.GetKeyDown(Global.BaseOptions.MoveLeft))
                     {
                         ChangeSelect(index - 1);
                     }
-                    else if (Input.GetKeyDown(Game.BaseOptions.MoveRight))
+                    else if (Input.GetKeyDown(Global.BaseOptions.MoveRight))
                     {
                         ChangeSelect(index + 1);
                     }
                 }
                 else
                 {
-                    if (Input.GetKeyDown(Game.BaseOptions.MoveDown))
+                    if (Input.GetKeyDown(Global.BaseOptions.MoveDown))
                     {
                         ChangeSelect(index + 1);
 
                     }
-                    else if (Input.GetKeyDown(Game.BaseOptions.MoveUp))
+                    else if (Input.GetKeyDown(Global.BaseOptions.MoveUp))
                     {
                         ChangeSelect(index - 1);
                     }
                 }
 
-                if (Input.GetKeyDown(Game.BaseOptions.Accept))
+                if (Input.GetKeyDown(Global.BaseOptions.Accept))
                 {
                     end = true;
 
@@ -129,7 +129,7 @@ namespace RPGF.GUI
                     OnChoicedEvent?.Invoke(index);
                 }
 
-                if (Input.GetKeyDown(Game.BaseOptions.Cancel))
+                if (Input.GetKeyDown(Global.BaseOptions.Cancel))
                 {
                     end = true;
 

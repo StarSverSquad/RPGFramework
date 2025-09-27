@@ -25,7 +25,7 @@ namespace RPGF.Explorer
         private IEnumerator ConsumeCoroutine(RPGConsumed item, RPGEntity who, RPGEntity target)
         {
             if (item.Usage == Usability.Battle || item.Usage == Usability.Noway
-                || !GameManager.Instance.Inventory.HasItemSlot(item))
+                || !GlobalManager.Instance.Inventory.HasItemSlot(item))
             {
                 consumeCoroutine = null;
 
@@ -39,7 +39,7 @@ namespace RPGF.Explorer
 
             who.Heal = who.Heal == 0 ? 1 : who.Heal;
 
-            GameManager.Instance.Inventory.AddToItemCount(item, -1);
+            GlobalManager.Instance.Inventory.AddToItemCount(item, -1);
 
             consumeCoroutine = null;
         }

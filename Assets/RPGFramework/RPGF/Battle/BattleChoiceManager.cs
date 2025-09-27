@@ -339,7 +339,7 @@ namespace RPGF.Battle
         {
             List<ChoiceUI.Element> choices = new List<ChoiceUI.Element>();
 
-            foreach (var slot in GameManager.Instance.Inventory.Slots)
+            foreach (var slot in GlobalManager.Instance.Inventory.Slots)
             {
                 if (slot.Item.Usage == Usability.Noway ||
                     slot.Item.Usage == Usability.Explorer)

@@ -46,7 +46,7 @@ namespace RPGF.Battle.Minigames.Sample
             if (!gameStarted)
                 return;
 
-            if (Input.GetKeyDown(GameManager.Instance.BaseOptions.Accept))
+            if (Input.GetKeyDown(GlobalManager.Instance.BaseOptions.Accept))
             {
                 progress += ProgressAdd;
             }

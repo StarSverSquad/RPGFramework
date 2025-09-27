@@ -219,7 +219,7 @@ namespace RPGF.Choice
             {
                 yield return null;
 
-                if (Input.GetKeyDown(Game.BaseOptions.MoveUp))
+                if (Input.GetKeyDown(Global.BaseOptions.MoveUp))
                 {
                     CurrentUIElement.UIElement.SetFocus(false);
 
@@ -231,7 +231,7 @@ namespace RPGF.Choice
 
                     OnSellectionChanged?.Invoke();
                 }
-                else if (Input.GetKeyDown(Game.BaseOptions.MoveDown))
+                else if (Input.GetKeyDown(Global.BaseOptions.MoveDown))
                 {
                     CurrentUIElement.UIElement.SetFocus(false);
 
@@ -243,7 +243,7 @@ namespace RPGF.Choice
 
                     OnSellectionChanged?.Invoke();
                 }
-                else if (Input.GetKeyDown(Game.BaseOptions.MoveRight))
+                else if (Input.GetKeyDown(Global.BaseOptions.MoveRight))
                 {
                     CurrentUIElement.UIElement.SetFocus(false);
 
@@ -255,7 +255,7 @@ namespace RPGF.Choice
 
                     OnSellectionChanged?.Invoke();
                 }
-                else if (Input.GetKeyDown(Game.BaseOptions.MoveLeft))
+                else if (Input.GetKeyDown(Global.BaseOptions.MoveLeft))
                 {
                     CurrentUIElement.UIElement.SetFocus(false);
 
@@ -267,7 +267,7 @@ namespace RPGF.Choice
 
                     OnSellectionChanged?.Invoke();
                 }
-                else if (Input.GetKeyDown(Game.BaseOptions.Accept))
+                else if (Input.GetKeyDown(Global.BaseOptions.Accept))
                 {
                     if (!CurrentUIElement.locked)
                     {
@@ -277,7 +277,7 @@ namespace RPGF.Choice
                     else
                         OnDeny?.Invoke();
                 }
-                else if (Input.GetKeyDown(Game.BaseOptions.Cancel))
+                else if (Input.GetKeyDown(Global.BaseOptions.Cancel))
                 {
                     IsCanceled = true;
                     OnCanceled?.Invoke();

@@ -14,7 +14,7 @@ namespace GlackSaga.GUI.TitleMenu.Party
 
         protected override void OnActivate()
         {
-            var charactersCount = Game.Character.Characters.Length;
+            var charactersCount = Global.Character.Characters.Length;
 
             SetElements(Items.Take(Mathf.Clamp(charactersCount, 0, 4)).ToArray());
 
@@ -22,7 +22,7 @@ namespace GlackSaga.GUI.TitleMenu.Party
             {
                 if (i < charactersCount)
                 {
-                    Items[i].SetData(Game.Character.Characters[i]);
+                    Items[i].SetData(Global.Character.Characters[i]);
                     Items[i].gameObject.SetActive(true);
                 }
                 else
@@ -37,7 +37,7 @@ namespace GlackSaga.GUI.TitleMenu.Party
 
         public override void OnChoiced(int index)
         {
-            _fullInfoGUI.SetData(Game.Character.Characters[index]);
+            _fullInfoGUI.SetData(Global.Character.Characters[index]);
             Next(_fullInfoGUI);
         }
 

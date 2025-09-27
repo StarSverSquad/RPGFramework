@@ -399,7 +399,7 @@ namespace RPGF.Battle
 
             // Если потребляемый предмет то нужно забрать из инвентаря 1 еденицу
             if (consumed != null)
-                GameManager.Instance.Inventory.AddToItemCount(consumed, -1);
+                GlobalManager.Instance.Inventory.AddToItemCount(consumed, -1);
         }
     }
 }

@@ -4,9 +4,9 @@ namespace RPGF
 {
     public class GameUtils
     {
-        private readonly GameManager _game;
+        private readonly GlobalManager _game;
 
-        public GameUtils(GameManager game)
+        public GameUtils(GlobalManager game)
         {
             _game = game;
         }

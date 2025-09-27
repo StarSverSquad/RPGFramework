@@ -1,8 +1,8 @@
-using RPGF.Domain.Interfaces;
+using RPGF.Core.Architecture;
 
 namespace RPGF.Shared
 {
-    public class SharedManager : ContentManagerBase, IManagerInitialize
+    public class SharedManager : KernelManagerBase
     {
         public static SharedManager Instance;
 
@@ -10,7 +10,7 @@ namespace RPGF.Shared
         public ChoiceBoxManager ChoiceBox;
         public MediaManager Media;
 
-        public void Initialize()
+        public override void Initialize()
         {
             Instance = this;
 

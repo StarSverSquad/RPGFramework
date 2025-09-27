@@ -1,4 +1,4 @@
-﻿using ARPGF.Core;
+﻿using RPGF.Core;
 using RPGF.Battle;
 using RPGF.Domain.DI;
 using RPGF.Domain.Interfaces;

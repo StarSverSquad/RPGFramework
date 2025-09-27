@@ -4,7 +4,7 @@ using RPGF.Domain.DI;
 using System.Collections;
 using UnityEngine;
 
-namespace ARPGF.Core
+namespace RPGF.Core
 {
     public class GameManager : KernelManagerBase
     {

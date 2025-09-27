@@ -7,11 +7,11 @@ using UnityEngine;
 
 public class LocationTrasmitionAction : GraphActionBase
 {
-    public GlobalLocationManager.TransimitionMessage Message;
+    public LocationTransimitionDto Message;
 
     public LocationTrasmitionAction() : base("LocationTrasmition")
     {
-        Message = new GlobalLocationManager.TransimitionMessage();
+        Message = new LocationTransimitionDto();
     }
 
     public override IEnumerator ActionCoroutine()

@@ -1,4 +1,4 @@
-using RPGF.Core.Architecture;
+using RPGF.Core;
 
 namespace RPGF.Shared
 {
@@ -6,13 +6,17 @@ namespace RPGF.Shared
     {
         public static SharedManager Instance;
 
-        public MessageBoxManager MessageBox;
         public ChoiceBoxManager ChoiceBox;
+        public MessageBoxManager MessageBox;
         public MediaManager Media;
+
+        private LocalManager Local => LocalManager.Instance;
 
         public override void Initialize()
         {
             Instance = this;
+
+            Local.DI.AddSignleton(ChoiceBox);
 
             InitializeChild();
         }
@@ -20,7 +24,10 @@ namespace RPGF.Shared
         public override void InitializeChild()
         {
             MessageBox.Initialize();
+            Local.DI.AddSignleton(MessageBox);
+
             Media.Initialize();
+            Local.DI.AddSignleton(Media);
         }
     }
 }

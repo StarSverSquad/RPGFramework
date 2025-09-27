@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
-using RPGF.Domain.Interfaces;
+using RPGF.Core;
 
 namespace RPGF.Shared
 {
-    public class MediaManager : MonoBehaviour, IManagerInitialize
+    /// TODO: Переделать или удалить
+    public class MediaManager : RPGFrameworkBehaviour
     {
         [SerializeField]
         private Image image;
@@ -16,7 +17,7 @@ namespace RPGF.Shared
         private bool isFade = false;
         public bool IsFade => isFade;
 
-        public void Initialize()
+        public override void Initialize()
         {
             container.SetActive(false);
             isFade = false;

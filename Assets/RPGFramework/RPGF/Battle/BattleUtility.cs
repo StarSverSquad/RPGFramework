@@ -5,10 +5,11 @@ using RPGF.Battle.Enums;
 using System.Linq;
 using System.Collections;
 using UnityEngine;
+using RPGF.Domain.DI;
 
 namespace RPGF.Battle
 {
-    public class BattleUtility
+    public class BattleUtility : Injectable
     {
         private BattleManager _battle { get; set; }
 

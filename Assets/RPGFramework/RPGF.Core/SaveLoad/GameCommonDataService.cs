@@ -1,17 +1,14 @@
 ﻿using RPGF.Domain;
+using RPGF.Domain.DI;
 
 namespace RPGF.Core.SaveLoad
 {
-    public class GameCommonDataService
+    public class GameCommonDataService : ISupportDI
     {
+        [Inject]
         private readonly GameFilesService _gameFiles;
 
         public GameCommonData CommonData { get; private set; }
-
-        public GameCommonDataService(GameFilesService gameFiles)
-        {
-            _gameFiles = gameFiles;
-        }
 
         public void Load()
         {

@@ -1,4 +1,4 @@
-using RPGF.Core.Architecture;
+using RPGF.Core;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 namespace RPGF
 {
-    public class SceneLoadManager : GameSystemBase
+    public class SceneLoadManager : RPGFrameworkBehaviour
     {
         public bool IsLoading => loadCoroutine != null;
 

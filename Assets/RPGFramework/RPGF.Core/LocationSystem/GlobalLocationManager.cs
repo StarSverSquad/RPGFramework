@@ -1,5 +1,5 @@
-using RPGF.Core.Architecture;
 using RPGF.Domain;
+using RPGF.Domain.DI;
 using System;
 using System.Collections;
 using System.Linq;
@@ -8,32 +8,12 @@ using UnityEngine.SceneManagement;
 
 namespace RPGF.Core.Location
 {
-    public class GlobalLocationManager : GameSystemBase
+    public class GlobalLocationManager : RPGFrameworkBehaviour
     {
-        /// TODO: Íאהמ גûםוסעט ג מעהכüםûי פאיכ
-        #region TransimitionMessage
-        [Serializable]
-        public class TransimitionMessage
-        {
-            public RpgfLocationInfo Location;
-
-            public string Point;
-
-            public bool TeleportToPoint;
-
-            public Vector2 Position;
-            public ViewDirection Direction;
-
-            public TransimitionMessage()
-            {
-                Location = null;
-                Point = string.Empty;
-                TeleportToPoint = true;
-                Position = Vector2.zero;
-                Direction = ViewDirection.Down;
-            }
-        }
-        #endregion
+        [Inject]
+        private readonly LoadingScreenManager _loadingScreen;
+        [Inject]
+        private readonly SceneLoadManager _sceneLoader;
 
         public RpgfLocationInfo CurrentLocation { get; private set; } = null;
         public bool IsChanging => changingCoroutine != null;
@@ -49,7 +29,7 @@ namespace RPGF.Core.Location
             if (IsChanging || location == null)
                 return;
 
-            TransimitionMessage message = new TransimitionMessage()
+            LocationTransimitionDto message = new()
             {
                 Location = location,
                 Point = pointName,
@@ -64,7 +44,7 @@ namespace RPGF.Core.Location
         {
             if (IsChanging) return;
 
-            TransimitionMessage message = new TransimitionMessage()
+            LocationTransimitionDto message = new()
             {
                 Location = location,
                 Point = "default",
@@ -75,7 +55,7 @@ namespace RPGF.Core.Location
 
             changingCoroutine = StartCoroutine(ChangeLocationCoroutine(message));
         }
-        public void ChangeLocation(TransimitionMessage message)
+        public void ChangeLocation(LocationTransimitionDto message)
         {
             if (IsChanging) return;
 
@@ -88,29 +68,29 @@ namespace RPGF.Core.Location
         }
         public RpgfLocationInfo LoadLocationInfoByName(string locName)
         {
-            RpgfLocationInfo[] locations = Resources.LoadAll<RpgfLocationInfo>($"Locations");
+            var locations = Resources.LoadAll<RpgfLocationInfo>($"Locations");
 
             return locations.First(i => i.Name == locName);
         }
 
         #endregion
 
-        private IEnumerator ChangeLocationCoroutine(TransimitionMessage message)
+        private IEnumerator ChangeLocationCoroutine(LocationTransimitionDto message)
         {
-            Global.LoadingScreen.ShowBackground();
+            _loadingScreen.ShowBackground();
 
-            yield return new WaitWhile(() => Global.LoadingScreen.IsBackgroundFading);
+            yield return new WaitWhile(() => _loadingScreen.IsBackgroundFading);
 
             if (CurrentLocation != null && message.Location.SceneName == SceneManager.GetActiveScene().name)
                 Local.Location.GetLocationByInfo(CurrentLocation).OnLeave();
 
             if (message.Location.SceneName != SceneManager.GetActiveScene().name)
             {
-                Global.LoadingScreen.ShowProggresBar();
+                _loadingScreen.ShowProggresBar();
 
-                Global.SceneLoader.LoadScene(message.Location.SceneName);
+                _sceneLoader.LoadScene(message.Location.SceneName);
 
-                yield return new WaitWhile(() => Global.SceneLoader.IsLoading);
+                yield return new WaitWhile(() => _sceneLoader.IsLoading);
             }
 
             if (!Local)
@@ -169,10 +149,10 @@ namespace RPGF.Core.Location
 
             OnLocationChanged?.Invoke(message.Location);
 
-            Global.LoadingScreen.HideBackground();
-            Global.LoadingScreen.HideProggresBar();
+            _loadingScreen.HideBackground();
+            _loadingScreen.HideProggresBar();
 
-            yield return new WaitWhile(() => Global.LoadingScreen.IsBackgroundFading);
+            yield return new WaitWhile(() => _loadingScreen.IsBackgroundFading);
 
             changingCoroutine = null;
         }

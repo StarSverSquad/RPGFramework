@@ -8,7 +8,7 @@ namespace RPGF.GUI
 {
     public class GUIChoicableBlock : GUIBlockBase
     {
-        [Space, Header("Choicable block options:")]
+        [Space, Header("Choicable block _options:")]
         [SerializeField]
         private bool _startChoiceOnActivate = false;
         [SerializeField]

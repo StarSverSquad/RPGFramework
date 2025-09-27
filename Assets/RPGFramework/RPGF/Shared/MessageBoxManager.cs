@@ -1,4 +1,5 @@
 ﻿using RPGF.Core.TextWriter;
+using RPGF.Domain.DI;
 using System;
 using System.Linq;
 using TMPro;
@@ -13,6 +14,9 @@ namespace RPGF.Shared
         {
             Bottom, Center, Top
         }
+
+        [Inject]
+        private readonly BaseOptions _options;
 
         [Header("Message")]
         [Tooltip("0 - bottom, 1 - center, 2 - top")]
@@ -133,12 +137,12 @@ namespace RPGF.Shared
 
         public override bool ContinueCanExecute()
         {
-            return Input.GetKeyDown(GlobalManager.Instance.BaseOptions.Accept);
+            return Input.GetKeyDown(_options.Accept);
         }
 
         public override bool SkipCanExecute()
         {
-            return Input.GetKeyDown(GlobalManager.Instance.BaseOptions.Cancel);
+            return Input.GetKeyDown(_options.Cancel);
         }
 
         public override void OnEveryLetter(char letter)

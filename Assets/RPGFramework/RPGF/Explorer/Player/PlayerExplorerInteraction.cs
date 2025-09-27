@@ -1,9 +1,10 @@
+using RPGF.Core;
 using RPGF.EventSystem;
 using UnityEngine;
 
 namespace RPGF.Explorer.Player
 {
-    public class PlayerExplorerInteraction : MonoBehaviour
+    public class PlayerExplorerInteraction : RPGFrameworkBehaviour
     {
         public enum ViewDirection
         {
@@ -21,8 +22,11 @@ namespace RPGF.Explorer.Player
 
         private void FixedUpdate()
         {
-            if (ExplorerManager.Instance.PlayerManager.movement.CanWalk
-                && !ExplorerManager.Instance.EventHandler.EventRuning)
+            if (Local == null)
+                return;
+
+            if (Explorer.PlayerManager.movement.CanWalk
+                && !Explorer.EventHandler.EventRuning)
             {
                 if (Input.GetKey(KeyCode.RightArrow))
                 {

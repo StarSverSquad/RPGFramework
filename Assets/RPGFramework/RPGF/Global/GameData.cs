@@ -1,14 +1,17 @@
 using RPGF.Domain;
+using RPGF.Domain.DI;
 using RPGF.RPG;
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace RPGF
 {
-    public class GameData : IDisposable
+    public class GameData : IDisposable, IInitializable, ISupportDI
     {
-        private readonly GlobalManager _manager;
+        [Inject]
+        private readonly BaseOptions _options;
 
         public CustomDictionary<int> IntValues;
         public CustomDictionary<float> FloatValues;
@@ -24,10 +27,8 @@ namespace RPGF
 
         public int Money = 0;
 
-        public GameData(GlobalManager manager)
+        public void Initialize()
         {
-            _manager = manager;
-
             ApplyDataFromBaseOptions();
         }
 
@@ -40,13 +41,13 @@ namespace RPGF
 
             BlockedLocationEvents = new List<string>();
 
-            foreach (var data in _manager.BaseOptions.IntValues.data)
+            foreach (var data in _options.IntValues.data)
                 IntValues.Add(data.Key, data.Value);
-            foreach (var data in _manager.BaseOptions.FloatValues.data)
+            foreach (var data in _options.FloatValues.data)
                 FloatValues.Add(data.Key, data.Value);
-            foreach (var data in _manager.BaseOptions.BoolValues.data)
+            foreach (var data in _options.BoolValues.data)
                 BoolValues.Add(data.Key, data.Value);
-            foreach (var data in _manager.BaseOptions.StringValues.data)
+            foreach (var data in _options.StringValues.data)
                 StringValues.Add(data.Key, data.Value);
 
             Characters = Resources.LoadAll<RPGCharacter>("Characters");

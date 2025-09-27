@@ -1,12 +1,12 @@
 using DG.Tweening;
-using System.Collections;
+using RPGF.Core;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace RPGF
 {
-    public class LoadingScreenManager : MonoBehaviour
+    public class LoadingScreenManager : RPGFrameworkBehaviour
     {
         [SerializeField]
         private GameObject backgroundContainer;

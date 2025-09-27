@@ -1,11 +1,12 @@
-﻿using RPGF.Core.RPGEffect;
+﻿using RPGF.Core;
+using RPGF.Core.RPGEffect;
 using RPGF.RPG;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Explorer
 {
-    public class ExplorerItemConsumeManager : MonoBehaviour
+    public class ExplorerItemConsumeManager : RPGFrameworkBehaviour
     {
         private Coroutine consumeCoroutine;
         public bool IsCosuming => consumeCoroutine != null;

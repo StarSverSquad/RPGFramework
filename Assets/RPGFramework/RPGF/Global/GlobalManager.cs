@@ -1,5 +1,5 @@
 using DG.Tweening;
-using RPGF.Core.Architecture;
+using RPGF.Core;
 using RPGF.Core.Character;
 using RPGF.Core.Inventory;
 using RPGF.Core.Localization;
@@ -31,52 +31,48 @@ namespace RPGF
         public BaseOptions BaseOptions { get; private set; }
         public GameData GameData { get; private set; }
 
-        public GameUtils Utils => new GameUtils(this);
+        public GameUtils Utils { get; private set; }
 
         public static LocalizationService ILocalization => Instance.Localization;
-
-        private void Awake()
-        {
-            if (Instance == null)
-            {
-                Instance = this;
-
-                DontDestroyOnLoad(gameObject);
-
-                InitializeChild();
-            }
-            else
-                Destroy(gameObject);
-        }
-
         public override void Initialize()
         {
-            
+            Instance = this;
+
+            Game.DI.AddSignleton(LoadingScreen);
+            Game.DI.AddSignleton(GameAudio);
+            Game.DI.AddSignleton(SceneLoader);
+            Game.DI.AddSignleton(LocationManager);
+
+            InitializeChild();
         }
 
         public override void InitializeChild()
         {
-            FilesService = new GameFilesService();
+            FilesService = Game.DI.CreateSingleton<GameFilesService>();
 
-            Character = new CharacterService();
+            Character = Game.DI.CreateSingleton<CharacterService>();
 
-            Inventory = new InventoryService();
+            Inventory = Game.DI.CreateSingleton<InventoryService>();
 
             BaseOptions = Resources.Load<BaseOptions>("Options");
+            Game.DI.AddSignleton(BaseOptions);
 
-            GameData = new GameData(this);
+            GameData = Game.DI.CreateSingleton<GameData>();
+            GameData.Initialize();
 
-            GameConfig = new GameConfigService(FilesService, GameAudio);
+            GameConfig = Game.DI.CreateSingleton<GameConfigService>();
             GameConfig.LoadAndApply();
 
-            CommonDataService = new GameCommonDataService(FilesService);
+            CommonDataService = Game.DI.CreateSingleton<GameCommonDataService>();
             CommonDataService.Load();
 
-            FastSave = new FastSaveService(CommonDataService);
+            FastSave = Game.DI.CreateSingleton<FastSaveService>();
 
-            Localization = new LocalizationService(GameConfig);
+            Localization = Game.DI.CreateSingleton<LocalizationService>();
 
-            SaveLoad = new SaveLoadService(Character, GameData, LocationManager, Inventory, FilesService, CommonDataService);
+            SaveLoad = Game.DI.CreateSingleton<SaveLoadService>();
+
+            Utils = Game.DI.CreateSingleton<GameUtils>();
         }
 
         private void OnApplicationQuit()

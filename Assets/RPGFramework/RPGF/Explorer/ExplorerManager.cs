@@ -1,6 +1,5 @@
-using RPGF.Core.Architecture;
+using RPGF.Core;
 using RPGF.Domain;
-using RPGF.Domain.Interfaces;
 using RPGF.Explorer.Player;
 using UnityEngine;
 
@@ -9,23 +8,21 @@ namespace RPGF.Explorer
     public class ExplorerManager : KernelManagerBase
     {
         public static ExplorerManager Instance;
+        public static PlayerExplorerMovement PlayerMovement => Instance.PlayerManager.movement;
 
         public ExplorerEventHandler EventHandler;
         public PlayerExplorerManager PlayerManager;
         public ExplorerItemConsumeManager ItemConsumer;
 
-        public static PlayerExplorerMovement PlayerMovement => Instance.PlayerManager.movement;
+        private LocalManager Local => LocalManager.Instance;
 
         public override void Initialize()
         {
             Instance = this;
 
-            InitializeChild();
-        }
-
-        public override void InitializeChild()
-        {
-
+            Local.DI.AddSignleton(EventHandler);
+            Local.DI.AddSignleton(PlayerManager);
+            Local.DI.AddSignleton(ItemConsumer);
         }
 
         public static Vector2 GetPlayerPosition()

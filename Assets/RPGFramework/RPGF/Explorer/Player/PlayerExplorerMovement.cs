@@ -46,6 +46,9 @@ namespace RPGF.Explorer.Player
 
         private void Update()
         {
+            if (Local == null)
+                return;
+
             if (IsAutoMoving)
             {
                 OnMoving?.Invoke();
@@ -107,7 +110,7 @@ namespace RPGF.Explorer.Player
 
             ViewDirection? newViewDirection = null;
 
-            if (CanWalk && !ExplorerManager.Instance.EventHandler.EventRuning)
+            if (CanWalk && !Explorer.EventHandler.EventRuning)
             {
 
                 if (Input.GetKey(Global.BaseOptions.MoveRight))

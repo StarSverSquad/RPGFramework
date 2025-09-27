@@ -1,10 +1,10 @@
-﻿using RPGF.Core.Architecture;
+﻿using RPGF.Core;
 using RPGF.Core.Location;
 using UnityEngine;
 
 namespace RPGF.Global
 {
-    public class DebugModeManager : GameSystemBase
+    public class DebugModeManager : RPGFrameworkBehaviour
     {
         [SerializeField]
         private RpgfLocationInfo location;

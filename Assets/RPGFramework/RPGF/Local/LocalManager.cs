@@ -1,7 +1,8 @@
 ﻿using RPGF.Battle;
-using RPGF.Core.Architecture;
+using RPGF.Core;
 using RPGF.Core.Character;
 using RPGF.Core.Location;
+using RPGF.Domain.DI;
 using RPGF.Explorer;
 using RPGF.Shared;
 using UnityEngine;
@@ -29,18 +30,25 @@ namespace RPGF
         [SerializeField]
         private BattleManager battle;
 
+        public DependencyInjection DI { get; private set; }
+
         public override void Initialize()
         {
-            
-        }
-
-        public void Start()
-        {
             Instance = this;
+
+            DI = new DependencyInjection();
+
+            DI.AddSubInjector(Game.DI);
+
+            DI.AddSignleton(Sun);
 
             InitializeChild();
         }
 
+        public void Awake()
+        {
+            Game.LocalInitializeRequest(this);
+        }
 
         private void Update()
         {
@@ -54,14 +62,21 @@ namespace RPGF
         public override void InitializeChild()
         {
             Camera.Initialize();
+            DI.AddSignleton(Camera);
+
             TittleMenu.Initialize();
+            DI.AddSignleton(TittleMenu);
 
             explorer.Initialize();
 
             Location.Initialize();
+            DI.AddSignleton(Location);
+
             Character.Initialize();
+            DI.AddSignleton(Character);
 
             common.Initialize();
+
             battle.Initialize();
         }
 

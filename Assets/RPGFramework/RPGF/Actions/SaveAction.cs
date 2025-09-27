@@ -13,7 +13,7 @@ public class SaveAction : GraphActionBase
 
     public override IEnumerator ActionCoroutine()
     {
-        GameManager.Instance.SaveLoad.GameSave(slotId);
+        GlobalManager.Instance.SaveLoad.GameSave(slotId);
 
         yield break;
     }

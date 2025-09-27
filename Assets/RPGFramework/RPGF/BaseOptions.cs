@@ -1,10 +1,11 @@
 ﻿using RPGF.Domain;
+using RPGF.Domain.DI;
 using UnityEngine;
 
 namespace RPGF
 {
     [CreateAssetMenu(fileName = "Config", menuName = "RPGFramework/Config")]
-    public class BaseOptions : ScriptableObject
+    public class BaseOptions : ScriptableObject, Injectable
     {
         [Header("Базовое управление")]
         public KeyCode MoveUp = KeyCode.UpArrow;

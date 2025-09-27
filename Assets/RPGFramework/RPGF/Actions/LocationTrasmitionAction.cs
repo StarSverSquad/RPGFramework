@@ -7,11 +7,11 @@ using UnityEngine;
 
 public class LocationTrasmitionAction : GraphActionBase
 {
-    public GlobalLocationManager.TransimitionMessage Message;
+    public LocationTransimitionDto Message;
 
     public LocationTrasmitionAction() : base("LocationTrasmition")
     {
-        Message = new GlobalLocationManager.TransimitionMessage();
+        Message = new LocationTransimitionDto();
     }
 
     public override IEnumerator ActionCoroutine()
@@ -23,10 +23,10 @@ public class LocationTrasmitionAction : GraphActionBase
 
             ExplorerManager.PlayerMovement.CanWalk = false;
 
-            GameManager.Instance.LocationManager.ChangeLocation(Message);
+            GlobalManager.Instance.LocationManager.ChangeLocation(Message);
         }     
 
-        yield return new WaitWhile(() => GameManager.Instance.LocationManager.IsChanging);
+        yield return new WaitWhile(() => GlobalManager.Instance.LocationManager.IsChanging);
 
         ExplorerManager.PlayerMovement.CanWalk = true;
     }

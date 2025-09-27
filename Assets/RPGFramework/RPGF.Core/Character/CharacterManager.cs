@@ -18,7 +18,7 @@ namespace RPGF.Core.Character
         private List<PlayableCharacterModelController> models = new();
         private List<Vector2> targets = new();
 
-        public RPGCharacter[] Characters => GameManager.Instance.Character.Characters;
+        public RPGCharacter[] Characters => GlobalManager.Instance.Character.Characters;
 
         public List<PlayableCharacterModelController> Models => models;
 

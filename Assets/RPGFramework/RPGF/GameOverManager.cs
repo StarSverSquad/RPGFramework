@@ -73,13 +73,13 @@ namespace RPGF
 
             yield return new WaitForSeconds(2);
 
-            yield return new WaitUntil(() => Input.GetKeyDown(GameManager.Instance.BaseOptions.Accept));
+            yield return new WaitUntil(() => Input.GetKeyDown(GlobalManager.Instance.BaseOptions.Accept));
 
             bg.GetComponent<Image>().DOColor(new Color(1, 1, 1, 0), 2f).SetLoops(0).Play();
 
             yield return new WaitForSeconds(2.25f);
 
-            Game.SaveLoad.FastLoad();
+            Global.SaveLoad.FastLoad();
         }
     }
 

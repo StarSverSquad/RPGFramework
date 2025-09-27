@@ -19,13 +19,13 @@ namespace RPGF.Battle.Player
             {
                 Vector2 direction = Vector2.zero;
 
-                if (Input.GetKey(Game.BaseOptions.MoveUp))
+                if (Input.GetKey(Global.BaseOptions.MoveUp))
                     direction += Vector2.up;
-                if (Input.GetKey(Game.BaseOptions.MoveDown))
+                if (Input.GetKey(Global.BaseOptions.MoveDown))
                     direction += Vector2.down;
-                if (Input.GetKey(Game.BaseOptions.MoveLeft))
+                if (Input.GetKey(Global.BaseOptions.MoveLeft))
                     direction += Vector2.left;
-                if (Input.GetKey(Game.BaseOptions.MoveRight))
+                if (Input.GetKey(Global.BaseOptions.MoveRight))
                     direction += Vector2.right;
 
                 rb.linearVelocity = direction.normalized * MoveSpeed;

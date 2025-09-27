@@ -10,7 +10,7 @@ public class GameEndAction : GraphActionBase
 
     public override IEnumerator ActionCoroutine()
     {
-        GameManager.Instance.SceneLoader.LoadScene("DemoMenu"); // Надо будет поменять на просто MainMenu
+        GlobalManager.Instance.SceneLoader.LoadScene("DemoMenu"); // Надо будет поменять на просто MainMenu
 
         yield break;
     }

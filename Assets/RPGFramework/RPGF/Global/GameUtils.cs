@@ -1,23 +1,28 @@
-﻿using RPGF.Core.Location;
+﻿using RPGF.Core.Character;
+using RPGF.Core.Inventory;
+using RPGF.Core.Location;
+using RPGF.Domain.DI;
 
 namespace RPGF
 {
-    public class GameUtils
+    public class GameUtils : ISupportDI
     {
-        private readonly GameManager _game;
-
-        public GameUtils(GameManager game)
-        {
-            _game = game;
-        }
+        [Inject]
+        private readonly InventoryService _inventory;
+        [Inject]
+        private readonly CharacterService _character;
+        [Inject]
+        private readonly GameData _gameData;
+        [Inject]
+        private readonly GlobalLocationManager _locationManager;
 
         public void StartNewGame(RpgfLocationInfo startLocation)
         {
-            _game.Inventory.Dispose();
-            _game.Character.Dispose();
-            _game.GameData.Dispose();
+            _inventory.Dispose();
+            _character.Dispose();
+            _gameData.Dispose();
 
-            _game.LocationManager.ChangeLocation(startLocation);
+            _locationManager.ChangeLocation(startLocation);
         }
     }
 }

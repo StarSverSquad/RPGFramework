@@ -18,7 +18,7 @@ namespace GlackSaga.GUI.TitleMenu
 
         public override void Initialize()
         {
-            _moneyText.text = $"{Game.GameData.Money} {GetLocale("SYS_MONEY")}";
+            _moneyText.text = $"{Global.GameData.Money} {GetLocale("SYS_MONEY")}";
 
             _selfRect.DOAnchorPosX(-130, _animationDuration).SetEase(Ease.OutCubic).From(new Vector2(130, -54)).Play();
         }

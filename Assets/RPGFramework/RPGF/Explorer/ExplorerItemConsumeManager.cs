@@ -1,11 +1,12 @@
-﻿using RPGF.Core.RPGEffect;
+﻿using RPGF.Core;
+using RPGF.Core.RPGEffect;
 using RPGF.RPG;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Explorer
 {
-    public class ExplorerItemConsumeManager : MonoBehaviour
+    public class ExplorerItemConsumeManager : RPGFrameworkBehaviour
     {
         private Coroutine consumeCoroutine;
         public bool IsCosuming => consumeCoroutine != null;
@@ -25,7 +26,7 @@ namespace RPGF.Explorer
         private IEnumerator ConsumeCoroutine(RPGConsumed item, RPGEntity who, RPGEntity target)
         {
             if (item.Usage == Usability.Battle || item.Usage == Usability.Noway
-                || !GameManager.Instance.Inventory.HasItemSlot(item))
+                || !GlobalManager.Instance.Inventory.HasItemSlot(item))
             {
                 consumeCoroutine = null;
 
@@ -39,7 +40,7 @@ namespace RPGF.Explorer
 
             who.Heal = who.Heal == 0 ? 1 : who.Heal;
 
-            GameManager.Instance.Inventory.AddToItemCount(item, -1);
+            GlobalManager.Instance.Inventory.AddToItemCount(item, -1);
 
             consumeCoroutine = null;
         }

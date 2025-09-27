@@ -1,19 +1,20 @@
 ﻿using RPGF.Core.SaveLoad;
+using RPGF.Domain.DI;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace RPGF.Core.Localization
 {
-    public class LocalizationService
+    public class LocalizationService : ISupportDI
     {
+        [Inject]
         private readonly GameConfigService _gameConfig;
 
         private LocalizationSheet[] sheets;
 
-        public LocalizationService(GameConfigService gameConfig)
+        public LocalizationService()
         {
-            _gameConfig = gameConfig;
-
             sheets = Resources.LoadAll<LocalizationSheet>("Localizations/").OrderBy(i => i.Order).ToArray();
         }
 

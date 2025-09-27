@@ -1,4 +1,5 @@
 using DG.Tweening;
+using RPGF.Core;
 using RPGF.Core.Character;
 using RPGF.Core.Inventory;
 using RPGF.Core.Localization;
@@ -8,21 +9,15 @@ using UnityEngine;
 
 namespace RPGF
 {
-    public class GameManager : ContentManagerBase
+    public class GlobalManager : KernelManagerBase
     {
-        public static GameManager Instance;
+        public static GlobalManager Instance;
 
         [Header("Глобальные ссылки")]
         public GlobalLocationManager LocationManager;
         public AudioManager GameAudio;
-        public LoadingScreenManager LoadingScreen;
         public SceneLoadManager SceneLoader;
-
-        /// <summary>
-        /// DEBUG - New Game Location
-        /// </summary>
-        [SerializeField, Space]
-        private Core.Location.RpgfLocationInfo newGameLocation;
+        public LoadingScreenManager LoadingScreen;
 
         public LocalizationService Localization { get; private set; }
         public InventoryService Inventory { get; private set; }
@@ -36,54 +31,48 @@ namespace RPGF
         public BaseOptions BaseOptions { get; private set; }
         public GameData GameData { get; private set; }
 
-        public GameUtils Utils => new GameUtils(this);
+        public GameUtils Utils { get; private set; }
 
         public static LocalizationService ILocalization => Instance.Localization;
-
-        private void Awake()
+        public override void Initialize()
         {
-            if (Instance == null)
-            {
-                Instance = this;
+            Instance = this;
 
-                DontDestroyOnLoad(gameObject);
+            Game.DI.AddSignleton(LoadingScreen);
+            Game.DI.AddSignleton(GameAudio);
+            Game.DI.AddSignleton(SceneLoader);
+            Game.DI.AddSignleton(LocationManager);
 
-                InitializeChild();
-            }
-            else
-                Destroy(gameObject);
-        }
-
-        private void Update()
-        {
-            // DEBUG - New Game Location start
-            if (Input.GetKeyDown(KeyCode.N))
-                Utils.StartNewGame(newGameLocation);
+            InitializeChild();
         }
 
         public override void InitializeChild()
         {
-            FilesService = new GameFilesService();
+            FilesService = Game.DI.CreateSingleton<GameFilesService>();
 
-            Character = new CharacterService();
+            Character = Game.DI.CreateSingleton<CharacterService>();
 
-            Inventory = new InventoryService();
+            Inventory = Game.DI.CreateSingleton<InventoryService>();
 
             BaseOptions = Resources.Load<BaseOptions>("Options");
+            Game.DI.AddSignleton(BaseOptions);
 
-            GameData = new GameData(this);
+            GameData = Game.DI.CreateSingleton<GameData>();
+            GameData.Initialize();
 
-            GameConfig = new GameConfigService(FilesService, GameAudio);
+            GameConfig = Game.DI.CreateSingleton<GameConfigService>();
             GameConfig.LoadAndApply();
 
-            CommonDataService = new GameCommonDataService(FilesService);
+            CommonDataService = Game.DI.CreateSingleton<GameCommonDataService>();
             CommonDataService.Load();
 
-            FastSave = new FastSaveService(CommonDataService);
+            FastSave = Game.DI.CreateSingleton<FastSaveService>();
 
-            Localization = new LocalizationService(GameConfig);
+            Localization = Game.DI.CreateSingleton<LocalizationService>();
 
-            SaveLoad = new SaveLoadService(Character, GameData, LocationManager, Inventory, FilesService, CommonDataService);
+            SaveLoad = Game.DI.CreateSingleton<SaveLoadService>();
+
+            Utils = Game.DI.CreateSingleton<GameUtils>();
         }
 
         private void OnApplicationQuit()

@@ -17,7 +17,7 @@ namespace RPGF.Core.Localization
 
         private void OnEnable()
         {
-            if (Game == null || !gameObject.activeInHierarchy)
+            if (Global == null || !gameObject.activeInHierarchy)
                 return;
 
             textMeshProUGUI = GetComponent<TextMeshProUGUI>();
@@ -26,7 +26,7 @@ namespace RPGF.Core.Localization
             {
                 string localeText = string.Empty;
 
-                HasLocale = Game.Localization.TryGetLocale(textMeshProUGUI.text, out localeText);
+                HasLocale = Global.Localization.TryGetLocale(textMeshProUGUI.text, out localeText);
 
                 textMeshProUGUI = GetComponent<TextMeshProUGUI>();
                 textMeshProUGUI.text = localeText;

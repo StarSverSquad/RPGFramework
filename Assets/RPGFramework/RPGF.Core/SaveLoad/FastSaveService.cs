@@ -1,18 +1,16 @@
-﻿namespace RPGF.Core.SaveLoad
+﻿using RPGF.Domain.DI;
+
+namespace RPGF.Core.SaveLoad
 {
-    public class FastSaveService
+    public class FastSaveService : ISupportDI
     {
+        [Inject]
         private readonly GameCommonDataService _commonData;
 
         public int this[string key]
         {
             get => GetKey(key);
             set => SetKey(key, value);
-        }
-
-        public FastSaveService(GameCommonDataService commonData)
-        {
-            _commonData = commonData;
         }
 
         public bool HaveKey(string key)

@@ -17,17 +17,17 @@ public class IntVarCondition : ConditionBase
 
     public override bool Invoke()
     {
-        if (!GameManager.Instance.GameData.IntValues.HaveKey(Var))
+        if (!GlobalManager.Instance.GameData.IntValues.HaveKey(Var))
             return false;
 
         return Operation switch
         {
-            ConditionOperation.Equals => GameManager.Instance.GameData.IntValues[Var] == Value,
-            ConditionOperation.NotEquals => GameManager.Instance.GameData.IntValues[Var] != Value,
-            ConditionOperation.More => GameManager.Instance.GameData.IntValues[Var] > Value,
-            ConditionOperation.Less => GameManager.Instance.GameData.IntValues[Var] < Value,
-            ConditionOperation.MoreOrEquals => GameManager.Instance.GameData.IntValues[Var] >= Value,
-            ConditionOperation.LessOrEquals => GameManager.Instance.GameData.IntValues[Var] <= Value,
+            ConditionOperation.Equals => GlobalManager.Instance.GameData.IntValues[Var] == Value,
+            ConditionOperation.NotEquals => GlobalManager.Instance.GameData.IntValues[Var] != Value,
+            ConditionOperation.More => GlobalManager.Instance.GameData.IntValues[Var] > Value,
+            ConditionOperation.Less => GlobalManager.Instance.GameData.IntValues[Var] < Value,
+            ConditionOperation.MoreOrEquals => GlobalManager.Instance.GameData.IntValues[Var] >= Value,
+            ConditionOperation.LessOrEquals => GlobalManager.Instance.GameData.IntValues[Var] <= Value,
             _ => false,
         };
     }

@@ -13,10 +13,10 @@ public class BoolVarCondition : ConditionBase
 
     public override bool Invoke()
     {
-        if (!GameManager.Instance.GameData.BoolValues.HaveKey(Var))
+        if (!GlobalManager.Instance.GameData.BoolValues.HaveKey(Var))
             return !Value;
 
-        return GameManager.Instance.GameData.BoolValues[Var] == Value;
+        return GlobalManager.Instance.GameData.BoolValues[Var] == Value;
     }
 
     public override string GetLabel()

@@ -11,7 +11,7 @@ public class ItemCondition : ConditionBase
 
     public ConditionOperation Operation;
 
-    private InventoryService Inventory => GameManager.Instance.Inventory;
+    private InventoryService Inventory => GlobalManager.Instance.Inventory;
 
     public ItemCondition()
     {

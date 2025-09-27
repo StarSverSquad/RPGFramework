@@ -1,10 +1,11 @@
+using RPGF.Core;
 using RPGF.EventSystem;
 using System;
 using UnityEngine;
 
 namespace RPGF.Explorer
 {
-    public class ExplorerEventHandler : MonoBehaviour
+    public class ExplorerEventHandler : RPGFrameworkBehaviour
     {
         [SerializeField]
         private GraphEvent CurrentEvent;

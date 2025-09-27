@@ -48,7 +48,7 @@ namespace RPGF.Battle
         #region READONLY PROPS
 
         public BattleData Data => _battle.Data;
-        public LocalizationService Localization => GameManager.Instance.Localization;
+        public LocalizationService Localization => GlobalManager.Instance.Localization;
         public BattleChoiceManager Choice => _battle.Choice;
         public BattleUtility Utility => _battle.Utility;
         public BattleVisualTransmitionManager VisualTransmition => _battle.VisualTransmition;
@@ -253,17 +253,17 @@ namespace RPGF.Battle
 
         private IEnumerator BattleEnter()
         {
-            foreach (var character in GameManager.Instance.Character.Characters)
+            foreach (var character in GlobalManager.Instance.Character.Characters)
             {
                 if (character.ParticipateInBattle)
                     Data.TurnsData.Add(new BattleTurnData(character));
             }
 
             if (Data.BattleInfo.StopGlobalMusic)
-                GameManager.Instance.GameAudio.PauseBGM(0.2f);
+                GlobalManager.Instance.GameAudio.PauseBGM(0.2f);
 
             if (Data.BattleInfo.StopGlobalMusic)
-                GameManager.Instance.GameAudio.PauseBGS();
+                GlobalManager.Instance.GameAudio.PauseBGS();
 
             VisualTransmition.InitializeEffect(Data.BattleInfo.BattleEnterEffect);
 
@@ -320,10 +320,10 @@ namespace RPGF.Battle
 
 
             if (Data.BattleInfo.StopGlobalMusic)
-                GameManager.Instance.GameAudio.ResumeBGM();
+                GlobalManager.Instance.GameAudio.ResumeBGM();
 
             if (Data.BattleInfo.StopGlobalMusic)
-                GameManager.Instance.GameAudio.ResumeBGS();
+                GlobalManager.Instance.GameAudio.ResumeBGS();
 
             Data.Dispose();
 
@@ -673,7 +673,7 @@ namespace RPGF.Battle
                 if (Data.BattleInfo.enemySquad.MoneyConstDrop)
                     money = Mathf.RoundToInt(Random.Range(money * 0.65f, money * 1.35f));
 
-                GameManager.Instance.GameData.Money += money;
+                GlobalManager.Instance.GameData.Money += money;
 
                 moneyText += $"* {Localization.GetLocale("SYS_BATTLE_YOU_GOT")} {money} {Localization.GetLocale("SYS_MONEY")}!\n";
             }
@@ -686,7 +686,7 @@ namespace RPGF.Battle
 
                 int count = Mathf.RoundToInt(Random.Range(drop.Count - drop.CountRange, drop.Count + drop.CountRange));
 
-                GameManager.Instance.Inventory.AddToItemCount(drop.item, count);
+                GlobalManager.Instance.Inventory.AddToItemCount(drop.item, count);
 
                 string countText = count > 1 ? $" {count}x" : "";
 
@@ -1035,7 +1035,7 @@ namespace RPGF.Battle
         }
         private IEnumerator HandleItemChoice(BattleTurnData turnData)
         {
-            if (GameManager.Instance.Inventory.Slots
+            if (GlobalManager.Instance.Inventory.Slots
                         .Where(i => i.Item.Usage == Usability.Battle ||
                                     i.Item.Usage == Usability.Any).Count() > 0)
             {

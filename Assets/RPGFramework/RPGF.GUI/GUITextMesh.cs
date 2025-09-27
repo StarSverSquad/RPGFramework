@@ -12,7 +12,7 @@ namespace RPGF.GUI
         protected override void OnEnable()
         {
             if (_autoLocalize)
-                text = GameManager.Instance.Localization.GetLocale(text);
+                text = GlobalManager.Instance.Localization.GetLocale(text);
         }
     }
 }

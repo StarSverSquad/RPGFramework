@@ -1,18 +1,17 @@
-﻿using RPGF.Domain.Interfaces;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace RPGF.Core.Location
 {
-    public class LocalLocationManager : MonoBehaviour, IManagerInitialize
+    public class LocalLocationManager : RPGFrameworkBehaviour
     {
         [SerializeField]
         private List<LocationController> Locations = new();
 
-        public LocationController Current => GetLocationByInfo(GameManager.Instance.LocationManager.CurrentLocation);
+        public LocationController Current => GetLocationByInfo(GlobalManager.Instance.LocationManager.CurrentLocation);
 
-        public void Initialize()
+        public override void Initialize()
         {
             GameObject locationContainer = GameObject.FindGameObjectWithTag("LocationsContainer");
 

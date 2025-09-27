@@ -38,28 +38,28 @@ public class ManageBGSAction : GraphActionBase
         switch (Operation)
         {
             case OperationType.Play:
-                if (IngoreIfThisClip && GameManager.Instance.GameAudio.BGSIsPlaying
-                    && GameManager.Instance.GameAudio.BGSClip == clip)
+                if (IngoreIfThisClip && GlobalManager.Instance.GameAudio.BGSIsPlaying
+                    && GlobalManager.Instance.GameAudio.BGSClip == clip)
                     yield break;
 
-                GameManager.Instance.GameAudio.PlayBGS(clip, Volume, UseFade ? FadeTime : 0);
+                GlobalManager.Instance.GameAudio.PlayBGS(clip, Volume, UseFade ? FadeTime : 0);
                 break;
             case OperationType.Pause:
-                GameManager.Instance.GameAudio.PauseBGS(UseFade ? FadeTime : 0);
+                GlobalManager.Instance.GameAudio.PauseBGS(UseFade ? FadeTime : 0);
                 break;
             case OperationType.Stop:
-                GameManager.Instance.GameAudio.StopBGS(UseFade ? FadeTime : 0);
+                GlobalManager.Instance.GameAudio.StopBGS(UseFade ? FadeTime : 0);
                 break;
             case OperationType.VolumeChange:
-                GameManager.Instance.GameAudio.ChangeBGSVolume(Volume, UseFade ? FadeTime : 0);
+                GlobalManager.Instance.GameAudio.ChangeBGSVolume(Volume, UseFade ? FadeTime : 0);
                 break;
             case OperationType.Resume:
-                GameManager.Instance.GameAudio.ResumeBGS(Volume, UseFade ? FadeTime : 0);
+                GlobalManager.Instance.GameAudio.ResumeBGS(Volume, UseFade ? FadeTime : 0);
                 break;
         }
 
         if (UseFade && WaitFade)
-            yield return new WaitWhile(() => GameManager.Instance.GameAudio.BGSIsFade);
+            yield return new WaitWhile(() => GlobalManager.Instance.GameAudio.BGSIsFade);
     }
 
     public override string GetHeader()

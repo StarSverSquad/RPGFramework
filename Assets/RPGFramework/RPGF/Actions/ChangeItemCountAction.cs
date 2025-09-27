@@ -12,7 +12,7 @@ public class ChangeItemCountAction : GraphActionBase
 
     public bool IsSet;
 
-    private InventoryService Inventory => GameManager.Instance.Inventory;
+    private InventoryService Inventory => GlobalManager.Instance.Inventory;
 
     public ChangeItemCountAction() : base("ChangeItemCount")
     {

@@ -25,7 +25,7 @@ public class ManageVarAction : GraphActionBase
     public string StringBuffer;
     public float FloatBuffer;
 
-    private FastSaveService FastSave => GameManager.Instance.FastSave;
+    private FastSaveService FastSave => GlobalManager.Instance.FastSave;
     private GameData GameData => GameData;
 
     public ManageVarAction() : base("ManageVar")

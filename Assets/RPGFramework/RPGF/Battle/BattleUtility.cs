@@ -5,10 +5,11 @@ using RPGF.Battle.Enums;
 using System.Linq;
 using System.Collections;
 using UnityEngine;
+using RPGF.Domain.DI;
 
 namespace RPGF.Battle
 {
-    public class BattleUtility
+    public class BattleUtility : Injectable
     {
         private BattleManager _battle { get; set; }
 
@@ -399,7 +400,7 @@ namespace RPGF.Battle
 
             // Если потребляемый предмет то нужно забрать из инвентаря 1 еденицу
             if (consumed != null)
-                GameManager.Instance.Inventory.AddToItemCount(consumed, -1);
+                GlobalManager.Instance.Inventory.AddToItemCount(consumed, -1);
         }
     }
 }

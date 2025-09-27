@@ -21,10 +21,10 @@ namespace GlackSaga.GUI.TitleMenu
         {
             for (int i = 0; i < _charactersGUI.Length; i++)
             {
-                if (i < Game.Character.Characters.Length)
+                if (i < Global.Character.Characters.Length)
                 {
                     _charactersGUI[i].gameObject.SetActive(true);
-                    _charactersGUI[i].Initialize(Game.Character.Characters[i]);
+                    _charactersGUI[i].Initialize(Global.Character.Characters[i]);
                 }
                 else
                 {

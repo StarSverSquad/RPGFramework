@@ -1,4 +1,5 @@
 using RPGF;
+using RPGF.Domain.DI;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,9 @@ public class ChoiceBoxManager : ChoiceBase<string>
     {
         Top, Center, Bottom, Custom
     }
+
+    [Inject]
+    private readonly BaseOptions _options;
 
     /// <summary>
     /// Top, Center, Bottom
@@ -108,18 +112,18 @@ public class ChoiceBoxManager : ChoiceBase<string>
 
     public override bool ConfirmCanExecuted()
     {
-        return Input.GetKeyDown(GameManager.Instance.BaseOptions.Accept);
+        return Input.GetKeyDown(_options.Accept);
     }
 
     public override int SellectionChanging()
     {
-        if (Input.GetKeyDown(GameManager.Instance.BaseOptions.MoveRight))
+        if (Input.GetKeyDown(_options.MoveRight))
         {
             rightArrow.Shake();
 
             return 1;
         }           
-        else if (Input.GetKeyDown(GameManager.Instance.BaseOptions.MoveLeft))
+        else if (Input.GetKeyDown(_options.MoveLeft))
         {
             leftArrow.Shake();
 

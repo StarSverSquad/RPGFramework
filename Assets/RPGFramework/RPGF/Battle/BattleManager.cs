@@ -2,13 +2,13 @@ using RPGF.Battle.Enemy;
 using RPGF.Battle.Minigames;
 using RPGF.Battle.Player;
 using RPGF.Battle.UI;
-using RPGF.Domain.Interfaces;
+using RPGF.Core;
 using RPGF.RPG;
 using RPGF.Shared;
 
 namespace RPGF.Battle
 {
-    public class BattleManager : ContentManagerBase, IManagerInitialize
+    public class BattleManager : KernelManagerBase
     {
         public static BattleManager Instance;
 
@@ -40,7 +40,9 @@ namespace RPGF.Battle
         public static void StartBattle(RPGBattleInfo info) => BattleUtility.StartBattle(info);
         //
 
-        public void Initialize()
+        private LocalManager Local => LocalManager.Instance;
+
+        public override void Initialize()
         {
             Instance = this;
 
@@ -50,7 +52,9 @@ namespace RPGF.Battle
         public override void InitializeChild()
         {
             Pipeline = new BattlePipeline(this, SharedManager.Instance);
+
             Utility = new BattleUtility(this);
+            Local.DI.AddSignleton(Utility);
 
             Choice.Initialize();
 

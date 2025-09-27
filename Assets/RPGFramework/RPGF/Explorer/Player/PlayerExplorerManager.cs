@@ -1,10 +1,11 @@
+using RPGF.Core;
 using RPGF.Core.Location;
 using System.Linq;
 using UnityEngine;
 
 namespace RPGF.Explorer.Player
 {
-    public class PlayerExplorerManager : MonoBehaviour
+    public class PlayerExplorerManager : RPGFrameworkBehaviour
     {
         public PlayerExplorerMovement movement;
         public PlayerExplorerInteraction interaction;

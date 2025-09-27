@@ -1,9 +1,10 @@
-﻿using System.IO;
+﻿using RPGF.Domain.DI;
+using System.IO;
 using UnityEngine;
 
 namespace RPGF.Core.SaveLoad
 {
-    public class GameFilesService
+    public class GameFilesService : ISupportDI
     {
         public const string SLOTFORMAT = "glackslot";
         public const string COMMONFORMAT = "glackcommon";

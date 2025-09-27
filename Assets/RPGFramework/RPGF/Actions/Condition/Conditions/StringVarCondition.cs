@@ -14,10 +14,10 @@ public class StringVarCondition : ConditionBase
 
     public override bool Invoke()
     {
-        if (!GameManager.Instance.GameData.StringValues.HaveKey(Var))
+        if (!GlobalManager.Instance.GameData.StringValues.HaveKey(Var))
             return false;
 
-        return GameManager.Instance.GameData.StringValues[Var] == Value;
+        return GlobalManager.Instance.GameData.StringValues[Var] == Value;
     }
 
     public override string GetLabel()

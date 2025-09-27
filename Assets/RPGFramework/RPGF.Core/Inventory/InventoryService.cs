@@ -1,3 +1,4 @@
+using RPGF.Domain.DI;
 using RPGF.RPG;
 using System;
 using System.Collections;
@@ -7,7 +8,7 @@ using UnityEngine;
 
 namespace RPGF.Core.Inventory
 {
-    public class InventoryService : IEnumerable<InventorySlotData>, IDisposable
+    public class InventoryService : IEnumerable<InventorySlotData>, IDisposable, ISupportDI
     {
         private InventoryData _data;
 

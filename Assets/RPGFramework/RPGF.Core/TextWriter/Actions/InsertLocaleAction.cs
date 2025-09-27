@@ -16,7 +16,7 @@ namespace RPGF.Core.TextWriter.Actions
         {
             string tag = str.Remove(0, 1);
 
-            return GameManager.ILocalization.GetLocale(tag);
+            return GlobalManager.ILocalization.GetLocale(tag);
         }
 
         protected override IEnumerator Action()

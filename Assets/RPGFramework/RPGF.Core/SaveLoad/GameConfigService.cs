@@ -1,4 +1,5 @@
 ﻿using RPGF.Core.Localization;
+using RPGF.Domain.DI;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -6,21 +7,17 @@ using UnityEngine;
 namespace RPGF.Core.SaveLoad
 {
     [Serializable]
-    public class GameConfigService
+    public class GameConfigService : ISupportDI
     {
+        [Inject]
         private readonly GameFilesService _gameFiles;
+        [Inject]
         private readonly AudioManager _audio;
 
         public GameConfigData Config { get; private set; }
 
 
         public event Action OnConfigUpdated;
-
-        public GameConfigService(GameFilesService gameFiles, AudioManager audio)
-        {
-            _gameFiles = gameFiles;
-            _audio = audio;
-        }
 
         public void Apply()
         {

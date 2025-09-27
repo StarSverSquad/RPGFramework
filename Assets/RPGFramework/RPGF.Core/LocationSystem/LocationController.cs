@@ -4,7 +4,7 @@ using UnityEngine.Events;
 
 namespace RPGF.Core.Location
 {
-    public class LocationController : MonoBehaviour
+    public class LocationController : RPGFrameworkBehaviour
     {
         public UnityEvent OnEnterLocation;
         public UnityEvent OnLeaveLocation;

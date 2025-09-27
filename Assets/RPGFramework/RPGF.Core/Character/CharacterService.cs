@@ -1,11 +1,12 @@
-﻿using RPGF.RPG;
+﻿using RPGF.Domain.DI;
+using RPGF.RPG;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace RPGF.Core.Character
 {
-    public class CharacterService : IDisposable
+    public class CharacterService : IDisposable, ISupportDI
     {
         public event Action OnCharaterListChanged;
 

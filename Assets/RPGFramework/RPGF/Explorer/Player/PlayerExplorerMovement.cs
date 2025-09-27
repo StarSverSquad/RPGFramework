@@ -46,6 +46,9 @@ namespace RPGF.Explorer.Player
 
         private void Update()
         {
+            if (Local == null)
+                return;
+
             if (IsAutoMoving)
             {
                 OnMoving?.Invoke();
@@ -107,31 +110,31 @@ namespace RPGF.Explorer.Player
 
             ViewDirection? newViewDirection = null;
 
-            if (CanWalk && !ExplorerManager.Instance.EventHandler.EventRuning)
+            if (CanWalk && !Explorer.EventHandler.EventRuning)
             {
 
-                if (Input.GetKey(Game.BaseOptions.MoveRight))
+                if (Input.GetKey(Global.BaseOptions.MoveRight))
                 {
                     MoveDirection = MoveDirection.Right;
                     newViewDirection = ViewDirection.Right;
                     Velocity += new Vector2(1, 0);
                 }
 
-                if (Input.GetKey(Game.BaseOptions.MoveLeft))
+                if (Input.GetKey(Global.BaseOptions.MoveLeft))
                 {
                     MoveDirection = MoveDirection.Left;
                     newViewDirection = ViewDirection.Left;
                     Velocity += new Vector2(-1, 0);
                 }
 
-                if (Input.GetKey(Game.BaseOptions.MoveUp))
+                if (Input.GetKey(Global.BaseOptions.MoveUp))
                 {
                     MoveDirection = MoveDirection.Up;
                     newViewDirection = ViewDirection.Up;
                     Velocity += new Vector2(0, 1);
                 }
 
-                if (Input.GetKey(Game.BaseOptions.MoveDown))
+                if (Input.GetKey(Global.BaseOptions.MoveDown))
                 {
                     MoveDirection = MoveDirection.Down;
                     newViewDirection = ViewDirection.Down;
@@ -167,7 +170,7 @@ namespace RPGF.Explorer.Player
 
             NormolizedVelocity = Velocity.normalized;
 
-            bool nRun = Input.GetKey(Game.BaseOptions.Run) && CanRun;
+            bool nRun = Input.GetKey(Global.BaseOptions.Run) && CanRun;
 
             if (nRun && !IsRun)
                 OnStartRun?.Invoke();

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using RPGF.Core;
 using System;
 using System.Collections;
@@ -281,24 +282,7 @@ namespace RPGF
 
         public static IEnumerator VolumeFadeCoroutine(AudioSource source, float from, float to, float time, Action<AudioSource> onEnd = null)
         {
-            source.volume = (float)from;
-
-            float dif = (float)to - (float)from;
-
-            float speed = (float)dif / (float)time;
-
-            float deltatime = 0;
-
-            while (deltatime < time)
-            {
-                source.volume += (float)speed * (float)Time.fixedDeltaTime;
-
-                deltatime += (float)Time.fixedDeltaTime;
-
-                yield return new WaitForFixedUpdate();
-            }
-
-            source.volume = to;
+            yield return source.DOFade(to, time).From(from).SetLoops(0).Play().WaitForCompletion();
 
             onEnd?.Invoke(source);
         }

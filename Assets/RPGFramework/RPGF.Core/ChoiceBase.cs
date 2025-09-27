@@ -1,3 +1,4 @@
+using RPGF.Core;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine;
 /// TODO: Избавиться!
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public abstract class ChoiceBase<T> : MonoBehaviour
+public abstract class ChoiceBase<T> : RPGFrameworkBehaviour
 {
     protected List<T> choices = new List<T>();
     public T[] Choices => choices.ToArray();

@@ -68,7 +68,8 @@ namespace RPGF.Editor.EventSystem
             EditorUtility.SetDirty(eventContainer);
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
 
-            titleContent.text = $"{titleContent.text}*";
+            if (titleContent.text.Last() != '*')
+                titleContent.text = $"{titleContent.text}*";
         }
 
         private void OnDisable()

@@ -1,78 +1,81 @@
-﻿using RPGF.Core.Character;
-using RPGF.Editor.EventSystem;
+﻿using RPGF.Actions;
+using RPGF.Core.Character;
 using RPGF.Editor.EventSystem.Attributes;
 using RPGF.RPG;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-[UseActionNodeAttribute]
-public class AddRemoveCharacterNode : ActionNodeBase<AddRemoveCharacterAction>
+namespace RPGF.Editor.EventSystem.Nodes
 {
-    public AddRemoveCharacterNode(AddRemoveCharacterAction Action) : base(Action)
+    [UseActionNode("Изменить состав партии", "Изменияет состав партии", "Партия/Изменить состав партии")]
+    public class AddRemoveCharacterNode : ActionNodeBase<AddRemoveCharacterAction>
     {
-    }
-
-    public override void UIContructor()
-    {
-        Toggle isAddToggle = new Toggle("Добавить?");
-
-        isAddToggle.SetValueWithoutNotify(Action.isAdd);
-        isAddToggle.RegisterValueChangedCallback(data =>
+        public AddRemoveCharacterNode(AddRemoveCharacterAction Action) : base(Action)
         {
-            Action.isAdd = data.newValue;
+        }
 
-            MakeDirty();
-        });
-
-        extensionContainer.Add(isAddToggle);
-
-        Toggle updateModelsToggle = new Toggle("Обнавить модели?");
-
-        updateModelsToggle.SetValueWithoutNotify(Action.updateModels);
-        updateModelsToggle.RegisterValueChangedCallback(data =>
+        public override void UIContructor()
         {
-            Action.updateModels = data.newValue;
+            Toggle isAddToggle = new("Добавить?");
 
-            MakeDirty();
-
-            UpdateUI();
-        });
-
-        extensionContainer.Add(updateModelsToggle);
-
-        ObjectField characterField = new ObjectField("Персонаж")
-        {
-            objectType = typeof(RPGCharacter),
-            allowSceneObjects = false
-        };
-
-        characterField.SetValueWithoutNotify(Action.character);
-        characterField.RegisterValueChangedCallback(data =>
-        {
-            Action.character = data.newValue as RPGCharacter;
-
-            MakeDirty();
-        });
-
-        extensionContainer.Add(characterField);
-
-        if (!Action.updateModels)
-        {
-            ObjectField exitentObjectField = new ObjectField("Существующая модель")
+            isAddToggle.SetValueWithoutNotify(Action.isAdd);
+            isAddToggle.RegisterValueChangedCallback(data =>
             {
-                objectType = typeof(PlayableCharacterModelController),
-                allowSceneObjects = true
-            };
-
-            exitentObjectField.SetValueWithoutNotify(Action.existentObject);
-            exitentObjectField.RegisterValueChangedCallback(data =>
-            {
-                Action.existentObject = data.newValue as PlayableCharacterModelController;
+                Action.isAdd = data.newValue;
 
                 MakeDirty();
             });
 
-            extensionContainer.Add(exitentObjectField);
+            extensionContainer.Add(isAddToggle);
+
+            Toggle updateModelsToggle = new Toggle("Обнавить модели?");
+
+            updateModelsToggle.SetValueWithoutNotify(Action.updateModels);
+            updateModelsToggle.RegisterValueChangedCallback(data =>
+            {
+                Action.updateModels = data.newValue;
+
+                MakeDirty();
+
+                UpdateUI();
+            });
+
+            extensionContainer.Add(updateModelsToggle);
+
+            ObjectField characterField = new ObjectField("Персонаж")
+            {
+                objectType = typeof(RPGCharacter),
+                allowSceneObjects = false
+            };
+
+            characterField.SetValueWithoutNotify(Action.character);
+            characterField.RegisterValueChangedCallback(data =>
+            {
+                Action.character = data.newValue as RPGCharacter;
+
+                MakeDirty();
+            });
+
+            extensionContainer.Add(characterField);
+
+            if (!Action.updateModels)
+            {
+                ObjectField exitentObjectField = new ObjectField("Существующая модель")
+                {
+                    objectType = typeof(PlayableCharacterModelController),
+                    allowSceneObjects = true
+                };
+
+                exitentObjectField.SetValueWithoutNotify(Action.existentObject);
+                exitentObjectField.RegisterValueChangedCallback(data =>
+                {
+                    Action.existentObject = data.newValue as PlayableCharacterModelController;
+
+                    MakeDirty();
+                });
+
+                extensionContainer.Add(exitentObjectField);
+            }
         }
     }
 }

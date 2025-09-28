@@ -8,10 +8,11 @@ using RPGF.Shared;
 using RPGF.Battle.Enums;
 using RPGF.Battle.UI;
 using RPGF.Core.Localization;
+using RPGF.Domain.DI;
 
 namespace RPGF.Battle
 {
-    public class BattlePipeline
+    public class BattlePipeline : ISupportDI
     {
         public enum ChoiceAction
         {

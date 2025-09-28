@@ -1,54 +1,64 @@
 ﻿using RPGF.Battle;
 using RPGF.Battle.Enemy;
+using RPGF.Domain.DI;
 using RPGF.EventSystem;
+using RPGF.EventSystem.Attributes;
 using RPGF.RPG;
 using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-public class ChangeEnemyModelAnimationAction : ActionBase
+
+namespace RPGF.Actions.Condition
 {
-    public string EnemyTag;
-    public string AnimatorTag;
-    public string Trigger;
-
-    public ChangeEnemyModelAnimationAction() : base("ChangeEnemyModelAnimation")
+    [GenerateActionNode("Анимация врага", "Активирует триггер в выбранном аниматоре", "Битва/Анимация врага")]
+    public class ChangeEnemyModelAnimationAction : ActionBase
     {
-        EnemyTag = string.Empty;
-        AnimatorTag = string.Empty;
-        Trigger = string.Empty;
-    }
+        [Inject]
+        private readonly BattleEnemyModelsManager _models;
+        [Inject]
+        private readonly BattleData _data;
 
-    public override IEnumerator ActionCoroutine()
-    {
-        try
+        [ActionFieldOption("Тег врага:")]
+        public string EnemyTag;
+        [ActionFieldOption("Тег аниматора:")]
+        public string AnimatorTag;
+        [ActionFieldOption("Триггер:")]
+        public string Trigger;
+
+        public ChangeEnemyModelAnimationAction() : base()
         {
-            if (BattleManager.IsBattle)
+            EnemyTag = string.Empty;
+            AnimatorTag = string.Empty;
+            Trigger = string.Empty;
+        }
+
+        public override IEnumerator ActionCoroutine()
+        {
+            try
             {
-                RPGEnemy enemy = BattleManager.Instance.Data.Enemys.First(i => i.Tag == EnemyTag);
+                if (BattleManager.IsBattle)
+                {
+                    RPGEnemy enemy = _data.Enemys.First(i => i.Tag == EnemyTag);
 
-                if (enemy == null)
-                    throw new ApplicationException("Enemy not found!");
+                    if (enemy == null)
+                        throw new ApplicationException("Враг не найден!");
 
-                BattleEnemyModel model = BattleManager.Instance.EnemyModels.GetModel(enemy);
+                    BattleEnemyModel model = _models.GetModel(enemy);
 
-                if (model == null)
-                    throw new ApplicationException("Enemy model not found!");
+                    if (model == null)
+                        throw new ApplicationException("Моделька врага не найдена!");
 
-                model.GetAnimator(AnimatorTag).SetTrigger(Trigger);
+                    model.GetAnimator(AnimatorTag).SetTrigger(Trigger);
+                }
             }
-        }
-        catch (ApplicationException error)
-        {
-            Debug.LogException(error);
-        }
+            catch (ApplicationException error)
+            {
+                Debug.LogException(error);
+            }
 
-        yield break;
-    }
-
-    public override string GetHeader()
-    {
-        return "Сменить анимацию врага";
+            yield break;
+        }
     }
 }

@@ -1,519 +1,520 @@
 using RPGF.Actions.Condition;
-using RPGF.Editor.EventSystem;
 using RPGF.Editor.EventSystem.Attributes;
 using RPGF.RPG;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[UseActionNode("Условие", "Обычное условное вырожение", "Ветвление/Условие")]
-public class ConditionNode : ActionNodeBase<ConditionAction>
+namespace RPGF.Editor.EventSystem.Nodes
 {
-    public enum ConditionType
+    [UseActionNode("Условие", "Обычное условное вырожение", "Ветвление/Условие")]
+    public class ConditionNode : ActionNodeBase<ConditionAction>
     {
-        IntVar, FloatVar, BoolVar, StringVar, Money
-    }
-
-    private int lastConditionListIndex = 0;
-
-    private Dictionary<string, Type> types;
-
-    public ConditionNode(ConditionAction Action) : base(Action)
-    {
-        extensionContainer.style.backgroundColor = (Color)(new Color32(77, 77, 77, 255));
-        extensionContainer.style.minWidth = 200;
-
-        var types = Action.GetType().Assembly.GetTypes()
-            .Where(i => i.BaseType != null && i.BaseType == typeof(ConditionBase)
-                     && i.GetCustomAttribute<UseConditionAttribute>() is not null)
-            .ToDictionary(type => type.GetType().GetCustomAttribute<UseConditionAttribute>().Label);
-    }
-
-    public string FormatOperationList(int index)
-    {
-        return index switch
+        public enum ConditionType
         {
-            0 => "==",
-            1 => "!=",
-            2 => ">",
-            3 => "<",
-            4 => ">=",
-            5 => "<=",
-            _ => "UNDEF",
-        };
-    }
-
-    public string FormatOperationListEnum(ConditionOperation index)
-    {
-        return index switch
-        {
-            ConditionOperation.Equals => "==",
-            ConditionOperation.NotEquals => "!=",
-            ConditionOperation.More => ">",
-            ConditionOperation.Less => "<",
-            ConditionOperation.MoreOrEquals => ">=",
-            ConditionOperation.LessOrEquals => "<=",
-            _ => "UNDEF",
-        };
-    }
-
-    public override void UIContructor()
-    {
-        var typePopup = new PopupField<string>(types.Keys.ToList(), lastConditionListIndex);
-
-        Button addButton = new(() =>
-        {
-            Action.Conditions.Add(Activator.CreateInstance(types[typePopup.value]) as ConditionBase);
-
-            lastConditionListIndex = typePopup.index;
-
-            UpdateUI();
-
-            MakeDirty();
-        })
-        {
-            text = "Добавить условие"
-        };
-
-        extensionContainer.Add(typePopup);
-        extensionContainer.Add(addButton);
-
-        foreach (var condition in Action.Conditions)
-        {
-            VisualElement conditionBlock = new VisualElement();
-            
-            conditionBlock.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Column);
-            conditionBlock.style.backgroundColor = (Color)new Color32(69, 69, 69, 255);
-            conditionBlock.style.marginBottom = 5;
-
-            VisualElement labelHorizontal = new VisualElement();
-            labelHorizontal.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
-            labelHorizontal.style.justifyContent = new StyleEnum<Justify>(Justify.Center);
-
-            var labelText = condition.GetType().GetCustomAttribute<UseConditionAttribute>().Label;
-
-            Label label = new(labelText);
-
-            labelHorizontal.Add(label);
-
-            conditionBlock.Add(labelHorizontal);
-
-            switch (condition)
-            {
-                case BoolVarCondition blvar:
-                    {
-                        VisualElement horizontal0 = new VisualElement();
-                        horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
-                        horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
-
-                        Label lbl0 = new Label("Переменная");
-                        Label lbl1 = new Label("Значение");
-
-                        horizontal0.Add(lbl0);
-                        horizontal0.Add(lbl1);
-
-                        conditionBlock.Add(horizontal0);
-
-                        VisualElement horizontal1 = new VisualElement();
-                        horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
-                        horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
-
-                        TextField namefield = new TextField();
-                        namefield.SetValueWithoutNotify(blvar.Var);
-                        namefield.RegisterValueChangedCallback(i =>
-                        {
-                            blvar.Var = i.newValue;
-
-                            MakeDirty();
-                        });
-
-                        horizontal1.Add(namefield);
-
-                        Label lbl = new Label("==");
-
-                        horizontal1.Add(lbl);
-
-                        Toggle valfield = new Toggle();
-                        valfield.SetValueWithoutNotify(blvar.Value);
-                        valfield.RegisterValueChangedCallback(i =>
-                        {
-                            blvar.Value = i.newValue;
-
-                            MakeDirty();
-                        });
-
-                        horizontal1.Add(valfield);
-
-                        conditionBlock.Add(horizontal1);
-                    }
-                    break;
-                case StringVarCondition strvar:
-                    {
-                        VisualElement horizontal0 = new VisualElement();
-                        horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
-                        horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
-
-                        Label lbl0 = new Label("Переменная");
-                        Label lbl1 = new Label("Значение");
-
-                        horizontal0.Add(lbl0);
-                        horizontal0.Add(lbl1);
-
-                        conditionBlock.Add(horizontal0);
-
-                        VisualElement horizontal1 = new VisualElement();
-                        horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
-                        horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
-
-                        TextField namefield = new TextField();
-                        namefield.SetValueWithoutNotify(strvar.Var);
-                        namefield.RegisterValueChangedCallback(i =>
-                        {
-                            strvar.Var = i.newValue;
-
-                            MakeDirty();
-                        });
-
-                        horizontal1.Add(namefield);
-
-                        Label lbl = new Label("==");
-
-                        horizontal1.Add(lbl);
-
-                        TextField valfield = new TextField();
-                        valfield.SetValueWithoutNotify(strvar.Value);
-                        valfield.RegisterValueChangedCallback(i =>
-                        {
-                            strvar.Value = i.newValue;
-
-                            MakeDirty();
-                        });
-
-                        horizontal1.Add(valfield);
-
-                        conditionBlock.Add(horizontal1);
-                    }
-                    break;
-                case IntVarCondition intvar:
-                    {
-                        VisualElement horizontal0 = new VisualElement();
-                        horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
-                        horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
-
-                        Label lbl0 = new Label("Переменная");
-                        Label lbl1 = new Label("Значение");
-
-                        horizontal0.Add(lbl0);
-                        horizontal0.Add(lbl1);
-
-                        conditionBlock.Add(horizontal0);
-
-                        VisualElement horizontal1 = new VisualElement();
-                        horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
-                        horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
-
-                        TextField namefield = new TextField();
-                        namefield.SetValueWithoutNotify(intvar.Var);
-                        namefield.RegisterValueChangedCallback(i =>
-                        {
-                            intvar.Var = i.newValue;
-
-                            MakeDirty();
-                        });
-
-                        horizontal1.Add(namefield);
-
-                        PopupField<int> popupField = new PopupField<int>(new List<int>() { 0, 1, 2, 3, 4, 5 }, 0, 
-                                                                        FormatOperationList, FormatOperationList);
-
-                        popupField.SetValueWithoutNotify((int)intvar.Operation);
-                        popupField.RegisterValueChangedCallback(i =>
-                        {
-                            intvar.Operation = (ConditionOperation)i.newValue;
-
-                            MakeDirty();
-                        });
-
-                        horizontal1.Add(popupField);
-
-                        IntegerField valfield = new IntegerField();
-                        valfield.SetValueWithoutNotify(intvar.Value);
-                        valfield.RegisterValueChangedCallback(i =>
-                        {
-                            intvar.Value = i.newValue;
-
-                            MakeDirty();
-                        });
-
-                        horizontal1.Add(valfield);
-
-                        conditionBlock.Add(horizontal1);
-                    }
-                    break;
-                case FloatVarCondition flvar:
-                    {
-                        VisualElement horizontal0 = new VisualElement();
-                        horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
-                        horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
-
-                        Label lbl0 = new Label("Переменная");
-                        Label lbl1 = new Label("Значение");
-
-                        horizontal0.Add(lbl0);
-                        horizontal0.Add(lbl1);
-
-                        conditionBlock.Add(horizontal0);
-
-                        VisualElement horizontal1 = new VisualElement();
-                        horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
-                        horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
-
-                        TextField namefield = new TextField();
-                        namefield.SetValueWithoutNotify(flvar.Var);
-                        namefield.RegisterValueChangedCallback(i =>
-                        {
-                            flvar.Var = i.newValue;
-
-                            MakeDirty();
-                        });
-
-                        horizontal1.Add(namefield);
-
-                        PopupField<int> popupField = new PopupField<int>(new List<int>() { 0, 1, 2, 3, 4, 5 }, 0,
-                                                                        FormatOperationList, FormatOperationList);
-
-                        popupField.SetValueWithoutNotify((int)flvar.Operation);
-                        popupField.RegisterValueChangedCallback(i =>
-                        {
-                            flvar.Operation = (ConditionOperation)i.newValue;
-
-                            MakeDirty();
-                        });
-
-                        horizontal1.Add(popupField);
-
-                        FloatField valfield = new FloatField();
-                        valfield.SetValueWithoutNotify(flvar.Value);
-                        valfield.RegisterValueChangedCallback(i =>
-                        {
-                            flvar.Value = i.newValue;
-
-                            MakeDirty();
-                        });
-
-                        horizontal1.Add(valfield);
-
-                        conditionBlock.Add(horizontal1);
-                    }
-                    break;
-                case MoneyCondition mon:
-                    {
-                        VisualElement horizontal1 = new VisualElement();
-                        horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
-                        horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
-
-                        Label label1 = new Label("Деньги");
-                        label1.style.marginLeft = 1;
-
-                        horizontal1.Add(label1);
-
-                        PopupField<int> popupField = new PopupField<int>(new List<int>() { 0, 1, 2, 3, 4, 5 }, 0,
-                                                                        FormatOperationList, FormatOperationList);
-
-                        popupField.SetValueWithoutNotify((int)mon.Operation);
-                        popupField.RegisterValueChangedCallback(i =>
-                        {
-                            mon.Operation = (ConditionOperation)i.newValue;
-
-                            MakeDirty();
-                        });
-
-                        horizontal1.Add(popupField);
-
-                        IntegerField valfield = new IntegerField();
-                        valfield.SetValueWithoutNotify(mon.Value);
-                        valfield.RegisterValueChangedCallback(i =>
-                        {
-                            mon.Value = i.newValue;
-
-                            MakeDirty();
-                        });
-
-                        horizontal1.Add(valfield);
-
-                        conditionBlock.Add(horizontal1);
-                    }
-                    break;
-                case CharacterInPartyCondition cip:
-                    {
-                        VisualElement horizontal1 = new VisualElement();
-                        horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
-                        horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
-
-                        Label label1 = new Label("Персонаж");
-                        label1.style.marginLeft = 1;
-
-                        horizontal1.Add(label1);
-
-                        Label lbl = new Label("==");
-
-                        horizontal1.Add(lbl);
-
-                        ObjectField charField = new ObjectField()
-                        {
-                            allowSceneObjects = false,
-                            objectType = typeof(RPGCharacter)
-                        };
-                        charField.SetValueWithoutNotify(cip.Value);
-                        charField.RegisterValueChangedCallback(i =>
-                        {
-                            cip.Value = i.newValue as RPGCharacter;
-
-                            MakeDirty();
-                        });
-
-                        horizontal1.Add(charField);
-
-                        conditionBlock.Add(horizontal1);
-                    }
-                    break;
-                case ItemCondition itemcon:
-                    {
-                        VisualElement horizontal0 = new VisualElement();
-                        horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
-                        horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
-
-                        Label lbl0 = new Label("Предмет");
-                        Label lbl1 = new Label("Количество");
-
-                        horizontal0.Add(lbl0);
-                        horizontal0.Add(lbl1);
-
-                        conditionBlock.Add(horizontal0);
-
-                        VisualElement horizontal1 = new VisualElement();
-                        horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
-                        horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
-
-                        ObjectField itemField = new ObjectField()
-                        {
-                            allowSceneObjects = false,
-                            objectType = typeof(RPGCollectable)
-                        };
-
-                        itemField.SetValueWithoutNotify(itemcon.Value);
-                        itemField.RegisterValueChangedCallback(i =>
-                        {
-                            itemcon.Value = i.newValue as RPGCollectable;
-
-                            MakeDirty();
-                        });
-
-                        horizontal1.Add(itemField);
-
-                        PopupField<int> popupField = new PopupField<int>(new List<int>() { 0, 1, 2, 3, 4, 5 }, 0,
-                                                                        FormatOperationList, FormatOperationList);
-
-                        popupField.SetValueWithoutNotify((int)itemcon.Operation);
-                        popupField.RegisterValueChangedCallback(i =>
-                        {
-                            itemcon.Operation = (ConditionOperation)i.newValue;
-
-                            MakeDirty();
-                        });
-
-                        horizontal1.Add(popupField);
-
-                        IntegerField valfield = new IntegerField();
-                        valfield.SetValueWithoutNotify(itemcon.Count);
-                        valfield.RegisterValueChangedCallback(i =>
-                        {
-                            if (i.newValue < 0)
-                            {
-                                valfield.SetValueWithoutNotify(0);
-                                itemcon.Count = 0;
-                            }
-                            else 
-                                itemcon.Count = i.newValue;
-
-                            MakeDirty();
-                        });
-
-                        horizontal1.Add(valfield);
-
-                        conditionBlock.Add(horizontal1);
-                    }
-                    break;
-                case FastSaveCondition fastSave:
-                    {
-                        VisualElement horizontal0 = new VisualElement();
-                        horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
-                        horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
-
-                        Label lbl0 = new Label("Ключ");
-                        Label lbl1 = new Label("Значение");
-
-                        horizontal0.Add(lbl0);
-                        horizontal0.Add(lbl1);
-
-                        conditionBlock.Add(horizontal0);
-
-                        VisualElement horizontal1 = new VisualElement();
-                        horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
-                        horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
-
-                        TextField namefield = BuildTextField(
-                            fastSave.Key,
-                            val => fastSave.Key = val
-                            );
-
-                        horizontal1.Add(namefield);
-
-                        var opers = BuildEnumField(
-                            fastSave.Operation,
-                            val => fastSave.Operation = val,
-                            FormatOperationListEnum
-                            );
-
-                        horizontal1.Add(opers);
-
-                        IntegerField valField = BuildIntegerField(
-                            fastSave.Value,
-                            val => fastSave.Value = val
-                            );
-
-                        horizontal1.Add(valField);
-                        conditionBlock.Add(horizontal1);
-                    }
-                    break;
-                default:
-                    Debug.LogWarning($"Для типа {condition.GetType().Name} нет UI");
-                    break;
-            }
-
-            extensionContainer.Add(conditionBlock);
+            IntVar, FloatVar, BoolVar, StringVar, Money
         }
 
-        if (Action.Conditions.Count > 0)
+        private int lastConditionListIndex = 0;
+
+        private Dictionary<string, Type> types;
+
+        public ConditionNode(ConditionAction Action) : base(Action)
         {
-            Button removeButton = new Button(() =>
+            extensionContainer.style.backgroundColor = (Color)(new Color32(77, 77, 77, 255));
+            extensionContainer.style.minWidth = 200;
+
+            var types = Action.GetType().Assembly.GetTypes()
+                .Where(i => i.BaseType != null && i.BaseType == typeof(ConditionBase)
+                         && i.GetCustomAttribute<UseConditionAttribute>() is not null)
+                .ToDictionary(type => type.GetType().GetCustomAttribute<UseConditionAttribute>().Label);
+        }
+
+        public string FormatOperationList(int index)
+        {
+            return index switch
             {
-                Action.Conditions.Remove(Action.Conditions.Last());
+                0 => "==",
+                1 => "!=",
+                2 => ">",
+                3 => "<",
+                4 => ">=",
+                5 => "<=",
+                _ => "UNDEF",
+            };
+        }
+
+        public string FormatOperationListEnum(ConditionOperation index)
+        {
+            return index switch
+            {
+                ConditionOperation.Equals => "==",
+                ConditionOperation.NotEquals => "!=",
+                ConditionOperation.More => ">",
+                ConditionOperation.Less => "<",
+                ConditionOperation.MoreOrEquals => ">=",
+                ConditionOperation.LessOrEquals => "<=",
+                _ => "UNDEF",
+            };
+        }
+
+        public override void UIContructor()
+        {
+            var typePopup = new PopupField<string>(types.Keys.ToList(), lastConditionListIndex);
+
+            Button addButton = new(() =>
+            {
+                Action.Conditions.Add(Activator.CreateInstance(types[typePopup.value]) as ConditionBase);
+
+                lastConditionListIndex = typePopup.index;
 
                 UpdateUI();
 
                 MakeDirty();
             })
             {
-                text = "Удалить условие"
+                text = "Добавить условие"
             };
 
-            extensionContainer.Add(removeButton);
+            extensionContainer.Add(typePopup);
+            extensionContainer.Add(addButton);
+
+            foreach (var condition in Action.Conditions)
+            {
+                VisualElement conditionBlock = new VisualElement();
+
+                conditionBlock.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Column);
+                conditionBlock.style.backgroundColor = (Color)new Color32(69, 69, 69, 255);
+                conditionBlock.style.marginBottom = 5;
+
+                VisualElement labelHorizontal = new VisualElement();
+                labelHorizontal.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                labelHorizontal.style.justifyContent = new StyleEnum<Justify>(Justify.Center);
+
+                var labelText = types.First(t => t.Value == condition.GetType()).Key;
+
+                Label label = new(labelText);
+
+                labelHorizontal.Add(label);
+
+                conditionBlock.Add(labelHorizontal);
+
+                switch (condition)
+                {
+                    case BoolVarCondition blvar:
+                        {
+                            VisualElement horizontal0 = new VisualElement();
+                            horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                            horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                            Label lbl0 = new Label("Переменная");
+                            Label lbl1 = new Label("Значение");
+
+                            horizontal0.Add(lbl0);
+                            horizontal0.Add(lbl1);
+
+                            conditionBlock.Add(horizontal0);
+
+                            VisualElement horizontal1 = new VisualElement();
+                            horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                            horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                            TextField namefield = new TextField();
+                            namefield.SetValueWithoutNotify(blvar.Var);
+                            namefield.RegisterValueChangedCallback(i =>
+                            {
+                                blvar.Var = i.newValue;
+
+                                MakeDirty();
+                            });
+
+                            horizontal1.Add(namefield);
+
+                            Label lbl = new Label("==");
+
+                            horizontal1.Add(lbl);
+
+                            Toggle valfield = new Toggle();
+                            valfield.SetValueWithoutNotify(blvar.Value);
+                            valfield.RegisterValueChangedCallback(i =>
+                            {
+                                blvar.Value = i.newValue;
+
+                                MakeDirty();
+                            });
+
+                            horizontal1.Add(valfield);
+
+                            conditionBlock.Add(horizontal1);
+                        }
+                        break;
+                    case StringVarCondition strvar:
+                        {
+                            VisualElement horizontal0 = new VisualElement();
+                            horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                            horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                            Label lbl0 = new Label("Переменная");
+                            Label lbl1 = new Label("Значение");
+
+                            horizontal0.Add(lbl0);
+                            horizontal0.Add(lbl1);
+
+                            conditionBlock.Add(horizontal0);
+
+                            VisualElement horizontal1 = new VisualElement();
+                            horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                            horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                            TextField namefield = new TextField();
+                            namefield.SetValueWithoutNotify(strvar.Var);
+                            namefield.RegisterValueChangedCallback(i =>
+                            {
+                                strvar.Var = i.newValue;
+
+                                MakeDirty();
+                            });
+
+                            horizontal1.Add(namefield);
+
+                            Label lbl = new Label("==");
+
+                            horizontal1.Add(lbl);
+
+                            TextField valfield = new TextField();
+                            valfield.SetValueWithoutNotify(strvar.Value);
+                            valfield.RegisterValueChangedCallback(i =>
+                            {
+                                strvar.Value = i.newValue;
+
+                                MakeDirty();
+                            });
+
+                            horizontal1.Add(valfield);
+
+                            conditionBlock.Add(horizontal1);
+                        }
+                        break;
+                    case IntVarCondition intvar:
+                        {
+                            VisualElement horizontal0 = new VisualElement();
+                            horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                            horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                            Label lbl0 = new Label("Переменная");
+                            Label lbl1 = new Label("Значение");
+
+                            horizontal0.Add(lbl0);
+                            horizontal0.Add(lbl1);
+
+                            conditionBlock.Add(horizontal0);
+
+                            VisualElement horizontal1 = new VisualElement();
+                            horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                            horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                            TextField namefield = new TextField();
+                            namefield.SetValueWithoutNotify(intvar.Var);
+                            namefield.RegisterValueChangedCallback(i =>
+                            {
+                                intvar.Var = i.newValue;
+
+                                MakeDirty();
+                            });
+
+                            horizontal1.Add(namefield);
+
+                            PopupField<int> popupField = new PopupField<int>(new List<int>() { 0, 1, 2, 3, 4, 5 }, 0,
+                                                                            FormatOperationList, FormatOperationList);
+
+                            popupField.SetValueWithoutNotify((int)intvar.Operation);
+                            popupField.RegisterValueChangedCallback(i =>
+                            {
+                                intvar.Operation = (ConditionOperation)i.newValue;
+
+                                MakeDirty();
+                            });
+
+                            horizontal1.Add(popupField);
+
+                            IntegerField valfield = new IntegerField();
+                            valfield.SetValueWithoutNotify(intvar.Value);
+                            valfield.RegisterValueChangedCallback(i =>
+                            {
+                                intvar.Value = i.newValue;
+
+                                MakeDirty();
+                            });
+
+                            horizontal1.Add(valfield);
+
+                            conditionBlock.Add(horizontal1);
+                        }
+                        break;
+                    case FloatVarCondition flvar:
+                        {
+                            VisualElement horizontal0 = new VisualElement();
+                            horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                            horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                            Label lbl0 = new Label("Переменная");
+                            Label lbl1 = new Label("Значение");
+
+                            horizontal0.Add(lbl0);
+                            horizontal0.Add(lbl1);
+
+                            conditionBlock.Add(horizontal0);
+
+                            VisualElement horizontal1 = new VisualElement();
+                            horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                            horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                            TextField namefield = new TextField();
+                            namefield.SetValueWithoutNotify(flvar.Var);
+                            namefield.RegisterValueChangedCallback(i =>
+                            {
+                                flvar.Var = i.newValue;
+
+                                MakeDirty();
+                            });
+
+                            horizontal1.Add(namefield);
+
+                            PopupField<int> popupField = new PopupField<int>(new List<int>() { 0, 1, 2, 3, 4, 5 }, 0,
+                                                                            FormatOperationList, FormatOperationList);
+
+                            popupField.SetValueWithoutNotify((int)flvar.Operation);
+                            popupField.RegisterValueChangedCallback(i =>
+                            {
+                                flvar.Operation = (ConditionOperation)i.newValue;
+
+                                MakeDirty();
+                            });
+
+                            horizontal1.Add(popupField);
+
+                            FloatField valfield = new FloatField();
+                            valfield.SetValueWithoutNotify(flvar.Value);
+                            valfield.RegisterValueChangedCallback(i =>
+                            {
+                                flvar.Value = i.newValue;
+
+                                MakeDirty();
+                            });
+
+                            horizontal1.Add(valfield);
+
+                            conditionBlock.Add(horizontal1);
+                        }
+                        break;
+                    case MoneyCondition mon:
+                        {
+                            VisualElement horizontal1 = new VisualElement();
+                            horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                            horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                            Label label1 = new Label("Деньги");
+                            label1.style.marginLeft = 1;
+
+                            horizontal1.Add(label1);
+
+                            PopupField<int> popupField = new PopupField<int>(new List<int>() { 0, 1, 2, 3, 4, 5 }, 0,
+                                                                            FormatOperationList, FormatOperationList);
+
+                            popupField.SetValueWithoutNotify((int)mon.Operation);
+                            popupField.RegisterValueChangedCallback(i =>
+                            {
+                                mon.Operation = (ConditionOperation)i.newValue;
+
+                                MakeDirty();
+                            });
+
+                            horizontal1.Add(popupField);
+
+                            IntegerField valfield = new IntegerField();
+                            valfield.SetValueWithoutNotify(mon.Value);
+                            valfield.RegisterValueChangedCallback(i =>
+                            {
+                                mon.Value = i.newValue;
+
+                                MakeDirty();
+                            });
+
+                            horizontal1.Add(valfield);
+
+                            conditionBlock.Add(horizontal1);
+                        }
+                        break;
+                    case CharacterInPartyCondition cip:
+                        {
+                            VisualElement horizontal1 = new VisualElement();
+                            horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                            horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                            Label label1 = new Label("Персонаж");
+                            label1.style.marginLeft = 1;
+
+                            horizontal1.Add(label1);
+
+                            Label lbl = new Label("==");
+
+                            horizontal1.Add(lbl);
+
+                            ObjectField charField = new ObjectField()
+                            {
+                                allowSceneObjects = false,
+                                objectType = typeof(RPGCharacter)
+                            };
+                            charField.SetValueWithoutNotify(cip.Value);
+                            charField.RegisterValueChangedCallback(i =>
+                            {
+                                cip.Value = i.newValue as RPGCharacter;
+
+                                MakeDirty();
+                            });
+
+                            horizontal1.Add(charField);
+
+                            conditionBlock.Add(horizontal1);
+                        }
+                        break;
+                    case ItemCondition itemcon:
+                        {
+                            VisualElement horizontal0 = new VisualElement();
+                            horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                            horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                            Label lbl0 = new Label("Предмет");
+                            Label lbl1 = new Label("Количество");
+
+                            horizontal0.Add(lbl0);
+                            horizontal0.Add(lbl1);
+
+                            conditionBlock.Add(horizontal0);
+
+                            VisualElement horizontal1 = new VisualElement();
+                            horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                            horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                            ObjectField itemField = new ObjectField()
+                            {
+                                allowSceneObjects = false,
+                                objectType = typeof(RPGCollectable)
+                            };
+
+                            itemField.SetValueWithoutNotify(itemcon.Value);
+                            itemField.RegisterValueChangedCallback(i =>
+                            {
+                                itemcon.Value = i.newValue as RPGCollectable;
+
+                                MakeDirty();
+                            });
+
+                            horizontal1.Add(itemField);
+
+                            PopupField<int> popupField = new PopupField<int>(new List<int>() { 0, 1, 2, 3, 4, 5 }, 0,
+                                                                            FormatOperationList, FormatOperationList);
+
+                            popupField.SetValueWithoutNotify((int)itemcon.Operation);
+                            popupField.RegisterValueChangedCallback(i =>
+                            {
+                                itemcon.Operation = (ConditionOperation)i.newValue;
+
+                                MakeDirty();
+                            });
+
+                            horizontal1.Add(popupField);
+
+                            IntegerField valfield = new IntegerField();
+                            valfield.SetValueWithoutNotify(itemcon.Count);
+                            valfield.RegisterValueChangedCallback(i =>
+                            {
+                                if (i.newValue < 0)
+                                {
+                                    valfield.SetValueWithoutNotify(0);
+                                    itemcon.Count = 0;
+                                }
+                                else
+                                    itemcon.Count = i.newValue;
+
+                                MakeDirty();
+                            });
+
+                            horizontal1.Add(valfield);
+
+                            conditionBlock.Add(horizontal1);
+                        }
+                        break;
+                    case FastSaveCondition fastSave:
+                        {
+                            VisualElement horizontal0 = new VisualElement();
+                            horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                            horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                            Label lbl0 = new Label("Ключ");
+                            Label lbl1 = new Label("Значение");
+
+                            horizontal0.Add(lbl0);
+                            horizontal0.Add(lbl1);
+
+                            conditionBlock.Add(horizontal0);
+
+                            VisualElement horizontal1 = new VisualElement();
+                            horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
+                            horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
+
+                            TextField namefield = BuildTextField(
+                                fastSave.Key,
+                                val => fastSave.Key = val
+                                );
+
+                            horizontal1.Add(namefield);
+
+                            var opers = BuildEnumField(
+                                fastSave.Operation,
+                                val => fastSave.Operation = val,
+                                FormatOperationListEnum
+                                );
+
+                            horizontal1.Add(opers);
+
+                            IntegerField valField = BuildIntegerField(
+                                fastSave.Value,
+                                val => fastSave.Value = val
+                                );
+
+                            horizontal1.Add(valField);
+                            conditionBlock.Add(horizontal1);
+                        }
+                        break;
+                    default:
+                        Debug.LogWarning($"Для типа {condition.GetType().Name} нет UI");
+                        break;
+                }
+
+                extensionContainer.Add(conditionBlock);
+            }
+
+            if (Action.Conditions.Count > 0)
+            {
+                Button removeButton = new Button(() =>
+                {
+                    Action.Conditions.Remove(Action.Conditions.Last());
+
+                    UpdateUI();
+
+                    MakeDirty();
+                })
+                {
+                    text = "Удалить условие"
+                };
+
+                extensionContainer.Add(removeButton);
+            }
         }
     }
 }

@@ -1,29 +1,35 @@
 ﻿using RPGF.Battle;
+using RPGF.Domain.DI;
 using RPGF.EventSystem;
+using RPGF.EventSystem.Attributes;
 using System.Collections;
 using UnityEngine;
 
-public class ChangeBattleBGMAction : ActionBase
+namespace RPGF.Actions
 {
-    public AudioClip Clip;
-    public float Volume;
-
-    public ChangeBattleBGMAction() : base("ChangeBattleBGM")
+    [GenerateActionNode("Сменить музыку битвы", contextMenuPath: "Битва/Сменить музыку битвы")]
+    public class ChangeBattleBGMAction : ActionBase
     {
-        Clip = null;
-        Volume = 1.0f;
-    }
+        [Inject]
+        private readonly BattleAudioManager _audio;
 
-    public override IEnumerator ActionCoroutine()
-    {
-        if (BattleManager.IsBattle)
-            BattleManager.Instance.BattleAudio.PlayMusic(Clip, Volume);
+        [ActionFieldOption("Трек:")]
+        public AudioClip Clip;
+        [ActionFieldOption("Громкость:")]
+        public float Volume;
 
-        yield break;
-    }
+        public ChangeBattleBGMAction() : base()
+        {
+            Clip = null;
+            Volume = 1.0f;
+        }
 
-    public override string GetHeader()
-    {
-        return "Сменить музыку битвы";
+        public override IEnumerator ActionCoroutine()
+        {
+            if (BattleManager.IsBattle)
+                _audio.PlayMusic(Clip, Volume);
+
+            yield break;
+        }
     }
 }

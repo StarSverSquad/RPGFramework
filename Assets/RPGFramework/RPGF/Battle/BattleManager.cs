@@ -11,6 +11,7 @@ namespace RPGF.Battle
     public class BattleManager : KernelManagerBase
     {
         public static BattleManager Instance;
+        public static bool IsBattle => Instance.Pipeline.MainIsWorking;
 
         public BattleChoiceManager Choice;
         public BattleFieldManager BattleField;
@@ -32,19 +33,15 @@ namespace RPGF.Battle
         public BattleUtility Utility { get; private set; }
         public static BattleUtility BattleUtility => Instance.Utility;
 
-        // TRASH
-        public static BattleData _Data => Instance.Data;
-
-        public static bool IsBattle => Instance.Pipeline.MainIsWorking;
-
-        public static void StartBattle(RPGBattleInfo info) => BattleUtility.StartBattle(info);
-        //
-
         private LocalManager Local => LocalManager.Instance;
 
         public override void Initialize()
         {
             Instance = this;
+
+            Local.DI.AddSignleton(Data);
+            Local.DI.AddSignleton(EnemyModels);
+            Local.DI.AddSignleton(BattleAudio);
 
             InitializeChild();
         }
@@ -52,6 +49,7 @@ namespace RPGF.Battle
         public override void InitializeChild()
         {
             Pipeline = new BattlePipeline(this, SharedManager.Instance);
+            Local.DI.AddSignleton(Pipeline);
 
             Utility = new BattleUtility(this);
             Local.DI.AddSignleton(Utility);
@@ -61,6 +59,7 @@ namespace RPGF.Battle
             SpashWriter.Initialize();
 
             Player.SetActive(false);
+            Local.DI.AddSignleton(Player);
         }
     }
 

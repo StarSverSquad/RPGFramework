@@ -11,7 +11,7 @@ namespace RPGF.EventSystem
     [Serializable]
     public abstract class ActionBase : ICloneable<ActionBase>, IDisposable, IInitializable
     {
-        public const string DefaultNextName = "DEFAULT";
+        public const string DefaultNextTag = "DEFAULT";
 
         public List<NextAction> Nexts { get; private set; }
 
@@ -23,7 +23,7 @@ namespace RPGF.EventSystem
                 {
                     IsNext = true,
                     Action = null,
-                    Tag = DefaultNextName
+                    Tag = DefaultNextTag
                 }
             };
         }
@@ -40,6 +40,11 @@ namespace RPGF.EventSystem
             var next = GetNext(tag);
 
             next.Action = action;
+        }
+
+        public void ClearNextActions()
+        {
+            Nexts.ForEach(next => next.Action = null);
         }
 
         public NextAction GetActualNext()
@@ -74,7 +79,7 @@ namespace RPGF.EventSystem
 
             if (Nexts.All(n => !n.IsNext))
             {
-                Nexts.First(n => n.Tag == DefaultNextName).IsNext = true;
+                Nexts.First(n => n.Tag == DefaultNextTag).IsNext = true;
 
                 Debug.LogWarning($"Не найден {tag}!");
             }

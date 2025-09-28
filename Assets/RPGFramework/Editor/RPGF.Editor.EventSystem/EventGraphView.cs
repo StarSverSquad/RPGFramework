@@ -1,5 +1,6 @@
 using RPGF.Editor.EventSystem.Attributes;
 using RPGF.EventSystem;
+using RPGF.EventSystem.Attributes;
 using RPGF.EventSystem.Default;
 using RPGF.EventSystem.Graph;
 using System;
@@ -16,6 +17,8 @@ namespace RPGF.Editor.EventSystem
     public class EventGraphView : GraphView
     {
         private readonly Type[] _nodeTypes;
+        private readonly Type[] _autoNodeTypes;
+
         private readonly EventGraphWindow _window;
 
         public GraphEvent Event => _window.Event;
@@ -36,11 +39,15 @@ namespace RPGF.Editor.EventSystem
             var grid = new GridBackground();
             styleSheets.Add(Resources.Load<StyleSheet>("EventGraphViewStyle"));
 
-            _nodeTypes = typeof(EventGraphNodeBase).Assembly
-                                                .GetTypes()
-                                                .Where(type => type.GetCustomAttribute<UseActionNodeAttribute>() != null 
-                                                               && type.BaseType.BaseType != null && type.BaseType.BaseType == typeof(EventGraphNodeBase))
-                                                .ToArray();
+            _nodeTypes = GetType().Assembly.GetTypes()
+                                           .Where(type => type.GetCustomAttribute<UseActionNodeAttribute>() != null 
+                                                       && type.BaseType.BaseType != null && type.BaseType.BaseType == typeof(EventGraphNodeBase))
+                                           .ToArray();
+
+            _autoNodeTypes = typeof(ActionBase).Assembly.GetTypes()
+                                                        .Where(type => type.GetCustomAttribute<GenerateActionNodeAttribute>() != null
+                                                                    && type.BaseType == typeof(ActionBase))
+                                                        .ToArray();
 
             Insert(0, grid);
 
@@ -132,12 +139,25 @@ namespace RPGF.Editor.EventSystem
                 string menuPath = actionNodeType.GetCustomAttribute<UseActionNodeAttribute>().ContextualMenuPath;
                 Type actionType = actionNodeType.BaseType.GetGenericArguments()[0];
 
-
                 if (!string.IsNullOrEmpty(menuPath))
                 {
                     evt.menu.AppendAction(
                             menuPath,
                             i => CreateNode(Activator.CreateInstance(actionType) as ActionBase,
+                            mousePosition
+                            ));
+                }
+            }
+
+            foreach (var actionNodeType in _autoNodeTypes)
+            {
+                string menuPath = actionNodeType.GetCustomAttribute<GenerateActionNodeAttribute>().ContextMenuPath;
+
+                if (!string.IsNullOrEmpty(menuPath))
+                {
+                    evt.menu.AppendAction(
+                            menuPath,
+                            i => CreateNode(Activator.CreateInstance(actionNodeType) as ActionBase,
                             mousePosition
                             ));
                 }
@@ -166,7 +186,7 @@ namespace RPGF.Editor.EventSystem
             {
                 var eventGraphNode = item as EventGraphNodeBase;
 
-                eventGraphNode.ApplyPorts();
+                eventGraphNode.ValidatePorts();
 
                 Event.Meta.nodes.Add(new GraphEventMeta.NodeMeta
                 {

@@ -4,7 +4,7 @@ using RPGF.EventSystem;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class InvokeEventNode : ActionNodeBase<InvokeEventAction>
 {
     public InvokeEventNode(InvokeEventAction Action) : base(Action)

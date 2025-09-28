@@ -3,7 +3,7 @@ using RPGF.Editor.EventSystem.Attributes;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-[UseActionNode(contextualMenuPath: "События исследования/Перемещение игрока")]
+[UseActionNodeAttribute(contextualMenuPath: "События исследования/Перемещение игрока")]
 public class PlayerTransformNode : ActionNodeBase<PlayerTranslateAction>
 {
     public PlayerTransformNode(PlayerTranslateAction action) : base(action)

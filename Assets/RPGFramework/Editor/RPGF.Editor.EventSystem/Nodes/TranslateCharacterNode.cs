@@ -4,7 +4,7 @@ using RPGF.Editor.EventSystem.Attributes;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-[UseActionNode(contextualMenuPath: "События исследования/Перемещение персонажа")]
+[UseActionNodeAttribute(contextualMenuPath: "События исследования/Перемещение персонажа")]
 public class TranslateCharacterNode : ActionNodeBase<TranslateCharacterAction>
 {
     public TranslateCharacterNode(TranslateCharacterAction Action) : base(Action)

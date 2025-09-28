@@ -7,7 +7,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-public class ChangeEnemyModelAnimationAction : GraphActionBase
+public class ChangeEnemyModelAnimationAction : ActionBase
 {
     public string EnemyTag;
     public string AnimatorTag;

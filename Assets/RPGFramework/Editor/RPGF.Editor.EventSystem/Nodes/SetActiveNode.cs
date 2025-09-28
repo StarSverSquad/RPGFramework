@@ -4,7 +4,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class SetActiveNode : ActionNodeBase<SetActiveAction>
 {
     public SetActiveNode(SetActiveAction Action) : base(Action)

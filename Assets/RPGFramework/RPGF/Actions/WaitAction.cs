@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class WaitAction : GraphActionBase
+public class WaitAction : ActionBase
 {
     public float time;
 

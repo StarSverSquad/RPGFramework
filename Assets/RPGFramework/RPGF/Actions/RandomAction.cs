@@ -2,7 +2,7 @@ using RPGF.EventSystem;
 using System.Collections;
 using UnityEngine;
 
-public class RandomAction : GraphActionBase
+public class RandomAction : ActionBase
 {
     public float Chance;
 

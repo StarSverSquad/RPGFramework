@@ -11,24 +11,21 @@ namespace RPGF.Editor.EventSystem
     {
         public string GUID;
 
-        public GraphActionBase action;
+        public ActionBase action;
 
         private List<Port> inputs;
         private List<Port> outputs;
 
         public EventGraphView view;
 
-        public EventGraphNodeBase(GraphActionBase action)
+        public EventGraphNodeBase(ActionBase action)
         {
             this.action = action;
 
             inputs = new List<Port>();
             outputs = new List<Port>();
 
-            tooltip = action.GetInfo();
-            title = action.GetHeader();
-
-            extensionContainer.style.backgroundColor = (Color)(new Color32(100, 100, 100, 200));
+            extensionContainer.style.backgroundColor = (Color)new Color32(100, 100, 100, 200);
         }
 
         public override void SetPosition(Rect newPos)

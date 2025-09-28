@@ -5,7 +5,7 @@ using RPGF.RPG;
 using RPGF.Editor.EventSystem;
 using RPGF.Editor.EventSystem.Attributes;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class InvokeBattleNode : ActionNodeBase<InvokeBattleAction>
 {
     public InvokeBattleNode(InvokeBattleAction Action) : base(Action)

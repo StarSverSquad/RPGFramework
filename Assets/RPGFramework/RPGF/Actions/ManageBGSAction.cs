@@ -3,7 +3,7 @@ using RPGF.EventSystem;
 using System.Collections;
 using UnityEngine;
 
-public class ManageBGSAction : GraphActionBase
+public class ManageBGSAction : ActionBase
 {
     public enum OperationType
     {

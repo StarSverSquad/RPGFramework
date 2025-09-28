@@ -4,7 +4,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class InvokeAnimationNode : ActionNodeBase<InvokeAnimationAction>
 {
     public InvokeAnimationNode(InvokeAnimationAction Action) : base(Action)

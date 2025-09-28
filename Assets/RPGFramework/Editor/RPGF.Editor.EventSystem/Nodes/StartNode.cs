@@ -3,7 +3,7 @@ using RPGF.Editor.EventSystem.Attributes;
 using RPGF.EventSystem.Default;
 using UnityEngine;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class StartNode : ActionNodeBase<StartAction>
 {
     public StartNode(StartAction Action) : base(Action)

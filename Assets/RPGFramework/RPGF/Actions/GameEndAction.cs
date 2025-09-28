@@ -2,7 +2,7 @@
 using RPGF.EventSystem;
 using System.Collections;
 
-public class GameEndAction : GraphActionBase
+public class GameEndAction : ActionBase
 {
     public GameEndAction() : base("GameEnd")
     {

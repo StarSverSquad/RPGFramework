@@ -3,7 +3,7 @@ using RPGF.Shared;
 using System.Collections;
 using UnityEngine;
 
-public class ShowColorAction : GraphActionBase
+public class ShowColorAction : ActionBase
 {
     public Color Color;
     public float FadeTime;

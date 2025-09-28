@@ -1,9 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RPGF.EventSystem
+namespace RPGF.EventSystem.Graph
 {
     [Serializable]
     public class GraphEventMeta
@@ -13,10 +12,12 @@ namespace RPGF.EventSystem
         {
             public string guid;
 
-            public int actionIndex;
+            [SerializeReference]
+            public ActionBase action;
 
             public Vector2 position;
         }
+
         [Serializable]
         public class EdgeMeta
         {
@@ -32,8 +33,8 @@ namespace RPGF.EventSystem
 
         public GraphEventMeta()
         {
-            edges = new List<EdgeMeta>();
-            nodes = new List<NodeMeta>();
+            edges = new();
+            nodes = new();
         }
     }
 }

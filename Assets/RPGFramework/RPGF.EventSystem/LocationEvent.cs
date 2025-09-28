@@ -1,4 +1,5 @@
 using RPGF.Core;
+using RPGF.EventSystem.Graph;
 using UnityEngine;
 
 namespace RPGF.EventSystem

@@ -3,7 +3,7 @@ using RPGF.Explorer;
 using System.Collections;
 using UnityEngine;
 
-public class InvokeEventAction : GraphActionBase
+public class InvokeEventAction : ActionBase
 {
     public LocationEvent Event;
 

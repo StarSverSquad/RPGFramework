@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace RPGF.EventSystem.Default
 {
-    public class DebugAction : GraphActionBase
+    public class DebugAction : ActionBase
     {
         public enum WarningLevelType
         {

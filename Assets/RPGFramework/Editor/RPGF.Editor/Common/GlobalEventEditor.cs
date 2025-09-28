@@ -5,15 +5,15 @@ using UnityEditor;
 
 namespace RPGF.Editor
 {
-    [CustomEditor(typeof(GraphEvent))]
-    public class GraphEventScriptableEditor : RPGFrameworkEditor<GraphEvent>
+    [CustomEditor(typeof(GlobalEvent))]
+    public class GlobalEventEditor : RPGFrameworkEditor<GlobalEvent>
     {
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
 
             if (Button("Открыть редактор"))
-                EventGraphWindow.Initialize(Target);
+                EventGraphWindow.Initialize(Target.Event);
         }
     }
 }

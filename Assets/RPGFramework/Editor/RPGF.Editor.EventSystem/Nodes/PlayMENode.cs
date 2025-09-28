@@ -4,7 +4,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class PlayMENode : ActionNodeBase<PlayMEAction>
 {
     public PlayMENode(PlayMEAction Action) : base(Action)

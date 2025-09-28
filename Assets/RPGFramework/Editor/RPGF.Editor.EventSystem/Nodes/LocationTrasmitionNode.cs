@@ -6,7 +6,7 @@ using RPGF.Editor.EventSystem.Attributes;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class LocationTrasmitionNode : ActionNodeBase<LocationTrasmitionAction>
 {
     public LocationTrasmitionNode(LocationTrasmitionAction Action) : base(Action)

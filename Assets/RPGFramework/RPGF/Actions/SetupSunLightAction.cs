@@ -3,7 +3,7 @@ using RPGF.EventSystem;
 using System.Collections;
 using UnityEngine;
 
-public class SetupSunLightAction : GraphActionBase
+public class SetupSunLightAction : ActionBase
 {
     public float Intensity;
 

@@ -3,7 +3,7 @@ using RPGF.EventSystem;
 using System.Collections;
 using UnityEngine;
 
-public class ChangeBattleBGMAction : GraphActionBase
+public class ChangeBattleBGMAction : ActionBase
 {
     public AudioClip Clip;
     public float Volume;

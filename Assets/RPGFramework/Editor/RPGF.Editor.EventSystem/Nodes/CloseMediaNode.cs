@@ -2,7 +2,7 @@
 using RPGF.Editor.EventSystem.Attributes;
 using UnityEngine.UIElements;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class CloseMediaNode : ActionNodeBase<CloseMediaAction>
 {
     public CloseMediaNode(CloseMediaAction Action) : base(Action)

@@ -4,7 +4,7 @@ using RPGF.EventSystem;
 using RPGF.RPG;
 using System.Collections;
 
-public class AddRemoveCharacterAction : GraphActionBase
+public class AddRemoveCharacterAction : ActionBase
 {
     public bool isAdd;
     public bool updateModels;
@@ -13,7 +13,7 @@ public class AddRemoveCharacterAction : GraphActionBase
 
     public PlayableCharacterModelController existentObject;
 
-    public AddRemoveCharacterAction() : base("AddRemoveCharacter")
+    public AddRemoveCharacterAction() : base()
     {
         character = null;
         existentObject = null;

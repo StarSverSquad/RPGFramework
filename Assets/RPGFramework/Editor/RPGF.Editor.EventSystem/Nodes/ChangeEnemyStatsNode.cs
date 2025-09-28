@@ -2,7 +2,7 @@ using RPGF.Editor.EventSystem;
 using RPGF.Editor.EventSystem.Attributes;
 using UnityEngine.UIElements;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class ChangeEnemyStatsNode : ActionNodeBase<ChangeEnemyStatsAction>
 {
     public ChangeEnemyStatsNode(ChangeEnemyStatsAction Action) : base(Action)

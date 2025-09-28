@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class ChangeItemCountNode : ActionNodeBase<ChangeItemCountAction>
 {
     public ChangeItemCountNode(ChangeItemCountAction Action) : base(Action)

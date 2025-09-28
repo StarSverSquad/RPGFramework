@@ -1,4 +1,5 @@
-using RPGF.EventSystem;
+using RPGF.EventSystem.Graph;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEditor.UIElements;
@@ -9,49 +10,42 @@ namespace RPGF.Editor.EventSystem
 {
     public class EventGraphWindow : EditorWindow
     {
-        private GraphEvent gEvent;
+        public GraphEvent Event { get; private set; }
+
+        private Object eventContainer;
 
         private EventGraphView graphView;
         private Toolbar toolbar;
 
-        private VisualElement notSavedWarning;
-
-        public static void Initialize(GraphEvent gEvent)
+        public static void Initialize(GraphEvent @event, Object eventContainer)
         {
-            EventGraphWindow win = GetWindow<EventGraphWindow>(true, "Graph event editor", true);
+            EventGraphWindow win = GetWindow<EventGraphWindow>("Graph event editor", true);
 
-            win.gEvent = gEvent;
-            win.Init();
+            win.Event = @event;
+            win.eventContainer = eventContainer;
+            win.Initialize();
         }
 
-        public void Init()
+        public void Initialize()
         {
-            saveChangesMessage = "save me";
-
             rootVisualElement.Clear();
 
-            graphView = new EventGraphView(gEvent);
+            graphView = new EventGraphView(this);
             graphView.StretchToParentSize();
 
             rootVisualElement.Add(graphView);
 
             toolbar = new Toolbar();
 
-            Button sch = new Button(Save)
+            Button sch = new(Save)
             {
-                text = "GameSave changes"
+                text = "Сохранить изменения"
             };
 
             toolbar.Add(sch);
 
             rootVisualElement.Add(toolbar);
 
-            notSavedWarning = new VisualElement();
-            notSavedWarning.style.width = 15;
-            notSavedWarning.style.height = 15;
-            notSavedWarning.style.backgroundColor = Color.red;
-
-            graphView.OnMakeDirty += GraphView_OnMakeDirty;
             graphView.OnSaved += GraphView_OnSaved;
 
             EditorSceneManager.sceneSaving += EditorSceneManager_sceneSaving;
@@ -60,20 +54,21 @@ namespace RPGF.Editor.EventSystem
         private void EditorSceneManager_sceneSaving(UnityEngine.SceneManagement.Scene scene, string path)
         {
             graphView.SaveGraph();
+            MarkDirty();
         }
 
         private void GraphView_OnSaved()
         {
-            if (toolbar.Contains(notSavedWarning))
-                toolbar.Remove(notSavedWarning);
+            if (titleContent.text.Last() == '*')
+                titleContent.text = titleContent.text.Split('*')[0];
         }
 
-        private void GraphView_OnMakeDirty()
+        public void MarkDirty()
         {
-            toolbar.Add(notSavedWarning);
-            EditorUtility.SetDirty(gEvent);
+            EditorUtility.SetDirty(eventContainer);
             EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
 
+            titleContent.text = $"{titleContent.text}*";
         }
 
         private void OnDisable()

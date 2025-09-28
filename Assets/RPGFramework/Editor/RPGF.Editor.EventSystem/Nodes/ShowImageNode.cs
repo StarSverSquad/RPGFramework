@@ -4,7 +4,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class ShowImageNode : ActionNodeBase<ShowImageAction>
 {
     public ShowImageNode(ShowImageAction Action) : base(Action)

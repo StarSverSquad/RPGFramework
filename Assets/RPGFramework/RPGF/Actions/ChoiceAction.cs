@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChoiceAction : GraphActionBase
+public class ChoiceAction : ActionBase
 {
     [SerializeReference]
     public List<string> Choices;

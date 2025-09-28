@@ -3,7 +3,7 @@ using RPGF.Shared;
 using System.Collections;
 using UnityEngine;
 
-public class CloseMediaAction : GraphActionBase
+public class CloseMediaAction : ActionBase
 {
     public float FadeTime;
 

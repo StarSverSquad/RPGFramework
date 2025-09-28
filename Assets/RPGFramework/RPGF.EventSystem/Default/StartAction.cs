@@ -2,7 +2,7 @@ using System.Collections;
 
 namespace RPGF.EventSystem.Default
 {
-    public class StartAction : GraphActionBase
+    public class StartAction : ActionBase
     {
         public StartAction() : base("Start")
         {

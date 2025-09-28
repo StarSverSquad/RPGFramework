@@ -3,7 +3,7 @@ using RPGF.Editor.EventSystem.Attributes;
 using RPGF.EventSystem.Default;
 using UnityEngine;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class EndNode : ActionNodeBase<EndAction>
 {
     public EndNode(EndAction Action) : base(Action)

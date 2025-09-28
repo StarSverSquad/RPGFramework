@@ -4,7 +4,7 @@ using RPGF.EventSystem;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class InvokeCustomNode : ActionNodeBase<InvokeCustomAction>
 {
     public InvokeCustomNode(InvokeCustomAction Action) : base(Action)

@@ -3,7 +3,7 @@ using RPGF.EventSystem;
 using System.Collections;
 using UnityEngine;
 
-public class PlayMEAction : GraphActionBase
+public class PlayMEAction : ActionBase
 {
     public AudioClip clip;
 

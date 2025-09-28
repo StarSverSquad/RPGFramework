@@ -3,7 +3,7 @@ using RPGF.Core.SaveLoad;
 using RPGF.EventSystem;
 using System.Collections;
 
-public class ManageVarAction : GraphActionBase
+public class ManageVarAction : ActionBase
 {
     public enum VarType
     {

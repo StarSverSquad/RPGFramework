@@ -1,6 +1,7 @@
 using RPGF.Editor.EventSystem.Attributes;
 using RPGF.EventSystem;
 using RPGF.EventSystem.Default;
+using RPGF.EventSystem.Graph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,15 +16,15 @@ namespace RPGF.Editor.EventSystem
     public class EventGraphView : GraphView
     {
         private readonly Type[] _nodeTypes;
+        private readonly EventGraphWindow _window;
 
-        public GraphEvent GEvent;
+        public GraphEvent Event => _window.Event;
 
         public readonly Vector2 DefaultNodeSize = new Vector2(300, 400);
 
-        public event Action OnMakeDirty;
         public event Action OnSaved;
 
-        public EventGraphView(GraphEvent gEvent)
+        public EventGraphView(EventGraphWindow window)
         {
             SetupZoom(ContentZoomer.DefaultMinScale, ContentZoomer.DefaultMaxScale);
 
@@ -37,16 +38,16 @@ namespace RPGF.Editor.EventSystem
 
             _nodeTypes = typeof(EventGraphNodeBase).Assembly
                                                 .GetTypes()
-                                                .Where(type => type.GetCustomAttribute<UseActionNode>() != null 
+                                                .Where(type => type.GetCustomAttribute<UseActionNodeAttribute>() != null 
                                                                && type.BaseType.BaseType != null && type.BaseType.BaseType == typeof(EventGraphNodeBase))
                                                 .ToArray();
 
             Insert(0, grid);
 
             grid.StretchToParentSize();
-            GEvent = gEvent;
+            _window = window;
 
-            if (GEvent.Actions.Count > 0)
+            if (Event.Actions.Count > 0)
                 LoadGraph();
             else
                 CreateNode(new StartAction(), new Vector2(250, 250));
@@ -67,7 +68,7 @@ namespace RPGF.Editor.EventSystem
             return EventPropagation.Continue;
         }
 
-        public void CreateNode(GraphActionBase action, Vector2 position, string guid = null)
+        public void CreateNode(ActionBase action, Vector2 position, string guid = null)
         {
             EventGraphNodeBase node;
 
@@ -76,7 +77,7 @@ namespace RPGF.Editor.EventSystem
 
             if (nodeType != null)
             {
-                node = (EventGraphNodeBase)Activator.CreateInstance(nodeType, new object[] { action });
+                node = Activator.CreateInstance(nodeType, new object[] { action }) as EventGraphNodeBase;
             }
             else
             {
@@ -98,20 +99,16 @@ namespace RPGF.Editor.EventSystem
             node.SetPosition(new Rect(position, DefaultNodeSize));
 
             AddElement(node);
+
+            _window.MarkDirty();
         }
 
         public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
         {
-            List<Port> result = new List<Port>();
-
-            ports.ForEach(port =>
-            {
-                if (startPort != port && startPort.node != port.node && startPort.direction != port.direction
-                    && startPort.portType == port.portType)
-                    result.Add(port);
-            });
-
-            return result;
+            return ports.Where(port => startPort != port && startPort.node != port.node
+                                            && startPort.direction != port.direction
+                                            && startPort.portType == port.portType)
+                              .ToList();
         }
 
         public override void BuildContextualMenu(ContextualMenuPopulateEvent evt)
@@ -124,14 +121,7 @@ namespace RPGF.Editor.EventSystem
             {
                 if (node is not StartNode)
                 {
-                    object obj = node.action.Clone() as GraphActionBase;
-
-                    GraphActionBase action;
-
-                    if (obj is GraphActionBase act)
-                        action = act;
-                    else
-                        action = node.action.GetType().Assembly.CreateInstance(node.action.GetType().Name) as GraphActionBase;
+                    ActionBase action = node.action.Clone();
 
                     evt.menu.AppendAction("Создать дубликат", i => CreateNode(action, mousePosition));
                 }
@@ -139,7 +129,7 @@ namespace RPGF.Editor.EventSystem
 
             foreach (var actionNodeType in _nodeTypes)
             {
-                string menuPath = actionNodeType.GetCustomAttribute<UseActionNode>().ContextualMenuPath;
+                string menuPath = actionNodeType.GetCustomAttribute<UseActionNodeAttribute>().ContextualMenuPath;
                 Type actionType = actionNodeType.BaseType.GetGenericArguments()[0];
 
 
@@ -147,94 +137,55 @@ namespace RPGF.Editor.EventSystem
                 {
                     evt.menu.AppendAction(
                             menuPath,
-                            i => CreateNode(Activator.CreateInstance(actionType) as GraphActionBase,
-                            mousePosition));
+                            i => CreateNode(Activator.CreateInstance(actionType) as ActionBase,
+                            mousePosition
+                            ));
                 }
             }
-
-            /// Legacy code БЛЯТЬ УДАЛИТЬ ДАВНО ПОРА ЭТО ГОВНО
-            evt.menu.AppendAction("Диалог/Выбор", i => CreateNode(new ChoiceAction(), mousePosition));
-
-            evt.menu.AppendAction("Ветвление/Условие", i => CreateNode(new ConditionAction(), mousePosition));
-            evt.menu.AppendAction("Ветвление/Управление переменной", i => CreateNode(new ManageVarAction(), mousePosition));
-            evt.menu.AppendAction("Ветвление/Случайно", i => CreateNode(new RandomAction(), mousePosition));
-
-            evt.menu.AppendAction("Медиа/Отобразить цвет", i => CreateNode(new ShowColorAction(), mousePosition));
-            evt.menu.AppendAction("Медиа/Отобразить изображение", i => CreateNode(new ShowImageAction(), mousePosition));
-            evt.menu.AppendAction("Медиа/Убрать медиа", i => CreateNode(new CloseMediaAction(), mousePosition));
-
-            evt.menu.AppendAction("Партия/Изменить состав команды", i => CreateNode(new AddRemoveCharacterAction(), mousePosition));
-            evt.menu.AppendAction("Партия/Изменить количетво предмета", i => CreateNode(new ChangeItemCountAction(), mousePosition));
-
-            evt.menu.AppendAction("Аудио/Управление BGM", i => CreateNode(new ManageBGMAction(), mousePosition));
-            evt.menu.AppendAction("Аудио/Управление BGS", i => CreateNode(new ManageBGSAction(), mousePosition));
-            evt.menu.AppendAction("Аудио/Запуск SE", i => CreateNode(new PlaySEAction(), mousePosition));
-            evt.menu.AppendAction("Аудио/Запуск ME", i => CreateNode(new PlayMEAction(), mousePosition));
-
-            evt.menu.AppendAction("События исследования/Настройка солнечного света", i => CreateNode(new SetupSunLightAction(), mousePosition));
-            evt.menu.AppendAction("События исследования/Смена локации", i => CreateNode(new LocationTrasmitionAction(), mousePosition));
-            evt.menu.AppendAction("События исследования/Сохранение игры", i => CreateNode(new SaveAction(), mousePosition));
-
-            evt.menu.AppendAction("События битвы/Битва", i => CreateNode(new InvokeBattleAction(), mousePosition));
-            evt.menu.AppendAction("События битвы/Изменить музыку", i => CreateNode(new ChangeBattleBGMAction(), mousePosition));
-            evt.menu.AppendAction("События битвы/Изменить анимацию врага", i => CreateNode(new ChangeEnemyModelAnimationAction(), mousePosition));
-            evt.menu.AppendAction("События битвы/Изменить статы врага", i => CreateNode(new ChangeEnemyStatsAction(), mousePosition));
-
-            evt.menu.AppendAction("Разное/Запуск самопис. события", i => CreateNode(new InvokeCustomAction(), mousePosition));
-            evt.menu.AppendAction("Разное/Запуск события", i => CreateNode(new InvokeEventAction(), mousePosition));
-            evt.menu.AppendAction("Разное/Ждать", i => CreateNode(new WaitAction(), mousePosition));
-            evt.menu.AppendAction("Разное/Запуск анимации", i => CreateNode(new InvokeAnimationAction(), mousePosition));
-            evt.menu.AppendAction("Разное/Вкл.\\Выкл. объект", i => CreateNode(new SetActiveAction(), mousePosition));
-            evt.menu.AppendAction("Разное/Конец игры", i => CreateNode(new GameEndAction(), mousePosition));
-
-            evt.menu.AppendAction("Конец", i => CreateNode(new EndAction(), mousePosition));
-
-            evt.menu.AppendAction("Отладочное событие", i => CreateNode(new DebugAction(), mousePosition));
-            ///
         }
 
         public void MakeDirty()
         {
-            OnMakeDirty?.Invoke();
+            _window.MarkDirty();
         }
 
         public void SaveGraph()
         {
-            GEvent.Meta.nodes.Clear();
-            GEvent.Meta.edges.Clear();
-            GEvent.Actions.Clear();
+            Event.Meta.nodes.Clear();
+            Event.Meta.edges.Clear();
+            Event.Actions.Clear();
 
             foreach (var item in nodes)
             {
-                EventGraphNodeBase ban = item as EventGraphNodeBase;
+                var eventGraphNode = item as EventGraphNodeBase;
 
-                GEvent.Actions.Add(ban.action);
+                Event.Actions.Add(eventGraphNode.action);
             }
 
             foreach (var item in nodes)
             {
-                EventGraphNodeBase ban = item as EventGraphNodeBase;
+                var eventGraphNode = item as EventGraphNodeBase;
 
-                ban.ApplyPorts();
+                eventGraphNode.ApplyPorts();
 
-                GEvent.Meta.nodes.Add(new GraphEventMeta.NodeMeta
+                Event.Meta.nodes.Add(new GraphEventMeta.NodeMeta
                 {
-                    guid = ban.GUID,
-                    position = ban.localBound.position,
-                    actionIndex = GEvent.Actions.IndexOf(ban.action)
+                    guid = eventGraphNode.GUID,
+                    position = eventGraphNode.localBound.position,
+                    action = eventGraphNode.action
                 });
             }
 
             foreach (var item in edges)
             {
-                EventGraphNodeBase left = item.output.node as EventGraphNodeBase;
-                EventGraphNodeBase right = item.input.node as EventGraphNodeBase;
+                var left = item.output.node as EventGraphNodeBase;
+                var right = item.input.node as EventGraphNodeBase;
 
                 if (item.input == null || item.output == null ||
                     left == null || right == null)
                     continue;
 
-                GEvent.Meta.edges.Add(new GraphEventMeta.EdgeMeta
+                Event.Meta.edges.Add(new GraphEventMeta.EdgeMeta
                 {
                     inputNodeGUID = right.GUID,
                     outputNodeGUID = left.GUID,
@@ -243,25 +194,25 @@ namespace RPGF.Editor.EventSystem
                 });
             }
 
-            EditorUtility.SetDirty(GEvent);
-            GEvent.DispathGraphChanges();
+            _window.MarkDirty();
+
+            Event.DispathGraphChanges();
 
             OnSaved?.Invoke();
         }
+
         public void LoadGraph()
         {
-            foreach (var node in GEvent.Meta.nodes)
-            {
-                CreateNode(GEvent.Actions[node.actionIndex] as GraphActionBase, node.position, node.guid);
-            }
+            foreach (var node in Event.Meta.nodes)
+                CreateNode(node.action, node.position, node.guid);
 
             foreach (var item in nodes)
             {
-                EventGraphNodeBase ban = item as EventGraphNodeBase;
+                var eventGraphNode = item as EventGraphNodeBase;
 
-                List<GraphEventMeta.EdgeMeta> tedges = GEvent.Meta.edges.Where(i => i.outputNodeGUID == ban.GUID).ToList();
+                var tedges = Event.Meta.edges.Where(i => i.outputNodeGUID == eventGraphNode.GUID).ToList();
 
-                List<Port> tports = ports.Where(i => i.node == item && i.direction == Direction.Output).ToList();
+                var tports = ports.Where(i => i.node == item && i.direction == Direction.Output).ToList();
 
                 foreach (var port in tports)
                 {
@@ -272,9 +223,9 @@ namespace RPGF.Editor.EventSystem
 
                         Node ohter = nodes.First(i =>
                         {
-                            EventGraphNodeBase ban0 = i as EventGraphNodeBase;
+                            var otherEventGraphNode = i as EventGraphNodeBase;
 
-                            return edge.inputNodeGUID == ban0.GUID;
+                            return edge.inputNodeGUID == otherEventGraphNode.GUID;
                         });
 
                         Port otherport = ports.First(i => i.node == ohter && i.portName == edge.inputPortName);

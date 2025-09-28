@@ -1,7 +1,7 @@
 ﻿using RPGF.EventSystem;
 using System.Collections;
 
-public class InvokeCustomAction : GraphActionBase
+public class InvokeCustomAction : ActionBase
 {
     public CustomActionBase act;
 

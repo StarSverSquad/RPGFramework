@@ -2,7 +2,7 @@ using RPGF;
 using RPGF.EventSystem;
 using System.Collections;
 
-public class SaveAction : GraphActionBase
+public class SaveAction : ActionBase
 {
     public int slotId;
 

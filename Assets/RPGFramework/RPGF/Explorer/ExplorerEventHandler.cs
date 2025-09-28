@@ -1,5 +1,5 @@
 using RPGF.Core;
-using RPGF.EventSystem;
+using RPGF.EventSystem.Graph;
 using System;
 using UnityEngine;
 

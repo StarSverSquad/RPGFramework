@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace RPGF.EventSystem.Default
 {
-    public class EndAction : GraphActionBase
+    public class EndAction : ActionBase
     {
         public EndAction() : base("End")
         {

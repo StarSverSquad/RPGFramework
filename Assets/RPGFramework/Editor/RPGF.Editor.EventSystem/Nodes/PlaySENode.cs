@@ -4,7 +4,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class PlaySENode : ActionNodeBase<PlaySEAction>
 {
     public PlaySENode(PlaySEAction Action) : base(Action)

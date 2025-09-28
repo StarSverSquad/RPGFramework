@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class SetActiveAction : GraphActionBase
+public class SetActiveAction : ActionBase
 {
     public bool setActive;
     public GameObject gameObject;

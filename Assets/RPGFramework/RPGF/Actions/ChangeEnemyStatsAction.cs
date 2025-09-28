@@ -6,7 +6,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-public class ChangeEnemyStatsAction : GraphActionBase
+public class ChangeEnemyStatsAction : ActionBase
 {
     public string EnemyTag;
 

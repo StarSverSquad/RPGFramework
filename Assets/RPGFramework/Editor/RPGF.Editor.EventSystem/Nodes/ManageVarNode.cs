@@ -2,7 +2,7 @@
 using RPGF.Editor.EventSystem.Attributes;
 using UnityEngine.UIElements;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class ManageVarNode : ActionNodeBase<ManageVarAction>
 {
     public ManageVarNode(ManageVarAction Action) : base(Action)

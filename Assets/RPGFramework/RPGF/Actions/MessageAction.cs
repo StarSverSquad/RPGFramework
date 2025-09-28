@@ -3,7 +3,7 @@ using RPGF.Shared;
 using System.Collections;
 using UnityEngine;
 
-public class MessageAction : GraphActionBase
+public class MessageAction : ActionBase
 {
     public MessageInfo message;
 

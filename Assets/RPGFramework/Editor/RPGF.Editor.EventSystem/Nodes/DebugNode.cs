@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using UnityEngine.UIElements;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class DebugNode : ActionNodeBase<DebugAction>
 {
     public DebugNode(DebugAction Action) : base(Action)

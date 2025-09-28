@@ -4,7 +4,7 @@ using RPGF.EventSystem;
 using RPGF.RPG;
 using System.Collections;
 
-public class ChangeItemCountAction : GraphActionBase
+public class ChangeItemCountAction : ActionBase
 {
     public RPGCollectable Item;
 

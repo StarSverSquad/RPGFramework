@@ -3,7 +3,7 @@ using RPGF.Shared;
 using System.Collections;
 using UnityEngine;
 
-public class ShowImageAction : GraphActionBase
+public class ShowImageAction : ActionBase
 {
     public Sprite ImageSprite;
     public float FadeTime;

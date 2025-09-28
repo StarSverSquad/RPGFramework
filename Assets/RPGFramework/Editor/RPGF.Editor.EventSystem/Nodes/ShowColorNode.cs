@@ -3,7 +3,7 @@ using RPGF.Editor.EventSystem.Attributes;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class ShowColorNode : ActionNodeBase<ShowColorAction>
 {
     public ShowColorNode(ShowColorAction Action) : base(Action)

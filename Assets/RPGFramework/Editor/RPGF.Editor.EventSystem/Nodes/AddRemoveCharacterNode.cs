@@ -5,7 +5,7 @@ using RPGF.RPG;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class AddRemoveCharacterNode : ActionNodeBase<AddRemoveCharacterAction>
 {
     public AddRemoveCharacterNode(AddRemoveCharacterAction Action) : base(Action)

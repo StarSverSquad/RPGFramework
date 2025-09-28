@@ -3,7 +3,7 @@ using RPGF.Editor.EventSystem.Attributes;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class RandomNode : ActionNodeBase<RandomAction>
 {
     public RandomNode(RandomAction Action) : base(Action)

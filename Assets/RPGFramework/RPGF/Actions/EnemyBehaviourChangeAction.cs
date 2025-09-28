@@ -5,7 +5,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-public class EnemyBehaviourChangeAction : GraphActionBase
+public class EnemyBehaviourChangeAction : ActionBase
 {
     public enum ChangeType
     {

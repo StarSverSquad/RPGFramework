@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine.UIElements;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class ChoiceNode : ActionNodeBase<ChoiceAction>
 {
     private List<Port> outports;

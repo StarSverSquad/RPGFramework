@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class InvokeAnimationAction : GraphActionBase
+public class InvokeAnimationAction : ActionBase
 {
     public Animator ObjectAnimator;
 

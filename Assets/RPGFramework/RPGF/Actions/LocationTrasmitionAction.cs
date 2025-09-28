@@ -5,7 +5,7 @@ using RPGF.Explorer;
 using System.Collections;
 using UnityEngine;
 
-public class LocationTrasmitionAction : GraphActionBase
+public class LocationTrasmitionAction : ActionBase
 {
     public LocationTransimitionDto Message;
 

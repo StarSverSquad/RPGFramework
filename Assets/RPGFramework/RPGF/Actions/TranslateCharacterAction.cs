@@ -7,7 +7,7 @@ using RPGF.Explorer.Player;
 using System.Collections;
 using UnityEngine;
 
-public class TranslateCharacterAction : GraphActionBase
+public class TranslateCharacterAction : ActionBase
 {
     public enum TranslateType
     {

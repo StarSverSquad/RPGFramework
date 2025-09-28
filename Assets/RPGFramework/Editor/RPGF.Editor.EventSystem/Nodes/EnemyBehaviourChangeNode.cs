@@ -1,7 +1,7 @@
 ﻿using RPGF.Editor.EventSystem;
 using RPGF.Editor.EventSystem.Attributes;
 
-[UseActionNode("События битвы/Изменить паттерны врага")]
+[UseActionNodeAttribute("События битвы/Изменить паттерны врага")]
 class EnemyBehaviourChangeNode : ActionNodeBase<EnemyBehaviourChangeAction>
 {
     public EnemyBehaviourChangeNode(EnemyBehaviourChangeAction action) : base(action)

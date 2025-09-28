@@ -4,7 +4,7 @@ using RPGF.RPG;
 using System.Collections;
 using UnityEngine;
 
-public class InvokeBattleAction : GraphActionBase
+public class InvokeBattleAction : ActionBase
 {
     public RPGBattleInfo battle;
 

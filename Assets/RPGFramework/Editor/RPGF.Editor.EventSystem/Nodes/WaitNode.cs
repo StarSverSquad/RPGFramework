@@ -2,7 +2,7 @@
 using RPGF.Editor.EventSystem.Attributes;
 using UnityEngine.UIElements;
 
-[UseActionNode]
+[UseActionNodeAttribute]
 public class WaitNode : ActionNodeBase<WaitAction>
 {
     public WaitNode(WaitAction Action) : base(Action)

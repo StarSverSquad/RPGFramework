@@ -21,10 +21,10 @@ namespace RPGF.EventSystem.Graph
         [Serializable]
         public class EdgeMeta
         {
-            public string inputPortName;
+            public string inputPortTag;
             public string inputNodeGUID;
 
-            public string outputPortName;
+            public string outputPortTag;
             public string outputNodeGUID;
         }
 

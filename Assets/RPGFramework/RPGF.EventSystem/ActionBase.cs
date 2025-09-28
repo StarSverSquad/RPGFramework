@@ -1,3 +1,4 @@
+using RPGF.Domain.DI;
 using RPGF.Domain.Interfaces;
 using System;
 using System.Collections;
@@ -9,9 +10,10 @@ using UnityEngine;
 namespace RPGF.EventSystem
 {
     [Serializable]
-    public abstract class ActionBase : ICloneable<ActionBase>, IDisposable, IInitializable
+    public abstract class ActionBase : ICloneable<ActionBase>, IDisposable, IInitializable, InjectionTarget
     {
         public const string DefaultNextTag = "DEFAULT";
+        public const string DefaultNextName = "Далее";
 
         public List<NextAction> Nexts { get; private set; }
 
@@ -23,6 +25,7 @@ namespace RPGF.EventSystem
                 {
                     IsNext = true,
                     Action = null,
+                    Name = DefaultNextName,
                     Tag = DefaultNextTag
                 }
             };
@@ -57,13 +60,14 @@ namespace RPGF.EventSystem
             return Nexts.FirstOrDefault(n => n.Tag == tag);
         }
 
-        public void AddNext(string tag)
+        public void AddNext(string tag, string name = "")
         {
             Nexts.Add(new()
             {
                 Tag = tag,
                 Action = null,
-                IsNext = false
+                IsNext = false,
+                Name = string.IsNullOrWhiteSpace(name) ? tag : name
             });
         }
 

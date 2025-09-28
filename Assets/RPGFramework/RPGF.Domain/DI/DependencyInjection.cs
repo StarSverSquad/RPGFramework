@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using UnityEngine;
 
 namespace RPGF.Domain.DI
 {
@@ -33,23 +32,23 @@ namespace RPGF.Domain.DI
 
             foreach (var field in injectionFileds)
             {
+                if (field.GetValue(target) is not null)
+                    continue;
+
                 var resultInject = ResolveDependency(field, injectables);
 
-                if (resultInject == null)
+                if (resultInject is null)
                 {
                     foreach (var injector in subInjectors)
                     {
                         resultInject = injector.ResolveDependency(field);
 
-                        if (resultInject != null)
+                        if (resultInject is not null)
                             break;
                     }
 
-                    if (resultInject == null)
-                    {
-                        Debug.LogError($"Зависимость не найдена для поля {field.Name} в типе {target.GetType().Name}");
-                        return;
-                    }
+                    if (resultInject is null)
+                        throw new ApplicationException($"Зависимость не найдена для поля {field.Name} в типе {target.GetType().Name}");
                 }
 
                 if (resultInject is InjectionTarget subTarget)
@@ -68,7 +67,7 @@ namespace RPGF.Domain.DI
 
             resultInject ??= signletons.FirstOrDefault(inj => inj.GetType() == target.FieldType);
 
-            if (resultInject == null)
+            if (resultInject is null)
             {
                 Type resultType = null;
 
@@ -76,7 +75,7 @@ namespace RPGF.Domain.DI
 
                 resultType = scopedWithImplimentTypes.FirstOrDefault(dt => dt.Key == target.FieldType).Value;
 
-                if (resultType != null)
+                if (resultType is not null)
                     resultInject = Activator.CreateInstance(resultType) as Injectable;
             }
 

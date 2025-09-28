@@ -12,6 +12,8 @@ namespace RPGF.EventSystem
 
         public string Tag;
 
+        public string Name;
+
         public bool IsNext;
     }
 }

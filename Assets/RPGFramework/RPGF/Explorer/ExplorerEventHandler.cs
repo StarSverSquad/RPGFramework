@@ -14,18 +14,19 @@ namespace RPGF.Explorer
         public event Action OnHandle;
         public event Action OnUnhandle;
 
-        public bool EventRuning => CurrentEvent != null;
+        public bool EventPlaying => CurrentEvent != null && CurrentEvent.IsPlaying;
+        public bool EventExists => CurrentEvent != null;
 
         public void InvokeEvent(GraphEvent e)
         {
-            e.Invoke(this);
+            e.Invoke(this, Local.DI);
 
             HandleEvent(e);
         }
 
         public void HandleEvent(GraphEvent e)
         {
-            if (!EventRuning)
+            if (!EventExists)
             {
                 CurrentEvent = e;
 
@@ -37,7 +38,7 @@ namespace RPGF.Explorer
 
         public void ForceUnhandle()
         {
-            if (EventRuning)
+            if (EventExists)
             {
                 CurrentEvent.OnEnd -= E_OnEnd;
 

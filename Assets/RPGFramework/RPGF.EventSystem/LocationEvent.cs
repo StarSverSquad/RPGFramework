@@ -45,7 +45,7 @@ namespace RPGF.EventSystem
         public void InvokeEvent()
         {
             if (!IsBlocked() && !InnerEvent.IsPlaying
-                && (!Explorer.EventHandler.EventRuning || Parallel))
+                && (!Explorer.EventHandler.EventPlaying || Parallel))
             {
                 if (!Parallel)
                     Explorer.EventHandler.HandleEvent(InnerEvent);

@@ -1,26 +1,28 @@
-using RPGF;
-public class BoolVarCondition : ConditionBase
+using RPGF.Domain.DI;
+
+namespace RPGF.Actions.Condition
 {
-    public string Var;
-
-    public bool Value;
-
-    public BoolVarCondition()
+    [UseCondition("По переключателю")]
+    public class BoolVarCondition : ConditionBase
     {
-        Var = string.Empty;
-        Value = false;
-    }
+        [Inject]
+        private readonly GameData _gameData;
 
-    public override bool Invoke()
-    {
-        if (!GlobalManager.Instance.GameData.BoolValues.HaveKey(Var))
-            return !Value;
+        public string Var;
+        public bool Value;
 
-        return GlobalManager.Instance.GameData.BoolValues[Var] == Value;
-    }
+        public BoolVarCondition()
+        {
+            Var = string.Empty;
+            Value = false;
+        }
 
-    public override string GetLabel()
-    {
-        return "По переключателю";
+        public override bool Invoke()
+        {
+            if (!_gameData.BoolValues.HaveKey(Var))
+                return !Value;
+
+            return _gameData.BoolValues[Var] == Value;
+        }
     }
 }

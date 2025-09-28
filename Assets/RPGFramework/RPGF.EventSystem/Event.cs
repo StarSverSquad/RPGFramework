@@ -1,3 +1,4 @@
+using RPGF.Domain.DI;
 using RPGF.EventSystem.Default;
 using System;
 using System.Collections;
@@ -21,16 +22,16 @@ namespace RPGF.EventSystem
         public event Action OnStart;
         public event Action OnEnd;
 
-        public virtual void Invoke(MonoBehaviour listener)
+        public void Invoke(MonoBehaviour listener, DependencyInjection di = null)
         {
             if (!IsPlaying)
             {
                 this.listener = listener;
-                coroutine = this.listener.StartCoroutine(EventCoroutine());
+                coroutine = this.listener.StartCoroutine(EventCoroutine(di));
             }
         }
 
-        public virtual void Break()
+        public void Break()
         {
             if (IsPlaying)
             {
@@ -40,9 +41,12 @@ namespace RPGF.EventSystem
             }
         }
 
-        private IEnumerator EventCoroutine()
+        private IEnumerator EventCoroutine(DependencyInjection di)
         {
             OnStart?.Invoke();
+
+            if (di is not null)
+                Actions.ForEach(act => di.InjectInto(act));
 
             ActionBase current = Actions.FirstOrDefault(a => a is StartAction);
 

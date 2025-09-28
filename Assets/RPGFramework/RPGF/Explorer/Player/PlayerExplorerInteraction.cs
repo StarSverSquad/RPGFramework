@@ -26,7 +26,7 @@ namespace RPGF.Explorer.Player
                 return;
 
             if (Explorer.PlayerManager.movement.CanWalk
-                && !Explorer.EventHandler.EventRuning)
+                && !Explorer.EventHandler.EventPlaying)
             {
                 if (Input.GetKey(KeyCode.RightArrow))
                 {

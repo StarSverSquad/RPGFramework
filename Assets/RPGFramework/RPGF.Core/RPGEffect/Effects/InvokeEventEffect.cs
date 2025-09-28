@@ -32,7 +32,7 @@ namespace RPGF.Core.RPGEffect
                     if (@event == null)
                         throw new ApplicationException("Событие не указано!");
 
-                    if (ExplorerManager.Instance.EventHandler.EventRuning)
+                    if (ExplorerManager.Instance.EventHandler.EventPlaying)
                         throw new ApplicationException("Не возможно запустить сразу два события!");
 
                     ExplorerManager.Instance.EventHandler.InvokeEvent(@event);

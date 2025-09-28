@@ -39,7 +39,7 @@ namespace RPGF.RPG
                     case Usability.Any:
                         if (BattleManager.IsBattle)
                             Event.Invoke(BattleManager.Instance);
-                        else if (!ExplorerManager.Instance.EventHandler.EventRuning)
+                        else if (!ExplorerManager.Instance.EventHandler.EventPlaying)
                         {
                             Event.Invoke(ExplorerManager.Instance.EventHandler);
                             ExplorerManager.Instance.EventHandler.HandleEvent(Event);
@@ -50,7 +50,7 @@ namespace RPGF.RPG
                             Event.Invoke(BattleManager.Instance);
                         break;
                     case Usability.Explorer:
-                        if (!BattleManager.IsBattle && !ExplorerManager.Instance.EventHandler.EventRuning)
+                        if (!BattleManager.IsBattle && !ExplorerManager.Instance.EventHandler.EventPlaying)
                         {
                             Event.Invoke(ExplorerManager.Instance.EventHandler);
                             ExplorerManager.Instance.EventHandler.HandleEvent(Event);

@@ -215,8 +215,8 @@ namespace RPGF.Editor.EventSystem
                 {
                     inputNodeGUID = right.GUID,
                     outputNodeGUID = left.GUID,
-                    inputPortName = item.input.portName,
-                    outputPortName = item.output.portName
+                    inputPortTag = right.Inputs.First(i => i.InnerPort.name == item.input.portName).Tag,
+                    outputPortTag = left.Outputs.First(o => o.InnerPort.name == item.output.portName).Tag
                 });
             }
 
@@ -234,28 +234,28 @@ namespace RPGF.Editor.EventSystem
 
             foreach (var item in Nodes)
             {
-                List<GraphEventMeta.EdgeMeta> tedges = Event.Meta.edges.Where(i => i.outputNodeGUID == item.GUID).ToList();
+                var tedges = Event.Meta.edges.Where(i => i.outputNodeGUID == item.GUID).ToList();
 
-                List<Port> tports = ports.Where(i => i.node == item && i.direction == Direction.Output).ToList();
+                var tports = item.Outputs;
 
                 foreach (var port in tports)
                 {
                     foreach (var edge in tedges)
                     {
-                        if (port.portName != edge.outputPortName)
+                        if (port.Tag != edge.outputPortTag)
                             continue;
 
                         var ohter = Nodes.First(i => edge.inputNodeGUID == i.GUID);
 
-                        var otherport = ports.First(i => i.node == ohter && i.portName == edge.inputPortName);
+                        var otherport = ports.First(i => i.node == ohter && i.portName == edge.inputPortTag);
 
                         Edge newEdge = new()
                         {
                             input = otherport,
-                            output = port
+                            output = port.InnerPort
                         };
 
-                        port.Connect(newEdge);
+                        port.InnerPort.Connect(newEdge);
                         otherport.Connect(newEdge);
 
                         Add(newEdge);

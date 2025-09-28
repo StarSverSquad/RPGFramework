@@ -1,42 +1,40 @@
-using RPGF;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using RPGF.Domain.DI;
 
-public class FloatVarCondition : ConditionBase
+namespace RPGF.Actions.Condition
 {
-    public string Var;
-
-    public float Value;
-
-    public ConditionOperation Operation;
-
-    public FloatVarCondition()
+    [UseCondition("По дробной переменной")]
+    public class FloatVarCondition : ConditionBase
     {
-        Var = string.Empty;
-        Value = 0;
-        Operation = ConditionOperation.Equals;
-    }
+        [Inject]
+        private readonly GameData _gameData;
 
-    public override bool Invoke()
-    {
-        if (!GlobalManager.Instance.GameData.FloatValues.HaveKey(Var))
-            return false;
+        public string Var;
+        public float Value;
 
-        return Operation switch
+        public ConditionOperation Operation;
+
+        public FloatVarCondition()
         {
-            ConditionOperation.Equals => GlobalManager.Instance.GameData.FloatValues[Var] == Value,
-            ConditionOperation.NotEquals => GlobalManager.Instance.GameData.FloatValues[Var] != Value,
-            ConditionOperation.More => GlobalManager.Instance.GameData.FloatValues[Var] > Value,
-            ConditionOperation.Less => GlobalManager.Instance.GameData.FloatValues[Var] < Value,
-            ConditionOperation.MoreOrEquals => GlobalManager.Instance.GameData.FloatValues[Var] >= Value,
-            ConditionOperation.LessOrEquals => GlobalManager.Instance.GameData.FloatValues[Var] <= Value,
-            _ => false,
-        };
-    }
+            Var = string.Empty;
+            Value = 0;
+            Operation = ConditionOperation.Equals;
+        }
 
-    public override string GetLabel()
-    {
-        return "По дробной переменной";
+        public override bool Invoke()
+        {
+            if (!_gameData.FloatValues.HaveKey(Var))
+                return false;
+
+            return Operation switch
+            {
+                ConditionOperation.Equals => _gameData.FloatValues[Var] == Value,
+                ConditionOperation.NotEquals => _gameData.FloatValues[Var] != Value,
+                ConditionOperation.More => _gameData.FloatValues[Var] > Value,
+                ConditionOperation.Less => _gameData.FloatValues[Var] < Value,
+                ConditionOperation.MoreOrEquals => _gameData.FloatValues[Var] >= Value,
+                ConditionOperation.LessOrEquals => _gameData.FloatValues[Var] <= Value,
+                _ => false,
+            };
+        }
     }
 }

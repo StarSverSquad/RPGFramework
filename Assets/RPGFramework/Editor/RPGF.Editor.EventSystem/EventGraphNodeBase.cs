@@ -13,17 +13,17 @@ namespace RPGF.Editor.EventSystem
 
         public ActionBase action;
 
-        private List<Port> inputs;
-        private List<OutputPortWrapper> outputs;
-
         public EventGraphView view;
+
+        public List<PortWrapper> Inputs { get; private set; }
+        public List<OutputPortWrapper> Outputs { get; private set; }
 
         public EventGraphNodeBase(ActionBase action)
         {
             this.action = action;
 
-            inputs = new();
-            outputs = new();
+            Inputs = new();
+            Outputs = new();
 
             extensionContainer.style.backgroundColor = (Color)new Color32(100, 100, 100, 200);
         }
@@ -35,7 +35,7 @@ namespace RPGF.Editor.EventSystem
             base.SetPosition(newPos);
         }
 
-        protected Port CreateInputPort(string name)
+        protected Port CreateInputPort(string name, string tag)
         {
             Port port = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(EventGraphNodeBase));
 
@@ -43,11 +43,11 @@ namespace RPGF.Editor.EventSystem
             port.portColor = new Color32(16, 130, 119, 255);
 
             inputContainer.Add(port);
-            inputs.Add(port);
+            Inputs.Add(new PortWrapper(tag, port));
 
             return port;
         }
-        protected Port CreateInputPort(string name, Color color)
+        protected Port CreateInputPort(string name, string tag, Color color)
         {
             Port port = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(EventGraphNodeBase));
 
@@ -55,31 +55,31 @@ namespace RPGF.Editor.EventSystem
             port.portColor = color;
 
             inputContainer.Add(port);
-            inputs.Add(port);
+            Inputs.Add(new PortWrapper(tag, port));
 
             return port;
         }
 
-        protected Port CreateOutputPort(string name, string nextTag = ActionBase.DefaultNextTag)
+        protected Port CreateOutputPort(string name, string tag, string nextTag = ActionBase.DefaultNextTag)
         {
             Port port = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(EventGraphNodeBase));
 
             port.portName = name;
             port.portColor = new Color32(20, 104, 156, 255);
 
-            outputs.Add(new OutputPortWrapper(port, nextTag));
+            Outputs.Add(new OutputPortWrapper(tag, port, nextTag));
             outputContainer.Add(port);
 
             return port;
         }
-        protected Port CreateOutputPort(string name, Color color, string nextTag = ActionBase.DefaultNextTag)
+        protected Port CreateOutputPort(string name, string tag, Color color, string nextTag = ActionBase.DefaultNextTag)
         {
             Port port = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(EventGraphNodeBase));
 
             port.portName = name;
             port.portColor = color;
 
-            outputs.Add(new OutputPortWrapper(port, nextTag));
+            Outputs.Add(new OutputPortWrapper(tag, port, nextTag));
             outputContainer.Add(port);
 
             return port;
@@ -87,8 +87,12 @@ namespace RPGF.Editor.EventSystem
 
         public virtual void PortContructor()
         {
-            CreateInputPort("Input");
-            CreateOutputPort("Output");
+            CreateInputPort("¬ход", "Input");
+
+            foreach (var next in action.Nexts)
+            {
+                CreateOutputPort(next.Name, next.Tag, next.Tag);
+            }
         }
 
         public abstract void UIContructor();
@@ -106,37 +110,37 @@ namespace RPGF.Editor.EventSystem
 
         public void UpdatePorts()
         {
-            foreach (var port in outputs)
+            foreach (var port in Outputs)
             {
-                foreach (var edge in port.Port.connections)
+                foreach (var edge in port.InnerPort.connections)
                 {
                     edge.input.Disconnect(edge);
 
                     edge.parent.Remove(edge);
                 }
 
-                port.Port.DisconnectAll();
+                port.InnerPort.DisconnectAll();
             }
 
 
-            foreach (var port in inputs)
+            foreach (var port in Inputs)
             {
-                foreach (var edge in port.connections)
+                foreach (var edge in port.InnerPort.connections)
                 {
                     edge.output.Disconnect(edge);
 
                     edge.parent.Remove(edge);
                 }
 
-                port.DisconnectAll();
+                port.InnerPort.DisconnectAll();
             }
 
 
             inputContainer.Clear();
             outputContainer.Clear();
 
-            outputs = new();
-            inputs = new();
+            Outputs = new();
+            Inputs = new();
 
             PortContructor();
         }
@@ -145,21 +149,21 @@ namespace RPGF.Editor.EventSystem
         {
             action.ClearNextActions();
 
-            for (int i = 0; i < outputs.Count; i++)
+            for (int i = 0; i < Outputs.Count; i++)
             {
-                var OutputPort = outputs[i];
+                var OutputPort = Outputs[i];
 
-                if (!OutputPort.Port.connections.Any())
+                if (!OutputPort.InnerPort.connections.Any())
                     continue;
 
                 Port otherport;
-                if (OutputPort.Port.connections.First().input != OutputPort.Port)
+                if (OutputPort.InnerPort.connections.First().input != OutputPort.InnerPort)
                 {
-                    otherport = OutputPort.Port.connections.First().input;
+                    otherport = OutputPort.InnerPort.connections.First().input;
                 }
-                else if (OutputPort.Port.connections.First().output != OutputPort.Port)
+                else if (OutputPort.InnerPort.connections.First().output != OutputPort.InnerPort)
                 {
-                    otherport = OutputPort.Port.connections.First().output;
+                    otherport = OutputPort.InnerPort.connections.First().output;
                 }
                 else
                 {
@@ -168,20 +172,9 @@ namespace RPGF.Editor.EventSystem
                 }
 
                 var node = otherport.node as EventGraphNodeBase;
+
+                action.SetNextAction(node.action, OutputPort.NextTag);
             }
-        }
-    }
-
-    public class OutputPortWrapper
-    {
-        public Port Port { get; set; }
-
-        public string NextTag { get; set; }
-
-        public OutputPortWrapper(Port port, string nextTag = ActionBase.DefaultNextTag)
-        {
-            Port = port;
-            NextTag = nextTag;
         }
     }
 }

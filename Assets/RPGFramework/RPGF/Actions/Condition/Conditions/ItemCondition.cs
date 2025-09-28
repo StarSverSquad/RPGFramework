@@ -1,55 +1,56 @@
 ﻿using RPGF;
 using RPGF.Core.Inventory;
+using RPGF.Domain.DI;
 using RPGF.RPG;
 using UnityEngine;
 
-public class ItemCondition : ConditionBase
+namespace RPGF.Actions.Condition
 {
-    public RPGCollectable Value;
-
-    public int Count;
-
-    public ConditionOperation Operation;
-
-    private InventoryService Inventory => GlobalManager.Instance.Inventory;
-
-    public ItemCondition()
+    [UseCondition("По предмету")]
+    public class ItemCondition : ConditionBase
     {
-        Value = null;
+        [Inject]
+        private readonly InventoryService _inventory;
 
-        Count = 0;
+        public RPGCollectable Value;
 
-        Operation = ConditionOperation.Equals;
-    }
+        public int Count;
 
-    public override bool Invoke()
-    {
-        if (Value == null)
+        public ConditionOperation Operation;
+
+        public ItemCondition()
         {
-            Debug.LogError($"HAVE_ITEM_CONDITION: Предмет не указан");
+            Value = null;
 
-            return false;
+            Count = 0;
+
+            Operation = ConditionOperation.Equals;
         }
 
-        if (!Inventory.HasItemSlot(Value))
-            return false;
-
-        InventorySlotData slot = Inventory.GetSlotByItemTag(Value.Tag);
-
-        return Operation switch
+        public override bool Invoke()
         {
-            ConditionOperation.Equals => slot.Count == Count,
-            ConditionOperation.NotEquals => slot.Count != Count,
-            ConditionOperation.More => slot.Count > Count,
-            ConditionOperation.Less => slot.Count < Count,
-            ConditionOperation.MoreOrEquals => slot.Count >= Count,
-            ConditionOperation.LessOrEquals => slot.Count <= Count,
-            _ => false,
-        };
-    }
+            if (Value == null)
+            {
+                Debug.LogError($"HAVE_ITEM_CONDITION: Предмет не указан");
 
-    public override string GetLabel()
-    {
-        return "По предмету";
+                return false;
+            }
+
+            if (!_inventory.HasItemSlot(Value))
+                return false;
+
+            InventorySlotData slot = _inventory.GetSlotByItemTag(Value.Tag);
+
+            return Operation switch
+            {
+                ConditionOperation.Equals => slot.Count == Count,
+                ConditionOperation.NotEquals => slot.Count != Count,
+                ConditionOperation.More => slot.Count > Count,
+                ConditionOperation.Less => slot.Count < Count,
+                ConditionOperation.MoreOrEquals => slot.Count >= Count,
+                ConditionOperation.LessOrEquals => slot.Count <= Count,
+                _ => false,
+            };
+        }
     }
 }

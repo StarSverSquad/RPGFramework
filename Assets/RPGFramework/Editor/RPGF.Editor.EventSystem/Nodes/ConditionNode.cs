@@ -1,15 +1,17 @@
+using RPGF.Actions.Condition;
 using RPGF.Editor.EventSystem;
 using RPGF.Editor.EventSystem.Attributes;
 using RPGF.RPG;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[UseActionNodeAttribute]
+[UseActionNode("Условие", "Обычное условное вырожение", "Ветвление/Условие")]
 public class ConditionNode : ActionNodeBase<ConditionAction>
 {
     public enum ConditionType
@@ -19,10 +21,17 @@ public class ConditionNode : ActionNodeBase<ConditionAction>
 
     private int lastConditionListIndex = 0;
 
+    private Dictionary<string, Type> types;
+
     public ConditionNode(ConditionAction Action) : base(Action)
     {
         extensionContainer.style.backgroundColor = (Color)(new Color32(77, 77, 77, 255));
         extensionContainer.style.minWidth = 200;
+
+        var types = Action.GetType().Assembly.GetTypes()
+            .Where(i => i.BaseType != null && i.BaseType == typeof(ConditionBase)
+                     && i.GetCustomAttribute<UseConditionAttribute>() is not null)
+            .ToDictionary(type => type.GetType().GetCustomAttribute<UseConditionAttribute>().Label);
     }
 
     public string FormatOperationList(int index)
@@ -53,27 +62,13 @@ public class ConditionNode : ActionNodeBase<ConditionAction>
         };
     }
 
-    public override void PortContructor()
-    {
-        CreateInputPort("Input");
-
-        CreateOutputPort("Then", new Color32(17, 156, 56, 255));
-        CreateOutputPort("Else", new Color32(156, 17, 17, 255));
-    }
-
     public override void UIContructor()
     {
-        List<string> contypes = Action.GetType().Assembly.GetTypes()
-            .Where(i => i.BaseType != null && i.BaseType.Name == "ConditionBase")
-            .Select(i => i.Name)
-            .ToList();
+        var typePopup = new PopupField<string>(types.Keys.ToList(), lastConditionListIndex);
 
-        PopupField<string> typePopup = new PopupField<string>(contypes, lastConditionListIndex, LabelFormater, LabelFormater);
-
-
-        Button addButton = new Button(() =>
+        Button addButton = new(() =>
         {
-            Action.Conditions.Add(Action.GetType().Assembly.CreateInstance(typePopup.value) as ConditionBase);
+            Action.Conditions.Add(Activator.CreateInstance(types[typePopup.value]) as ConditionBase);
 
             lastConditionListIndex = typePopup.index;
 
@@ -88,7 +83,7 @@ public class ConditionNode : ActionNodeBase<ConditionAction>
         extensionContainer.Add(typePopup);
         extensionContainer.Add(addButton);
 
-        foreach (ConditionBase item in Action.Conditions)
+        foreach (var condition in Action.Conditions)
         {
             VisualElement conditionBlock = new VisualElement();
             
@@ -100,13 +95,15 @@ public class ConditionNode : ActionNodeBase<ConditionAction>
             labelHorizontal.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
             labelHorizontal.style.justifyContent = new StyleEnum<Justify>(Justify.Center);
 
-            Label label = new Label(item.GetLabel());
+            var labelText = condition.GetType().GetCustomAttribute<UseConditionAttribute>().Label;
+
+            Label label = new(labelText);
 
             labelHorizontal.Add(label);
 
             conditionBlock.Add(labelHorizontal);
 
-            switch (item)
+            switch (condition)
             {
                 case BoolVarCondition blvar:
                     {
@@ -495,7 +492,7 @@ public class ConditionNode : ActionNodeBase<ConditionAction>
                     }
                     break;
                 default:
-                    Debug.LogWarning($"Для типа {item.GetType().Name} нет UI");
+                    Debug.LogWarning($"Для типа {condition.GetType().Name} нет UI");
                     break;
             }
 
@@ -518,16 +515,5 @@ public class ConditionNode : ActionNodeBase<ConditionAction>
 
             extensionContainer.Add(removeButton);
         }
-    }
-
-    private string LabelFormater(string typeName)
-    {
-        Type item = Action.GetType().Assembly.GetTypes()
-                        .Where(i => i.BaseType != null && i.BaseType.Name == "ConditionBase" && i.Name == typeName)
-                        .FirstOrDefault();
-
-        ConditionBase condition = Activator.CreateInstance(item) as ConditionBase;
-
-        return condition.GetLabel();
     }
 }

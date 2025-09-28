@@ -40,6 +40,8 @@ namespace RPGF.Core
         {
             DI = new DependencyInjection();
 
+            DI.AddSignleton(DI);
+
             InitializeChild();
         }
 

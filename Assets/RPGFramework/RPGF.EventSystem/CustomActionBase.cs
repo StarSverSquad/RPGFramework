@@ -5,6 +5,6 @@ namespace RPGF.EventSystem
 {
     public abstract class CustomActionBase : MonoBehaviour
     {
-        protected abstract IEnumerator ActionCoroutine();
+        public abstract IEnumerator ActionCoroutine();
     }
 }

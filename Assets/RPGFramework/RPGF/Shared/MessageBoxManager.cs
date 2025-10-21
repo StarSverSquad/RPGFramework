@@ -18,7 +18,7 @@ namespace RPGF.Shared
         [Inject]
         private readonly BaseOptions _options;
 
-        [Header("Message")]
+        [Header("Dto")]
         [Tooltip("0 - bottom, 1 - center, 2 - top")]
         [SerializeField]
         private RectTransform[] messageBoxYPoints = new RectTransform[3];

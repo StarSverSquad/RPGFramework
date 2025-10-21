@@ -1,40 +1,44 @@
-﻿using RPGF;
-using RPGF.Core.Inventory;
+﻿using RPGF.Core.Inventory;
+using RPGF.Domain.DI;
 using RPGF.EventSystem;
+using RPGF.EventSystem.Attributes;
 using RPGF.RPG;
 using System.Collections;
 
-public class ChangeItemCountAction : ActionBase
+namespace RPGF.Actions
 {
-    public RPGCollectable Item;
-
-    public int Count;
-
-    public bool IsSet;
-
-    private InventoryService Inventory => GlobalManager.Instance.Inventory;
-
-    public ChangeItemCountAction() : base("ChangeItemCount")
+    [GenerateActionNode("Измененить количество предмета", contextMenuPath: "Система/Измененить количество предмета")]
+    public class ChangeItemCountAction : ActionBase
     {
-        Item = null;
+        [Inject]
+        private readonly InventoryService _inventory;
 
-        Count = 0;
+        [ActionFieldOption("Предмет", AllowSceneObjects = true)]
+        public RPGCollectable Item;
+        [ActionFieldOption("Количество")]
+        public int Count;
+        [ActionFieldOption("Установить/Добавить?")]
+        public bool IsSet;
 
-        IsSet = false;
-    }
+        public ChangeItemCountAction() : base()
+        {
+            Item = null;
+            Count = 0;
+            IsSet = false;
+        }
 
-    public override IEnumerator ActionCoroutine()
-    {
-        if (IsSet)
-            Inventory.SetItemCount(Item, Count);
-        else
-            Inventory.AddToItemCount(Item, Count);
+        public override IEnumerator ActionCoroutine()
+        {
+            if (IsSet)
+            {
+                _inventory.SetItemCount(Item, Count);
+            }
+            else
+            {
+                _inventory.AddToItemCount(Item, Count);
+            }
 
-        yield break;
-    }
-
-    public override string GetHeader()
-    {
-        return "Измененить количество предмета";
+            yield break;
+        }
     }
 }

@@ -1,74 +1,82 @@
 ﻿using RPGF.Battle;
 using RPGF.Battle.EnemyBehaviour;
+using RPGF.Domain.DI;
 using RPGF.EventSystem;
+using RPGF.EventSystem.Attributes;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-public class EnemyBehaviourChangeAction : ActionBase
+namespace RPGF.Actions
 {
-    public enum ChangeType
+    [GenerateActionNode("Изменение поведения врага", contextMenuPath: "Битва/Изменение поведения врага")]
+    public class EnemyBehaviourChangeAction : ActionBase
     {
-        DeleteAll, Delete, Add
-    }
-
-    public string EnemyTag;
-    public string PatternTag;
-
-    public BattleEnemyBehaviourBase Pattern;
-
-    public ChangeType Type;
-
-    public EnemyBehaviourChangeAction() : base("EnemyBehaviourChange")
-    {
-        EnemyTag = "";
-        PatternTag = "";
-
-        Pattern = null;
-
-        Type = ChangeType.DeleteAll;
-    }
-
-    public override IEnumerator ActionCoroutine()
-    {
-        if (!BattleManager.IsBattle)
+        public enum ChangeType
         {
-            Debug.LogError($"{Name}: запущен вне битвы!");
-            yield break;
-        }
-            
-        var enemy = BattleManager._Data.Enemys.FirstOrDefault(enemy => enemy.Tag == EnemyTag);
-
-        if (enemy == null)
-        {
-            Debug.LogError($"{Name}: враг не обнаружен!");
-            yield break;
+            DeleteAll, Delete, Add
         }
 
-        switch (Type)
+        [Inject]
+        private readonly BattleData _data;
+
+        [ActionFieldOption("Тип изменения")]
+        public ChangeType Type;
+
+        [ActionFieldOption("Тег врага")]
+        public string EnemyTag;
+        [ActionFieldOption("Тег паттерна")]
+        public string PatternTag;
+
+        [ActionFieldOption("Паттерна", AllowSceneObjects = true)]
+        public BattleEnemyBehaviourBase Pattern;
+
+        public EnemyBehaviourChangeAction() : base()
         {
-            case ChangeType.DeleteAll:
-                enemy.Behaviours.Clear();
-                break;
-            case ChangeType.Delete:
-                var delPattern = enemy.Behaviours.FindIndex(pat => pat.BehaviourTag == PatternTag);
+            EnemyTag = "";
+            PatternTag = "";
 
-                if (delPattern == -1)
-                {
-                    Debug.LogError($"{Name}: Поведение не найден!");
-                    yield break;
-                }
+            Pattern = null;
 
-                enemy.Behaviours.RemoveAt(delPattern);
-                break;
-            case ChangeType.Add:
-                enemy.Behaviours.Add(Pattern);
-                break;
+            Type = ChangeType.DeleteAll;
         }
-    }
 
-    public override string GetHeader()
-    {
-        return "Изменение поведения врага";
+        public override IEnumerator ActionCoroutine()
+        {
+            if (!BattleManager.IsBattle)
+            {
+                Debug.LogError($"{nameof(EnemyBehaviourChangeAction)}: запущен вне битвы!");
+                yield break;
+            }
+
+            var enemy = _data.Enemys.FirstOrDefault(enemy => enemy.Tag == EnemyTag);
+
+            if (enemy == null)
+            {
+                Debug.LogError($"{nameof(EnemyBehaviourChangeAction)}: враг не обнаружен!");
+                yield break;
+            }
+
+            switch (Type)
+            {
+                case ChangeType.DeleteAll:
+                    enemy.Behaviours.Clear();
+                    break;
+                case ChangeType.Delete:
+                    var delPattern = enemy.Behaviours.FindIndex(pat => pat.BehaviourTag == PatternTag);
+
+                    if (delPattern == -1)
+                    {
+                        Debug.LogError($"{nameof(EnemyBehaviourChangeAction)}: Поведение не найден!");
+                        yield break;
+                    }
+
+                    enemy.Behaviours.RemoveAt(delPattern);
+                    break;
+                case ChangeType.Add:
+                    enemy.Behaviours.Add(Pattern);
+                    break;
+            }
+        }
     }
 }

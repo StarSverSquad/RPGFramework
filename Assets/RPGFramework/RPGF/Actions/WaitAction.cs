@@ -6,7 +6,7 @@ public class WaitAction : ActionBase
 {
     public float time;
 
-    public WaitAction() : base("Wait")
+    public WaitAction() : base("IsWait")
     {
         time = 1;
     }

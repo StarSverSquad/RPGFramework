@@ -7,7 +7,7 @@ public class MessageAction : ActionBase
 {
     public MessageInfo message;
 
-    public MessageAction() : base("Message")
+    public MessageAction() : base("Dto")
     {
         message = new MessageInfo();
     }

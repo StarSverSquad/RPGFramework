@@ -5,7 +5,6 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-[UseActionNodeAttribute]
 public class ManageBGMNode : ActionNodeBase<ManageBGMAction>
 {
     public ManageBGMNode(ManageBGMAction Action) : base(Action)

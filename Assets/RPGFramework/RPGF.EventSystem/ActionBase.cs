@@ -50,6 +50,11 @@ namespace RPGF.EventSystem
             Nexts.ForEach(next => next.Action = null);
         }
 
+        public void ClearNexts()
+        {
+            Nexts.Clear();
+        }
+
         public NextAction GetActualNext()
         {
             return Nexts.FirstOrDefault(n => n.IsNext);

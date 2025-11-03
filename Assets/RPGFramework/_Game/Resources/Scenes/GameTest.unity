@@ -255,7 +255,13 @@ MonoBehaviour:
   Interaction: 0
   OnlyOne: 1
   Parallel: 1
-  InnerEvent: {fileID: 1745146540}
+  InnerEvent:
+    rid: -2
+  references:
+    version: 2
+    RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
 --- !u!1001 &440772922
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -443,63 +449,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cef463750f410d64a86c12dcdec36c98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ActionTag: 
   rPGCharacter: {fileID: 1709161115110982532}
---- !u!114 &1311297651
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da7d81e88139d4f4c8042564b3a4db43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Actions:
-  - rid: 3076319653712887888
-  - rid: 3076319653712887889
-  - rid: 3076319653712887891
-  Meta:
-    edges:
-    - inputPortName: Input
-      inputNodeGUID: 68642fec26f29c44cbdfd285e3c288d9
-      outputPortName: Output
-      outputNodeGUID: c82ef8ea15f63354ca683a523d4de2f9
-    - inputPortName: Input
-      inputNodeGUID: 14969058be6289749a394fd0192c29f3
-      outputPortName: Then
-      outputNodeGUID: 68642fec26f29c44cbdfd285e3c288d9
-    nodes:
-    - guid: c82ef8ea15f63354ca683a523d4de2f9
-      actionIndex: 0
-      position: {x: 250.4, y: 250.4}
-    - guid: 68642fec26f29c44cbdfd285e3c288d9
-      actionIndex: 1
-      position: {x: 428.8, y: 250.4}
-    - guid: 14969058be6289749a394fd0192c29f3
-      actionIndex: 2
-      position: {x: 845.6, y: 250.4}
-  references:
-    version: 2
-    RefIds:
-    - rid: 3076319653712887888
-      type: {class: StartAction, ns: RPGF.EventSystem.Default, asm: Assembly-CSharp}
-      data:
-        NextActions:
-        - rid: 3076319653712887889
-    - rid: 3076319653712887889
-      type: {class: InvokeBattleAction, ns: , asm: Assembly-CSharp}
-      data:
-        NextActions:
-        - rid: 3076319653712887891
-        battle: {fileID: 11400000, guid: 7e0441e48b282044f95477f6733bbcbd, type: 2}
-        fleePort: 0
-    - rid: 3076319653712887891
-      type: {class: EndAction, ns: RPGF.EventSystem.Default, asm: Assembly-CSharp}
-      data:
-        NextActions: []
 --- !u!1 &1428878188
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,63 +518,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1745146540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da7d81e88139d4f4c8042564b3a4db43, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Actions:
-  - rid: 3076319645832839245
-  - rid: 3076319645832839247
-  - rid: 3076319645832839246
-  Meta:
-    edges:
-    - inputPortName: Input
-      inputNodeGUID: 7280f45fe13ff9b448299d9c3d638ab1
-      outputPortName: Output
-      outputNodeGUID: f295a96f03ce8374c8c91db251259229
-    - inputPortName: Input
-      inputNodeGUID: 8992f8d9a8c5ea14d9dd9ff959147dc1
-      outputPortName: Output
-      outputNodeGUID: 7280f45fe13ff9b448299d9c3d638ab1
-    nodes:
-    - guid: f295a96f03ce8374c8c91db251259229
-      actionIndex: 0
-      position: {x: 250.4, y: 250.4}
-    - guid: 8992f8d9a8c5ea14d9dd9ff959147dc1
-      actionIndex: 1
-      position: {x: 790.4, y: 250.4}
-    - guid: 7280f45fe13ff9b448299d9c3d638ab1
-      actionIndex: 2
-      position: {x: 415.2, y: 250.4}
-  references:
-    version: 2
-    RefIds:
-    - rid: 3076319645832839245
-      type: {class: StartAction, ns: RPGF.EventSystem.Default, asm: Assembly-CSharp}
-      data:
-        NextActions:
-        - rid: 3076319645832839246
-    - rid: 3076319645832839246
-      type: {class: AddRemoveCharacterAction, ns: , asm: Assembly-CSharp}
-      data:
-        NextActions:
-        - rid: 3076319645832839247
-        isAdd: 1
-        updateModels: 1
-        character: {fileID: 11400000, guid: 6ed6f6f5c67b9a1439d24d7755114bc6, type: 2}
-        existentObject: {fileID: 0}
-    - rid: 3076319645832839247
-      type: {class: EndAction, ns: RPGF.EventSystem.Default, asm: Assembly-CSharp}
-      data:
-        NextActions: []
 --- !u!1 &2020689641
 GameObject:
   m_ObjectHideFlags: 0
@@ -719,7 +612,64 @@ MonoBehaviour:
   Interaction: 5
   OnlyOne: 0
   Parallel: 0
-  InnerEvent: {fileID: 1311297651}
+  InnerEvent:
+    rid: 9019629321775218759
+  references:
+    version: 2
+    RefIds:
+    - rid: 9019629321775218759
+      type: {class: GraphEvent, ns: RPGF.EventSystem.Graph, asm: Assembly-CSharp}
+      data:
+        Actions:
+        - rid: 9019629321775218764
+        - rid: 9019629321775218762
+        - rid: 9019629321775218760
+        - rid: 9019629321775218767
+        Meta:
+          edges: []
+          nodes:
+          - guid: 1f120b5da4af5d4499fc983919f2ce54
+            action:
+              rid: 9019629321775218764
+            position: {x: 789.6, y: 328.80002}
+          - guid: 30ed56ba554fba14eba54699e9dc16c9
+            action:
+              rid: 9019629321775218762
+            position: {x: 609.6, y: 313.6}
+          - guid: dba0033f380f9b6439ea8de6dee05b2f
+            action:
+              rid: 9019629321775218760
+            position: {x: 84.8, y: 131.20001}
+          - guid: 5d0141b5afd05084ca99cebdbd7e3879
+            action:
+              rid: 9019629321775218767
+            position: {x: 206.4, y: 186.40001}
+    - rid: 9019629321775218760
+      type: {class: StartAction, ns: RPGF.EventSystem.Default, asm: Assembly-CSharp}
+      data: 
+    - rid: 9019629321775218762
+      type: {class: SaveAction, ns: RPGF.Actions, asm: Assembly-CSharp}
+      data:
+        slotId: 0
+    - rid: 9019629321775218764
+      type: {class: ManageGameObjectAction, ns: RPGF.Actions, asm: Assembly-CSharp}
+      data:
+        gameObject: {fileID: 0}
+        isActive: 1
+    - rid: 9019629321775218767
+      type: {class: MessageAction, ns: RPGF.Actions, asm: Assembly-CSharp}
+      data:
+        message:
+          text: 
+          speed: 0
+          clear: 1
+          wait: 1
+          name: 
+          closeWindow: 0
+          letterSound: {fileID: 0}
+          image: {fileID: 0}
+          position: 0
+          textEffectTypeName: None
 --- !u!4 &79850558270155774
 Transform:
   m_ObjectHideFlags: 0

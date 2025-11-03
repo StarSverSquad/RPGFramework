@@ -122,6 +122,18 @@ namespace RPGF.Editor.EventSystem
 
                         additingElement = objectField;
                         break;
+                    case nameof(Color):
+                        var colorField = new ColorField(label);
+                        colorField.SetValueWithoutNotify((Color)field.GetValue(action));
+                        colorField.RegisterValueChangedCallback(value =>
+                        {
+                            field.SetValue(action, value.newValue);
+
+                            MakeDirty();
+                        });
+
+                        additingElement = colorField;
+                        break;
                 }
 
                 if (additingElement == null && field.FieldType.BaseType == typeof(Enum))

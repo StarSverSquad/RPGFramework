@@ -9,7 +9,7 @@ namespace RPGF.Actions
     {
         public PlayableCharacterModelController rPGCharacter;
 
-        protected override IEnumerator ActionCoroutine()
+        public override IEnumerator ActionCoroutine()
         {
             rPGCharacter.MoveToRelative(new Vector2(3, 0), 3f);
 

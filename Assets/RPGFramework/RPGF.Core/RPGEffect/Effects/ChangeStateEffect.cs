@@ -15,7 +15,7 @@ namespace RPGF.Core.RPGEffect
         {
             if (BattleManager.IsBattle
                 && target is RPGCharacter character
-                && BattleManager._Data.TurnsData.First(i => i.Character == character).IsDead)
+                && BattleManager.Instance.Data.TurnsData.First(i => i.Character == character).IsDead)
                 yield break;
 
             if (IsAddState)

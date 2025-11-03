@@ -1,91 +1,92 @@
 ﻿using RPGF;
 using RPGF.Core.SaveLoad;
+using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using System.Collections;
 
-public class ManageVarAction : ActionBase
+namespace RPGF.Actions
 {
-    public enum VarType
+    public class ManageVarAction : ActionBase
     {
-        Bool, Int, Float, String, FastSave
-    }
-
-    public enum OperationType
-    {
-        Set, Add
-    }
-
-    public VarType Var;
-    public OperationType Operation;
-
-    public string VarName;
-
-    public bool BoolBuffer;
-    public int IntBuffer;
-    public string StringBuffer;
-    public float FloatBuffer;
-
-    private FastSaveService FastSave => GlobalManager.Instance.FastSave;
-    private GameData GameData => GameData;
-
-    public ManageVarAction() : base("ManageVar")
-    {
-        Var = VarType.Bool;
-        Operation = OperationType.Set;
-        IntBuffer = 0;
-        BoolBuffer = false;
-        FloatBuffer = 0;
-        StringBuffer = string.Empty;
-        VarName = string.Empty;
-    }
-
-    public override IEnumerator ActionCoroutine()
-    {
-        switch (Var)
+        public enum VarType
         {
-            case VarType.Bool:
-                if (!GameData.BoolValues.HaveKey(VarName))
-                    GameData.BoolValues.Add(VarName, false);
-
-                GameData.BoolValues[VarName] = BoolBuffer;
-                break;
-            case VarType.String:
-                if (!GameData.StringValues.HaveKey(VarName))
-                    GameData.StringValues.Add(VarName, string.Empty);
-
-                GameData.StringValues[VarName] = StringBuffer;
-                break;
-            case VarType.Float:
-                if (!GameData.FloatValues.HaveKey(VarName))
-                    GameData.FloatValues.Add(VarName, 0);
-
-                if (Operation == OperationType.Set)
-                    GameData.FloatValues[VarName] = FloatBuffer;
-                else
-                    GameData.FloatValues[VarName] += FloatBuffer;
-                break;
-            case VarType.Int:
-                if (!GameData.IntValues.HaveKey(VarName))
-                    GameData.IntValues.Add(VarName, 0);
-
-                if (Operation == OperationType.Set)
-                    GameData.IntValues[VarName] = IntBuffer;
-                else
-                    GameData.IntValues[VarName] += IntBuffer;
-                break;
-            case VarType.FastSave:
-                if (Operation == OperationType.Set)
-                    FastSave[VarName] = IntBuffer;
-                else
-                    FastSave[VarName] += IntBuffer;
-                break;
+            Bool, Int, Float, String, FastSave
         }
 
-        yield break;
-    }
+        public enum OperationType
+        {
+            Set, Add
+        }
 
-    public override string GetHeader()
-    {
-        return "Управление переменной";
+        public VarType Var;
+        public OperationType Operation;
+
+        [Inject]
+        private readonly FastSaveService _fastSave;
+        [Inject]
+        private readonly GameData _gameData;
+
+        public string VarName;
+
+        public bool BoolBuffer;
+        public int IntBuffer;
+        public string StringBuffer;
+        public float FloatBuffer;
+
+        public ManageVarAction() : base()
+        {
+            Var = VarType.Bool;
+            Operation = OperationType.Set;
+            IntBuffer = 0;
+            BoolBuffer = false;
+            FloatBuffer = 0;
+            StringBuffer = string.Empty;
+            VarName = string.Empty;
+        }
+
+        public override IEnumerator ActionCoroutine()
+        {
+            switch (Var)
+            {
+                case VarType.Bool:
+                    if (!_gameData.BoolValues.HaveKey(VarName))
+                        _gameData.BoolValues.Add(VarName, false);
+
+                    _gameData.BoolValues[VarName] = BoolBuffer;
+                    break;
+                case VarType.String:
+                    if (!_gameData.StringValues.HaveKey(VarName))
+                        _gameData.StringValues.Add(VarName, string.Empty);
+
+                    _gameData.StringValues[VarName] = StringBuffer;
+                    break;
+                case VarType.Float:
+                    if (!_gameData.FloatValues.HaveKey(VarName))
+                        _gameData.FloatValues.Add(VarName, 0);
+
+                    if (Operation == OperationType.Set)
+                        _gameData.FloatValues[VarName] = FloatBuffer;
+                    else
+                        _gameData.FloatValues[VarName] += FloatBuffer;
+                    break;
+                case VarType.Int:
+                    if (!_gameData.IntValues.HaveKey(VarName))
+                        _gameData.IntValues.Add(VarName, 0);
+
+                    if (Operation == OperationType.Set)
+                        _gameData.IntValues[VarName] = IntBuffer;
+                    else
+                        _gameData.IntValues[VarName] += IntBuffer;
+                    break;
+                case VarType.FastSave:
+                    if (Operation == OperationType.Set)
+                        _fastSave[VarName] = IntBuffer;
+                    else
+                        _fastSave[VarName] += IntBuffer;
+                    break;
+            }
+
+            yield break;
+        }
     }
 }

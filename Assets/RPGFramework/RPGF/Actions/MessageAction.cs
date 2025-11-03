@@ -1,45 +1,47 @@
-﻿using RPGF.EventSystem;
+﻿using RPGF.Domain.DI;
+using RPGF.EventSystem;
 using RPGF.Shared;
 using System.Collections;
 using UnityEngine;
 
-public class MessageAction : ActionBase
+namespace RPGF.Actions
 {
-    public MessageInfo message;
-
-    public MessageAction() : base("Dto")
+    public class MessageAction : ActionBase
     {
-        message = new MessageInfo();
-    }
+        [Inject]
+        private readonly MessageBoxManager _messageBox;
 
-    public override IEnumerator ActionCoroutine()
-    {
-        SharedManager.Instance.MessageBox.Write(message);
+        public MessageInfo message;
 
-        yield return new WaitWhile(() => SharedManager.Instance.MessageBox.IsWriting);
-    }
-
-    public override string GetHeader()
-    {
-        return "Сообщение";
-    }
-
-    public override object Clone()
-    {
-        return new MessageAction()
+        public MessageAction() : base()
         {
-            message = new MessageInfo()
+            message = new MessageInfo();
+        }
+
+        public override IEnumerator ActionCoroutine()
+        {
+            _messageBox.Write(message);
+
+            yield return new WaitWhile(() => _messageBox.IsWriting);
+        }
+
+        public override ActionBase Clone()
+        {
+            return new MessageAction()
             {
-                text = message.text,
-                clear = message.clear,
-                closeWindow = message.closeWindow,
-                image = message.image,
-                speed = message.speed,
-                letterSound = message.letterSound,
-                name = message.name,
-                position = message.position,
-                wait = message.wait
-            }
-        };
+                message = new MessageInfo()
+                {
+                    text = message.text,
+                    clear = message.clear,
+                    closeWindow = message.closeWindow,
+                    image = message.image,
+                    speed = message.speed,
+                    letterSound = message.letterSound,
+                    name = message.name,
+                    position = message.position,
+                    wait = message.wait
+                }
+            };
+        }
     }
 }

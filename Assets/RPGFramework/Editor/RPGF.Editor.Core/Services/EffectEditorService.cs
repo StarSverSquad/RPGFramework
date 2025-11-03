@@ -26,7 +26,7 @@ namespace RPGF.Editor.Core.Services
                     break;
                 case InvokeEventEffect ie:
                     {
-                        ie.@event = (GraphEvent)EditorGUILayout.ObjectField("Событие", ie.@event, typeof(GraphEvent), false);
+                        ie.@event = (GlobalEvent)EditorGUILayout.ObjectField("Событие", ie.@event, typeof(GlobalEvent), false);
                     }
                     break;
                 case ChangeConcentrationEffect cc:

@@ -83,7 +83,7 @@ namespace RPGF.Core.Character
 
         private void Movement_OnMoving()
         {
-            if (models.Count == 0 || (EventHandler.HandledEvent && !PlayerMovement.IsAutoMoving))
+            if (models.Count == 0 || (EventHandler.EventPlaying && !PlayerMovement.IsAutoMoving))
                 return;
 
             Vector2 playerPosition = ExplorerManager.GetPlayerPosition();
@@ -110,7 +110,7 @@ namespace RPGF.Core.Character
         }
         private void Movement_OnStartMoving()
         {
-            if (models.Count == 0 || (EventHandler.HandledEvent && !PlayerMovement.IsAutoMoving))
+            if (models.Count == 0 || (EventHandler.EventPlaying && !PlayerMovement.IsAutoMoving))
                 return;
 
             Models[0].SetRotationAnimation(PlayerMovement.ViewDirection);
@@ -127,7 +127,7 @@ namespace RPGF.Core.Character
         }
         private void Movement_OnStopMoving()
         {
-            if (models.Count == 0 || (EventHandler.HandledEvent && !PlayerMovement.IsAutoMoving))
+            if (models.Count == 0 || (EventHandler.EventPlaying && !PlayerMovement.IsAutoMoving))
                 return;
 
             for (int i = 0; i < models.Count; i++)

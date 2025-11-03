@@ -1,4 +1,5 @@
 using RPGF.Editor.EventSystem.Attributes;
+using RPGF.Editor.EventSystem.Nodes;
 using RPGF.EventSystem;
 using RPGF.EventSystem.Attributes;
 using RPGF.EventSystem.Default;
@@ -142,13 +143,14 @@ namespace RPGF.Editor.EventSystem
 
             foreach (var actionNodeType in _nodeTypes)
             {
-                string menuPath = actionNodeType.GetCustomAttribute<UseActionNodeAttribute>().ContextualMenuPath;
+                var nodeOptions = actionNodeType.GetCustomAttribute<UseActionNodeAttribute>();
+
                 Type actionType = actionNodeType.BaseType.GetGenericArguments()[0];
 
-                if (!string.IsNullOrEmpty(menuPath))
+                if (!string.IsNullOrEmpty(nodeOptions.ContextualMenuPath) && !nodeOptions.Ignore)
                 {
                     evt.menu.AppendAction(
-                            menuPath,
+                            nodeOptions.ContextualMenuPath,
                             i => CreateNode(Activator.CreateInstance(actionType) as ActionBase,
                             mousePosition
                             ));

@@ -1,168 +1,172 @@
-﻿using RPGF.Editor.EventSystem;
+﻿using RPGF.Actions;
 using RPGF.Editor.EventSystem.Attributes;
 using System.Collections.Generic;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ManageBGMNode : ActionNodeBase<ManageBGMAction>
+namespace RPGF.Editor.EventSystem.Nodes
 {
-    public ManageBGMNode(ManageBGMAction Action) : base(Action)
+    [UseActionNode("Управление BGM", contextualMenuPath: "Звук/Управление BGM")]
+    public class ManageBGMNode : ActionNodeBase<ManageBGMAction>
     {
-    }
-
-    private string Formater(int i)
-    {
-        return i switch
+        public ManageBGMNode(ManageBGMAction Action) : base(Action)
         {
-            0 => "Запустить",
-            1 => "Пауза",
-            2 => "Остановить",
-            3 => "Изменить громкость",
-            4 => "Возобновить",
-            _ => "UNDEF"
-        };
-    }
+        }
 
-    public override void UIContructor()
-    {
-        Label lbl = new Label("Тип операции");
-
-        extensionContainer.Add(lbl);
-
-        PopupField<int> popupField = new PopupField<int>(new List<int> { 0, 1, 2, 3, 4 }, 0, Formater, Formater);
-
-        popupField.SetValueWithoutNotify((int)Action.Operation);
-        popupField.RegisterValueChangedCallback(i =>
+        private string Formater(int i)
         {
-            Action.Operation = (ManageBGMAction.OperationType)i.newValue;
+            return i switch
+            {
+                0 => "Запустить",
+                1 => "Пауза",
+                2 => "Остановить",
+                3 => "Изменить громкость",
+                4 => "Возобновить",
+                _ => "UNDEF"
+            };
+        }
 
-            UpdateUI();
-
-            MakeDirty();
-        });
-
-        extensionContainer.Add(popupField);
-
-        FloatField volumeField = new FloatField("Громкость");
-
-        volumeField.SetValueWithoutNotify(Action.Volume);
-        volumeField.RegisterValueChangedCallback(i =>
+        public override void UIContructor()
         {
-            Action.Volume = i.newValue;
+            Label lbl = new("Тип операции");
 
-            MakeDirty();
-        });
+            extensionContainer.Add(lbl);
 
-        Toggle fadeToggle = new Toggle("Использовать затухание/появление?");
+            PopupField<int> popupField = new(new List<int> { 0, 1, 2, 3, 4 }, 0, Formater, Formater);
 
-        fadeToggle.SetValueWithoutNotify(Action.UseFade);
-        fadeToggle.RegisterValueChangedCallback(i =>
-        {
-            Action.UseFade = i.newValue;
+            popupField.SetValueWithoutNotify((int)Action.Operation);
+            popupField.RegisterValueChangedCallback(i =>
+            {
+                Action.Operation = (ManageBGMAction.OperationType)i.newValue;
 
-            UpdateUI();
+                UpdateUI();
 
-            MakeDirty();
-        });
+                MakeDirty();
+            });
 
-        Toggle waitFadeToggle = new Toggle("Ждать затухание/появление?");
+            extensionContainer.Add(popupField);
 
-        waitFadeToggle.SetValueWithoutNotify(Action.WaitFade);
-        waitFadeToggle.RegisterValueChangedCallback(i =>
-        {
-            Action.WaitFade = i.newValue;
+            FloatField volumeField = new FloatField("Громкость");
 
-            MakeDirty();
-        });
+            volumeField.SetValueWithoutNotify(Action.Volume);
+            volumeField.RegisterValueChangedCallback(i =>
+            {
+                Action.Volume = i.newValue;
 
-        FloatField fadeTimeField = new FloatField("Время появления/затухания");
+                MakeDirty();
+            });
 
-        fadeTimeField.SetValueWithoutNotify(Action.FadeTime);
-        fadeTimeField.RegisterValueChangedCallback(i =>
-        {
-            Action.FadeTime = i.newValue;
+            Toggle fadeToggle = new Toggle("Использовать затухание/появление?");
 
-            MakeDirty();
-        });
+            fadeToggle.SetValueWithoutNotify(Action.UseFade);
+            fadeToggle.RegisterValueChangedCallback(i =>
+            {
+                Action.UseFade = i.newValue;
 
-        switch (Action.Operation)
-        {
-            case ManageBGMAction.OperationType.Play:
+                UpdateUI();
 
-                ObjectField clipField = new ObjectField("Аудио")
-                {
-                    objectType = typeof(AudioClip),
-                    allowSceneObjects = true
-                };
+                MakeDirty();
+            });
 
-                clipField.SetValueWithoutNotify(Action.clip);
-                clipField.RegisterValueChangedCallback(i =>
-                {
-                    Action.clip = (AudioClip)i.newValue;
+            Toggle waitFadeToggle = new Toggle("Ждать затухание/появление?");
 
-                    MakeDirty();
-                });
+            waitFadeToggle.SetValueWithoutNotify(Action.WaitFade);
+            waitFadeToggle.RegisterValueChangedCallback(i =>
+            {
+                Action.WaitFade = i.newValue;
 
-                Toggle ingoreToggle = new Toggle("Пропуск если запущет то же аудио?");
+                MakeDirty();
+            });
 
-                ingoreToggle.SetValueWithoutNotify(Action.IngoreIfThisClip);
-                ingoreToggle.RegisterValueChangedCallback(i =>
-                {
-                    Action.IngoreIfThisClip = i.newValue;
+            FloatField fadeTimeField = new FloatField("Время появления/затухания");
 
-                    MakeDirty();
-                });
+            fadeTimeField.SetValueWithoutNotify(Action.FadeTime);
+            fadeTimeField.RegisterValueChangedCallback(i =>
+            {
+                Action.FadeTime = i.newValue;
 
-                extensionContainer.Add(clipField);
-                extensionContainer.Add(volumeField);
-                extensionContainer.Add(ingoreToggle);
-                extensionContainer.Add(fadeToggle);
+                MakeDirty();
+            });
 
-                if (Action.UseFade)
-                {
-                    extensionContainer.Add(fadeTimeField);
-                    extensionContainer.Add(waitFadeToggle);
-                }                   
-                break;
-            case ManageBGMAction.OperationType.Pause:
-                extensionContainer.Add(fadeToggle);
+            switch (Action.Operation)
+            {
+                case ManageBGMAction.OperationType.Play:
 
-                if (Action.UseFade)
-                {
-                    extensionContainer.Add(fadeTimeField);
-                    extensionContainer.Add(waitFadeToggle);
-                }
-                break;
-            case ManageBGMAction.OperationType.Stop:
-                extensionContainer.Add(fadeToggle);
+                    ObjectField clipField = new ObjectField("Аудио")
+                    {
+                        objectType = typeof(AudioClip),
+                        allowSceneObjects = true
+                    };
 
-                if (Action.UseFade)
-                {
-                    extensionContainer.Add(fadeTimeField);
-                    extensionContainer.Add(waitFadeToggle);
-                }
-                break;
-            case ManageBGMAction.OperationType.VolumeChange:
-                extensionContainer.Add(volumeField);
-                extensionContainer.Add(fadeToggle);
+                    clipField.SetValueWithoutNotify(Action.clip);
+                    clipField.RegisterValueChangedCallback(i =>
+                    {
+                        Action.clip = (AudioClip)i.newValue;
 
-                if (Action.UseFade)
-                {
-                    extensionContainer.Add(fadeTimeField);
-                    extensionContainer.Add(waitFadeToggle);
-                }
-                break;
-            case ManageBGMAction.OperationType.Resume:
-                extensionContainer.Add(volumeField);
-                extensionContainer.Add(fadeToggle);
+                        MakeDirty();
+                    });
 
-                if (Action.UseFade)
-                {
-                    extensionContainer.Add(fadeTimeField);
-                    extensionContainer.Add(waitFadeToggle);
-                }
-                break;
+                    Toggle ingoreToggle = new Toggle("Пропуск если запущет то же аудио?");
+
+                    ingoreToggle.SetValueWithoutNotify(Action.IngoreIfThisClip);
+                    ingoreToggle.RegisterValueChangedCallback(i =>
+                    {
+                        Action.IngoreIfThisClip = i.newValue;
+
+                        MakeDirty();
+                    });
+
+                    extensionContainer.Add(clipField);
+                    extensionContainer.Add(volumeField);
+                    extensionContainer.Add(ingoreToggle);
+                    extensionContainer.Add(fadeToggle);
+
+                    if (Action.UseFade)
+                    {
+                        extensionContainer.Add(fadeTimeField);
+                        extensionContainer.Add(waitFadeToggle);
+                    }
+                    break;
+                case ManageBGMAction.OperationType.Pause:
+                    extensionContainer.Add(fadeToggle);
+
+                    if (Action.UseFade)
+                    {
+                        extensionContainer.Add(fadeTimeField);
+                        extensionContainer.Add(waitFadeToggle);
+                    }
+                    break;
+                case ManageBGMAction.OperationType.Stop:
+                    extensionContainer.Add(fadeToggle);
+
+                    if (Action.UseFade)
+                    {
+                        extensionContainer.Add(fadeTimeField);
+                        extensionContainer.Add(waitFadeToggle);
+                    }
+                    break;
+                case ManageBGMAction.OperationType.VolumeChange:
+                    extensionContainer.Add(volumeField);
+                    extensionContainer.Add(fadeToggle);
+
+                    if (Action.UseFade)
+                    {
+                        extensionContainer.Add(fadeTimeField);
+                        extensionContainer.Add(waitFadeToggle);
+                    }
+                    break;
+                case ManageBGMAction.OperationType.Resume:
+                    extensionContainer.Add(volumeField);
+                    extensionContainer.Add(fadeToggle);
+
+                    if (Action.UseFade)
+                    {
+                        extensionContainer.Add(fadeTimeField);
+                        extensionContainer.Add(waitFadeToggle);
+                    }
+                    break;
+            }
         }
     }
 }

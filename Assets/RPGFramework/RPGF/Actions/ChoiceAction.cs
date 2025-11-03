@@ -21,7 +21,7 @@ namespace RPGF.Actions
 
         public ChoiceAction() : base()
         {
-            ClearNextActions();
+            Nexts.Clear();
 
             Choices = new List<string>();
             CustomPosition = new Vector2();

@@ -63,7 +63,7 @@ namespace RPGF.RPG
         public bool IsCustomEvent;
 
         public CustomActionBase CustomAction;
-        public GraphEvent Event;
+        public GlobalEvent Event;
 
         public int Turn;
 

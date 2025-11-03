@@ -1,31 +1,32 @@
 ﻿using RPGF.EventSystem;
+using RPGF.EventSystem.Attributes;
 using System.Collections;
 using UnityEngine;
 
-public class WaitAction : ActionBase
+namespace RPGF.Actions
 {
-    public float time;
-
-    public WaitAction() : base("IsWait")
+    [GenerateActionNode("Ждать", contextMenuPath: "Система/Ждать")]
+    public class WaitAction : ActionBase
     {
-        time = 1;
-    }
+        [ActionFieldOption("Врема (сек.):")]
+        public float time;
 
-    public override IEnumerator ActionCoroutine()
-    {
-        yield return new WaitForSeconds(time);
-    }
-
-    public override string GetHeader()
-    {
-        return "Ждать";
-    }
-
-    public override object Clone()
-    {
-        return new WaitAction()
+        public WaitAction() : base()
         {
-            time = time
-        };
+            time = 1;
+        }
+
+        public override IEnumerator ActionCoroutine()
+        {
+            yield return new WaitForSeconds(time);
+        }
+
+        public override ActionBase Clone()
+        {
+            return new WaitAction()
+            {
+                time = time
+            };
+        }
     }
 }

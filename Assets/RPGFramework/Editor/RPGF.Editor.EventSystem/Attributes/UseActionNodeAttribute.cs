@@ -9,6 +9,8 @@ namespace RPGF.Editor.EventSystem.Attributes
         public string Description { get; }
         public string ContextualMenuPath { get; }
 
+        public bool Ignore { get; set; } = false;
+
         public UseActionNodeAttribute(string label, string description = "", string contextualMenuPath = "")
         {
             Label = label;

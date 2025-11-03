@@ -13,7 +13,7 @@ namespace RPGF.Editor
             base.OnInspectorGUI();
 
             if (Button("Открыть редактор"))
-                EventGraphWindow.Initialize(Target.Event);
+                EventGraphWindow.Initialize(Target.InnerEvent, Target);
         }
     }
 }

@@ -1,36 +1,37 @@
 ﻿using RPGF.EventSystem;
+using RPGF.EventSystem.Attributes;
 using System.Collections;
 using UnityEngine;
 
-public class InvokeAnimationAction : ActionBase
+namespace RPGF.Actions
 {
-    public Animator ObjectAnimator;
-
-    public string Trigger;
-
-    public InvokeAnimationAction() : base("OpenAnimation")
+    [GenerateActionNode("Запуск анимации", "Запускает триггер выбранного аниматора", "Система/Запуск анимации")]
+    public class InvokeAnimationAction : ActionBase
     {
-        ObjectAnimator = null;
+        [ActionFieldOption("Аниматор:", AllowSceneObjects = true)]
+        public Animator ObjectAnimator;
+        [ActionFieldOption("Триггер:")]
+        public string Trigger;
 
-        Trigger = string.Empty;
-    }
-
-    public override IEnumerator ActionCoroutine()
-    {
-        if (ObjectAnimator == null)
+        public InvokeAnimationAction() : base()
         {
-            Debug.LogError("Аниматор не указан");
+            ObjectAnimator = null;
 
-            yield break;
+            Trigger = string.Empty;
         }
 
-        ObjectAnimator.SetTrigger(Trigger);
+        public override IEnumerator ActionCoroutine()
+        {
+            if (ObjectAnimator == null)
+            {
+                Debug.LogError("Animator is not assigned!");
 
-        yield return new WaitForFixedUpdate();
-    }
+                yield break;
+            }
 
-    public override string GetHeader()
-    {
-        return "Запуск анимации";
+            ObjectAnimator.SetTrigger(Trigger);
+
+            yield return new WaitForFixedUpdate();
+        }
     }
 }

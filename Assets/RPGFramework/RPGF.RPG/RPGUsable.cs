@@ -17,7 +17,7 @@ namespace RPGF.RPG
         public Usability Usage;
         public UsabilityDirection Direction;
         [Space]
-        public GraphEvent Event;
+        public GlobalEvent Event;
         [Space]
         public BattleAttackEffect VisualEffect;
         [Space]
@@ -29,37 +29,5 @@ namespace RPGF.RPG
         [HideInInspector]
         [SerializeReference]
         public List<RPGEffectBase> Effects = new();
-
-        public void InvokeEvent(Action OnEnd = null)
-        {
-            if (Event != null)
-            {
-                switch (Usage)
-                {
-                    case Usability.Any:
-                        if (BattleManager.IsBattle)
-                            Event.Invoke(BattleManager.Instance);
-                        else if (!ExplorerManager.Instance.EventHandler.EventPlaying)
-                        {
-                            Event.Invoke(ExplorerManager.Instance.EventHandler);
-                            ExplorerManager.Instance.EventHandler.HandleEvent(Event);
-                        }
-                        break;
-                    case Usability.Battle:
-                        if (BattleManager.IsBattle)
-                            Event.Invoke(BattleManager.Instance);
-                        break;
-                    case Usability.Explorer:
-                        if (!BattleManager.IsBattle && !ExplorerManager.Instance.EventHandler.EventPlaying)
-                        {
-                            Event.Invoke(ExplorerManager.Instance.EventHandler);
-                            ExplorerManager.Instance.EventHandler.HandleEvent(Event);
-                        }
-                        break;
-                }
-            }
-
-            OnEnd?.Invoke();
-        }
     }
 }

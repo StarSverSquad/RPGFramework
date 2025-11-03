@@ -1,29 +1,33 @@
-﻿using RPGF;
+﻿using RPGF.Domain.DI;
 using RPGF.EventSystem;
+using RPGF.EventSystem.Attributes;
 using System.Collections;
 using UnityEngine;
 
-public class PlayMEAction : ActionBase
+namespace RPGF.Actions
 {
-    public AudioClip clip;
-
-    public float volume;
-
-    public PlayMEAction() : base("PlayME")
+    [GenerateActionNode("Запуск ME", "Запуск музыкального эффекта", "Звук/Запуск ME")]
+    public class PlayMEAction : ActionBase
     {
-        clip = null;
-        volume = 1.0f;
-    }
+        [Inject]
+        private readonly AudioManager _audio;
 
-    public override IEnumerator ActionCoroutine()
-    {
-        GlobalManager.Instance.GameAudio.PlayME(clip, volume);
+        [ActionFieldOption("Аудио:")]
+        public AudioClip clip;
+        [ActionFieldOption("Громкость:")]
+        public float volume;
 
-        yield break;
-    }
+        public PlayMEAction() : base()
+        {
+            clip = null;
+            volume = 1.0f;
+        }
 
-    public override string GetHeader()
-    {
-        return "Запуск ME";
+        public override IEnumerator ActionCoroutine()
+        {
+            _audio.PlayME(clip, volume);
+
+            yield break;
+        }
     }
 }

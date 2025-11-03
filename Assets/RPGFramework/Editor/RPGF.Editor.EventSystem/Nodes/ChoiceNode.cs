@@ -19,7 +19,7 @@ namespace RPGF.Editor.EventSystem.Nodes
 
             for (int i = 0; i < Action.Choices.Count; i++)
             {
-                Port port = CreateOutputPort($"Выбор {i + 1}:", $"Choice-{i}");
+                Port port = CreateOutputPort($"Выбор {i + 1}:", $"Choice-{i}", $"Choice-{i}");
 
                 outports.Add(port);
                 outputContainer.Add(port);

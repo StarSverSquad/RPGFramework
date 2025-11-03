@@ -1,27 +1,30 @@
 ﻿using RPGF.EventSystem;
+using RPGF.EventSystem.Attributes;
 using System.Collections;
 using UnityEngine;
 
-public class SetActiveAction : ActionBase
+namespace RPGF.Actions
 {
-    public bool setActive;
-    public GameObject gameObject;
-
-    public SetActiveAction() : base("SetActive")
+    [GenerateActionNode("Упр. игровым объектом", "Управление игровым объектом на сцене", "Система/Упр. игровым объектом")]
+    public class ManageGameObjectAction : ActionBase
     {
-        setActive = true;
-        gameObject = null;
-    }
+        [ActionFieldOption("Объект:", AllowSceneObjects = true)]
+        public GameObject gameObject;
 
-    public override IEnumerator ActionCoroutine()
-    {
-        gameObject.SetActive(setActive);
+        [ActionFieldOption("Включен?")]
+        public bool isActive;
 
-        yield break;
-    }
+        public ManageGameObjectAction() : base()
+        {
+            isActive = true;
+            gameObject = null;
+        }
 
-    public override string GetHeader()
-    {
-        return "Включить/Выключить объект";
+        public override IEnumerator ActionCoroutine()
+        {
+            gameObject.SetActive(isActive);
+
+            yield break;
+        }
     }
 }

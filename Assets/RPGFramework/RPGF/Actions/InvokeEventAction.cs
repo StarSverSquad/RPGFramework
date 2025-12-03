@@ -1,40 +1,42 @@
+using RPGF.Domain.DI;
 using RPGF.EventSystem;
+using RPGF.EventSystem.Attributes;
 using RPGF.Explorer;
 using System.Collections;
 using UnityEngine;
 
-public class InvokeEventAction : GraphActionBase
+namespace RPGF.Actions
 {
-    public LocationEvent Event;
-
-    public bool Wait;
-
-    public InvokeEventAction() : base("InvokeEvent")
+    [GenerateActionNode("Запуск события", "Запускает другое событие", "Прочее/Запуск события")]
+    public class InvokeEventAction : ActionBase
     {
-        Event = null;
+        [Inject]
+        private readonly ExplorerEventHandler _eventHandler;
 
-        Wait = false;
-    }
+        [ActionFieldOption("Событие", AllowSceneObjects = true)]
+        public LocationEvent Event;
+        [ActionFieldOption("Ждать?")]
+        public bool IsWait;
 
-    public override IEnumerator ActionCoroutine()
-    {
-        if (ExplorerManager.Instance.EventHandler.HandledEvent == gameEvent)
-            ExplorerManager.Instance.EventHandler.ForceUnhandle();
-
-        Event.InvokeEvent();
-
-        if (Wait)
+        public InvokeEventAction() : base()
         {
-            yield return new WaitWhile(() => Event.InnerEvent.IsPlaying);
-
-            ExplorerManager.Instance.EventHandler.HandleEvent((GraphEvent)gameEvent);
+            Event = null;
+            IsWait = false;
         }
 
-        yield break;
-    }
+        public override IEnumerator ActionCoroutine()
+        {
+            Event.InvokeEvent();
 
-    public override string GetHeader()
-    {
-        return "Запуск события";
+            if (IsWait)
+            {
+                if (_eventHandler.isActiveAndEnabled)
+                    _eventHandler.ForceUnhandle();
+
+                yield return new WaitWhile(() => Event.InnerEvent.IsPlaying);
+
+                _eventHandler.HandleEvent(Event.InnerEvent);
+            }
+        }
     }
 }

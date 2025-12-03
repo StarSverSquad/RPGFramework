@@ -1,33 +1,36 @@
 using RPGF;
+using RPGF.Domain.DI;
 
-public class MoneyCondition : ConditionBase
+namespace RPGF.Actions.Condition
 {
-    public int Value;
-
-    public ConditionOperation Operation;
-
-    public MoneyCondition()
+    [UseCondition("По деньгам")]
+    public class MoneyCondition : ConditionBase
     {
-        Value = 0;
-        Operation = ConditionOperation.Equals;
-    }
+        [Inject]
+        private readonly GameData _gameData;
 
-    public override bool Invoke()
-    {
-        return Operation switch
+        public int Value;
+
+        public ConditionOperation Operation;
+
+        public MoneyCondition()
         {
-            ConditionOperation.Equals => GlobalManager.Instance.GameData.Money == Value,
-            ConditionOperation.NotEquals => GlobalManager.Instance.GameData.Money != Value,
-            ConditionOperation.More => GlobalManager.Instance.GameData.Money > Value,
-            ConditionOperation.Less => GlobalManager.Instance.GameData.Money < Value,
-            ConditionOperation.MoreOrEquals => GlobalManager.Instance.GameData.Money >= Value,
-            ConditionOperation.LessOrEquals => GlobalManager.Instance.GameData.Money <= Value,
-            _ => false,
-        };
-    }
+            Value = 0;
+            Operation = ConditionOperation.Equals;
+        }
 
-    public override string GetLabel()
-    {
-        return "По деньгам";
+        public override bool Invoke()
+        {
+            return Operation switch
+            {
+                ConditionOperation.Equals => _gameData.Money == Value,
+                ConditionOperation.NotEquals => _gameData.Money != Value,
+                ConditionOperation.More => _gameData.Money > Value,
+                ConditionOperation.Less => _gameData.Money < Value,
+                ConditionOperation.MoreOrEquals => _gameData.Money >= Value,
+                ConditionOperation.LessOrEquals => _gameData.Money <= Value,
+                _ => false,
+            };
+        }
     }
 }

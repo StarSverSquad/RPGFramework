@@ -1,39 +1,42 @@
-﻿using RPGF.EventSystem;
+﻿using RPGF.Domain.DI;
+using RPGF.EventSystem;
 using RPGF.Shared;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ChoiceAction : GraphActionBase
+namespace RPGF.Actions
 {
-    [SerializeReference]
-    public List<string> Choices;
-
-    public ChoiceBoxManager.Position Position;
-
-    public Vector2 CustomPosition;
-
-    public ChoiceAction() : base("Choice")
+    public class ChoiceAction : ActionBase
     {
-        Choices = new List<string>();
-        CustomPosition = new Vector2();
-        Position = ChoiceBoxManager.Position.Bottom;
-    }
+        [Inject]
+        private readonly ChoiceBoxManager _choice;
 
-    public override IEnumerator ActionCoroutine()
-    {
-        SharedManager.Instance.ChoiceBox.ChangePosition(Position, CustomPosition);
+        [SerializeReference]
+        public List<string> Choices;
 
-        SharedManager.Instance.ChoiceBox.Choice(Choices.ToArray());
+        public ChoiceBoxManager.Position Position;
 
-        yield return new WaitWhile(() => SharedManager.Instance.ChoiceBox.IsChoicing);
+        public Vector2 CustomPosition;
 
-        nextIndex = SharedManager.Instance.ChoiceBox.Index;
-    }
+        public ChoiceAction() : base()
+        {
+            Nexts.Clear();
 
-    public override string GetHeader()
-    {
-        return "Выбор";
+            Choices = new List<string>();
+            CustomPosition = new Vector2();
+            Position = ChoiceBoxManager.Position.Bottom;
+        }
+
+        public override IEnumerator ActionCoroutine()
+        {
+            _choice.ChangePosition(Position, CustomPosition);
+
+            _choice.Choice(Choices.ToArray());
+
+            yield return new WaitWhile(() => _choice.IsChoicing);
+
+            SetNext($"Choice-{_choice.Index}");
+        }
     }
 }

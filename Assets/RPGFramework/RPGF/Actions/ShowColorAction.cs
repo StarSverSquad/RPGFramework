@@ -1,35 +1,39 @@
-﻿using RPGF.EventSystem;
+﻿using RPGF.Domain.DI;
+using RPGF.EventSystem;
+using RPGF.EventSystem.Attributes;
 using RPGF.Shared;
 using System.Collections;
 using UnityEngine;
 
-public class ShowColorAction : GraphActionBase
+namespace RPGF.Actions
 {
-    public Color Color;
-    public float FadeTime;
-
-    public bool IsWait;
-
-    private MediaManager Media => SharedManager.Instance.Media;
-
-    public ShowColorAction() : base("ShowColor")
+    [GenerateActionNode("Отобразить цвет", contextMenuPath: "Система/Отобразить цвет")]
+    public class ShowColorAction : ActionBase
     {
-        Color = Color.white;
-        FadeTime = 0;
+        [Inject]
+        private readonly MediaManager _media;
 
-        IsWait = true;
-    }
+        [ActionFieldOption("Цвет:")]
+        public Color Color;
+        [ActionFieldOption("Время появления?")]
+        public float FadeTime;
+        [ActionFieldOption("Ждать?")]
+        public bool IsWait;
 
-    public override IEnumerator ActionCoroutine()
-    {
-        Media.ShowColor(Color, FadeTime);
+        public ShowColorAction() : base()
+        {
+            Color = Color.white;
+            FadeTime = 0;
 
-        if (IsWait)
-            yield return new WaitWhile(() => Media.IsFade);
-    }
+            IsWait = true;
+        }
 
-    public override string GetHeader()
-    {
-        return "Отобразить цвет";
+        public override IEnumerator ActionCoroutine()
+        {
+            _media.ShowColor(Color, FadeTime);
+
+            if (IsWait)
+                yield return new WaitWhile(() => _media.IsFade);
+        }
     }
 }

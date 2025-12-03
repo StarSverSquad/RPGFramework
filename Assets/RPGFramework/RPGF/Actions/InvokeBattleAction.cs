@@ -1,37 +1,54 @@
 ﻿using RPGF.Battle;
+using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using RPGF.RPG;
 using System.Collections;
 using UnityEngine;
 
-public class InvokeBattleAction : GraphActionBase
+namespace RPGF.Actions
 {
-    public RPGBattleInfo battle;
-
-    public bool fleePort;
-
-    public override IEnumerator ActionCoroutine()
+    public class InvokeBattleAction : ActionBase
     {
-        BattleManager.StartBattle(battle);
+        public const string WinNextTag = "Win";
+        public const string FleeNextTag = "Flee";
+        public const string LoseNextTag = "Lose";
 
-        yield return new WaitWhile(() => BattleManager.IsBattle);
+        [Inject]
+        private readonly BattlePipeline _pipeline;
+        [Inject]
+        private readonly BattleUtility _utility;
 
-        if (fleePort && BattleManager.Instance.Pipeline.IsFlee)
-        {
-            nextIndex = 1;
-        }
-        else if (BattleManager.Instance.Pipeline.IsLose)
-        {
-            nextIndex = fleePort ? 2 : 1;
-        }
-        else
-        {
-            nextIndex = 0;
-        }
-    }
+        public RPGBattleInfo battle;
 
-    public override string GetHeader()
-    {
-        return "Битва";
+        public bool branchFlee;
+
+        public InvokeBattleAction() : base()
+        {
+            Nexts.Clear();
+
+            AddNext(WinNextTag, "При победе");
+            AddNext(FleeNextTag, "При побеге");
+            AddNext(LoseNextTag, "При поражении");
+        }
+
+        public override IEnumerator ActionCoroutine()
+        {
+            _utility.StartBattle(battle);
+
+            yield return new WaitWhile(() => BattleManager.IsBattle);
+
+            if (battle.CanFlee && _pipeline.IsFlee && branchFlee)
+            {
+                SetNext(FleeNextTag);
+            }
+            else if (battle.CanLose && _pipeline.IsLose)
+            {
+                SetNext(LoseNextTag);
+            }
+            else
+            {
+                SetNext(WinNextTag);
+            }
+        }
     }
 }

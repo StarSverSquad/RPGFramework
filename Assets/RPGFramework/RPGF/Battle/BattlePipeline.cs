@@ -8,10 +8,12 @@ using RPGF.Shared;
 using RPGF.Battle.Enums;
 using RPGF.Battle.UI;
 using RPGF.Core.Localization;
+using RPGF.Domain.DI;
+using RPGF.Core.Services;
 
 namespace RPGF.Battle
 {
-    public class BattlePipeline
+    public class BattlePipeline : ISupportDI
     {
         public enum ChoiceAction
         {
@@ -19,8 +21,14 @@ namespace RPGF.Battle
             Item, Defence
         }
 
+        [Inject]
         private readonly BattleManager _battle;
+        [Inject]
         private readonly SharedManager _common;
+        [Inject]
+        private readonly DependencyInjection _di;
+        [Inject]
+        private readonly InvokeUsableEventService _invokeUsableEvent;
 
         #region PROPS
 
@@ -473,7 +481,7 @@ namespace RPGF.Battle
 
             foreach (var @event in events)
             {
-                @event.Event.Invoke(_battle);
+                @event.Event.Invoke(_battle, _di);
 
                 yield return new WaitWhile(() => @event.Event.IsPlaying);
             }
@@ -492,7 +500,7 @@ namespace RPGF.Battle
                 {
                     if (state.Event != null)
                     {
-                        state.Event.Invoke(_battle);
+                        state.Event.Invoke(_battle, _di);
 
                         yield return new WaitWhile(() => state.Event.IsPlaying);
                     }
@@ -1189,7 +1197,7 @@ namespace RPGF.Battle
         private IEnumerator HandleActAction(BattleTurnData turnData, RPGCharacter character)
         {
             if (turnData.InteractionAct.Event != null)
-                turnData.InteractionAct.Event.Invoke(_battle);
+                turnData.InteractionAct.Event.Invoke(_battle, _di);
 
             if (turnData.InteractionAct.Minigame != null)
             {
@@ -1205,7 +1213,7 @@ namespace RPGF.Battle
 
             if (turnData.Ability.StartEvent != null)
             {
-                turnData.Ability.StartEvent.Invoke(_battle);
+                turnData.Ability.StartEvent.Invoke(_battle, _di);
 
                 yield return new WaitWhile(() => turnData.Ability.StartEvent.IsPlaying);
             }
@@ -1236,7 +1244,7 @@ namespace RPGF.Battle
 
             if (turnData.Ability.EndEvent != null)
             {
-                turnData.Ability.EndEvent.Invoke(_battle);
+                turnData.Ability.EndEvent.Invoke(_battle, _di);
 
                 yield return new WaitWhile(() => turnData.Ability.EndEvent.IsPlaying);
             }
@@ -1245,7 +1253,7 @@ namespace RPGF.Battle
         {
             if (turnData.Item.Event != null)
             {
-                turnData.Item.InvokeEvent();
+                _invokeUsableEvent.InvokeEvent(turnData.Item);
 
                 yield return new WaitWhile(() => turnData.Item.Event.IsPlaying);
             }

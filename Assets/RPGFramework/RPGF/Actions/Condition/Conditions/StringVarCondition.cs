@@ -1,27 +1,28 @@
-using RPGF;
+using RPGF.Domain.DI;
 
-public class StringVarCondition : ConditionBase
+namespace RPGF.Actions.Condition
 {
-    public string Var;
-
-    public string Value;
-
-    public StringVarCondition()
+    [UseCondition("По строковой переменной")]
+    public class StringVarCondition : ConditionBase
     {
-        Var = string.Empty;
-        Value = string.Empty;
-    }
+        [Inject]
+        private readonly GameData _gameData;
 
-    public override bool Invoke()
-    {
-        if (!GlobalManager.Instance.GameData.StringValues.HaveKey(Var))
-            return false;
+        public string Var;
+        public string Value;
 
-        return GlobalManager.Instance.GameData.StringValues[Var] == Value;
-    }
+        public StringVarCondition()
+        {
+            Var = string.Empty;
+            Value = string.Empty;
+        }
 
-    public override string GetLabel()
-    {
-        return "По строковой переменной";
+        public override bool Invoke()
+        {
+            if (!_gameData.StringValues.HaveKey(Var))
+                return false;
+
+            return _gameData.StringValues[Var] == Value;
+        }
     }
 }

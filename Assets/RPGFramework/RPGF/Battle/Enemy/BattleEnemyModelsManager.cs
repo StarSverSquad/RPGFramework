@@ -1,4 +1,5 @@
-﻿using RPGF.RPG;
+﻿using RPGF.Core;
+using RPGF.RPG;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,15 +7,15 @@ using UnityEngine;
 
 namespace RPGF.Battle.Enemy
 {
-    public class BattleEnemyModelsManager : MonoBehaviour, IDisposable
+    public class BattleEnemyModelsManager : RPGFrameworkBehaviour, IDisposable
     {
-        public struct ModelInfo
+        public struct ModelDto
         {
             public BattleEnemyModel model;
             public RPGEnemy enemy;
         }
 
-        private List<ModelInfo> models = new List<ModelInfo>();
+        private List<ModelDto> models = new();
 
         public bool IsAnyAnimating => models.Any(i => i.model.IsAnyEffectPlaying);
 
@@ -23,16 +24,16 @@ namespace RPGF.Battle.Enemy
             if (HasModel(enemy))
                 return;
 
-            GameObject obj = Instantiate(enemy.EnemyModel.gameObject, transform, false);
+            var obj = Instantiate(enemy.EnemyModel.gameObject, transform, false);
 
-            RectTransform rect = obj.GetComponent<RectTransform>();
-            BattleEnemyModel mod = obj.GetComponent<BattleEnemyModel>();
+            var rect = obj.GetComponent<RectTransform>();
+            var mod = obj.GetComponent<BattleEnemyModel>();
 
             rect.anchoredPosition = anposition;
 
             mod.Initialize(enemy);
 
-            models.Add(new ModelInfo { model = mod, enemy = enemy });
+            models.Add(new ModelDto { model = mod, enemy = enemy });
         }
 
         public void DeleteModel(RPGEnemy enemy)
@@ -40,7 +41,7 @@ namespace RPGF.Battle.Enemy
             if (!HasModel(enemy))
                 return;
 
-            ModelInfo info = models.First(i => i.enemy == enemy);
+            ModelDto info = models.First(i => i.enemy == enemy);
             models.Remove(info);
 
             Destroy(info.model.gameObject);

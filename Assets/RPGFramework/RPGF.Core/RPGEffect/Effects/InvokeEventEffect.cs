@@ -10,7 +10,7 @@ namespace RPGF.Core.RPGEffect
 {
     public class InvokeEventEffect : RPGEffectBase
     {
-        public GraphEvent @event;
+        public GlobalEvent @event;
 
         public override IEnumerator Invoke(RPGEntity user, RPGEntity target)
         {
@@ -18,9 +18,9 @@ namespace RPGF.Core.RPGEffect
             {
                 if (@event != null)
                 {
-                    @event.Invoke(BattleManager.Instance);
+                    @event.InnerEvent.Invoke(BattleManager.Instance);
 
-                    yield return new WaitWhile(() => @event.IsPlaying);
+                    yield return new WaitWhile(() => @event.InnerEvent.IsPlaying);
                 }
                 else
                     Debug.LogError("Событие не указано!");
@@ -32,17 +32,17 @@ namespace RPGF.Core.RPGEffect
                     if (@event == null)
                         throw new ApplicationException("Событие не указано!");
 
-                    if (ExplorerManager.Instance.EventHandler.EventRuning)
+                    if (ExplorerManager.Instance.EventHandler.EventPlaying)
                         throw new ApplicationException("Не возможно запустить сразу два события!");
 
-                    ExplorerManager.Instance.EventHandler.InvokeEvent(@event);
+                    ExplorerManager.Instance.EventHandler.InvokeEvent(@event.InnerEvent);
                 }
                 catch (ApplicationException err)
                 {
                     Debug.LogError(err.Message);
                 }
 
-                yield return new WaitWhile(() => @event.IsPlaying);
+                yield return new WaitWhile(() => @event.InnerEvent.IsPlaying);
             }
         }
 

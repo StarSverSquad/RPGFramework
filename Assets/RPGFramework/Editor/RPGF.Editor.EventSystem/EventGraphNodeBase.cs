@@ -11,24 +11,21 @@ namespace RPGF.Editor.EventSystem
     {
         public string GUID;
 
-        public GraphActionBase action;
-
-        private List<Port> inputs;
-        private List<Port> outputs;
+        public ActionBase action;
 
         public EventGraphView view;
 
-        public EventGraphNodeBase(GraphActionBase action)
+        public List<PortWrapper> Inputs { get; private set; }
+        public List<OutputPortWrapper> Outputs { get; private set; }
+
+        public EventGraphNodeBase(ActionBase action)
         {
             this.action = action;
 
-            inputs = new List<Port>();
-            outputs = new List<Port>();
+            Inputs = new();
+            Outputs = new();
 
-            tooltip = action.GetInfo();
-            title = action.GetHeader();
-
-            extensionContainer.style.backgroundColor = (Color)(new Color32(100, 100, 100, 200));
+            extensionContainer.style.backgroundColor = (Color)new Color32(100, 100, 100, 200);
         }
 
         public override void SetPosition(Rect newPos)
@@ -38,7 +35,7 @@ namespace RPGF.Editor.EventSystem
             base.SetPosition(newPos);
         }
 
-        protected Port CreateInputPort(string name)
+        protected Port CreateInputPort(string name, string tag)
         {
             Port port = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(EventGraphNodeBase));
 
@@ -46,11 +43,11 @@ namespace RPGF.Editor.EventSystem
             port.portColor = new Color32(16, 130, 119, 255);
 
             inputContainer.Add(port);
-            inputs.Add(port);
+            Inputs.Add(new PortWrapper(tag, port));
 
             return port;
         }
-        protected Port CreateInputPort(string name, Color color)
+        protected Port CreateInputPort(string name, string tag, Color color)
         {
             Port port = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(EventGraphNodeBase));
 
@@ -58,31 +55,31 @@ namespace RPGF.Editor.EventSystem
             port.portColor = color;
 
             inputContainer.Add(port);
-            inputs.Add(port);
+            Inputs.Add(new PortWrapper(tag, port));
 
             return port;
         }
 
-        protected Port CreateOutputPort(string name)
+        protected Port CreateOutputPort(string name, string tag, string nextTag = ActionBase.DefaultNextTag)
         {
             Port port = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(EventGraphNodeBase));
 
             port.portName = name;
             port.portColor = new Color32(20, 104, 156, 255);
 
-            outputs.Add(port);
+            Outputs.Add(new OutputPortWrapper(tag, port, nextTag));
             outputContainer.Add(port);
 
             return port;
         }
-        protected Port CreateOutputPort(string name, Color color)
+        protected Port CreateOutputPort(string name, string tag, Color color, string nextTag = ActionBase.DefaultNextTag)
         {
             Port port = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(EventGraphNodeBase));
 
             port.portName = name;
             port.portColor = color;
 
-            outputs.Add(port);
+            Outputs.Add(new OutputPortWrapper(tag, port, nextTag));
             outputContainer.Add(port);
 
             return port;
@@ -90,23 +87,21 @@ namespace RPGF.Editor.EventSystem
 
         public virtual void PortContructor()
         {
-            CreateInputPort("Input");
-            CreateOutputPort("Output");
+            CreateInputPort("Вход", "Input");
+
+            foreach (var next in action.Nexts)
+            {
+                CreateOutputPort(next.Name, next.Tag, next.Tag);
+            }
         }
 
         public abstract void UIContructor();
 
-        /// <summary>
-        /// Помечает объект изменённым
-        /// </summary>
         public void MakeDirty()
         {
             view.MakeDirty();
         }
 
-        /// <summary>
-        /// Обновляет содержимое ноды
-        /// </summary>
         public void UpdateUI()
         {
             extensionContainer.Clear();
@@ -115,66 +110,74 @@ namespace RPGF.Editor.EventSystem
 
         public void UpdatePorts()
         {
-            foreach (var port in outputs)
+            foreach (var port in Outputs)
             {
-                foreach (var edge in port.connections)
+                foreach (var edge in port.InnerPort.connections)
                 {
                     edge.input.Disconnect(edge);
 
                     edge.parent.Remove(edge);
                 }
 
-                port.DisconnectAll();
+                port.InnerPort.DisconnectAll();
             }
 
 
-            foreach (var port in inputs)
+            foreach (var port in Inputs)
             {
-                foreach (var edge in port.connections)
+                foreach (var edge in port.InnerPort.connections)
                 {
                     edge.output.Disconnect(edge);
 
                     edge.parent.Remove(edge);
                 }
 
-                port.DisconnectAll();
+                port.InnerPort.DisconnectAll();
             }
 
 
             inputContainer.Clear();
             outputContainer.Clear();
 
-            outputs = new List<Port>();
-            inputs = new List<Port>();
+            Outputs = new();
+            Inputs = new();
 
             PortContructor();
         }
 
-        public void ApplyPorts()
+        public void ValidatePorts()
         {
-            action.NextActions.Clear();
+            action.ClearNextActions();
 
-            for (int i = 0; i < outputs.Count; i++)
+            for (int i = 0; i < Outputs.Count; i++)
             {
-                if (outputs[i].connections.ToList().Count == 0)
+                var OutputPort = Outputs[i];
+
+                if (!OutputPort.InnerPort.connections.Any())
                     continue;
 
                 Port otherport;
-                if (outputs[i].connections.ToList()[0].input != outputs[i])
-                    otherport = outputs[i].connections.ToList()[0].input;
-                else if (outputs[i].connections.ToList()[0].output != outputs[i])
-                    otherport = outputs[i].connections.ToList()[0].output;
+                if (OutputPort.InnerPort.connections.First().input != OutputPort.InnerPort)
+                {
+                    otherport = OutputPort.InnerPort.connections.First().input;
+                }
+                else if (OutputPort.InnerPort.connections.First().output != OutputPort.InnerPort)
+                {
+                    otherport = OutputPort.InnerPort.connections.First().output;
+                }
                 else
                 {
-                    EditorUtility.DisplayDialog("Ошибка", "Ошибка привязки нодов и ивентов", "ok");
+                    EditorUtility.DisplayDialog("Ошибка", "Ошибка привязки нодов и ивентов", "ок");
                     return;
                 }
 
-                EventGraphNodeBase node = otherport.node as EventGraphNodeBase;
+                var node = otherport.node as EventGraphNodeBase;
 
-                action.NextActions.Add(node.action);
+                if (node is not null)
+                {
+                    action.SetNextAction(node.action, OutputPort.NextTag);
+                }
             }
         }
     }
-
 }

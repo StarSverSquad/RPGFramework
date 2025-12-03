@@ -17,7 +17,7 @@ namespace RPGF.Battle
         [SerializeField]
         private BattleUIEnemyInformation _enemyInformation;
 
-        public BattleData Data => BattleManager._Data;
+        public BattleData Data => BattleManager.Instance.Data;
         public BattleAudioManager BattleAudio => BattleManager.Instance.BattleAudio;
         public BattlePipeline Pipeline => BattleManager.Instance.Pipeline;
 

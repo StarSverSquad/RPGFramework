@@ -1,44 +1,47 @@
+using RPGF.Core.SaveLoad;
+using RPGF.Domain.DI;
 using UnityEngine;
 
-public class FastSaveCondition : ConditionBase
+namespace RPGF.Actions.Condition
 {
-    public string Key;
-
-    public int Value;
-
-    public ConditionOperation Operation;
-
-    public FastSaveCondition()
+    [UseCondition("По быстрым сохранениям")]
+    public class FastSaveCondition : ConditionBase
     {
-        Key = string.Empty;
-        Value = 0;
-        Operation = ConditionOperation.Equals;
-    }
+        [Inject]
+        private readonly FastSaveService _fastSave;
 
-    public override bool Invoke()
-    {
-        if (!Game.FastSave.HaveKey(Key))
+        public string Key;
+        public int Value;
+
+        public ConditionOperation Operation;
+
+        public FastSaveCondition()
         {
-            Debug.LogWarning($"{Key} переменная не найдена в FastSaves!");
-            return false;
+            Key = string.Empty;
+            Value = 0;
+            Operation = ConditionOperation.Equals;
         }
 
-        int savedValue = Game.FastSave[Key];
-
-        return Operation switch
+        public override bool Invoke()
         {
-            ConditionOperation.Equals => savedValue == Value,
-            ConditionOperation.LessOrEquals => savedValue <= Value,
-            ConditionOperation.MoreOrEquals => savedValue >= Value,
-            ConditionOperation.Less => savedValue < Value,
-            ConditionOperation.More => savedValue > Value,
-            ConditionOperation.NotEquals => savedValue != Value,
-            _ => false
-        };
-    }
+            if (!_fastSave.HaveKey(Key))
+            {
+                Debug.LogWarning($"{Key} переменная не найдена в FastSaves!");
+                return false;
+            }
 
-    public override string GetLabel()
-    {
-        return "По FastSave";
+            int savedValue = _fastSave[Key];
+
+            return Operation switch
+            {
+                ConditionOperation.Equals => savedValue == Value,
+                ConditionOperation.LessOrEquals => savedValue <= Value,
+                ConditionOperation.MoreOrEquals => savedValue >= Value,
+                ConditionOperation.Less => savedValue < Value,
+                ConditionOperation.More => savedValue > Value,
+                ConditionOperation.NotEquals => savedValue != Value,
+                _ => false
+            };
+        }
     }
 }

@@ -3,22 +3,25 @@ using RPGF.EventSystem;
 using System.Collections;
 using UnityEngine;
 
-class TestNewRPGChCtrl : CustomActionBase
+namespace RPGF.Actions
 {
-    public PlayableCharacterModelController rPGCharacter;
-
-    protected override IEnumerator ActionCoroutine()
+    class TestNewRPGChCtrl : CustomActionBase
     {
-        rPGCharacter.MoveToRelative(new Vector2(3, 0), 3f);
+        public PlayableCharacterModelController rPGCharacter;
 
-        yield return new WaitForSeconds(1f);
+        public override IEnumerator ActionCoroutine()
+        {
+            rPGCharacter.MoveToRelative(new Vector2(3, 0), 3f);
 
-        rPGCharacter.PauseMove();
+            yield return new WaitForSeconds(1f);
 
-        yield return new WaitForSeconds(1f);
+            rPGCharacter.PauseMove();
 
-        rPGCharacter.ResumeMove();
+            yield return new WaitForSeconds(1f);
 
-        yield return new WaitWhile(() => rPGCharacter.IsMove);
+            rPGCharacter.ResumeMove();
+
+            yield return new WaitWhile(() => rPGCharacter.IsMove);
+        }
     }
 }

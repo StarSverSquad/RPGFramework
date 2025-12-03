@@ -1,4 +1,7 @@
 using RPGF.Core;
+using RPGF.Domain.DI;
+using RPGF.EventSystem.Graph;
+using RPGF.Explorer;
 using UnityEngine;
 
 namespace RPGF.EventSystem
@@ -15,6 +18,7 @@ namespace RPGF.EventSystem
         public bool OnlyOne = true;
         public bool Parallel = false;
 
+        [SerializeField]
         [SerializeReference]
         public GraphEvent InnerEvent;
 
@@ -22,11 +26,10 @@ namespace RPGF.EventSystem
 
         private void Start()
         {
+            InnerEvent.OnEnd += Event_OnEnd;
+
             if (Interaction == InteractionType.OnSceneStart && !IsBlocked())
                 InvokeEvent();
-
-
-            InnerEvent.OnEnd += Event_OnEnd;
         }
 
         private void FixedUpdate()
@@ -44,12 +47,12 @@ namespace RPGF.EventSystem
         public void InvokeEvent()
         {
             if (!IsBlocked() && !InnerEvent.IsPlaying
-                && (!Explorer.EventHandler.EventRuning || Parallel))
+                && (!Explorer.EventHandler.EventPlaying || Parallel))
             {
                 if (!Parallel)
                     Explorer.EventHandler.HandleEvent(InnerEvent);
 
-                InnerEvent.Invoke(Explorer);
+                InnerEvent.Invoke(Explorer, Local.DI);
             }
         }
 

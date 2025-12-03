@@ -1,35 +1,39 @@
-﻿using RPGF.EventSystem;
+﻿using RPGF.Domain.DI;
+using RPGF.EventSystem;
+using RPGF.EventSystem.Attributes;
 using RPGF.Shared;
 using System.Collections;
 using UnityEngine;
 
-public class ShowImageAction : GraphActionBase
+namespace RPGF.Actions
 {
-    public Sprite ImageSprite;
-    public float FadeTime;
-
-    public bool IsWait;
-
-    private MediaManager Media => SharedManager.Instance.Media;
-
-    public ShowImageAction() : base("ShowImage")
+    [GenerateActionNode("Показать изображения", contextMenuPath: "Система/Показать изображения")]
+    public class ShowImageAction : ActionBase
     {
-        ImageSprite = null;
-        FadeTime = 0;
+        [Inject]
+        private readonly MediaManager _media;
 
-        IsWait = true;
-    }
+        [ActionFieldOption("Изображение:")]
+        public Sprite ImageSprite;
+        [ActionFieldOption("Время появление:")]
+        public float FadeTime;
+        [ActionFieldOption("Ждать?")]
+        public bool IsWait;
 
-    public override IEnumerator ActionCoroutine()
-    {
-        Media.ShowImage(ImageSprite, FadeTime);
+        public ShowImageAction() : base()
+        {
+            ImageSprite = null;
+            FadeTime = 0;
 
-        if (IsWait)
-            yield return new WaitWhile(() => Media.IsFade);
-    }
+            IsWait = true;
+        }
 
-    public override string GetHeader()
-    {
-        return "Отобразить цвет";
+        public override IEnumerator ActionCoroutine()
+        {
+            _media.ShowImage(ImageSprite, FadeTime);
+
+            if (IsWait)
+                yield return new WaitWhile(() => _media.IsFade);
+        }
     }
 }

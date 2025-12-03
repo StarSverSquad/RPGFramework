@@ -16,7 +16,7 @@ namespace RPGF.RPG
         {
             public string Name;
             public string Description;
-            public GraphEvent Event;
+            public GlobalEvent Event;
             public MinigameBase Minigame;
 
             public bool OnlyOne;

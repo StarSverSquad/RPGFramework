@@ -1,22 +1,23 @@
 ﻿using RPGF;
 using RPGF.EventSystem;
+using RPGF.EventSystem.Attributes;
 using System.Collections;
 
-public class GameEndAction : GraphActionBase
+namespace RPGF.Actions
 {
-    public GameEndAction() : base("GameEnd")
+    [GenerateActionNode("Завершить игру")]
+    public class GameEndAction : ActionBase
     {
-    }
+        public GameEndAction() : base()
+        {
+        }
 
-    public override IEnumerator ActionCoroutine()
-    {
-        GlobalManager.Instance.SceneLoader.LoadScene("DemoMenu"); // Надо будет поменять на просто MainMenu
+        public override IEnumerator ActionCoroutine()
+        {
+            /// TODO: Надо будет поменять на просто MainMenu
+            GlobalManager.Instance.SceneLoader.LoadScene("DemoMenu"); 
 
-        yield break;
-    }
-
-    public override string GetHeader()
-    {
-        return "Завершить игру";
+            yield break;
+        }
     }
 }

@@ -42,9 +42,9 @@ namespace RPGF.Battle
         {
             Dispose();
 
-            for (int i = 0; i < BattleManager._Data.TurnsData.Count; i++)
+            for (int i = 0; i < BattleManager.Instance.Data.TurnsData.Count; i++)
             {
-                var turnsData = BattleManager._Data.TurnsData[i];
+                var turnsData = BattleManager.Instance.Data.TurnsData[i];
 
                 GameObject instance = Instantiate(_elementPrefab, transform);
 

@@ -2,66 +2,78 @@
 using UnityEngine;
 using UnityEditor.UIElements;
 using RPGF.RPG;
-using RPGF.Editor.EventSystem;
 using RPGF.Editor.EventSystem.Attributes;
+using RPGF.Actions;
 
-[UseActionNode]
-public class InvokeBattleNode : ActionNodeBase<InvokeBattleAction>
+namespace RPGF.Editor.EventSystem.Nodes
 {
-    public InvokeBattleNode(InvokeBattleAction Action) : base(Action)
+    [UseActionNode("Битва", contextualMenuPath: "Битва/Битва!")]
+    public class InvokeBattleNode : ActionNodeBase<InvokeBattleAction>
     {
-
-    }
-
-    public override void PortContructor()
-    {
-        CreateInputPort("Input");
-
-        CreateOutputPort("Then");
-
-        if (Action.fleePort)
+        public InvokeBattleNode(InvokeBattleAction Action) : base(Action)
         {
-            CreateOutputPort("Defence", Color.yellow);
+
         }
 
-        if (Action.battle != null && Action.battle.CanLose)
+        public override void PortContructor()
         {
-            CreateOutputPort("Lose", Color.red);
+            CreateInputPort("Вход", "Input");
+
+            var winNext = action.GetNext(InvokeBattleAction.WinNextTag);
+
+            CreateOutputPort(winNext.Name, winNext.Tag, InvokeBattleAction.WinNextTag);
+
+            if (Action.battle != null)
+            {
+                if (Action.battle.CanFlee && Action.branchFlee)
+                {
+                    var fleeNext = action.GetNext(InvokeBattleAction.FleeNextTag);
+
+                    CreateOutputPort(fleeNext.Name, fleeNext.Tag, Color.yellow, InvokeBattleAction.FleeNextTag);
+                }
+
+                if (Action.battle.CanLose)
+                {
+                    var loseNext = action.GetNext(InvokeBattleAction.LoseNextTag);
+
+                    CreateOutputPort(loseNext.Name, loseNext.Tag, Color.red, InvokeBattleAction.LoseNextTag);
+                }
+            }
         }
-    }
 
-    public override void UIContructor()
-    {
-        ObjectField battleField = new ObjectField("Битва")
+        public override void UIContructor()
         {
-            objectType = typeof(RPGBattleInfo),
-            allowSceneObjects = false
-        };
+            ObjectField battleField = new("Битва")
+            {
+                objectType = typeof(RPGBattleInfo),
+                allowSceneObjects = false
+            };
 
-        battleField.SetValueWithoutNotify(Action.battle);
-        battleField.RegisterValueChangedCallback(val =>
-        {
-            Action.battle = (RPGBattleInfo)val.newValue;
+            battleField.SetValueWithoutNotify(Action.battle);
+            battleField.RegisterValueChangedCallback(val =>
+            {
+                Action.battle = (RPGBattleInfo)val.newValue;
 
-            UpdatePorts();
+                UpdatePorts();
 
-            MakeDirty();
-        });
+                MakeDirty();
+            });
 
-        extensionContainer.Add(battleField);
+            extensionContainer.Add(battleField);
 
-        Toggle fleeToggle = new Toggle("Считать побег?");
+            Toggle fleeToggle = new("Выделить побег?");
 
-        fleeToggle.SetValueWithoutNotify(Action.fleePort);
-        fleeToggle.RegisterValueChangedCallback(val =>
-        {
-            Action.fleePort = val.newValue;
+            fleeToggle.SetValueWithoutNotify(Action.branchFlee);
+            fleeToggle.RegisterValueChangedCallback(val =>
+            {
+                Action.branchFlee = val.newValue;
 
-            UpdatePorts();
+                UpdatePorts();
 
-            MakeDirty();
-        });
+                MakeDirty();
+            });
 
-        extensionContainer.Add(fleeToggle);
+            extensionContainer.Add(fleeToggle);
+        }
     }
 }

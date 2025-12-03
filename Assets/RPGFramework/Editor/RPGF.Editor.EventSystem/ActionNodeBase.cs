@@ -1,7 +1,9 @@
+using RPGF.Editor.EventSystem.Attributes;
 using RPGF.EventSystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -9,12 +11,20 @@ using UnityEngine.UIElements;
 namespace RPGF.Editor.EventSystem
 {
     public class ActionNodeBase<T> : EventGraphNodeBase
-    where T : GraphActionBase
+    where T : ActionBase
     {
         public T Action => action as T;
 
         public ActionNodeBase(T action) : base(action)
         {
+            var metaData = GetType().GetCustomAttribute<UseActionNodeAttribute>();
+
+            if (metaData is not null)
+            {
+                title = metaData.Label;
+                tooltip = metaData.Description;
+            }
+
             extensionContainer.style.paddingTop = new StyleLength(6);
             extensionContainer.style.paddingBottom = new StyleLength(6);
             extensionContainer.style.paddingRight = new StyleLength(6);

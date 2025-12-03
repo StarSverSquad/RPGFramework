@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RPGF.RPG
 {
-    [CreateAssetMenu(fileName = "Character", menuName = "RPG/Character")]
+    [CreateAssetMenu(fileName = "_character", menuName = "RPG/_character")]
     public class RPGCharacter : RPGEntity
     {
         [Header("Настройки персонажа")]

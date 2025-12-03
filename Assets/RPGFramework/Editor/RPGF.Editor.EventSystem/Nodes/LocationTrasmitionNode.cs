@@ -1,55 +1,35 @@
-﻿using RPGF;
-using RPGF.Core.Location;
-using RPGF.Domain;
-using RPGF.Editor.EventSystem;
+﻿using RPGF.Actions;
 using RPGF.Editor.EventSystem.Attributes;
-using UnityEditor.UIElements;
-using UnityEngine.UIElements;
 
-[UseActionNode]
-public class LocationTrasmitionNode : ActionNodeBase<LocationTrasmitionAction>
+namespace RPGF.Editor.EventSystem.Nodes
 {
-    public LocationTrasmitionNode(LocationTrasmitionAction Action) : base(Action)
+    [UseActionNode("Смена локации", contextualMenuPath: "Система/Смена локации")]
+    public class LocationTrasmitionNode : ActionNodeBase<LocationTrasmitionAction>
     {
-    }
-
-    public override void UIContructor()
-    {
-        ObjectField locationField = new ObjectField("Локация")
+        public LocationTrasmitionNode(LocationTrasmitionAction Action) : base(Action)
         {
-            objectType = typeof(RpgfLocationInfo),
-            allowSceneObjects = false
-        };
+        }
 
-        locationField.SetValueWithoutNotify(Action.Message.Location);
-        locationField.RegisterValueChangedCallback(value =>
+        public override void UIContructor()
         {
-            Action.Message.Location = (RpgfLocationInfo)value.newValue;
+            var locationField = BuildObjectField(Action.Dto.Location, value =>
+            {
+                Action.Dto.Location = value;
+            }, "Локация");
 
-            MakeDirty();
-        });
+            var spawnPointField = BuildTextField(Action.Dto.Point, value =>
+            {
+                Action.Dto.Point = value;
+            }, "Точка спавна");
 
-        TextField spawnPointField = new TextField("Точка спавна");
+            var enumField = BuildEnumField(Action.Dto.Direction, value =>
+            {
+                Action.Dto.Direction = value;
+            }, "Направление");
 
-        spawnPointField.SetValueWithoutNotify(Action.Message.Point);
-        spawnPointField.RegisterValueChangedCallback(value =>
-        {
-            Action.Message.Point = value.newValue;
-
-            MakeDirty();
-        });
-
-        EnumField enumField = new EnumField("Направление", Action.Message.Direction);
-
-        enumField.RegisterValueChangedCallback(data =>
-        {
-            Action.Message.Direction = (ViewDirection)data.newValue;
-
-            MakeDirty();
-        });
-
-        extensionContainer.Add(locationField);
-        extensionContainer.Add(spawnPointField);
-        extensionContainer.Add(enumField);
+            extensionContainer.Add(locationField);
+            extensionContainer.Add(spawnPointField);
+            extensionContainer.Add(enumField);
+        }
     }
 }

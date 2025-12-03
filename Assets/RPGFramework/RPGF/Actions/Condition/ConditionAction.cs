@@ -1,46 +1,52 @@
-﻿using RPGF.EventSystem;
+﻿using RPGF.Domain.DI;
+using RPGF.EventSystem;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class ConditionAction : GraphActionBase
+namespace RPGF.Actions.Condition
 {
-    [SerializeReference]
-    public List<ConditionBase> Conditions;
-
-    public ConditionAction() : base("ConditionAction")
+    public class ConditionAction : ActionBase
     {
-        Conditions = new List<ConditionBase>();
-    }
+        [Inject]
+        private readonly DependencyInjection _di;
 
-    public override IEnumerator ActionCoroutine()
-    {
-        bool isRight = true;
+        public const string NextThenTag = "Then";
+        public const string NextElseTag = "Else";
 
-        foreach (ConditionBase c in Conditions)
+        [SerializeReference]
+        public List<ConditionBase> Conditions;
+
+        public ConditionAction() : base()
         {
-            if (!c.Invoke())
-            {
-                isRight = false;
-                break;
-            }
+            Nexts.Clear();
+            AddNext(NextThenTag, "Тогда");
+            AddNext(NextElseTag, "Иначе");
+
+            Conditions = new();
         }
 
-        nextIndex = isRight ? 0 : 1;
+        public override IEnumerator ActionCoroutine()
+        {
+            Conditions.ForEach(c => _di.InjectInto(c));
 
-        yield break;
+            bool isRight = Conditions.Any(c => c.Invoke());
+
+            if (isRight)
+                SetNext(NextThenTag);
+            else
+                SetNext(NextElseTag);
+
+            yield break;
+        }
     }
 
-    public override string GetHeader()
+    /// <summary>
+    /// Операции для события сравнения
+    /// </summary>
+    public enum ConditionOperation
     {
-        return "Условие";
+        Equals, NotEquals, More, Less, MoreOrEquals, LessOrEquals
     }
-}
-
-/// <summary>
-/// Операции для события сравнения
-/// </summary>
-public enum ConditionOperation
-{
-    Equals, NotEquals, More, Less, MoreOrEquals, LessOrEquals
 }

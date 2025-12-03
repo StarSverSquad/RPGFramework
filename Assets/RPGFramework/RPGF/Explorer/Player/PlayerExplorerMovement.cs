@@ -110,7 +110,7 @@ namespace RPGF.Explorer.Player
 
             ViewDirection? newViewDirection = null;
 
-            if (CanWalk && !Explorer.EventHandler.EventRuning)
+            if (CanWalk && !Explorer.EventHandler.EventPlaying)
             {
 
                 if (Input.GetKey(Global.BaseOptions.MoveRight))

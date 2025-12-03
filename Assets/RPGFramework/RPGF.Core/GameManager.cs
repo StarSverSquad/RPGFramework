@@ -1,5 +1,6 @@
 ﻿using RPGF;
 using RPGF.Core;
+using RPGF.Core.Services;
 using RPGF.Domain.DI;
 using System.Collections;
 using UnityEngine;
@@ -39,6 +40,10 @@ namespace RPGF.Core
         public override void Initialize()
         {
             DI = new DependencyInjection();
+
+            DI.AddSignleton(DI);
+
+            DI.AddScoped<InvokeUsableEventService>();
 
             InitializeChild();
         }

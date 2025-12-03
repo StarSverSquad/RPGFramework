@@ -1,38 +1,41 @@
-﻿using RPGF.EventSystem;
+﻿using RPGF.Domain.DI;
+using RPGF.EventSystem;
+using RPGF.EventSystem.Attributes;
 using RPGF.Shared;
 using System.Collections;
 using UnityEngine;
 
-public class CloseMediaAction : GraphActionBase
+namespace RPGF.Actions
 {
-    public float FadeTime;
-
-    public bool IsWait;
-
-    private MediaManager Media => SharedManager.Instance.Media;
-
-    public CloseMediaAction() : base("CloseMedia")
+    [GenerateActionNode(
+        "Убрать медиа", 
+        @"Убирает изображение из событий 'Отобразить цвет' и 'Отобразить фото'",
+        "Система/Убрать медиа")]
+    public class CloseMediaAction : ActionBase
     {
-        FadeTime = 0;
+        [Inject]
+        private readonly MediaManager _media;
 
-        IsWait = true;
-    }
+        [ActionFieldOption("Время затинения")]
+        public float FadeTime;
+        [ActionFieldOption("Ждать?")]
+        public bool IsWait;
 
-    public override IEnumerator ActionCoroutine()
-    {
-        Media.HideImage(FadeTime);
+        public CloseMediaAction() : base()
+        {
+            FadeTime = 0;
 
-        if (IsWait)
-            yield return new WaitWhile(() => Media.IsFade);
-    }
+            IsWait = true;
+        }
 
-    public override string GetHeader()
-    {
-        return "Убрать медиа";
-    }
+        public override IEnumerator ActionCoroutine()
+        {
+            _media.HideImage(FadeTime);
 
-    public override string GetInfo()
-    {
-        return @"Убирает изображение из событий 'Отобразить цвет' и 'Отобразить фото'";
+            if (IsWait)
+            {
+                yield return new WaitWhile(() => _media.IsFade);
+            }
+        }
     }
 }

@@ -7,7 +7,7 @@ namespace RPGF.RPG
     [CreateAssetMenu(fileName = "EntityState", menuName = "RPG/EntityState")]
     public class RPGEntityState : ScriptableObject
     {
-        public GraphEvent Event;
+        public GlobalEvent Event;
 
         public string Tag;
         public string Name;

@@ -1,31 +1,37 @@
 ﻿using RPGF;
+using RPGF.Domain.DI;
 using RPGF.EventSystem;
+using RPGF.EventSystem.Attributes;
+using RPGF.Explorer;
 using System.Collections;
 using UnityEngine;
 
-public class SetupSunLightAction : GraphActionBase
+namespace RPGF.Actions
 {
-    public float Intensity;
-
-    public Color Color;
-
-    public SetupSunLightAction() : base("SetupSunLight")
+    [GenerateActionNode("Настройка освещения", contextMenuPath: "Система/Настройка освещения")]
+    public class SetupSunLightAction : ActionBase
     {
-        Intensity = 1.0f;
+        [Inject]
+        private readonly SunManager _sun;
 
-        Color = Color.white;
-    }
+        [ActionFieldOption("Интенсивность:")]
+        public float Intensity;
+        [ActionFieldOption("Цвет освещения:")]
+        public Color Color;
 
-    public override IEnumerator ActionCoroutine()
-    {
-        LocalManager.Instance.Sun.SetIntensity(Intensity);
-        LocalManager.Instance.Sun.SetColor(Color);
+        public SetupSunLightAction() : base()
+        {
+            Intensity = 1.0f;
 
-        yield break;
-    }
+            Color = Color.white;
+        }
 
-    public override string GetHeader()
-    {
-        return "Настройка солнечного света";
+        public override IEnumerator ActionCoroutine()
+        {
+            _sun.SetIntensity(Intensity);
+            _sun.SetColor(Color);
+
+            yield break;
+        }
     }
 }

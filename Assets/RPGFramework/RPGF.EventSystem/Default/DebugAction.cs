@@ -1,20 +1,24 @@
+using RPGF.EventSystem.Attributes;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.EventSystem.Default
 {
-    public class DebugAction : GraphActionBase
+    [GenerateActionNode("Отладка")]
+    public class DebugAction : ActionBase
     {
         public enum WarningLevelType
         {
             Common, Warning, Error
         }
 
-        public string ConsoleOutputText;
-
+        [ActionFieldOption("Уровень предупреждения:")]
         public WarningLevelType WarningLevel;
 
-        public DebugAction() : base("DebugAction")
+        [ActionFieldOption("Текст", MultiLine = true)]
+        public string ConsoleOutputText;
+
+        public DebugAction() : base()
         {
             WarningLevel = WarningLevelType.Common;
             ConsoleOutputText = string.Empty;
@@ -36,11 +40,6 @@ namespace RPGF.EventSystem.Default
             }
 
             yield break;
-        }
-
-        public override string GetHeader()
-        {
-            return "Debug";
         }
     }
 }

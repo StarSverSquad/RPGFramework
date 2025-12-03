@@ -1,38 +1,51 @@
 ﻿using RPGF.Battle;
+using RPGF.Domain.DI;
 using RPGF.EventSystem;
-using RPGF.RPG;
-using System;
+using RPGF.EventSystem.Attributes;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
 
-public class ChangeEnemyStatsAction : GraphActionBase
+namespace RPGF.Actions
 {
-    public string EnemyTag;
-
-    public int newDamage;
-    public int newDefance;
-    public int newLuck;
-    public int newAgility;
-
-    public ChangeEnemyStatsAction() : base("ChangeEnemyStats")
+    [GenerateActionNode("Изменить статы врага", contextMenuPath: "Битва/Изменить статы врага")]
+    public class ChangeEnemyStatsAction : ActionBase
     {
-        newDamage = 0;
-        newDefance = 0;
-        newLuck = 0;
-        newAgility = 0;
-    }
+        [Inject]
+        private readonly BattleData _battleData;
 
-    public override IEnumerator ActionCoroutine()
-    {
-        try
+        [ActionFieldOption("Тег врага:")]
+        public string EnemyTag;
+
+        [ActionFieldOption("Урон:")]
+        public int newDamage;
+        [ActionFieldOption("Защита:")]
+        public int newDefance;
+        [ActionFieldOption("Удача:")]
+        public int newLuck;
+        [ActionFieldOption("Ловкость:")]
+        public int newAgility;
+
+        public ChangeEnemyStatsAction() : base()
+        {
+            newDamage = 0;
+            newDefance = 0;
+            newLuck = 0;
+            newAgility = 0;
+        }
+
+        public override IEnumerator ActionCoroutine()
         {
             if (BattleManager.IsBattle)
             {
-                RPGEnemy enemy = BattleManager.Instance.Data.Enemys.First(i => i.Tag == EnemyTag);
+                var enemy = _battleData.Enemys.First(i => i.Tag == EnemyTag);
 
-                if (enemy == null)
-                    throw new ApplicationException("Enemy not found!");
+                if (enemy != null)
+                {
+                    Debug.LogError("Враг не найден!");
+
+                    yield break;
+                }
 
                 enemy.DefaultDamage = newDamage;
                 enemy.DefaultDefence = newDefance;
@@ -41,17 +54,8 @@ public class ChangeEnemyStatsAction : GraphActionBase
 
                 enemy.UpdateStats();
             }
-        }
-        catch (ApplicationException error)
-        {
-            Debug.LogException(error);
-        }
 
-        yield break;
-    }
-
-    public override string GetHeader()
-    {
-        return "Изменить статы врага";
+            yield break;
+        }
     }
 }

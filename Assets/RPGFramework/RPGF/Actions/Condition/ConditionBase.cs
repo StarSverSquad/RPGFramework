@@ -1,13 +1,12 @@
 ﻿using RPGF;
+using RPGF.Domain.DI;
 using System;
 
-[Serializable]
-public abstract class ConditionBase
+namespace RPGF.Actions.Condition
 {
-    protected GlobalManager Game => GlobalManager.Instance;
-    protected LocalManager Local => LocalManager.Instance;
-
-    public abstract bool Invoke();
-
-    public virtual string GetLabel() => "NAME";
+    [Serializable]
+    public abstract class ConditionBase : InjectionTarget
+    {
+        public abstract bool Invoke();
+    }
 }

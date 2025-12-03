@@ -1,31 +1,34 @@
-using RPGF;
+using RPGF.Core.Character;
+using RPGF.Domain.DI;
 using RPGF.RPG;
 using System.Linq;
 using UnityEngine;
 
-public class CharacterInPartyCondition : ConditionBase
+namespace RPGF.Actions.Condition
 {
-    public RPGCharacter Value;
-
-    public CharacterInPartyCondition()
+    [UseCondition("Персонаж в команде")]
+    public class CharacterInPartyCondition : ConditionBase
     {
-        Value = null;
-    }
+        [Inject]
+        private readonly CharacterService _character;
 
-    public override bool Invoke()
-    {
-        if (Value == null)
+        public RPGCharacter Value;
+
+        public CharacterInPartyCondition()
         {
-            Debug.LogError($"CHARACTER_IN_PARTY_CONDITION: персонаж не указан");
-
-            return false;
+            Value = null;
         }
 
-        return GlobalManager.Instance.Character.Characters.Any(i => i.Tag == Value.Tag);
-    }
+        public override bool Invoke()
+        {
+            if (Value == null)
+            {
+                Debug.LogError($"CHARACTER_IN_PARTY_CONDITION: персонаж не указан");
 
-    public override string GetLabel()
-    {
-        return "Персонаж в команде";
+                return false;
+            }
+
+            return _character.Characters.Any(i => i.Tag == Value.Tag);
+        }
     }
 }

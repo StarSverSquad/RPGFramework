@@ -1,4 +1,5 @@
 ﻿using RPGF.Battle.Enums;
+using RPGF.Core;
 using RPGF.RPG;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using UnityEngine;
 
 namespace RPGF.Battle
 {
-    public class BattleData : MonoBehaviour, IDisposable
+    public class BattleData : RPGFrameworkBehaviour, IDisposable
     {
         public RPGBattleInfo BattleInfo { get; set; } = null;
 

@@ -1,38 +1,35 @@
-﻿using RPGF;
-using RPGF.Core.Location;
+﻿using RPGF.Core.Location;
 using RPGF.EventSystem;
 using RPGF.Explorer;
 using System.Collections;
 using UnityEngine;
 
-public class LocationTrasmitionAction : GraphActionBase
+namespace RPGF.Actions
 {
-    public LocationTransimitionDto Message;
-
-    public LocationTrasmitionAction() : base("LocationTrasmition")
+    public class LocationTrasmitionAction : ActionBase
     {
-        Message = new LocationTransimitionDto();
-    }
+        public LocationTransimitionDto Dto;
 
-    public override IEnumerator ActionCoroutine()
-    {
-        if (Message.Location != null)
+        public LocationTrasmitionAction() : base()
         {
-            if (ExplorerManager.Instance.EventHandler.HandledEvent == gameEvent) 
-                ExplorerManager.Instance.EventHandler.ForceUnhandle();
+            Dto = new LocationTransimitionDto();
+        }
 
-            ExplorerManager.PlayerMovement.CanWalk = false;
+        public override IEnumerator ActionCoroutine()
+        {
+            if (Dto.Location != null)
+            {
+                if (ExplorerManager.Instance.EventHandler.isActiveAndEnabled)
+                    ExplorerManager.Instance.EventHandler.ForceUnhandle();
 
-            GlobalManager.Instance.LocationManager.ChangeLocation(Message);
-        }     
+                ExplorerManager.PlayerMovement.CanWalk = false;
 
-        yield return new WaitWhile(() => GlobalManager.Instance.LocationManager.IsChanging);
+                GlobalManager.Instance.LocationManager.ChangeLocation(Dto);
+            }
 
-        ExplorerManager.PlayerMovement.CanWalk = true;
-    }
+            yield return new WaitWhile(() => GlobalManager.Instance.LocationManager.IsChanging);
 
-    public override string GetHeader()
-    {
-        return "Смена локации";
+            ExplorerManager.PlayerMovement.CanWalk = true;
+        }
     }
 }

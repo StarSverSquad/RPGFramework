@@ -1,6 +1,7 @@
 ﻿using RPGF.Editor.Core;
 using RPGF.Editor.EventSystem;
 using RPGF.EventSystem;
+using RPGF.EventSystem.Graph;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace RPGF.Editor
     {
         private void OnEnable()
         {
-            Target.InnerEvent ??= CreateInstance<GraphEvent>();
+            Target.InnerEvent ??= new GraphEvent();
         }
 
         public override void OnInspectorGUI()
@@ -24,10 +25,10 @@ namespace RPGF.Editor
             Target.Parallel = Toggle("Паралельно?:", Target.Parallel);
 
             if (Target.InnerEvent != null && Button("Открыть редактор"))
-                EventGraphWindow.Initialize(Target.InnerEvent);
+                EventGraphWindow.Initialize(Target.InnerEvent, Target);
 
             if (Button("Пересоздать"))
-                Target.InnerEvent = CreateInstance<GraphEvent>();
+                Target.InnerEvent = new GraphEvent();
 
             if (GuiChanged)
                 EditorUtility.SetDirty(Target);

@@ -1,39 +1,41 @@
 using RPGF;
+using RPGF.Domain.DI;
 
-public class IntVarCondition : ConditionBase
+namespace RPGF.Actions.Condition
 {
-    public string Var;
-
-    public int Value;
-
-    public ConditionOperation Operation;
-
-    public IntVarCondition()
+    [UseCondition("По целочисленной переменной")]
+    public class IntVarCondition : ConditionBase
     {
-        Var = string.Empty;
-        Value = 0;
-        Operation = ConditionOperation.Equals;
-    }
+        [Inject]
+        private readonly GameData _gameData;
 
-    public override bool Invoke()
-    {
-        if (!GlobalManager.Instance.GameData.IntValues.HaveKey(Var))
-            return false;
+        public string Var;
+        public int Value;
 
-        return Operation switch
+        public ConditionOperation Operation;
+
+        public IntVarCondition()
         {
-            ConditionOperation.Equals => GlobalManager.Instance.GameData.IntValues[Var] == Value,
-            ConditionOperation.NotEquals => GlobalManager.Instance.GameData.IntValues[Var] != Value,
-            ConditionOperation.More => GlobalManager.Instance.GameData.IntValues[Var] > Value,
-            ConditionOperation.Less => GlobalManager.Instance.GameData.IntValues[Var] < Value,
-            ConditionOperation.MoreOrEquals => GlobalManager.Instance.GameData.IntValues[Var] >= Value,
-            ConditionOperation.LessOrEquals => GlobalManager.Instance.GameData.IntValues[Var] <= Value,
-            _ => false,
-        };
-    }
+            Var = string.Empty;
+            Value = 0;
+            Operation = ConditionOperation.Equals;
+        }
 
-    public override string GetLabel()
-    {
-        return "По целочисленной переменной";
+        public override bool Invoke()
+        {
+            if (!_gameData.IntValues.HaveKey(Var))
+                return false;
+
+            return Operation switch
+            {
+                ConditionOperation.Equals => _gameData.IntValues[Var] == Value,
+                ConditionOperation.NotEquals => _gameData.IntValues[Var] != Value,
+                ConditionOperation.More => _gameData.IntValues[Var] > Value,
+                ConditionOperation.Less => _gameData.IntValues[Var] < Value,
+                ConditionOperation.MoreOrEquals => _gameData.IntValues[Var] >= Value,
+                ConditionOperation.LessOrEquals => _gameData.IntValues[Var] <= Value,
+                _ => false,
+            };
+        }
     }
 }

@@ -1,69 +1,70 @@
-﻿using RPGF;
+﻿using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using System.Collections;
 using UnityEngine;
 
-public class ManageBGSAction : GraphActionBase
+namespace RPGF.Actions
 {
-    public enum OperationType
+    public class ManageBGSAction : ActionBase
     {
-        Play, Pause, Stop, VolumeChange, Resume
-    }
-
-    public OperationType Operation;
-
-    public bool IngoreIfThisClip;
-    public bool WaitFade;
-    public bool UseFade;
-
-    public float FadeTime;
-
-    public float Volume;
-
-    public AudioClip clip;
-
-    public ManageBGSAction() : base("ManageBGS")
-    {
-        Operation = OperationType.Play;
-        UseFade = false;
-        FadeTime = 0.0f;
-        Volume = 1.0f;
-        clip = null;
-        IngoreIfThisClip = true;
-        WaitFade = false;
-    }
-
-    public override IEnumerator ActionCoroutine()
-    {
-        switch (Operation)
+        public enum OperationType
         {
-            case OperationType.Play:
-                if (IngoreIfThisClip && GlobalManager.Instance.GameAudio.BGSIsPlaying
-                    && GlobalManager.Instance.GameAudio.BGSClip == clip)
-                    yield break;
-
-                GlobalManager.Instance.GameAudio.PlayBGS(clip, Volume, UseFade ? FadeTime : 0);
-                break;
-            case OperationType.Pause:
-                GlobalManager.Instance.GameAudio.PauseBGS(UseFade ? FadeTime : 0);
-                break;
-            case OperationType.Stop:
-                GlobalManager.Instance.GameAudio.StopBGS(UseFade ? FadeTime : 0);
-                break;
-            case OperationType.VolumeChange:
-                GlobalManager.Instance.GameAudio.ChangeBGSVolume(Volume, UseFade ? FadeTime : 0);
-                break;
-            case OperationType.Resume:
-                GlobalManager.Instance.GameAudio.ResumeBGS(Volume, UseFade ? FadeTime : 0);
-                break;
+            Play, Pause, Stop, VolumeChange, Resume
         }
 
-        if (UseFade && WaitFade)
-            yield return new WaitWhile(() => GlobalManager.Instance.GameAudio.BGSIsFade);
-    }
+        public OperationType Operation;
 
-    public override string GetHeader()
-    {
-        return "Управление BGS";
+        [Inject]
+        private readonly AudioManager _audio;
+
+        public bool IngoreIfThisClip;
+        public bool WaitFade;
+        public bool UseFade;
+
+        public float FadeTime;
+
+        public float Volume;
+
+        public AudioClip clip;
+
+        public ManageBGSAction() : base()
+        {
+            Operation = OperationType.Play;
+            UseFade = false;
+            FadeTime = 0.0f;
+            Volume = 1.0f;
+            clip = null;
+            IngoreIfThisClip = true;
+            WaitFade = false;
+        }
+
+        public override IEnumerator ActionCoroutine()
+        {
+            switch (Operation)
+            {
+                case OperationType.Play:
+                    if (IngoreIfThisClip && _audio.BGSIsPlaying
+                        && _audio.BGSClip == clip)
+                        yield break;
+
+                    _audio.PlayBGS(clip, Volume, UseFade ? FadeTime : 0);
+                    break;
+                case OperationType.Pause:
+                    _audio.PauseBGS(UseFade ? FadeTime : 0);
+                    break;
+                case OperationType.Stop:
+                    _audio.StopBGS(UseFade ? FadeTime : 0);
+                    break;
+                case OperationType.VolumeChange:
+                    _audio.ChangeBGSVolume(Volume, UseFade ? FadeTime : 0);
+                    break;
+                case OperationType.Resume:
+                    _audio.ResumeBGS(Volume, UseFade ? FadeTime : 0);
+                    break;
+            }
+
+            if (UseFade && WaitFade)
+                yield return new WaitWhile(() => _audio.BGSIsFade);
+        }
     }
 }

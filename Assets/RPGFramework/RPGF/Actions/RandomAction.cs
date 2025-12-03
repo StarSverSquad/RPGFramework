@@ -2,26 +2,39 @@ using RPGF.EventSystem;
 using System.Collections;
 using UnityEngine;
 
-public class RandomAction : GraphActionBase
+namespace RPGF.Actions
 {
-    public float Chance;
-
-    public RandomAction() : base("Random")
+    public class RandomAction : ActionBase
     {
-        Chance = 0.5f;
-    }
+        public const string YES_NextTag = "YES";
+        public const string NO_NextTag = "NO";
 
-    public override IEnumerator ActionCoroutine()
-    {
-        float result = Random.Range(0f, 1f);
+        public float Chance;
 
-        nextIndex = result <= Chance ? 0 : 1;
+        public RandomAction() : base()
+        {
+            Nexts.Clear();
 
-        yield break;
-    }
+            AddNext(YES_NextTag);
+            AddNext(NO_NextTag);
 
-    public override string GetHeader()
-    {
-        return "Случайное действие";
+            Chance = 0.5f;
+        }
+
+        public override IEnumerator ActionCoroutine()
+        {
+            float result = Random.Range(0f, 1f);
+
+            if (result > Chance)
+            {
+                SetNext(YES_NextTag);
+            }
+            else
+            {
+                SetNext(NO_NextTag);
+            }
+
+            yield break;
+        }
     }
 }

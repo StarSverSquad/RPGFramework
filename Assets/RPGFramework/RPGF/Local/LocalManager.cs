@@ -38,6 +38,8 @@ namespace RPGF
 
             DI = new DependencyInjection();
 
+            DI.AddSignleton(DI);
+
             DI.AddSubInjector(Game.DI);
 
             DI.AddSignleton(Sun);
@@ -55,7 +57,7 @@ namespace RPGF
             /// 0_o
             if (Input.GetKeyDown(GlobalManager.Instance.BaseOptions.Additional)
                 && !TittleMenu.IsOpened
-                && !explorer.EventHandler.EventRuning)
+                && !explorer.EventHandler.EventPlaying)
                 TittleMenu.Open();
         }
 

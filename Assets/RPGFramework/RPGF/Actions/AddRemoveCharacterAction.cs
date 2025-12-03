@@ -1,64 +1,64 @@
-﻿using RPGF;
-using RPGF.Core.Character;
+﻿using RPGF.Core.Character;
+using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using RPGF.RPG;
 using System.Collections;
 
-public class AddRemoveCharacterAction : GraphActionBase
+namespace RPGF.Actions
 {
-    public bool isAdd;
-    public bool updateModels;
-
-    public RPGCharacter character;
-
-    public PlayableCharacterModelController existentObject;
-
-    public AddRemoveCharacterAction() : base("AddRemoveCharacter")
+    public class AddRemoveCharacterAction : ActionBase
     {
-        character = null;
-        existentObject = null;
-        isAdd = true;
-        updateModels = true;
-    }
+        [Inject]
+        private readonly CharacterManager _character;
+        [Inject]
+        private readonly CharacterService _characterService;
 
-    public override IEnumerator ActionCoroutine()
-    {
-        if (isAdd)
-            GlobalManager.Instance.Character.AddCharacter(character);
-        else
-            GlobalManager.Instance.Character.RemoveCharacter(character);
+        public bool isAdd;
+        public bool updateModels;
 
-        if (updateModels)
-            LocalManager.Instance.Character.RebuildModels();
-        else if (existentObject != null)
+        public RPGCharacter character;
+
+        public PlayableCharacterModelController existentObject;
+
+        public AddRemoveCharacterAction() : base()
         {
-            if (isAdd)
-                LocalManager.Instance.Character.AddModel(existentObject);
-            else
-                LocalManager.Instance.Character.RemoveModel(existentObject);
+            character = null;
+            existentObject = null;
+            isAdd = true;
+            updateModels = true;
         }
 
-        yield break;
-    }
-
-    public override string GetHeader()
-    {
-        return "Изменить состав команды";
-    }
-
-    public override string GetInfo()
-    {
-        return "Добавляет или же удаляет персонажа из пачки.";
-    }
-
-    public override object Clone()
-    {
-        return new AddRemoveCharacterAction()
+        public override IEnumerator ActionCoroutine()
         {
-            isAdd = isAdd,
-            character = character,
-            updateModels = updateModels,
-            existentObject = existentObject
-        };
+            if (isAdd)
+                _characterService.AddCharacter(character);
+            else
+                _characterService.RemoveCharacter(character);
+
+            if (updateModels)
+            {
+                _character.RebuildModels();
+            }
+            else if (existentObject != null)
+            {
+                if (isAdd)
+                    _character.AddModel(existentObject);
+                else
+                    _character.RemoveModel(existentObject);
+            }
+
+            yield break;
+        }
+
+        public override ActionBase Clone()
+        {
+            return new AddRemoveCharacterAction()
+            {
+                isAdd = isAdd,
+                character = character,
+                updateModels = updateModels,
+                existentObject = existentObject
+            };
+        }
     }
 }

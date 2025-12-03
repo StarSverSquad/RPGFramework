@@ -12,11 +12,13 @@ namespace RPGF.RPG
         public int ManaCost;
         public int ConcentrationCost;
         [Space]
-        [Tooltip("Если положительный значит лечит, если отрцатльный значит наносит урон. Учитывает все внешние факторы.")]
+        [Tooltip("Если положительный значит лечит, " +
+                "если отрцатльный значит наносит урон. " +
+                "Учитывает все внешние факторы.")]
         public int Formula;
         [Space]
-        public GraphEvent StartEvent;
-        public GraphEvent EndEvent;
+        public GlobalEvent StartEvent;
+        public GlobalEvent EndEvent;
         [Space]
         public MinigameBase Minigame;
     }

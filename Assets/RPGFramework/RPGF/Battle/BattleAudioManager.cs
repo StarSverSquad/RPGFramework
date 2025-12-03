@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using RPGF.Core;
+using UnityEngine;
 
 namespace RPGF.Battle
 {
-    public class BattleAudioManager : MonoBehaviour
+    public class BattleAudioManager : RPGFrameworkBehaviour
     {
         [SerializeField]
         private AudioSource musicSource;

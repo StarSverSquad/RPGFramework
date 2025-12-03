@@ -1,25 +1,30 @@
-using RPGF;
+using RPGF.Core.SaveLoad;
+using RPGF.Domain.DI;
 using RPGF.EventSystem;
+using RPGF.EventSystem.Attributes;
 using System.Collections;
 
-public class SaveAction : GraphActionBase
+namespace RPGF.Actions
 {
-    public int slotId;
-
-    public SaveAction() : base("GameSave")
+    [GenerateActionNode("Сохранить игру", contextMenuPath: "Система/Сохранить игру")]
+    public class SaveAction : ActionBase
     {
-        slotId = 0;
-    }
+        [Inject]
+        private readonly SaveLoadService _saveLoad;
 
-    public override IEnumerator ActionCoroutine()
-    {
-        GlobalManager.Instance.SaveLoad.GameSave(slotId);
+        [ActionFieldOption("ID слота:")]
+        public int slotId;
 
-        yield break;
-    }
+        public SaveAction() : base()
+        {
+            slotId = 0;
+        }
 
-    public override string GetHeader()
-    {
-        return "Сохранить игру";
+        public override IEnumerator ActionCoroutine()
+        {
+            _saveLoad.GameSave(slotId);
+
+            yield break;
+        }
     }
 }

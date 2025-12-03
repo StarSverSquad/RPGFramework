@@ -36,7 +36,7 @@ namespace RPGF.Actions
 
             yield return new WaitWhile(() => _choice.IsChoicing);
 
-            SetNext($"choice-{_choice.Index}");
+            SetNext($"Choice-{_choice.Index}");
         }
     }
 }

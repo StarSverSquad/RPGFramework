@@ -73,7 +73,7 @@ namespace RPGF.Domain.DI
 
                 resultType = scopedTypes.FirstOrDefault(t => t == target.FieldType);
 
-                resultType = scopedWithImplimentTypes.FirstOrDefault(dt => dt.Key == target.FieldType).Value;
+                resultType ??= scopedWithImplimentTypes.FirstOrDefault(dt => dt.Key == target.FieldType).Value;
 
                 if (resultType is not null)
                     resultInject = Activator.CreateInstance(resultType) as Injectable;

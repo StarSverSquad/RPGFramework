@@ -15,11 +15,14 @@ namespace RPGF.EventSystem
         public const string DefaultNextTag = "DEFAULT";
         public const string DefaultNextName = "Далее";
 
-        public List<NextAction> Nexts { get; private set; }
+        [SerializeReference]
+        private List<NextAction> nexts;
+        public List<NextAction> Nexts { get => nexts; }
+
 
         public ActionBase()
         {
-            Nexts = new List<NextAction>
+            nexts = new List<NextAction>
             {
                 new()
                 {
@@ -41,6 +44,13 @@ namespace RPGF.EventSystem
         public void SetNextAction(ActionBase action, string tag)
         {
             var next = GetNext(tag);
+
+            if (next is null)
+            {
+                Debug.LogWarning($"NEXT {tag} не найден!");
+                return;
+            }
+                
 
             next.Action = action;
         }
@@ -88,7 +98,7 @@ namespace RPGF.EventSystem
 
             if (Nexts.All(n => !n.IsNext))
             {
-                Nexts.First(n => n.Tag == DefaultNextTag).IsNext = true;
+                Nexts.First().IsNext = true;
 
                 Debug.LogWarning($"Не найден {tag}!");
             }

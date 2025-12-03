@@ -21,7 +21,7 @@ namespace RPGF.Editor.EventSystem.Nodes
 
             var winNext = action.GetNext(InvokeBattleAction.WinNextTag);
 
-            CreateOutputPort(winNext.Name, winNext.Tag);
+            CreateOutputPort(winNext.Name, winNext.Tag, InvokeBattleAction.WinNextTag);
 
             if (Action.battle != null)
             {
@@ -29,14 +29,14 @@ namespace RPGF.Editor.EventSystem.Nodes
                 {
                     var fleeNext = action.GetNext(InvokeBattleAction.FleeNextTag);
 
-                    CreateOutputPort(fleeNext.Name, fleeNext.Tag, Color.yellow);
+                    CreateOutputPort(fleeNext.Name, fleeNext.Tag, Color.yellow, InvokeBattleAction.FleeNextTag);
                 }
 
                 if (Action.battle.CanLose)
                 {
-                    var loseNext = action.GetNext(InvokeBattleAction.FleeNextTag);
+                    var loseNext = action.GetNext(InvokeBattleAction.LoseNextTag);
 
-                    CreateOutputPort(loseNext.Name, loseNext.Tag, Color.red);
+                    CreateOutputPort(loseNext.Name, loseNext.Tag, Color.red, InvokeBattleAction.LoseNextTag);
                 }
             }
         }

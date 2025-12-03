@@ -7,7 +7,11 @@ namespace RPGF.Editor.EventSystem
     {
         public Port InnerPort { get; set; }
 
-        public string Tag { get; set; }
+        public string Tag
+        {
+            get => (string)InnerPort.userData;
+            set => InnerPort.userData = value;
+        }
 
         public PortWrapper(string tag, Port port)
         {

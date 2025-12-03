@@ -14,8 +14,6 @@ namespace RPGF.Core.Services
         private readonly ExplorerEventHandler _eventHandler;
         [Inject]
         private readonly DependencyInjection _di;
-        [Inject]
-        private readonly BattleManager _battleManager;
 
         public void InvokeEvent(RPGUsable usable)
         {
@@ -25,7 +23,7 @@ namespace RPGF.Core.Services
                 {
                     case Usability.Any:
                         if (BattleManager.IsBattle)
-                            usable.Event.Invoke(_battleManager, _di);
+                            usable.Event.Invoke(_eventHandler, _di);
                         else if (!_eventHandler.EventPlaying)
                         {
                             usable.Event.Invoke(_eventHandler, _di);
@@ -34,7 +32,7 @@ namespace RPGF.Core.Services
                         break;
                     case Usability.Battle:
                         if (BattleManager.IsBattle)
-                            usable.Event.Invoke(_battleManager, _di);
+                            usable.Event.Invoke(_eventHandler, _di);
                         break;
                     case Usability.Explorer:
                         if (!BattleManager.IsBattle && !_eventHandler.EventPlaying)

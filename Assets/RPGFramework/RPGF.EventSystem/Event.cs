@@ -64,7 +64,7 @@ namespace RPGF.EventSystem
 
                 current.Dispose();
 
-                current = current.GetActualNext().Action;
+                current = current.GetActualNext()?.Action;
             }
 
             coroutine = null;

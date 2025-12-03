@@ -9,6 +9,7 @@ namespace RPGF.EventSystem.Default
     {
         public EndAction() : base()
         {
+            Nexts.Clear();
         }
 
         public override IEnumerator ActionCoroutine()

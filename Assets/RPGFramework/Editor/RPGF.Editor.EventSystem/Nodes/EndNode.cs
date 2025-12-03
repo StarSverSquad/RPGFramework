@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace RPGF.Editor.EventSystem.Nodes
 {
-    [UseActionNode("Конец", "Конец события (необязательный)")]
+    [UseActionNode("Конец", "Конец события")]
     public class EndNode : ActionNodeBase<EndAction>
     {
         public EndNode(EndAction Action) : base(Action)

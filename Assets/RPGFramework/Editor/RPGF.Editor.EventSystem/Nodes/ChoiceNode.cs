@@ -15,15 +15,6 @@ namespace RPGF.Editor.EventSystem.Nodes
 
         public ChoiceNode(ChoiceAction Action) : base(Action)
         {
-            outports = new List<Port>();
-
-            for (int i = 0; i < Action.Choices.Count; i++)
-            {
-                Port port = CreateOutputPort($"Выбор {i + 1}:", $"Choice-{i}", $"Choice-{i}");
-
-                outports.Add(port);
-                outputContainer.Add(port);
-            }
         }
 
         private void UpdateValue(TextField tf)
@@ -37,7 +28,19 @@ namespace RPGF.Editor.EventSystem.Nodes
         {
             CreateInputPort("Вход", "Input");
 
-            outputContainer.Add(new VisualElement());
+            outports = new List<Port>();
+            for (int i = 0; i < Action.Choices.Count; i++)
+            {
+                Port port = CreateOutputPort($"Выбор {i + 1}:", $"Choice-{i}", $"Choice-{i}");
+
+                outports.Add(port);
+                outputContainer.Add(port);
+            }
+
+            if (Action.Choices.Count == 0)
+            {
+                outputContainer.Add(new VisualElement());
+            }
         }
 
         public override void UIContructor()
@@ -85,13 +88,9 @@ namespace RPGF.Editor.EventSystem.Nodes
             addbutton.clicked += () =>
             {
                 Action.Choices.Add(string.Empty);
-                Action.AddNext($"Choice-{outports.Count - 1}");
+                Action.AddNext($"Choice-{Action.Choices.Count - 1}");
 
-                Port port = CreateOutputPort($"Выбор {outports.Count}", $"Choice-{outports.Count - 1}");
-
-                outports.Add(port);
-
-                outputContainer.Add(port);
+                UpdatePorts();
 
                 UpdateUI();
                 MakeDirty();
@@ -103,11 +102,10 @@ namespace RPGF.Editor.EventSystem.Nodes
             };
             removebutton.clicked += () =>
             {
-                outputContainer.Remove(outports.Last());
-
-                outports.Remove(outports.Last());
-
                 Action.Choices.Remove(Action.Choices.Last());
+                Action.Nexts.Remove(Action.Nexts.Last());
+
+                UpdatePorts();
 
                 UpdateUI();
                 MakeDirty();

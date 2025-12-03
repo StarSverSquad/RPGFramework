@@ -213,12 +213,15 @@ namespace RPGF.Editor.EventSystem
                     left == null || right == null)
                     continue;
 
+                var leftPort = right.Inputs.First(i => i.Tag == (string)item.input.userData);
+                var rightPort = left.Outputs.First(o => o.Tag == (string)item.output.userData);
+
                 Event.Meta.edges.Add(new GraphEventMeta.EdgeMeta
                 {
                     inputNodeGUID = right.GUID,
                     outputNodeGUID = left.GUID,
-                    inputPortTag = right.Inputs.First(i => i.InnerPort.name == item.input.portName).Tag,
-                    outputPortTag = left.Outputs.First(o => o.InnerPort.name == item.output.portName).Tag
+                    inputPortTag = leftPort.Tag,
+                    outputPortTag = rightPort.Tag
                 });
             }
 
@@ -249,7 +252,7 @@ namespace RPGF.Editor.EventSystem
 
                         var ohter = Nodes.First(i => edge.inputNodeGUID == i.GUID);
 
-                        var otherport = ports.First(i => i.node == ohter && i.portName == edge.inputPortTag);
+                        var otherport = ports.First(i => i.node == ohter && (string)i.userData == edge.inputPortTag);
 
                         Edge newEdge = new()
                         {

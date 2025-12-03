@@ -173,7 +173,10 @@ namespace RPGF.Editor.EventSystem
 
                 var node = otherport.node as EventGraphNodeBase;
 
-                action.SetNextAction(node.action, OutputPort.NextTag);
+                if (node is not null)
+                {
+                    action.SetNextAction(node.action, OutputPort.NextTag);
+                }
             }
         }
     }

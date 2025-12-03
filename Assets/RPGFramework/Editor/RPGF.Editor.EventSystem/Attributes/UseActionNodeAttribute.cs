@@ -15,7 +15,7 @@ namespace RPGF.Editor.EventSystem.Attributes
         {
             Label = label;
             Description = description;
-            ContextualMenuPath = string.IsNullOrWhiteSpace(contextualMenuPath) ? $"/{label}" : contextualMenuPath;
+            ContextualMenuPath = string.IsNullOrWhiteSpace(contextualMenuPath) ? $"{label}" : contextualMenuPath;
         }
     }
 }

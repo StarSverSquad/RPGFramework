@@ -3,6 +3,16 @@ using UnityEngine;
 
 namespace RPGF.Domain
 {
+    public enum ViewDirection
+    {
+        Up, Down, Left, Right
+    }
+
+    public enum MoveDirection
+    {
+        Stay = -1, Up, Down, Left, Right
+    }
+
     public static class DirectionHelper
     {
         public const ViewDirection DEFAULT_VIEW_DIRECTION = ViewDirection.Down;
@@ -75,15 +85,5 @@ namespace RPGF.Domain
                     return Vector2.zero;
             }
         }
-    }
-
-    public enum ViewDirection
-    {
-        Up, Down, Left, Right
-    }
-
-    public enum MoveDirection
-    {
-        Stay = -1, Up, Down, Left, Right
     }
 }

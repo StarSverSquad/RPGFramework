@@ -49,10 +49,14 @@ namespace RPGF.EventSystem
             if (!IsBlocked() && !InnerEvent.IsPlaying
                 && (!Explorer.EventHandler.EventPlaying || Parallel))
             {
-                if (!Parallel)
-                    Explorer.EventHandler.HandleEvent(InnerEvent);
-
-                InnerEvent.Invoke(Explorer, Local.DI);
+                if (Parallel)
+                {
+                    InnerEvent.Invoke(Explorer, Local.DI);
+                }
+                else
+                {
+                    Explorer.EventHandler.InvokeEvent(InnerEvent);
+                }
             }
         }
 

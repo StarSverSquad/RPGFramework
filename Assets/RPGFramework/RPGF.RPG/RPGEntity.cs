@@ -58,6 +58,8 @@ namespace RPGF.RPG
         public event Action OnHealChanged;
         public event Action OnManaChanged;
 
+        public event Action<int, RPGEntity> OnDamage;
+
         public event Action OnAllStatesChanged;
         public event Action<RPGEntityState> OnStateChanged;
         public event Action<RPGEntityState> OnStateUpdated;
@@ -191,49 +193,57 @@ namespace RPGF.RPG
 
         #endregion
 
-        /// <summary>
-        /// Наносит урон сущности
-        /// </summary>
-        /// <param name="who">Кто наносит урон</param>
-        /// <param name="DamageModifier">Модификатор урона</param>
-        /// <param name="dontHurt">[Выстовлять только если нужен только расчет урона]</param>
-        /// <returns>Полученный урон</returns>
-        public virtual int GiveDamage(RPGEntity who, float DamageModifier = 1, bool dontHurt = false)
+        public virtual int GiveDamage(RPGEntity who, float damageModifier = 1)
         {
-            int resultDamage = Mathf.RoundToInt(who.Damage * DamageModifier) - Mathf.RoundToInt(Defence * .5f);
-
-            resultDamage = Mathf.RoundToInt(UnityEngine.Random.Range(resultDamage * 0.75f, resultDamage * 1.25f));
+            int resultDamage = CalculateDamage(who, damageModifier);
 
             if (resultDamage <= 0)
                 return 0;
 
-            if (!dontHurt)
-                Heal -= resultDamage;
+            Heal -= resultDamage;
+
+            OnDamage?.Invoke(resultDamage, who);
 
             return resultDamage;
         }
-        /// <summary>
-        /// Наносит урон сущности
-        /// </summary>
-        /// <param name="damage">Урон</param>
-        /// <param name="dontHurt">[Выстовлять только если нужен только расчет урона]</param>
-        /// <returns></returns>
-        public virtual int GiveDamage(int damage, bool dontHurt = false)
+        public virtual int GiveDamage(int damage)
         {
-            int resultDamage = Mathf.RoundToInt(damage) - Mathf.RoundToInt(Defence * .5f);
-
-            resultDamage = Mathf.RoundToInt(UnityEngine.Random.Range(resultDamage * 0.75f, resultDamage * 1.25f));
+            int resultDamage = CalculateDamage(damage);
 
             if (resultDamage <= 0)
                 return 0;
 
-            if (!dontHurt)
-                Heal -= resultDamage;
+            Heal -= resultDamage;
+
+            OnDamage?.Invoke(resultDamage, null);
 
             return resultDamage;
         }
 
-        public RPGEntity Clone()
+        /// <summary>
+        /// Расчитвывет персональный урон для этого энтити по формуле
+        /// </summary>
+        public virtual int CalculateDamage(int damage)
+        {
+            var result = Mathf.RoundToInt(damage) - Mathf.RoundToInt(Defence * .5f);
+
+            result = Mathf.RoundToInt(UnityEngine.Random.Range(result * 0.75f, result * 1.25f));
+
+            return result;
+        }
+        /// <summary>
+        /// Расчитвывет персональный урон для этого энтити по формуле
+        /// </summary>
+        public virtual int CalculateDamage(RPGEntity who, float damageModifier = 1)
+        {
+            var result = Mathf.RoundToInt(who.Damage * damageModifier) - Mathf.RoundToInt(Defence * .5f);
+
+            result = Mathf.RoundToInt(UnityEngine.Random.Range(result * 0.75f, result * 1.25f));
+
+            return result;
+        }
+
+        public virtual RPGEntity Clone()
         {
             return Instantiate(this);
         }

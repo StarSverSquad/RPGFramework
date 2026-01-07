@@ -1,14 +1,12 @@
 using RPGF.Core;
 using RPGF.EventSystem.Graph;
 using System;
-using UnityEngine;
 
 namespace RPGF.Explorer
 {
     public class ExplorerEventHandler : RPGFrameworkBehaviour
     {
-        [SerializeField]
-        private GraphEvent CurrentEvent;
+        private GraphEvent CurrentEvent = null;
         public GraphEvent HandledEvent => CurrentEvent;
 
         public event Action OnHandle;
@@ -19,9 +17,12 @@ namespace RPGF.Explorer
 
         public void InvokeEvent(GraphEvent e)
         {
-            e.Invoke(this, Local.DI);
+            if (EventExists)
+                return;
 
             HandleEvent(e);
+
+            e.Invoke(this, Local.DI);
         }
 
         public void HandleEvent(GraphEvent e)
@@ -57,5 +58,4 @@ namespace RPGF.Explorer
             OnUnhandle?.Invoke();
         }
     }
-
 }

@@ -64,7 +64,7 @@ namespace RPGF.Battle
         {
             BattleEnemyModel model = BattleManager.Instance.EnemyModels.GetModel(enemy);
 
-            int dmg = enemy.GiveDamage(who, damageFactor, true);
+            int dmg = enemy.CalculateDamage(who, damageFactor);
 
             enemy.Heal -= dmg;
 

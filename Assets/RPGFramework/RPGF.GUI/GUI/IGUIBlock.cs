@@ -1,7 +1,11 @@
-﻿namespace RPGF.GUI
+﻿using System;
+
+namespace RPGF.GUI
 {
-    public interface IGUIBlock
+    public interface IGUIBlock : IDisposable
     {
+        public void Initialize(IGUIManager manager);
+
         public void Preview();
         public void Next(IGUIBlock gUIBlock);
 

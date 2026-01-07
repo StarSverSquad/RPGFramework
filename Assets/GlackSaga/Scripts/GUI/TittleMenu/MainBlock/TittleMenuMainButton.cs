@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace GlackSaga.GUI.TitleMenu.Main
 {
-    public class TittleMenuMainButton : GUIElementBase
+    public class TittleMenuMainButton : GUIInteractableBase
     {
         [Space]
         [SerializeField]

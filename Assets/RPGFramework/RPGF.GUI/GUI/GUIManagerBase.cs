@@ -1,12 +1,11 @@
 using RPGF.Core;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace RPGF.GUI
 {
-    public abstract class GUIManagerBase : RPGFrameworkBehaviour
+    public abstract class GUIManagerBase : RPGFrameworkBehaviour, IGUIManager
     {
         [SerializeField]
         protected GUIBlockBase firstBlock;
@@ -15,21 +14,21 @@ namespace RPGF.GUI
 
         public bool IsOpened { get; private set; }
 
-        public Stack<GUIBlockBase> GUIStack { get; private set; }
+        public Stack<IGUIBlock> GUIStack { get; private set; }
 
         #region EVENTS
 
         public event Action OnOpenEvent;
         public event Action OnCloseEvent;
         
-        public event Action<GUIBlockBase> OnNextBlockEvent;
+        public event Action<IGUIBlock> OnNextBlockEvent;
         public event Action OnPreviewBlockEvent;
 
         #endregion
 
         public override void Initialize()
         {
-            GUIStack = new Stack<GUIBlockBase>();
+            GUIStack = new Stack<IGUIBlock>();
 
             foreach (var item in GetComponentsInChildren<GUIBlockBase>(true))
             {
@@ -41,7 +40,7 @@ namespace RPGF.GUI
             IsOpened = false;
         }
 
-        public void NextBlock(GUIBlockBase block)
+        public void NextBlock(IGUIBlock block)
         {
             if (GUIStack.Count > 0)
                 GUIStack.Peek().SetFocus(false);
@@ -107,7 +106,7 @@ namespace RPGF.GUI
         public virtual void OnOpen() { }
         public virtual void OnClose() { }
 
-        public virtual void OnNext(GUIBlockBase block) { }
+        public virtual void OnNext(IGUIBlock block) { }
         public virtual void OnPreviewBlock() { }
 
         #endregion

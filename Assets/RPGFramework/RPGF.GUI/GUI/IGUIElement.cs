@@ -1,10 +1,10 @@
-﻿namespace RPGF.GUI
-{
-    public interface IGUIElement
-    {
-        public void SetFocus(bool focus);
+﻿using System;
+using UnityEngine;
 
-        public void Select();
-        public void Cancel();
+namespace RPGF.GUI
+{
+    public interface IGUIElement : IDisposable
+    {
+        public RectTransform RectTransform { get; }
     }
 }

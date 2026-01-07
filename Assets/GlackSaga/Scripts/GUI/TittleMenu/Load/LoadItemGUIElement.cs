@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GlackSaga.GUI.TitleMenu.Load
 {
-    public class LoadItemGUIElement : GUIElementBase
+    public class LoadItemGUIElement : GUIInteractableBase
     {
     }
 }

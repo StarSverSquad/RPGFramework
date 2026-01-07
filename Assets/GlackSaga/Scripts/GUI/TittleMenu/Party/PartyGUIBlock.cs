@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GlackSaga.GUI.TitleMenu.Party
 {
-    public class PartyGUIBlock : GUIChoicableBlock
+    public class PartyGUIBlock : GUIChoiceBlock
     {
         [SerializeField]
         private FullInfoBlockGUI _fullInfoGUI;

@@ -6,17 +6,17 @@ using UnityEngine.Events;
 
 namespace RPGF.GUI
 {
-    public class GUIChoicableBlock : GUIBlockBase
+    public class GUIChoiceBlock : GUIBlockBase
     {
-        [Space, Header("Choicable block _options:")]
+        [Space, Header("Choice block _options:")]
         [SerializeField]
         private bool _startChoiceOnActivate = false;
         [SerializeField]
-        private List<GUIElementBase> _elements = new();
+        private List<GUIInteractableBase> _elements = new();
         [SerializeField]
         private bool _isHorizontal = true;
 
-        public GUIElementBase CurrentElement => _elements[index];
+        public GUIInteractableBase CurrentElement => _elements[index];
         public int CurrentElementIndex => index;
 
         private int index = 0;
@@ -70,7 +70,7 @@ namespace RPGF.GUI
             }
         }
 
-        public void SetElements(params GUIElementBase[] elements)
+        public void SetElements(params GUIInteractableBase[] elements)
         {
             _elements = elements.ToList();
         }

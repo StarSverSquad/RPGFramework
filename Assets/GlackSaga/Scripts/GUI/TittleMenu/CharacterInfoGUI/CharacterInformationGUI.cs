@@ -1,4 +1,4 @@
-﻿using RPGF.Core;
+﻿using RPGF.GUI;
 using RPGF.GUI.Other;
 using RPGF.RPG;
 using TMPro;
@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace GlackSaga.GUI.TitleMenu
 {
-    class CharacterInformationGUI : RPGFrameworkBehaviour
+    class CharacterInformationGUI : GUIElementBase
     {
         [SerializeField]
         private LineBar _hpBar;

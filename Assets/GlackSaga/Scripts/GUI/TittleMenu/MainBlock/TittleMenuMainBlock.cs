@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace GlackSaga.GUI.TitleMenu.Main
 {
-    public class TittleMenuMainBlock : GUIChoicableBlock
+    public class TittleMenuMainBlock : GUIChoiceBlock
     {
         [SerializeField]
         private RectTransform _panel;

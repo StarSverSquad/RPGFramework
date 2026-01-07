@@ -1,68 +1,22 @@
 ﻿using RPGF.Core;
-using System;
+using RPGF.GUI;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace RPGF.GUI
 {
+    [RequireComponent(typeof(RectTransform))]
     public class GUIElementBase : RPGFrameworkBehaviour, IGUIElement
     {
-        public bool Focused { get; private set; }
-        public bool Selected { get; private set; }
+        private RectTransform rectTransform;
+        public RectTransform RectTransform => rectTransform;
 
-        public UnityEvent OnFocus;
-        public UnityEvent OnUnfocus;
-        public UnityEvent OnCancel;
-        public UnityEvent OnSelect;
-
-        public virtual void Cancel()
+        public override void Initialize()
         {
-            if (!gameObject.activeInHierarchy)
-                return;
+            base.Initialize();
 
-            OnCancel?.Invoke();
-            OnCanceled();
+            rectTransform = GetComponent<RectTransform>();
         }
 
-        public virtual void Select()
-        {
-            if (!gameObject.activeInHierarchy)
-                return;
-
-            OnSelect?.Invoke();
-            OnSelected();
-        }
-
-        public virtual void SetFocus(bool focus)
-        {
-            if (!gameObject.activeInHierarchy)
-            {
-                Debug.LogWarning("Can't set focus on deactivated element");
-                return;
-            }
-
-            Focused = focus;
-
-            if (focus)
-            {
-                OnFocus?.Invoke();
-                OnFocused();
-            }
-            else
-            {
-                OnUnfocus?.Invoke();
-                OnUnfocused();
-            }
-                
-        }
-
-        #region VIRTUALS 
-
-        public virtual void OnCanceled() { }
-        public virtual void OnSelected() { }
-        public virtual void OnFocused() { }
-        public virtual void OnUnfocused() { }
-
-        #endregion
+        public virtual void Dispose() { }
     }
 }

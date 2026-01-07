@@ -14,7 +14,7 @@ namespace RPGF.GUI
         private bool _enableOnActivate = true;
         public bool EnableOnActivate => _enableOnActivate;
 
-        public GUIManagerBase Manager { get; private set; }
+        public IGUIManager Manager { get; private set; }
 
         public bool IsActivated { get; private set; } = false;
         public bool IsFocused { get; private set; } = false;
@@ -40,7 +40,7 @@ namespace RPGF.GUI
         {
             Debug.LogWarning("Возможны ошибки!");
         }
-        public virtual void Initialize(GUIManagerBase manager)
+        public virtual void Initialize(IGUIManager manager)
         {
             Manager = manager;
         }
@@ -151,6 +151,7 @@ namespace RPGF.GUI
         protected virtual void OnNext(GUIBlockBase gUIBlock) { }
 
         #endregion
+
 
         protected virtual void OnDisable()
         {

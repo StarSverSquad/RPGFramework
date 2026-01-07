@@ -27,7 +27,7 @@ namespace RPGF.GUI
         public UnityEvent OnCanceledEvent;
         public UnityEvent<int> OnChoicedEvent;
 
-        public override void Initialize(GUIManagerBase manager)
+        public override void Initialize(IGUIManager manager)
         {
             base.Initialize(manager);
         }

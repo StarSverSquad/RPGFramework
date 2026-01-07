@@ -39,7 +39,7 @@ namespace GlackSaga.GUI.TitleMenu.Main
         private Tween panelTween;
         private Tween solidClrTween;
 
-        public override void Initialize(GUIManagerBase manager)
+        public override void Initialize(IGUIManager manager)
         {
             base.Initialize(manager);
 

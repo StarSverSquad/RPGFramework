@@ -46,18 +46,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 63351719225347435}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92130a2734a77d640aa73da92956949b, type: 3}
+  m_Script: {fileID: 11500000, guid: 988f6bb455a8d9c40a73d892ae6736c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   iconPrefab: {fileID: 4087160555009143035, guid: 968904955bff09a43a27b7c281e79af0, type: 3}
   content: {fileID: 720981835844849758}
   icons: []
   Margin: {x: 0, y: 0, z: 0, w: 0}
-  SingleRow: 0
+  SingleRow: 1
   Slide: 0
-  SlideSpeed: 3
-  SlideDelay: 1
-  NotSlideSize: 231.42
+  SlideSpeed: 0
+  SlideDelay: 0
+  NotSlideSize: 100
   ElementsPerRow: 0
 --- !u!1 &308438627376238011
 GameObject:
@@ -117,7 +117,7 @@ MonoBehaviour:
   characterNameTxt: {fileID: 7930016680710770830}
   iconList: {fileID: 8343094469160568368}
   healBar: {fileID: 5851109308257790054}
-  manaBar: {fileID: 2265229045474651218}
+  manaBar: {fileID: 3144584453353632819}
   moveDuration: 0.15
 --- !u!1 &822198099104184620
 GameObject:
@@ -903,7 +903,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4527985101365827883}
-  - component: {fileID: 2265229045474651218}
+  - component: {fileID: 3144584453353632819}
   m_Layer: 0
   m_Name: mpbar
   m_TagString: Untagged
@@ -933,7 +933,7 @@ RectTransform:
   m_AnchoredPosition: {x: -175.31, y: -22.209984}
   m_SizeDelta: {x: 324.4, y: 20.58}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2265229045474651218
+--- !u!114 &3144584453353632819
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -942,12 +942,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5294464191164054914}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8ccae4d555a1e24097cda466a1c803b, type: 3}
+  m_Script: {fileID: 11500000, guid: 7451b59eb3bbd5f40ba0e2284ce3c56e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Bar: {fileID: 693746057491296410}
   refRect: {fileID: 190199067841257073}
-  value: 0
   SwapAxis: 0
 --- !u!1 &5339222388124854168
 GameObject:
@@ -1182,12 +1181,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7478534879358038801}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8ccae4d555a1e24097cda466a1c803b, type: 3}
+  m_Script: {fileID: 11500000, guid: 7451b59eb3bbd5f40ba0e2284ce3c56e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Bar: {fileID: 5801844639861684465}
   refRect: {fileID: 3531664762756323074}
-  value: 0
   SwapAxis: 0
 --- !u!1 &7735777996491254329
 GameObject:

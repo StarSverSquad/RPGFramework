@@ -1,5 +1,5 @@
 ﻿using DG.Tweening;
-using RPGF.Choice;
+using RPGF.UI.Choice;
 using UnityEngine;
 using UnityEngine.UI;
 

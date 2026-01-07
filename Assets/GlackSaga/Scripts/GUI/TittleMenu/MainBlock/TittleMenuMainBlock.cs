@@ -1,5 +1,6 @@
 using DG.Tweening;
 using RPGF.GUI;
+using RPGF.GUI.Interfaces;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;

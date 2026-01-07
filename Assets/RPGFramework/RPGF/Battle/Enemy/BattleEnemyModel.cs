@@ -1,5 +1,5 @@
 ﻿using RPGF.Core;
-using RPGF.GUI.Other;
+using RPGF.UI;
 using RPGF.RPG;
 using System;
 using System.Collections.Generic;

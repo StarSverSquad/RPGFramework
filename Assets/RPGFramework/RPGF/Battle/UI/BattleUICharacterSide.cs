@@ -1,5 +1,5 @@
 ﻿using DG.Tweening;
-using RPGF.GUI.Other;
+using RPGF.UI;
 using RPGF.RPG;
 using System.Linq;
 using TMPro;

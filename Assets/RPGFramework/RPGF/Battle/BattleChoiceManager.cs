@@ -1,6 +1,6 @@
 ﻿using RPGF.Battle.Enums;
 using RPGF.Battle.UI;
-using RPGF.Choice;
+using RPGF.UI.Choice;
 using RPGF.Core;
 using RPGF.RPG;
 using System.Collections.Generic;

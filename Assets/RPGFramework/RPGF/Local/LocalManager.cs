@@ -47,7 +47,7 @@ namespace RPGF
             InitializeChild();
         }
 
-        public void Awake()
+        public void Start()
         {
             Game.LocalInitializeRequest(this);
         }

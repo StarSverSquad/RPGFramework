@@ -28,10 +28,11 @@ namespace RPGF.Editor.EventSystem.Nodes
             extensionContainer.style.backgroundColor = (Color)(new Color32(77, 77, 77, 255));
             extensionContainer.style.minWidth = 200;
 
-            var types = Action.GetType().Assembly.GetTypes()
-                .Where(i => i.BaseType != null && i.BaseType == typeof(ConditionBase)
-                         && i.GetCustomAttribute<UseConditionAttribute>() is not null)
-                .ToDictionary(type => type.GetType().GetCustomAttribute<UseConditionAttribute>().Label);
+            types = Action.GetType().Assembly.GetTypes()
+                .Where(i => !i.IsAbstract 
+                            && i.BaseType == typeof(ConditionBase)
+                            && i.GetCustomAttribute<UseConditionAttribute>() is not null)
+                .ToDictionary(type => type.GetCustomAttribute<UseConditionAttribute>().Label);
         }
 
         public string FormatOperationList(int index)

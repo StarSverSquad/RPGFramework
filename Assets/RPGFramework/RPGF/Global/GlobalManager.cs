@@ -34,6 +34,7 @@ namespace RPGF
         public GameUtils Utils { get; private set; }
 
         public static LocalizationService ILocalization => Instance.Localization;
+
         public override void Initialize()
         {
             Instance = this;

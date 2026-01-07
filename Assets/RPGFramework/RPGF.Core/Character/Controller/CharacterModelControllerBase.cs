@@ -98,7 +98,7 @@ namespace RPGF.Core.Character
         public void MoveTo(Vector2 position, float time)
         {
             Vector2 vectorDiretion = (position - (Vector2)transform.position).normalized;
-            ViewDirection viewDiretion = DirectionConverter.GetViewDirectionByVector(vectorDiretion);
+            ViewDirection viewDiretion = DirectionHelper.GetViewDirectionByVector(vectorDiretion);
 
             RotateTo(viewDiretion);
 
@@ -143,7 +143,7 @@ namespace RPGF.Core.Character
         {
             Vector2 vectorDirection = (ExplorerManager.GetPlayerPosition3D() - transform.position).normalized;
 
-            ViewDirection direction = DirectionConverter.GetViewDirectionByVector(vectorDirection);
+            ViewDirection direction = DirectionHelper.GetViewDirectionByVector(vectorDirection);
 
             RotateTo(direction);
         }

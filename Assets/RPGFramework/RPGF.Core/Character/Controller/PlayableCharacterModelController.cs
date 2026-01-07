@@ -39,7 +39,7 @@ namespace RPGF.Core.Character
         }
         public void SetRotationAnimation(ViewDirection direction)
         {
-            Vector2 vector = DirectionConverter.GetVectorByViewDiretion(direction);
+            Vector2 vector = DirectionHelper.GetVectorByViewDiretion(direction);
 
             _animator.SetFloat(ANIM_PARAM_X, vector.x);
             _animator.SetFloat(ANIM_PARAM_Y, vector.y);

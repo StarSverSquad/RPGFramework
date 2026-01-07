@@ -3,15 +3,17 @@ using UnityEngine;
 
 namespace RPGF.Domain
 {
-    public static class DirectionConverter
+    public static class DirectionHelper
     {
+        public const ViewDirection DEFAULT_VIEW_DIRECTION = ViewDirection.Down;
+
         public static MoveDirection ViewDiretionToMoveDiretion(ViewDirection direction)
         {
             return (MoveDirection)direction;
         }
         public static ViewDirection MoveDiretionToViewDiretion(MoveDirection direction)
         {
-            return (ViewDirection)direction;
+            return direction == MoveDirection.Stay ? DEFAULT_VIEW_DIRECTION : (ViewDirection)direction;
         }
 
         public static MoveDirection GetMoveDiretionByVector(Vector2 vector)
@@ -25,7 +27,7 @@ namespace RPGF.Domain
             else if (vector.x < 0)
                 return MoveDirection.Left;
             else
-                return MoveDirection.None;
+                return MoveDirection.Stay;
         }
         public static ViewDirection GetViewDirectionByVector(Vector2 vector)
         {
@@ -38,7 +40,7 @@ namespace RPGF.Domain
             else if (vector.x < 0)
                 return ViewDirection.Left;
             else
-                return ViewDirection.Down;
+                return DEFAULT_VIEW_DIRECTION;
         }
 
         public static Vector2 GetVectorByViewDiretion(ViewDirection direction)
@@ -82,6 +84,6 @@ namespace RPGF.Domain
 
     public enum MoveDirection
     {
-        None = -1, Up, Down, Left, Right
+        Stay = -1, Up, Down, Left, Right
     }
 }

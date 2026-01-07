@@ -18,7 +18,7 @@ namespace RPGF.Explorer.Player
         public Vector2 Velocity = Vector2.zero;
         public Vector2 NormolizedVelocity = Vector2.zero;
 
-        public MoveDirection MoveDirection = MoveDirection.None;
+        public MoveDirection MoveDirection = MoveDirection.Stay;
         public ViewDirection ViewDirection = ViewDirection.Down;
 
         [SerializeField]
@@ -74,7 +74,7 @@ namespace RPGF.Explorer.Player
         {
             DisposeAutoMoveTween();
 
-            ViewDirection moveDir = DirectionConverter.GetViewDirectionByVector(vec.normalized);
+            ViewDirection moveDir = DirectionHelper.GetViewDirectionByVector(vec.normalized);
 
             RotateTo(moveDir);
 
@@ -105,7 +105,7 @@ namespace RPGF.Explorer.Player
         {
             Velocity = Vector2.zero;
 
-            MoveDirection = MoveDirection.None;
+            MoveDirection = MoveDirection.Stay;
             NormolizedVelocity = Vector2.zero;
 
             ViewDirection? newViewDirection = null;

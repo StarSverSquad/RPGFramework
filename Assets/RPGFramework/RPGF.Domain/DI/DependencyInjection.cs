@@ -8,7 +8,6 @@ namespace RPGF.Domain.DI
     public class DependencyInjection : Injectable
     {
         private List<Type> scopedTypes;
-
         private Dictionary<Type, Type> scopedWithImplimentTypes;
 
         private List<Injectable> signletons;

@@ -1,5 +1,4 @@
-﻿using RPGF.Core;
-using RPGF.Battle;
+﻿using RPGF.Battle;
 using RPGF.Domain.DI;
 using RPGF.Domain.Interfaces;
 using RPGF.Explorer;

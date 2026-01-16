@@ -3,13 +3,12 @@ using System.Text.RegularExpressions;
 
 namespace RPGF.Core.TextWriter.Actions
 {
+    [UseTextWriterAction(@"^!$", TextActionType.Instance)]
     public class PauseTextAction : TextActionBase
     {
-        public PauseTextAction() : base(new Regex(@"^!$"), ActionType.Instance) { }
-
-        protected override IEnumerator Action()
+        protected override IEnumerator Action(TextActionParams @params)
         {
-            TextWriter.PauseWrite();
+            _textWriter.PauseWrite();
 
             yield break;
         }

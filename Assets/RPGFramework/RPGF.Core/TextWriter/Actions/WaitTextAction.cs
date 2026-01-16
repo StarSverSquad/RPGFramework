@@ -4,34 +4,23 @@ using UnityEngine;
 
 namespace RPGF.Core.TextWriter.Actions
 {
+    [UseTextWriterAction(@"^\\(\.|:|\|)$", TextActionType.Instance)]
     public class WaitTextAction : TextActionBase
     {
-        float waitTime;
-
-        public WaitTextAction() : base(new Regex(@"^\\(\.|:|\|)$"), ActionType.Instance)
+        public float ParseText(string str)
         {
-            waitTime = 0;
-        }
-
-        public override void ParseText(string str)
-        {
-            switch (str[1])
+            return str[1] switch
             {
-                case '.':
-                    waitTime = 0.25f;
-                    break;
-                case ':':
-                    waitTime = 0.5f;
-                    break;
-                case '|':
-                    waitTime = 1f;
-                    break;
-            }
+                '.' => .25f,
+                ':' => .5f,
+                '|' => 1f,
+                _ => 0f,
+            };
         }
 
-        protected override IEnumerator Action()
+        protected override IEnumerator Action(TextActionParams @params)
         {
-            yield return new WaitForSeconds(waitTime);
+            yield return new WaitForSeconds(ParseText(@params.Tag));
         }
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using TMPro;
 using UnityEngine;
 
@@ -9,12 +10,13 @@ namespace RPGF.Core.TextWriter
 {
     public abstract class TextWriterBase : RPGFrameworkBehaviour
     {
-        public const char ACTION_POINT_SYMBOL = '\u1130';
+        public const char INSTANCE_ACTION_POINT_SYMBOL = '\u1130';
+        public const char SCOPED_START_ACTION_POINT_SYMBOL = '\u1131';
+        public const char SCOPED_END_ACTION_POINT_SYMBOL = '\u1132';
 
-        public List<TextActionBase> allActions = new List<TextActionBase>();
+        public TextActionBase[] actions;
 
-        public Queue<TextActionBase> actions = new Queue<TextActionBase>();
-        public Queue<int> actionsIndex = new Queue<int>();
+        public Stack<TextActionBase> actionsStack = new();
 
         public WriterMessage BaseMessage { get; private set; }
 
@@ -44,16 +46,16 @@ namespace RPGF.Core.TextWriter
 
         public override void Initialize()
         {
-            var actionType = GetType().Assembly
-                                      .GetTypes()
-                                      .Where(i => i.BaseType != null && i.BaseType == typeof(TextActionBase));
-
-            foreach (var type in actionType)
-            {
-                var actionBase = Activator.CreateInstance(type) as TextActionBase;
-
-                allActions.Add(actionBase);
-            }
+            actions = GetType().Assembly
+                               .GetTypes()
+                               .Where(i => i.GetCustomAttribute(typeof(UseTextWriterActionAttribute)) is not null)
+                               .Select(i =>
+                               {
+                                   var action = (TextActionBase)Activator.CreateInstance(i);
+                                   Local.DI.InjectInto(action);
+                                   return action;
+                               })
+                               .ToArray();
         }
 
         public void InvokeWrite(WriterMessage message)
@@ -119,7 +121,7 @@ namespace RPGF.Core.TextWriter
 
                     string actionRegex = rawText.Substring(index + 1, actionRegexLength);
 
-                    TextActionBase action = allActions.Find(act => act.MatchRegex(actionRegex));
+                    TextActionBase action = actions.Find(act => act.MatchRegex(actionRegex));
 
                     if (action != null)
                     {

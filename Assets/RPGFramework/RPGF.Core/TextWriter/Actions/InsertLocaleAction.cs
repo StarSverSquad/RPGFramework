@@ -1,26 +1,21 @@
+using RPGF.Core.Localization;
+using RPGF.Domain.DI;
 using System.Collections;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using UnityEngine;
 
 namespace RPGF.Core.TextWriter.Actions
 {
+    [UseTextWriterAction(@"^%(\w|_)+$", TextActionType.Instance)]
     public class InsertLocaleAction : TextActionBase
     {
-        public InsertLocaleAction() : base(new Regex(@"^%(\w|_)+$"), ActionType.TextReplace)
+        [Inject]
+        private readonly LocalizationService _localization;
+
+        protected override IEnumerator Action(TextActionParams @params)
         {
+            string tag = @params.Tag[1..];
 
-        }
+            ReturnText = _localization.GetLocale(tag);
 
-        public override string GetText(string str)
-        {
-            string tag = str.Remove(0, 1);
-
-            return GlobalManager.ILocalization.GetLocale(tag);
-        }
-
-        protected override IEnumerator Action()
-        {
             yield break;
         }
     }

@@ -7,7 +7,7 @@ namespace RPGF.Core.Localization
     public class LocalizationSheet : ScriptableObject
     {
         [Tooltip("Словарь локалей")]
-        public CustomDictionary<Locale> locales = new CustomDictionary<Locale>();
+        public CustomDictionary<Locale> locales = new();
         [Space]
         [Header("Настройки")]
         [Tooltip("Порядок")]

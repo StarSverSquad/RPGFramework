@@ -27,7 +27,18 @@ MonoBehaviour:
   Background: {fileID: 4620171788711976551, guid: 48dacab542990f8488bf7db3b0198a66, type: 3}
   BattleEnterEffect: {fileID: 8048879357101289308, guid: 2c4b29ec3925b274b8eaf00e981094b9, type: 3}
   BattleExitEffect: {fileID: 0}
-  Events: []
+  Events:
+  - rid: 631918296763203584
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 631918296763203584
+      type: {class: RPGBattleEvent, ns: RPGF.RPG, asm: Assembly-CSharp}
+      data:
+        Period: 0
+        IsCustomEvent: 0
+        CustomAction: {fileID: 0}
+        Event: {fileID: 0}
+        Turn: 0
+        EntityTag: 
+        Heal: 0

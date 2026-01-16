@@ -9,30 +9,25 @@ namespace RPGF.Core.TextWriter
 {
     public abstract class TextWriterBase : RPGFrameworkBehaviour
     {
-        public const char ActionPoint = '\u1130';
+        public const char ACTION_POINT_SYMBOL = '\u1130';
 
         public List<TextActionBase> allActions = new List<TextActionBase>();
 
         public Queue<TextActionBase> actions = new Queue<TextActionBase>();
         public Queue<int> actionsIndex = new Queue<int>();
 
-        [SerializeField]
-        protected WriterMessage message;
+        public WriterMessage BaseMessage { get; private set; }
 
-        [TextArea(2, 2)]
-        [SerializeField]
-        protected string outcomeText;
+        public string OutputText { get; private set; } = string.Empty;
 
-        [Tooltip("Букв в секунду")]
-        public float defaultTextSpeed = 15;
+        public bool IsSkiped { get; private set; }
+        public bool IsPause { get; private set; }
 
         public bool IsWriting => writeCoroutine != null;
 
-        private bool isSkiped = false;
-        public bool IsSkiped => isSkiped;
 
-        private bool isPause = false;
-        public bool IsPause => isPause;
+        [Tooltip("Букв в секунду")]
+        public float defaultTextSpeed = 15;
 
         private Coroutine writeCoroutine;
 
@@ -61,11 +56,11 @@ namespace RPGF.Core.TextWriter
             }
         }
 
-        public virtual void InvokeWrite(WriterMessage message)
+        public void InvokeWrite(WriterMessage message)
         {
             if (!IsWriting)
             {
-                this.message = message;
+                this.BaseMessage = message;
 
                 Compilate();
 
@@ -74,9 +69,37 @@ namespace RPGF.Core.TextWriter
             }
         }
 
+        public void PauseWrite() => IsPause = true;
+
+        public void CancelWrite()
+        {
+            StopAllCoroutines();
+
+            writeCoroutine = null;
+        }
+
+        public virtual void OnEveryLetter(char letter) { }
+
+        public virtual void OnStartWriting() { }
+
+        public virtual void OnEndWriting() { }
+
+        public virtual void OnSpace() { }
+
+        public virtual void OnTextReplace(TextActionBase act) { }
+
+        public virtual void OnAction(TextActionBase act) { }
+
+        public virtual void OnWait() { }
+
+        public virtual void OnEndWait() { }
+
+        public abstract bool ContinueCanExecute();
+        public abstract bool SkipCanExecute();
+
         private void Compilate()
         {
-            string rawText = message.text.Clone() as string;
+            string rawText = BaseMessage.text.Clone() as string;
 
             for (int index = 0, realIndex = 0; index < rawText.Length; index++, realIndex++)
             {
@@ -120,7 +143,7 @@ namespace RPGF.Core.TextWriter
                                     OnTextReplaceCallback?.Invoke(actionInstance);
                                 }
                                 break;
-                            case TextActionBase.ActionType.TextAction:
+                            case TextActionBase.ActionType.Instance:
                                 {
                                     actionsIndex.Enqueue(realIndex);
                                     actions.Enqueue(actionInstance);
@@ -133,36 +156,8 @@ namespace RPGF.Core.TextWriter
                 }
             }
 
-            outcomeText = rawText;
+            OutputText = rawText;
         }
-
-        public void PauseWrite() => isPause = true;
-
-        public void CancelWrite()
-        {
-            StopAllCoroutines();
-
-            writeCoroutine = null;
-        }
-
-        public virtual void OnEveryLetter(char letter) { }
-
-        public virtual void OnStartWriting() { }
-
-        public virtual void OnEndWriting() { }
-
-        public virtual void OnSpace() { }
-
-        public virtual void OnTextReplace(TextActionBase act) { }
-
-        public virtual void OnAction(TextActionBase act) { }
-
-        public virtual void OnWait() { }
-
-        public virtual void OnEndWait() { }
-
-        public abstract bool ContinueCanExecute();
-        public abstract bool SkipCanExecute();
 
         private IEnumerator SkipCoroutine()
         {
@@ -170,7 +165,7 @@ namespace RPGF.Core.TextWriter
             {
                 if (SkipCanExecute())
                 {
-                    isSkiped = true;
+                    IsSkiped = true;
 
                     OnSkipedCallback?.Invoke();
 
@@ -188,19 +183,19 @@ namespace RPGF.Core.TextWriter
 
             int startIndex = textMeshPro.GetParsedText().Length - 1;
 
-            if (message.clear)
+            if (BaseMessage.clear)
             {
-                textMeshPro.text = outcomeText;
+                textMeshPro.text = OutputText;
                 textMeshPro.maxVisibleCharacters = 0;
                 startIndex = 0;
             }
             else
             {
-                textMeshPro.text += outcomeText;
+                textMeshPro.text += OutputText;
                 textMeshPro.maxVisibleCharacters = startIndex + 1;
             }
 
-            float letterDelay = 1f / (message.speed <= 0 ? defaultTextSpeed : message.speed);
+            float letterDelay = 1f / (BaseMessage.speed <= 0 ? defaultTextSpeed : BaseMessage.speed);
 
             yield return null;
 
@@ -211,7 +206,7 @@ namespace RPGF.Core.TextWriter
                 if (parsedText[index] == ' ')
                     OnSpaceCallback?.Invoke();
 
-                if (isSkiped)
+                if (IsSkiped)
                 {
                     textMeshPro.maxVisibleCharacters = parsedText.Length;
                     break;
@@ -239,11 +234,11 @@ namespace RPGF.Core.TextWriter
                     }
                 }
 
-                if (isPause)
+                if (IsPause)
                 {
                     OnWait();
                     yield return new WaitUntil(() => ContinueCanExecute());
-                    isPause = false;
+                    IsPause = false;
                     OnEndWait();
                 }
 
@@ -255,14 +250,14 @@ namespace RPGF.Core.TextWriter
                 yield return new WaitForSeconds(letterDelay);
             }
 
-            if (message.wait)
+            if (BaseMessage.wait)
             {
                 OnWait();
                 yield return new WaitUntil(() => ContinueCanExecute());
                 OnEndWait();
             }
 
-            isSkiped = false;
+            IsSkiped = false;
 
             actions.Clear();
             actionsIndex.Clear();

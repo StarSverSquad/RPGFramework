@@ -8,7 +8,7 @@ namespace RPGF.Core.TextWriter.Actions
     {
         float waitTime;
 
-        public WaitTextAction() : base(new Regex(@"^\\(\.|:|\|)$"), ActionType.TextAction)
+        public WaitTextAction() : base(new Regex(@"^\\(\.|:|\|)$"), ActionType.Instance)
         {
             waitTime = 0;
         }

@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace RPGF.Shared
 {
-    public class MessageBoxManager : TextWriterBase
+    public class MessageBoxManager : GenericTextWriterBase<MessageBoxInfo>
     {
         public enum DialogBoxPosition
         {
@@ -53,8 +53,6 @@ namespace RPGF.Shared
         private TextVisualEffectBase textEffect = null;
         private Type[] allTextEffects;
 
-        public MessageInfo Message => message is MessageInfo m ? m : null;
-
         public override void Initialize()
         {
             base.Initialize();
@@ -64,11 +62,6 @@ namespace RPGF.Shared
             arrow.SetActive(false);
             messageBox.gameObject.SetActive(false);
             nameBox.gameObject.SetActive(false);
-        }
-
-        public void Write(MessageInfo message)
-        {
-            base.InvokeWrite(message);
         }
 
         private void SetupDialog()
@@ -119,22 +112,7 @@ namespace RPGF.Shared
 
             messageBox.gameObject.SetActive(true);
         }
-
-        /// <summary>
-        /// [Не рекомендуется] используйте метод Write
-        /// </summary>
-        public override void InvokeWrite(WriterMessage message)
-        {
-            if (message is not MessageInfo)
-            {
-                Debug.LogError("Не тот тип: либо используйте DialogMessage, либо метод Write");
-
-                return;
-            }
-
-            base.InvokeWrite(message);
-        }
-
+         
         public override bool ContinueCanExecute()
         {
             return Input.GetKeyDown(_options.Accept);
@@ -151,34 +129,11 @@ namespace RPGF.Shared
             {
                 letterEffect.Play();
             }
-
-            // Эфекты текста нужно наверное даработать
-            if (textEffect != null)
-            {
-                textEffect.EndLetter = textMeshPro.text.Length;
-            }
         }
 
         public override void OnStartWriting()
         {
             letterEffect.clip = Message.letterSound;
-
-            // Эфекты текста нужно наверное даработать
-            if (Message.textEffectTypeName != "None" && Message.textEffectTypeName != string.Empty)
-            {
-                TextVisualEffectBase effect = (TextVisualEffectBase)Activator
-                    .CreateInstance(allTextEffects.First(ef => ef.Name == Message.textEffectTypeName), textMeshPro, this);
-
-                effect.StartLetter = 0;
-                effect.StartEffect();
-
-                textEffect = effect;
-            }
-            else if (textEffect != null)
-            {
-                textEffect.StopEffect();
-                textEffect = null;
-            }
 
             SetupDialog();
         }
@@ -204,7 +159,7 @@ namespace RPGF.Shared
     }
 
     [Serializable]
-    public class MessageInfo : WriterMessage
+    public class MessageBoxInfo : WriterMessage
     {
         public string name;
 
@@ -216,12 +171,9 @@ namespace RPGF.Shared
 
         public MessageBoxManager.DialogBoxPosition position;
 
-        public string textEffectTypeName;
-
-        public MessageInfo() : base()
+        public MessageBoxInfo() : base()
         {
             name = string.Empty;
-            textEffectTypeName = "None";
 
             closeWindow = false;
 

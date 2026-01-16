@@ -11,11 +11,11 @@ namespace RPGF.Actions
         [Inject]
         private readonly MessageBoxManager _messageBox;
 
-        public MessageInfo message;
+        public MessageBoxInfo message;
 
         public MessageAction() : base()
         {
-            message = new MessageInfo();
+            message = new MessageBoxInfo();
         }
 
         public override IEnumerator ActionCoroutine()
@@ -29,7 +29,7 @@ namespace RPGF.Actions
         {
             return new MessageAction()
             {
-                message = new MessageInfo()
+                message = new MessageBoxInfo()
                 {
                     text = message.text,
                     clear = message.clear,

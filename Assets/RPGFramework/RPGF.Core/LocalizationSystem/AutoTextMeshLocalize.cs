@@ -40,6 +40,4 @@ namespace RPGF.Core.Localization
             }
         }
     }
-
-
 }

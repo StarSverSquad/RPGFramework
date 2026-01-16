@@ -1,3 +1,4 @@
+using RPGF.Domain.DI;
 using System;
 using System.Collections;
 using System.Text.RegularExpressions;
@@ -5,14 +6,14 @@ using UnityEngine;
 
 namespace RPGF.Core.TextWriter
 {
-    [Serializable]
-    public abstract class TextActionBase
+    public enum ActionType
     {
-        public enum ActionType
-        {
-            TextReplace, TextAction
-        }
+        Instance, Scoped
+    }
 
+    [Serializable]
+    public abstract class TextActionBase : InjectionTarget
+    {
         public TextWriterBase TextWriter;
 
         public ActionType Type { get; private set; }
@@ -20,8 +21,8 @@ namespace RPGF.Core.TextWriter
 
         public TextActionBase(Regex regex, ActionType actType)
         {
-            this.Regex = regex;
-            this.Type = actType;
+            Regex = regex;
+            Type = actType;
         }
 
         public Coroutine Invoke(MonoBehaviour listner)

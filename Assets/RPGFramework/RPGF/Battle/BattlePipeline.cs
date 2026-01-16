@@ -302,7 +302,7 @@ namespace RPGF.Battle
             {
                 string numeriticDifText = Data.BattleInfo.enemySquad.Enemies.Count > 1 ? Localization.GetLocale("SYS_BATTLE_ENCOUNTER_MULTI") : Localization.GetLocale("SYS_BATTLE_ENCOUNTER_SIGNLE");
 
-                _common.MessageBox.Write(new MessageInfo()
+                _common.MessageBox.Write(new MessageBoxInfo()
                 {
                     text = $"* {Data.BattleInfo.enemySquad.Name} {numeriticDifText}!",
                     closeWindow = true
@@ -632,7 +632,7 @@ namespace RPGF.Battle
 
                 _battle.UI.CharacterBox.SetActive(false);
 
-                _common.MessageBox.Write(new MessageInfo()
+                _common.MessageBox.Write(new MessageBoxInfo()
                 {
                     text = $"* {Localization.GetLocale("SYS_BATTLE_LOSE")}",
                     closeWindow = true,
@@ -717,7 +717,7 @@ namespace RPGF.Battle
             {
                 _battle.BattleAudio.PlaySound(Data.Win);
 
-                _common.MessageBox.Write(new MessageInfo()
+                _common.MessageBox.Write(new MessageBoxInfo()
                 {
                     text = $"* {Localization.GetLocale("SYS_BATTLE_WIN")}<!>",
                     closeWindow = true
@@ -727,7 +727,7 @@ namespace RPGF.Battle
 
                 if (dropText != string.Empty || moneyText != string.Empty)
                 {
-                    _common.MessageBox.Write(new MessageInfo()
+                    _common.MessageBox.Write(new MessageBoxInfo()
                     {
                         text = moneyText + dropText,
                         closeWindow = true
@@ -738,7 +738,7 @@ namespace RPGF.Battle
 
                 if (lvlUpText != string.Empty)
                 {
-                    _common.MessageBox.Write(new MessageInfo()
+                    _common.MessageBox.Write(new MessageBoxInfo()
                     {
                         text = lvlUpText,
                         closeWindow = true
@@ -1262,7 +1262,7 @@ namespace RPGF.Battle
             {
                 if (consumed.WriteMessage)
                 {
-                    _common.MessageBox.Write(new MessageInfo()
+                    _common.MessageBox.Write(new MessageBoxInfo()
                     {
                         text = $"* {character.Name} использует {consumed.Name}!",
                         closeWindow = true,
@@ -1305,7 +1305,7 @@ namespace RPGF.Battle
 
             _battle.BattleAudio.PauseMusic();
 
-            _common.MessageBox.Write(new MessageInfo()
+            _common.MessageBox.Write(new MessageBoxInfo()
             {
                 text = $"* {character.Name} пытаеться сбежать<\\:>.<\\:>.<\\:>.",
                 closeWindow = true,
@@ -1332,7 +1332,7 @@ namespace RPGF.Battle
             {
                 _battle.BattleAudio.UnPauseMusic();
 
-                _common.MessageBox.Write(new MessageInfo()
+                _common.MessageBox.Write(new MessageBoxInfo()
                 {
                     text = $"* Но сбежать не удалось",
                     closeWindow = true,

@@ -13,5 +13,14 @@ MonoBehaviour:
   m_Name: BATTLE
   m_EditorClassIdentifier: 
   locales:
-    data: []
+    data:
+    - Key: SYS_BATTLE_YOU_GOT
+      Value:
+        Russian: "\u0412\u042B \u041F\u041E\u041B\u0423\u0427\u0418\u041B\u0418"
+        English: YOU GOT
+    - Key: SYS_BATTLE_LOSE
+      Value:
+        Russian: "\u0412\u044B \u043F\u0440\u043E\u0438\u0433\u0440\u0430\u043B\u0438
+          \u0431\u0438\u0442\u0432\u0443"
+        English: You lose the battle
   Order: 0

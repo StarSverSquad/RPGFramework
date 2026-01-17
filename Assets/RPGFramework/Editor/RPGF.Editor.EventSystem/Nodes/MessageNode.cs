@@ -85,19 +85,19 @@ namespace RPGF.Editor.EventSystem.Nodes
                 val => Action.message.position = val,
                 label: "Позиция");
 
-            int defaultVal = 0;
-            if (Action.message.textEffectTypeName != "None")
-                defaultVal =
-                    effectTypes.FindIndex(i => i.GetType().Name == Action.message.textEffectTypeName) + 1;
+            //int defaultVal = 0;
+            //if (Action.message.textEffectTypeName != "None")
+            //    defaultVal =
+            //        effectTypes.FindIndex(i => i.GetType().Name == Action.message.textEffectTypeName) + 1;
 
-            PopupField<string> effectPopup = BuildPopupField(
-                defaultVal,
-                new List<string>() { "None" }
-                    .Concat(effectTypes.Select(i => i.GetType().Name))
-                    .ToList(),
-                val => Action.message.textEffectTypeName = val,
-                FormatEffectText,
-                label: "Текстовый эффект");
+            //PopupField<string> effectPopup = BuildPopupField(
+            //    defaultVal,
+            //    new List<string>() { "None" }
+            //        .Concat(effectTypes.Select(i => i.GetType().Name))
+            //        .ToList(),
+            //    val => Action.message.textEffectTypeName = val,
+            //    FormatEffectText,
+            //    label: "Текстовый эффект");
 
             AddToExtensionContainer(txtLabel);
             AddToExtensionContainer(textField);
@@ -109,7 +109,7 @@ namespace RPGF.Editor.EventSystem.Nodes
             AddToExtensionContainer(spriteField);
             AddToExtensionContainer(clipField);
             AddToExtensionContainer(positionField);
-            AddToExtensionContainer(effectPopup);
+            //AddToExtensionContainer(effectPopup);
         }
 
         private string FormatEffectText(string str)

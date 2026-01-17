@@ -1,3 +1,5 @@
+using RPGF.Domain.TP;
+using RPGF.Domain.TP.Abstractions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,17 +8,11 @@ using System.Reflection;
 using TMPro;
 using UnityEngine;
 
-namespace RPGF.Core.TextWriter
+namespace RPGF.Core.TextWriter.Abstrations
 {
     public abstract class TextWriterBase : RPGFrameworkBehaviour
     {
-        public const char INSTANCE_ACTION_POINT_SYMBOL = '\u1130';
-        public const char SCOPED_START_ACTION_POINT_SYMBOL = '\u1131';
-        public const char SCOPED_END_ACTION_POINT_SYMBOL = '\u1132';
-
-        public TextActionBase[] actions;
-
-        public Stack<TextActionBase> actionsStack = new();
+        public TextParser _parser { get; protected set; }
 
         public WriterMessage BaseMessage { get; private set; }
 
@@ -41,21 +37,28 @@ namespace RPGF.Core.TextWriter
         public event Action OnSkipedCallback;
         public event Action OnSpaceCallback;
         public event Action<char> OnEveryLetterCallback;
-        public event Action<TextActionBase> OnActionCallback;
-        public event Action<TextActionBase> OnTextReplaceCallback;
+        public event Action<TextWriterActionBase> OnActionCallback;
+        public event Action<TextWriterActionBase> OnTextReplaceCallback;
 
         public override void Initialize()
         {
-            actions = GetType().Assembly
+            var metas = new List<UseTextActionAttribute>();
+            var actions = GetType().Assembly
                                .GetTypes()
-                               .Where(i => i.GetCustomAttribute(typeof(UseTextWriterActionAttribute)) is not null)
+                               .Where(i => i.GetCustomAttribute<UseTextActionAttribute>() is not null)
                                .Select(i =>
                                {
-                                   var action = (TextActionBase)Activator.CreateInstance(i);
+                                   metas.Add(i.GetCustomAttribute<UseTextActionAttribute>());
+                                   var action = (TextWriterActionBase)Activator.CreateInstance(i);
+                                   action.TextWriter = this;
                                    Local.DI.InjectInto(action);
                                    return action;
                                })
                                .ToArray();
+
+            var allowedActions = metas.ToDictionary((meta) => actions[metas.IndexOf(meta)] as TextActionBase);
+
+            _parser = new TextParser(allowedActions);
         }
 
         public void InvokeWrite(WriterMessage message)
@@ -88,77 +91,24 @@ namespace RPGF.Core.TextWriter
 
         public virtual void OnSpace() { }
 
-        public virtual void OnTextReplace(TextActionBase act) { }
+        public virtual void OnTextReplace(TextWriterActionBase action) { }
 
-        public virtual void OnAction(TextActionBase act) { }
+        public virtual void OnAction(TextWriterActionBase action) { }
 
         public virtual void OnWait() { }
 
         public virtual void OnEndWait() { }
-
+             
         public abstract bool ContinueCanExecute();
         public abstract bool SkipCanExecute();
 
         private void Compilate()
         {
-            string rawText = BaseMessage.text.Clone() as string;
+            string text = BaseMessage.text.Clone() as string;
 
-            for (int index = 0, realIndex = 0; index < rawText.Length; index++, realIndex++)
-            {
-                while (index < rawText.Length - 1 && rawText[index] == '<')
-                {
-                    int actionRegexLength = 0;
+            
 
-                    for (int j = index + 1; j < rawText.Length; j++)
-                    {
-                        if (rawText[j] == '>')
-                            break;
-
-                        actionRegexLength++;
-                    }
-
-                    int actionLength = actionRegexLength + 2;
-
-                    string actionRegex = rawText.Substring(index + 1, actionRegexLength);
-
-                    TextActionBase action = actions.Find(act => act.MatchRegex(actionRegex));
-
-                    if (action != null)
-                    {
-                        var actionInstance = (TextActionBase)Activator.CreateInstance(action.GetType());
-
-                        actionInstance.TextWriter = this;
-
-                        rawText = rawText.Remove(index, actionLength);
-
-                        actionInstance.ParseText(actionRegex);
-
-                        switch (action.Type)
-                        {
-                            case TextActionBase.ActionType.TextReplace:
-                                {
-                                    rawText = rawText.Insert(
-                                        index,
-                                        actionInstance.GetText(actionRegex)
-                                    );
-
-                                    OnTextReplaceCallback?.Invoke(actionInstance);
-                                }
-                                break;
-                            case TextActionBase.ActionType.Instance:
-                                {
-                                    actionsIndex.Enqueue(realIndex);
-                                    actions.Enqueue(actionInstance);
-                                }
-                                break;
-                        }
-                    }
-                    else
-                        index += actionLength;
-                }
-            }
-
-            OutputText = rawText;
+            OutputText = text;
         }
 
         private IEnumerator SkipCoroutine()
@@ -214,27 +164,27 @@ namespace RPGF.Core.TextWriter
                     break;
                 }
 
-                if (actionsIndex.Count > 0)
-                {
-                    int activeCount = 0;
-                    foreach (var item in actionsIndex.Where(i => index == i))
-                    {
-                        TextActionBase act = actions.ToArray()[activeCount];
+                //if (actionsIndex.Count > 0)
+                //{
+                //    int activeCount = 0;
+                //    foreach (var item in actionsIndex.Where(i => index == i))
+                //    {
+                //        TextActionBase act = actions.ToArray()[activeCount];
 
-                        yield return act.Invoke(this);
+                //        yield return act.Invoke(this);
 
-                        OnAction(act);
-                        OnActionCallback?.Invoke(act);
+                //        OnAction(act);
+                //        OnActionCallback?.Invoke(act);
 
-                        activeCount++;
-                    }
+                //        activeCount++;
+                //    }
 
-                    for (int i = 0; i < activeCount; i++)
-                    {
-                        actions.Dequeue();
-                        actionsIndex.Dequeue();
-                    }
-                }
+                //    for (int i = 0; i < activeCount; i++)
+                //    {
+                //        actions.Dequeue();
+                //        actionsIndex.Dequeue();
+                //    }
+                //}
 
                 if (IsPause)
                 {
@@ -261,8 +211,8 @@ namespace RPGF.Core.TextWriter
 
             IsSkiped = false;
 
-            actions.Clear();
-            actionsIndex.Clear();
+            //actions.Clear();
+            //actionsIndex.Clear();
 
             writeCoroutine = null;
 

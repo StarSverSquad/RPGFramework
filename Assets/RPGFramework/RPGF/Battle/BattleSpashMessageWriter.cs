@@ -1,4 +1,5 @@
 ﻿using RPGF.Core.TextWriter;
+using RPGF.Core.TextWriter.Abstrations;
 using System;
 using UnityEngine;
 

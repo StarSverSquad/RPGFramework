@@ -1,11 +1,13 @@
+using RPGF.Core.TextWriter.Abstrations;
+using RPGF.Domain.TP;
+using RPGF.Domain.TP.Abstractions;
 using System.Collections;
-using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace RPGF.Core.TextWriter.Actions
 {
-    [UseTextWriterAction(@"^\\(\.|:|\|)$", TextActionType.Instance)]
-    public class WaitTextAction : TextActionBase
+    [UseTextAction(@"^\\(\.|:|\|)$", TextActionType.Single)]
+    public class WaitTextAction : TextWriterActionBase
     {
         public float ParseText(string str)
         {
@@ -18,7 +20,7 @@ namespace RPGF.Core.TextWriter.Actions
             };
         }
 
-        protected override IEnumerator Action(TextActionParams @params)
+        public override IEnumerator Action(TextActionParams @params)
         {
             yield return new WaitForSeconds(ParseText(@params.Tag));
         }

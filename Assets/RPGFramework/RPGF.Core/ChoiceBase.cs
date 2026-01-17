@@ -3,10 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// TODO: Избавиться!
-/// </summary>
-/// <typeparam name="T"></typeparam>
+
+/// TODO: Нужно рефакторить
 public abstract class ChoiceBase<T> : RPGFrameworkBehaviour
 {
     protected List<T> choices = new List<T>();
@@ -39,11 +37,6 @@ public abstract class ChoiceBase<T> : RPGFrameworkBehaviour
     public virtual void OnEnd() { }
     public virtual void OnSellectChanged() { }
 
-
-    /// <summary>
-    /// for changing choice
-    /// </summary>
-    /// <returns>Current index changing number</returns>
     public abstract int SellectionChanging();
 
     public abstract bool ConfirmCanExecuted();

@@ -23,7 +23,7 @@ namespace GlackSaga.GUI.TitleMenu
             RectTransform.DOAnchorPosX(-130, _animationDuration).SetEase(Ease.OutCubic).From(new Vector2(130, -54)).Play();
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             RectTransform.DOAnchorPosX(130, _animationDuration).SetEase(Ease.OutCubic).From(new Vector2(-130, -54)).Play();
         }

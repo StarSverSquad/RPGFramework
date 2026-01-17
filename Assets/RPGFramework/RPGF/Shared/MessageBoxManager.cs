@@ -1,7 +1,7 @@
 ﻿using RPGF.Core.TextWriter;
+using RPGF.Core.TextWriter.Abstrations;
 using RPGF.Domain.DI;
 using System;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -50,14 +50,9 @@ namespace RPGF.Shared
         [SerializeField]
         private TextMeshProUGUI textMeshProNameBox;
 
-        private TextVisualEffectBase textEffect = null;
-        private Type[] allTextEffects;
-
         public override void Initialize()
         {
             base.Initialize();
-
-            allTextEffects = GetType().Assembly.GetTypes().Where(t => t.BaseType == typeof(TextVisualEffectBase)).ToArray();
 
             arrow.SetActive(false);
             messageBox.gameObject.SetActive(false);

@@ -1,14 +1,16 @@
+using RPGF.Core.TextWriter.Abstrations;
+using RPGF.Domain.TP;
+using RPGF.Domain.TP.Abstractions;
 using System.Collections;
-using System.Text.RegularExpressions;
 
 namespace RPGF.Core.TextWriter.Actions
 {
-    [UseTextWriterAction(@"^!$", TextActionType.Instance)]
-    public class PauseTextAction : TextActionBase
+    [UseTextAction(@"^!$", TextActionType.Single)]
+    public class PauseTextAction : TextWriterActionBase
     {
-        protected override IEnumerator Action(TextActionParams @params)
+        public override IEnumerator Action(TextActionParams @params)
         {
-            _textWriter.PauseWrite();
+            TextWriter.PauseWrite();
 
             yield break;
         }

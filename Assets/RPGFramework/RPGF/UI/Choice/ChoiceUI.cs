@@ -8,7 +8,6 @@ using UnityEngine;
 
 namespace RPGF.UI.Choice
 {
-    /// Нужно переписать пот страницы
     public class ChoiceUI : RPGFrameworkBehaviour, IDisposable
     {
         #region Element info

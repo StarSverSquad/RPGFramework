@@ -1,16 +1,19 @@
 using RPGF.Core.Localization;
+using RPGF.Core.TextWriter.Abstrations;
 using RPGF.Domain.DI;
+using RPGF.Domain.TP;
+using RPGF.Domain.TP.Abstractions;
 using System.Collections;
 
 namespace RPGF.Core.TextWriter.Actions
 {
-    [UseTextWriterAction(@"^%(\w|_)+$", TextActionType.Instance)]
-    public class InsertLocaleAction : TextActionBase
+    [UseTextAction(@"^%(\w|_)+$", TextActionType.Single)]
+    public class InsertLocaleAction : TextWriterActionBase
     {
         [Inject]
         private readonly LocalizationService _localization;
 
-        protected override IEnumerator Action(TextActionParams @params)
+        public override IEnumerator Action(TextActionParams @params)
         {
             string tag = @params.Tag[1..];
 

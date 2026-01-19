@@ -837,26 +837,6 @@ MonoBehaviour:
         Meta:
           edges:
           - inputPortTag: Input
-            inputNodeGUID: 7f8185fe59df5484d83c7d08be1a2f39
-            outputPortTag: Win
-            outputNodeGUID: 6158ff78303547c4b8770aeb9cc0056c
-          - inputPortTag: Input
-            inputNodeGUID: 7f8185fe59df5484d83c7d08be1a2f39
-            outputPortTag: Lose
-            outputNodeGUID: 6158ff78303547c4b8770aeb9cc0056c
-          - inputPortTag: Input
-            inputNodeGUID: f83e9cb50e0acd24fb66a017e2267be9
-            outputPortTag: DEFAULT
-            outputNodeGUID: cc05312055a75aa42ade4da4814f2989
-          - inputPortTag: Input
-            inputNodeGUID: 6158ff78303547c4b8770aeb9cc0056c
-            outputPortTag: Then
-            outputNodeGUID: bac5a2c053171d6409360d5a190e16b6
-          - inputPortTag: Input
-            inputNodeGUID: cc05312055a75aa42ade4da4814f2989
-            outputPortTag: Else
-            outputNodeGUID: bac5a2c053171d6409360d5a190e16b6
-          - inputPortTag: Input
             inputNodeGUID: 30714a1c74966d1428c61fd9e96fc696
             outputPortTag: Output
             outputNodeGUID: 0c87a28a98b328448b726c211e196799
@@ -868,6 +848,26 @@ MonoBehaviour:
             inputNodeGUID: bac5a2c053171d6409360d5a190e16b6
             outputPortTag: DEFAULT
             outputNodeGUID: d4865476fe1b553439abb0eff1a66a76
+          - inputPortTag: Input
+            inputNodeGUID: f83e9cb50e0acd24fb66a017e2267be9
+            outputPortTag: DEFAULT
+            outputNodeGUID: cc05312055a75aa42ade4da4814f2989
+          - inputPortTag: Input
+            inputNodeGUID: 7f8185fe59df5484d83c7d08be1a2f39
+            outputPortTag: Win
+            outputNodeGUID: 6158ff78303547c4b8770aeb9cc0056c
+          - inputPortTag: Input
+            inputNodeGUID: 7f8185fe59df5484d83c7d08be1a2f39
+            outputPortTag: Lose
+            outputNodeGUID: 6158ff78303547c4b8770aeb9cc0056c
+          - inputPortTag: Input
+            inputNodeGUID: 6158ff78303547c4b8770aeb9cc0056c
+            outputPortTag: Then
+            outputNodeGUID: bac5a2c053171d6409360d5a190e16b6
+          - inputPortTag: Input
+            inputNodeGUID: cc05312055a75aa42ade4da4814f2989
+            outputPortTag: Else
+            outputNodeGUID: bac5a2c053171d6409360d5a190e16b6
           nodes:
           - guid: 0c87a28a98b328448b726c211e196799
             action:

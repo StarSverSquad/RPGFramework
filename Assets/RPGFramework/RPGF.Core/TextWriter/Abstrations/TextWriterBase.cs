@@ -40,6 +40,8 @@ namespace RPGF.Core.TextWriter.Abstrations
 
         public override void Initialize()
         {
+            textMeshPro.text = string.Empty;
+
             var metas = new List<UseTextActionAttribute>();
             var actions = GetType().Assembly
                                .GetTypes()
@@ -123,18 +125,18 @@ namespace RPGF.Core.TextWriter.Abstrations
 
             var textData = _parser.ParseText(BaseMessage.text);
 
-            int startIndex = textMeshPro.GetParsedText().Length - 1;
+            int startIndex = 0;
 
             if (BaseMessage.clear)
             {
                 textMeshPro.text = textData.ClearedText;
                 textMeshPro.maxVisibleCharacters = 0;
-                startIndex = 0;
             }
             else
             {
                 textMeshPro.text += textData.ClearedText;
                 textMeshPro.maxVisibleCharacters = startIndex + 1;
+                startIndex = textMeshPro.GetParsedText().Length > 0 ? textMeshPro.GetParsedText().Length - 1 : 0;
             }
 
             float letterDelay = 1f / (BaseMessage.speed <= 0 ? defaultTextSpeed : BaseMessage.speed);

@@ -416,7 +416,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2896203009800715207, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 145.99997
+      value: 146
       objectReference: {fileID: 0}
     - target: {fileID: 2966381747683952507, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_IsActive
@@ -440,7 +440,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4093224919480984948, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 114.99992
+      value: 114.99994
       objectReference: {fileID: 0}
     - target: {fileID: 4597126536109806219, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -781,25 +781,44 @@ MonoBehaviour:
         nexts:
         - rid: 631918300284584027
         message:
-          text: test <%INNER_TEST/> <effect type="tence"><b>wait</b></effect> 0.5
-            <\:/>test
+          text: "\u0414\u0430 \u0443\u0436"
           speed: 0
           clear: 1
           wait: 1
-          name: New text wriiter
-          closeWindow: 1
+          name: DEV
+          closeWindow: 0
           letterSound: {fileID: 0}
           image: {fileID: 0}
           position: 0
-    - rid: 631918300284584026
-      type: {class: EndAction, ns: RPGF.EventSystem.Default, asm: Assembly-CSharp}
-      data:
-        nexts: []
     - rid: 631918300284584027
       type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
       data:
         Action:
-          rid: 631918300284584026
+          rid: 631918367032737904
+        Tag: DEFAULT
+        Name: "\u0414\u0430\u043B\u0435\u0435"
+        IsNext: 1
+    - rid: 631918367032737904
+      type: {class: MessageAction, ns: RPGF.Actions, asm: Assembly-CSharp}
+      data:
+        nexts:
+        - rid: 631918367032737905
+        message:
+          text: ", \u0443\u0436\u0435 <u>\u043D\u043E\u0432\u044B\u0439</u> \u0442\u0435\u043A\u0441\u0442
+            \u0431\u043E\u043A\u0441<\\|/>.<\\|/>.<\\|/>."
+          speed: 0
+          clear: 0
+          wait: 1
+          name: DEV
+          closeWindow: 1
+          letterSound: {fileID: 0}
+          image: {fileID: 0}
+          position: 0
+    - rid: 631918367032737905
+      type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
+      data:
+        Action:
+          rid: 631918089207808224
         Tag: DEFAULT
         Name: "\u0414\u0430\u043B\u0435\u0435"
         IsNext: 1
@@ -807,14 +826,14 @@ MonoBehaviour:
       type: {class: GraphEvent, ns: RPGF.EventSystem.Graph, asm: Assembly-CSharp}
       data:
         Actions:
-        - rid: 631918072542527562
-        - rid: 6131212272838115524
-        - rid: 631918088263827527
-        - rid: 631918089207808225
-        - rid: 631918089207808224
-        - rid: 631918300284584026
         - rid: 6131212272838115399
         - rid: 631918300284584025
+        - rid: 631918367032737904
+        - rid: 631918088263827527
+        - rid: 631918089207808225
+        - rid: 631918072542527562
+        - rid: 6131212272838115524
+        - rid: 631918089207808224
         Meta:
           edges:
           - inputPortTag: Input
@@ -842,34 +861,14 @@ MonoBehaviour:
             outputPortTag: Output
             outputNodeGUID: 0c87a28a98b328448b726c211e196799
           - inputPortTag: Input
-            inputNodeGUID: 3f63b9db03b2c1b42bb57867b1809659
+            inputNodeGUID: d4865476fe1b553439abb0eff1a66a76
             outputPortTag: DEFAULT
             outputNodeGUID: 30714a1c74966d1428c61fd9e96fc696
+          - inputPortTag: Input
+            inputNodeGUID: bac5a2c053171d6409360d5a190e16b6
+            outputPortTag: DEFAULT
+            outputNodeGUID: d4865476fe1b553439abb0eff1a66a76
           nodes:
-          - guid: 7f8185fe59df5484d83c7d08be1a2f39
-            action:
-              rid: 631918072542527562
-            position: {x: 1048.8, y: 396}
-          - guid: 6158ff78303547c4b8770aeb9cc0056c
-            action:
-              rid: 6131212272838115524
-            position: {x: 596.8, y: 301.6}
-          - guid: f83e9cb50e0acd24fb66a017e2267be9
-            action:
-              rid: 631918088263827527
-            position: {x: 939.2, y: 582.39996}
-          - guid: cc05312055a75aa42ade4da4814f2989
-            action:
-              rid: 631918089207808225
-            position: {x: 520, y: 500.00003}
-          - guid: bac5a2c053171d6409360d5a190e16b6
-            action:
-              rid: 631918089207808224
-            position: {x: 100, y: 266.4}
-          - guid: 3f63b9db03b2c1b42bb57867b1809659
-            action:
-              rid: 631918300284584026
-            position: {x: 213.6, y: 70.4}
           - guid: 0c87a28a98b328448b726c211e196799
             action:
               rid: 6131212272838115399
@@ -878,6 +877,30 @@ MonoBehaviour:
             action:
               rid: 631918300284584025
             position: {x: -450.4, y: 136}
+          - guid: d4865476fe1b553439abb0eff1a66a76
+            action:
+              rid: 631918367032737904
+            position: {x: -24.8, y: -30.4}
+          - guid: f83e9cb50e0acd24fb66a017e2267be9
+            action:
+              rid: 631918088263827527
+            position: {x: 1132.8, y: 580.8}
+          - guid: cc05312055a75aa42ade4da4814f2989
+            action:
+              rid: 631918089207808225
+            position: {x: 694.4, y: 492.80002}
+          - guid: 7f8185fe59df5484d83c7d08be1a2f39
+            action:
+              rid: 631918072542527562
+            position: {x: 1091.2, y: 380.80002}
+          - guid: 6158ff78303547c4b8770aeb9cc0056c
+            action:
+              rid: 6131212272838115524
+            position: {x: 694.4, y: 228.8}
+          - guid: bac5a2c053171d6409360d5a190e16b6
+            action:
+              rid: 631918089207808224
+            position: {x: 347.2, y: 84.799995}
     - rid: 6131212272838115399
       type: {class: StartAction, ns: RPGF.EventSystem.Default, asm: Assembly-CSharp}
       data:

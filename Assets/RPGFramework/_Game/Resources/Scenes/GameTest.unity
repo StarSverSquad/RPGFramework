@@ -416,7 +416,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2896203009800715207, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 146
+      value: 145.99997
       objectReference: {fileID: 0}
     - target: {fileID: 2966381747683952507, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_IsActive
@@ -440,7 +440,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4093224919480984948, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 114.99994
+      value: 114.99992
       objectReference: {fileID: 0}
     - target: {fileID: 4597126536109806219, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -781,15 +781,13 @@ MonoBehaviour:
         nexts:
         - rid: 631918300284584027
         message:
-          text: 'text <!/> text <\: param="val1?"/>
-
-            <bold param1="vot
-            tak" param2="tak vot">some inner text</bold>'
+          text: test <%INNER_TEST/> <effect type="tence"><b>wait</b></effect> 0.5
+            <\:/>test
           speed: 0
           clear: 1
           wait: 1
           name: New text wriiter
-          closeWindow: 0
+          closeWindow: 1
           letterSound: {fileID: 0}
           image: {fileID: 0}
           position: 0

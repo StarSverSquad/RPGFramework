@@ -1,5 +1,6 @@
 using RPGF.Domain.TP;
 using RPGF.Domain.TP.Abstractions;
+using RPGF.Domain.TP.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,8 +16,6 @@ namespace RPGF.Core.TextWriter.Abstrations
         public TextParser _parser { get; protected set; }
 
         public WriterMessage BaseMessage { get; private set; }
-
-        public string OutputText { get; private set; } = string.Empty;
 
         public bool IsSkiped { get; private set; }
         public bool IsPause { get; private set; }
@@ -38,14 +37,14 @@ namespace RPGF.Core.TextWriter.Abstrations
         public event Action OnSpaceCallback;
         public event Action<char> OnEveryLetterCallback;
         public event Action<TextWriterActionBase> OnActionCallback;
-        public event Action<TextWriterActionBase> OnTextReplaceCallback;
 
         public override void Initialize()
         {
             var metas = new List<UseTextActionAttribute>();
             var actions = GetType().Assembly
                                .GetTypes()
-                               .Where(i => i.GetCustomAttribute<UseTextActionAttribute>() is not null)
+                               .Where(i => !i.IsAbstract && i.BaseType is not null && i.BaseType == typeof(TextWriterActionBase)
+                                           && i.GetCustomAttribute<UseTextActionAttribute>() is not null)
                                .Select(i =>
                                {
                                    metas.Add(i.GetCustomAttribute<UseTextActionAttribute>());
@@ -66,8 +65,6 @@ namespace RPGF.Core.TextWriter.Abstrations
             if (!IsWriting)
             {
                 this.BaseMessage = message;
-
-                Compilate();
 
                 writeCoroutine = StartCoroutine(WriteCoroutine());
                 StartCoroutine(SkipCoroutine());
@@ -102,15 +99,6 @@ namespace RPGF.Core.TextWriter.Abstrations
         public abstract bool ContinueCanExecute();
         public abstract bool SkipCanExecute();
 
-        private void Compilate()
-        {
-            string text = BaseMessage.text.Clone() as string;
-
-            
-
-            OutputText = text;
-        }
-
         private IEnumerator SkipCoroutine()
         {
             while (IsWriting)
@@ -133,17 +121,19 @@ namespace RPGF.Core.TextWriter.Abstrations
             OnStartWriting();
             OnStartWritingCallback?.Invoke();
 
+            var textData = _parser.ParseText(BaseMessage.text);
+
             int startIndex = textMeshPro.GetParsedText().Length - 1;
 
             if (BaseMessage.clear)
             {
-                textMeshPro.text = OutputText;
+                textMeshPro.text = textData.ClearedText;
                 textMeshPro.maxVisibleCharacters = 0;
                 startIndex = 0;
             }
             else
             {
-                textMeshPro.text += OutputText;
+                textMeshPro.text += textData.ClearedText;
                 textMeshPro.maxVisibleCharacters = startIndex + 1;
             }
 
@@ -151,40 +141,112 @@ namespace RPGF.Core.TextWriter.Abstrations
 
             yield return null;
 
-            string parsedText = textMeshPro.GetParsedText();
+            string tmpText = textMeshPro.GetParsedText();
 
-            for (int index = startIndex; index < parsedText.Length; index++)
+            var tagDictionary = textData.Tags.ToDictionary(tag => tag.RealIndex);
+
+            for (int realIndex = startIndex; realIndex < tmpText.Length; realIndex++)
             {
-                if (parsedText[index] == ' ')
+                int relativeIndex = realIndex - startIndex;
+
+                if (tmpText[realIndex] == ' ')
                     OnSpaceCallback?.Invoke();
 
                 if (IsSkiped)
                 {
-                    textMeshPro.maxVisibleCharacters = parsedText.Length;
+                    textMeshPro.maxVisibleCharacters = tmpText.Length;
                     break;
                 }
 
-                //if (actionsIndex.Count > 0)
-                //{
-                //    int activeCount = 0;
-                //    foreach (var item in actionsIndex.Where(i => index == i))
-                //    {
-                //        TextActionBase act = actions.ToArray()[activeCount];
+                if (tagDictionary.TryGetValue(relativeIndex, out var tag)) 
+                {
+                    bool isMajorTag = tag.Type == TextParserTag.TagType.Single || tag.Type == TextParserTag.TagType.ScopedOpen;
 
-                //        yield return act.Invoke(this);
+                    if (isMajorTag && tag.Action is TextWriterActionBase action)
+                    {
+                        string contains = string.Empty;
+                        int endIndex = realIndex;
+                        bool skip = false;
 
-                //        OnAction(act);
-                //        OnActionCallback?.Invoke(act);
+                        if (tag.Type == TextParserTag.TagType.ScopedOpen)
+                        {
+                            var futureTags = tagDictionary.Values.Where(t => t.RealIndex > tag.RealIndex).OrderBy((t) => t.RealIndex);
 
-                //        activeCount++;
-                //    }
+                            int openCounter = 0;
+                            TextParserTag closeTag = null;
+                            foreach (var futureTag in futureTags)
+                            {
+                                if (futureTag.Type == TextParserTag.TagType.ScopedOpen)
+                                {
+                                    openCounter++;
+                                }
+                                else if (futureTag.Type == TextParserTag.TagType.ScopedClose)
+                                {
+                                    openCounter--;
 
-                //    for (int i = 0; i < activeCount; i++)
-                //    {
-                //        actions.Dequeue();
-                //        actionsIndex.Dequeue();
-                //    }
-                //}
+                                    if (openCounter <= 0 && futureTag.Tag == tag.Tag)
+                                    {
+                                        closeTag = futureTag;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (closeTag is not null)
+                            {
+                                endIndex = closeTag.RealIndex;
+                                contains = tmpText[tag.RealIndex..endIndex];
+                            }
+                            else
+                            {
+                                skip = true;
+                            }
+                        }
+
+                        if (!skip)
+                        {
+                            OnActionCallback?.Invoke(action);
+
+                            action.ClearReturnText();
+
+                            yield return action.Invoke(this, new TextActionParams()
+                            {
+                                Contains = contains,
+                                StartIndex = relativeIndex,
+                                EndIndex = endIndex,
+                                Tag = tag.Tag,
+                                TagParams = tag.Params
+                            });
+
+                            if (!string.IsNullOrWhiteSpace(action.ReturnText))
+                            {
+                                var returnedTextData = _parser.ParseText(action.ReturnText);
+
+                                var oldTags = tagDictionary.Values.ToList();
+
+                                foreach (var item in oldTags.Where(t => t.RealIndex > tag.RealIndex))
+                                {
+                                    item.RealIndex += returnedTextData.ClearedTextWithoutShadows.Length;
+                                }
+                                foreach (var subtag in returnedTextData.Tags)
+                                {
+                                    subtag.RealIndex += relativeIndex;
+                                }
+
+                                oldTags.AddRange(returnedTextData.Tags);
+
+                                tagDictionary = oldTags.ToDictionary(t => t.RealIndex);
+
+                                textMeshPro.text = tmpText.Insert(realIndex, returnedTextData.ClearedText);
+
+                                yield return null;
+
+                                tmpText = textMeshPro.GetParsedText();
+                            }
+                        }
+                    }
+                }
+
 
                 if (IsPause)
                 {
@@ -196,8 +258,8 @@ namespace RPGF.Core.TextWriter.Abstrations
 
                 textMeshPro.maxVisibleCharacters++;
 
-                OnEveryLetter(parsedText[index]);
-                OnEveryLetterCallback?.Invoke(parsedText[index]);
+                OnEveryLetter(tmpText[realIndex]);
+                OnEveryLetterCallback?.Invoke(tmpText[realIndex]);
 
                 yield return new WaitForSeconds(letterDelay);
             }
@@ -210,9 +272,6 @@ namespace RPGF.Core.TextWriter.Abstrations
             }
 
             IsSkiped = false;
-
-            //actions.Clear();
-            //actionsIndex.Clear();
 
             writeCoroutine = null;
 

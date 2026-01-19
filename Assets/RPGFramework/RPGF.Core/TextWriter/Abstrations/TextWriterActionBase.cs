@@ -7,9 +7,9 @@ namespace RPGF.Core.TextWriter.Abstrations
     {
         public TextWriterBase TextWriter { get; set; }
 
-        public Coroutine Invoke(MonoBehaviour listner, TextActionParams @params)
+        public Coroutine Invoke(MonoBehaviour listener, TextActionParams @params)
         {
-            return listner.StartCoroutine(Action(@params));
+            return listener.StartCoroutine(Action(@params));
         }
     }
 }

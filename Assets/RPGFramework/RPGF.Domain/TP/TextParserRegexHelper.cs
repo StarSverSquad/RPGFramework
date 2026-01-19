@@ -1,4 +1,6 @@
-﻿namespace RPGF.Domain.TP
+﻿using UnityEngine.UI;
+
+namespace RPGF.Domain.TP
 {
     public static class TextParserRegexHelper
     {
@@ -19,7 +21,7 @@
         public const string SINGLE_ACTION_PATTERN =
             @"
             (?<tagSingle>
-             <(?<tagName>(?:\w|\s|[|!?*^#@%.:$&\\])+)
+             <(?<tagName>(?:\w|[|!?*^#@%.:$&\\=""_-])+)
               (?<params>\s(?:\w|\s|[|!?*(){}\]\[^#@%.:$&=""])+)*
              />
             )
@@ -28,7 +30,7 @@
         public const string SCOPED_ACTION_PATTERN_OPEN =
             @"
             (?<tagScopedOpen>
-             <(?<tagName>(?:\w|\s|[|!?*^#@%.:$&\\])+)
+             <(?<tagName>(?:\w|[|!?*^#@%.:$&\\=""_-])+)
               (?<params>\s(?:\w|\s|[|!?*(){}\]\[^#@%.:$&=""])+)*
              >
             )
@@ -37,7 +39,7 @@
         public const string SCOPED_ACTION_PATTERN_CLOSE =
             @"
             (?<tagScopedClose>
-             </(?<tagName>(?:\w|\s|[|!?*^#@%.:$&\\])+)>
+             </(?<tagName>(?:\w|[|!?*^#@%.:$&\\=""_-])+)>
             )
             ";
 

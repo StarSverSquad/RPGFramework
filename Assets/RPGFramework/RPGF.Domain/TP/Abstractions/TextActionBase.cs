@@ -26,5 +26,7 @@ namespace RPGF.Domain.TP.Abstractions
         public string ReturnText { get; protected set; } = string.Empty;
 
         public abstract IEnumerator Action(TextActionParams @params);
+
+        public void ClearReturnText() { ReturnText = string.Empty; }
     }
 }

@@ -827,23 +827,19 @@ MonoBehaviour:
       data:
         Actions:
         - rid: 6131212272838115399
-        - rid: 631918300284584025
         - rid: 631918367032737904
         - rid: 631918088263827527
         - rid: 631918089207808225
         - rid: 631918072542527562
         - rid: 6131212272838115524
         - rid: 631918089207808224
+        - rid: 631918300284584025
         Meta:
           edges:
           - inputPortTag: Input
             inputNodeGUID: 30714a1c74966d1428c61fd9e96fc696
             outputPortTag: Output
             outputNodeGUID: 0c87a28a98b328448b726c211e196799
-          - inputPortTag: Input
-            inputNodeGUID: d4865476fe1b553439abb0eff1a66a76
-            outputPortTag: DEFAULT
-            outputNodeGUID: 30714a1c74966d1428c61fd9e96fc696
           - inputPortTag: Input
             inputNodeGUID: bac5a2c053171d6409360d5a190e16b6
             outputPortTag: DEFAULT
@@ -868,15 +864,15 @@ MonoBehaviour:
             inputNodeGUID: cc05312055a75aa42ade4da4814f2989
             outputPortTag: Else
             outputNodeGUID: bac5a2c053171d6409360d5a190e16b6
+          - inputPortTag: Input
+            inputNodeGUID: d4865476fe1b553439abb0eff1a66a76
+            outputPortTag: DEFAULT
+            outputNodeGUID: 30714a1c74966d1428c61fd9e96fc696
           nodes:
           - guid: 0c87a28a98b328448b726c211e196799
             action:
               rid: 6131212272838115399
             position: {x: -692, y: 244.80002}
-          - guid: 30714a1c74966d1428c61fd9e96fc696
-            action:
-              rid: 631918300284584025
-            position: {x: -450.4, y: 136}
           - guid: d4865476fe1b553439abb0eff1a66a76
             action:
               rid: 631918367032737904
@@ -901,6 +897,10 @@ MonoBehaviour:
             action:
               rid: 631918089207808224
             position: {x: 347.2, y: 84.799995}
+          - guid: 30714a1c74966d1428c61fd9e96fc696
+            action:
+              rid: 631918300284584025
+            position: {x: -438.4, y: 28.800001}
     - rid: 6131212272838115399
       type: {class: StartAction, ns: RPGF.EventSystem.Default, asm: Assembly-CSharp}
       data:

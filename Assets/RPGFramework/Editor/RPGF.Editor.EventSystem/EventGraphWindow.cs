@@ -54,7 +54,6 @@ namespace RPGF.Editor.EventSystem
         private void EditorSceneManager_sceneSaving(UnityEngine.SceneManagement.Scene scene, string path)
         {
             graphView.SaveGraph();
-            MarkDirty();
         }
 
         private void GraphView_OnSaved()

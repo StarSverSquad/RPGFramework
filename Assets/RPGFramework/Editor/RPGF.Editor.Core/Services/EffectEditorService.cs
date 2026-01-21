@@ -7,7 +7,6 @@ namespace RPGF.Editor.Core.Services
 {
     public class EffectEditorService
     {
-        /// БЛЯТЬ ЧТО ЗА КАЛЛ!
         public void BuildGUI(RPGEffectBase effect)
         {
             switch (effect)

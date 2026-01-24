@@ -1,4 +1,4 @@
-﻿namespace RPGF.Core.TextWriter.Abstrations
+﻿namespace RPGF.Core.TextWriter.Abstractions
 {
     public abstract class GenericTextWriterBase<T> : TextWriterBase
         where T : WriterMessage

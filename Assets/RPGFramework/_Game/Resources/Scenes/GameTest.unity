@@ -366,6 +366,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.084
       objectReference: {fileID: 0}
+    - target: {fileID: 1026380488932073841, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1736847258508491885, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -420,7 +424,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2896203009800715207, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 146.00024
+      value: 146.0003
       objectReference: {fileID: 0}
     - target: {fileID: 2966381747683952507, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_IsActive
@@ -444,7 +448,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4093224919480984948, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 114.99994
+      value: 114.999954
       objectReference: {fileID: 0}
     - target: {fileID: 4597126536109806219, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -481,6 +485,10 @@ PrefabInstance:
     - target: {fileID: 6980640736519226201, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0.009521484
+      objectReference: {fileID: 0}
+    - target: {fileID: 7353522582526043724, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8470733032426464922, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -736,7 +744,9 @@ MonoBehaviour:
         nexts:
         - rid: 631918459169800340
         message:
-          text: '* One'
+          text: "* \u043E\u0431\u044B\u0447\u043D\u044B\u0439 \u0442\u0435\u043A\u0441\u0442
+            <effect type=\"shake\">\u0434\u0440\u043E\u0436\u0430\u043D\u0438\u0435</effect>
+            \u0438 <effect type=\"wooble\">\u0432\u0443\u0431\u043B</effect> \u043A\u043E\u043D\u0435\u0446!"
           speed: 0
           clear: 1
           wait: 1
@@ -832,11 +842,11 @@ MonoBehaviour:
       data:
         Actions:
         - rid: 6131212272838115399
-        - rid: 631918459169800333
         - rid: 631918459169800334
-        - rid: 631918459169800335
         - rid: 631918459169800336
         - rid: 631918459169800332
+        - rid: 631918459169800335
+        - rid: 631918459169800333
         Meta:
           edges:
           - inputPortTag: Input
@@ -872,18 +882,10 @@ MonoBehaviour:
             action:
               rid: 6131212272838115399
             position: {x: -692, y: 244.80002}
-          - guid: 70d94fc527b16e24baf5dca28a045905
-            action:
-              rid: 631918459169800333
-            position: {x: -91.2, y: 8.800001}
           - guid: f3c0c2f4dbb461d4b80c516ede26bb90
             action:
               rid: 631918459169800334
             position: {x: -91.2, y: 293.6}
-          - guid: 82a78f4b13cbe4543b81104c3b8bee49
-            action:
-              rid: 631918459169800335
-            position: {x: 376, y: 150.40001}
           - guid: 305c438e52c37ec45b0e3315e73114ea
             action:
               rid: 631918459169800336
@@ -892,6 +894,14 @@ MonoBehaviour:
             action:
               rid: 631918459169800332
             position: {x: -518.4, y: 208.8}
+          - guid: 82a78f4b13cbe4543b81104c3b8bee49
+            action:
+              rid: 631918459169800335
+            position: {x: 728, y: 365.6}
+          - guid: 70d94fc527b16e24baf5dca28a045905
+            action:
+              rid: 631918459169800333
+            position: {x: -91.2, y: 8.800001}
     - rid: 6131212272838115399
       type: {class: StartAction, ns: RPGF.EventSystem.Default, asm: Assembly-CSharp}
       data:

@@ -1,7 +1,7 @@
 ﻿using RPGF.Domain.TP.Abstractions;
 using UnityEngine;
 
-namespace RPGF.Core.TextWriter.Abstrations
+namespace RPGF.Core.TextWriter.Abstractions
 {
     public abstract class TextWriterActionBase : TextActionBase
     {

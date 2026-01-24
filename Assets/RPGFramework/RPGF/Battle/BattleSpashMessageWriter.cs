@@ -1,5 +1,5 @@
 ﻿using RPGF.Core.TextWriter;
-using RPGF.Core.TextWriter.Abstrations;
+using RPGF.Core.TextWriter.Abstractions;
 using System;
 using UnityEngine;
 

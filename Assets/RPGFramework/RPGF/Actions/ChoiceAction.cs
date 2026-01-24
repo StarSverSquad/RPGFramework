@@ -1,42 +1,44 @@
-﻿using RPGF.Domain.DI;
+﻿using RPGF.Core.Choice;
+using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using RPGF.Shared;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace RPGF.Actions
 {
+    [Serializable]
     public class ChoiceAction : ActionBase
     {
         [Inject]
-        private readonly ChoiceBoxManager _choice;
+        private readonly ChoiceDialogManager _choice;
 
         [SerializeReference]
         public List<string> Choices;
 
-        public ChoiceBoxManager.Position Position;
-
-        public Vector2 CustomPosition;
+        public int fallbackIndex;
+        public bool canCancel;
 
         public ChoiceAction() : base()
         {
             Nexts.Clear();
 
             Choices = new List<string>();
-            CustomPosition = new Vector2();
-            Position = ChoiceBoxManager.Position.Bottom;
+            fallbackIndex = 0;
+            canCancel = false;
         }
 
         public override IEnumerator ActionCoroutine()
         {
-            _choice.ChangePosition(Position, CustomPosition);
+            _choice.SetCancelBlock(!canCancel);
+            yield return _choice.Invoke(Choices.Select(i => new ChoiceItem { Label = i }));
 
-            _choice.Choice(Choices.ToArray());
+            var resultIndex = _choice.State == ChoiceState.Canceled ? fallbackIndex : _choice.Index;
 
-            yield return new WaitWhile(() => _choice.IsChoicing);
-
-            SetNext($"Choice-{_choice.Index}");
+            SetNext($"Choice-{resultIndex}");
         }
     }
 }

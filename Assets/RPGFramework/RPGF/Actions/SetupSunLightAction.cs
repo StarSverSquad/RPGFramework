@@ -3,12 +3,14 @@ using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using RPGF.EventSystem.Attributes;
 using RPGF.Explorer;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Actions
 {
     [GenerateActionNode("Настройка освещения", contextMenuPath: "Система/Настройка освещения")]
+    [Serializable]
     public class SetupSunLightAction : ActionBase
     {
         [Inject]

@@ -1,11 +1,13 @@
 ﻿using RPGF.Core.Location;
 using RPGF.EventSystem;
 using RPGF.Explorer;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Actions
 {
+    [Serializable]
     public class LocationTrasmitionAction : ActionBase
     {
         public LocationTransimitionDto Dto;

@@ -47,35 +47,26 @@ namespace RPGF.Editor.EventSystem.Nodes
         {
             choiceFields = new List<TextField>();
 
-            EnumField posField = new("Позиция", ChoiceBoxManager.Position.Bottom);
-
-            posField.SetValueWithoutNotify(Action.Position);
-            posField.RegisterValueChangedCallback(i =>
+            var blockToggle = BuildToggle(Action.canCancel, (newValue) =>
             {
-                Action.Position = (ChoiceBoxManager.Position)i.newValue;
-
-                MakeDirty();
+                Action.canCancel = newValue;
 
                 UpdateUI();
-            });
+                MakeDirty();
+            }, label: "Можно отменить?");
 
-            extensionContainer.Add(posField);
+            extensionContainer.Add(blockToggle);
 
-            if (Action.Position == ChoiceBoxManager.Position.Custom)
+            if (Action.canCancel)
             {
-                Label cposLabel = new("Координаты в 1920x1080");
-
-                Vector2Field cposField = new();
-                cposField.SetValueWithoutNotify(Action.CustomPosition);
-                cposField.RegisterValueChangedCallback(i =>
+                var fallbackPopup = BuildPopupField(Action.fallbackIndex, Action.Choices, (newValue) =>
                 {
-                    Action.CustomPosition = i.newValue;
+                    Action.fallbackIndex = Action.Choices.IndexOf(newValue);
 
                     MakeDirty();
-                });
+                }, label: "Автовыбор при отмене");
 
-                extensionContainer.Add(cposLabel);
-                extensionContainer.Add(cposField);
+                extensionContainer.Add(fallbackPopup);
             }
 
             VisualElement horizontal0 = new();

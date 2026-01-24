@@ -2,8 +2,11 @@ using RPGF.EventSystem;
 using System.Collections;
 using UnityEngine;
 
+using Serializable = System.SerializableAttribute;
+
 namespace RPGF.Actions
 {
+    [Serializable]
     public class RandomAction : ActionBase
     {
         public const string YES_NextTag = "YES";

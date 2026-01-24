@@ -1,9 +1,11 @@
 ﻿using RPGF.EventSystem;
 using RPGF.EventSystem.Attributes;
+using System;
 using System.Collections;
 
 namespace RPGF.Actions
 {
+    [Serializable]
     [GenerateActionNode("Запуск самописного события", contextMenuPath: "Прочее/Запуск самописного события")]
     public class InvokeCustomAction : ActionBase
     {

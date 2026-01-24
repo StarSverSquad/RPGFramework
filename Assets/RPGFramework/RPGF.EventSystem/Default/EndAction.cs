@@ -1,10 +1,9 @@
-using RPGF.EventSystem.Attributes;
+using System;
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace RPGF.EventSystem.Default
 {
+    [Serializable]
     public class EndAction : ActionBase
     {
         public EndAction() : base()

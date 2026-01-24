@@ -2,12 +2,14 @@ using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using RPGF.EventSystem.Attributes;
 using RPGF.Explorer;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Actions
 {
     [GenerateActionNode("Запуск события", "Запускает другое событие", "Прочее/Запуск события")]
+    [Serializable]
     public class InvokeEventAction : ActionBase
     {
         [Inject]

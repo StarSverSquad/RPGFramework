@@ -302,13 +302,13 @@ namespace RPGF.Battle
             {
                 string numeriticDifText = Data.BattleInfo.enemySquad.Enemies.Count > 1 ? Localization.GetLocale("SYS_BATTLE_ENCOUNTER_MULTI") : Localization.GetLocale("SYS_BATTLE_ENCOUNTER_SIGNLE");
 
-                _common.MessageBox.Write(new MessageBoxInfo()
+                _common.MessageDialog.Write(new MessageBoxInfo()
                 {
                     text = $"* {Data.BattleInfo.enemySquad.Name} {numeriticDifText}!",
                     closeWindow = true
                 });
 
-                yield return new WaitWhile(() => _common.MessageBox.IsWriting);
+                yield return new WaitWhile(() => _common.MessageDialog.IsWriting);
             }
         }
 
@@ -632,13 +632,13 @@ namespace RPGF.Battle
 
                 _battle.UI.CharacterBox.SetActive(false);
 
-                _common.MessageBox.Write(new MessageBoxInfo()
+                _common.MessageDialog.Write(new MessageBoxInfo()
                 {
                     text = $"* {Localization.GetLocale("SYS_BATTLE_LOSE")}",
                     closeWindow = true,
                 });
 
-                yield return new WaitWhile(() => _common.MessageBox.IsWriting);
+                yield return new WaitWhile(() => _common.MessageDialog.IsWriting);
             }
 
             if (!Data.BattleInfo.CanLose)
@@ -717,34 +717,34 @@ namespace RPGF.Battle
             {
                 _battle.BattleAudio.PlaySound(Data.Win);
 
-                _common.MessageBox.Write(new MessageBoxInfo()
+                _common.MessageDialog.Write(new MessageBoxInfo()
                 {
                     text = $"* {Localization.GetLocale("SYS_BATTLE_WIN")}<!>",
                     closeWindow = true
                 });
 
-                yield return new WaitWhile(() => _common.MessageBox.IsWriting);
+                yield return new WaitWhile(() => _common.MessageDialog.IsWriting);
 
                 if (dropText != string.Empty || moneyText != string.Empty)
                 {
-                    _common.MessageBox.Write(new MessageBoxInfo()
+                    _common.MessageDialog.Write(new MessageBoxInfo()
                     {
                         text = moneyText + dropText,
                         closeWindow = true
                     });
 
-                    yield return new WaitWhile(() => _common.MessageBox.IsWriting);
+                    yield return new WaitWhile(() => _common.MessageDialog.IsWriting);
                 }
 
                 if (lvlUpText != string.Empty)
                 {
-                    _common.MessageBox.Write(new MessageBoxInfo()
+                    _common.MessageDialog.Write(new MessageBoxInfo()
                     {
                         text = lvlUpText,
                         closeWindow = true
                     });
 
-                    yield return new WaitWhile(() => _common.MessageBox.IsWriting);
+                    yield return new WaitWhile(() => _common.MessageDialog.IsWriting);
                 }
             }
 
@@ -1262,13 +1262,13 @@ namespace RPGF.Battle
             {
                 if (consumed.WriteMessage)
                 {
-                    _common.MessageBox.Write(new MessageBoxInfo()
+                    _common.MessageDialog.Write(new MessageBoxInfo()
                     {
                         text = $"* {character.Name} использует {consumed.Name}!",
                         closeWindow = true,
                     });
 
-                    yield return new WaitWhile(() => _common.MessageBox.IsWriting);
+                    yield return new WaitWhile(() => _common.MessageDialog.IsWriting);
                     yield return new WaitForSeconds(.25f);
                 }
                 else
@@ -1305,13 +1305,13 @@ namespace RPGF.Battle
 
             _battle.BattleAudio.PauseMusic();
 
-            _common.MessageBox.Write(new MessageBoxInfo()
+            _common.MessageDialog.Write(new MessageBoxInfo()
             {
                 text = $"* {character.Name} пытаеться сбежать<\\:>.<\\:>.<\\:>.",
                 closeWindow = true,
             });
 
-            yield return new WaitWhile(() => _common.MessageBox.IsWriting);
+            yield return new WaitWhile(() => _common.MessageDialog.IsWriting);
 
             yield return new WaitForSeconds(.5f);
 
@@ -1332,13 +1332,13 @@ namespace RPGF.Battle
             {
                 _battle.BattleAudio.UnPauseMusic();
 
-                _common.MessageBox.Write(new MessageBoxInfo()
+                _common.MessageDialog.Write(new MessageBoxInfo()
                 {
                     text = $"* Но сбежать не удалось",
                     closeWindow = true,
                 });
 
-                yield return new WaitWhile(() => _common.MessageBox.IsWriting);
+                yield return new WaitWhile(() => _common.MessageDialog.IsWriting);
             }
         }
 

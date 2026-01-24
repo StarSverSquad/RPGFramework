@@ -3,11 +3,13 @@ using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using RPGF.EventSystem.Attributes;
 using RPGF.RPG;
+using System;
 using System.Collections;
 
 namespace RPGF.Actions
 {
     [GenerateActionNode("Измененить количество предмета", contextMenuPath: "Система/Измененить количество предмета")]
+    [Serializable]
     public class ChangeItemCountAction : ActionBase
     {
         [Inject]

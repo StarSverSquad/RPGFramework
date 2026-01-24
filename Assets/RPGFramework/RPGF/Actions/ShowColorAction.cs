@@ -2,12 +2,14 @@
 using RPGF.EventSystem;
 using RPGF.EventSystem.Attributes;
 using RPGF.Shared;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Actions
 {
     [GenerateActionNode("Отобразить цвет", contextMenuPath: "Система/Отобразить цвет")]
+    [Serializable]
     public class ShowColorAction : ActionBase
     {
         [Inject]

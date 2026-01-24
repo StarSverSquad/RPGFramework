@@ -1,11 +1,13 @@
 ﻿using RPGF;
 using RPGF.EventSystem;
 using RPGF.EventSystem.Attributes;
+using System;
 using System.Collections;
 
 namespace RPGF.Actions
 {
     [GenerateActionNode("Завершить игру")]
+    [Serializable]
     public class GameEndAction : ActionBase
     {
         public GameEndAction() : base()

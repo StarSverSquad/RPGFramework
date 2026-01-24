@@ -3,6 +3,7 @@ using RPGF.Battle.EnemyBehaviour;
 using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using RPGF.EventSystem.Attributes;
+using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -10,6 +11,7 @@ using UnityEngine;
 namespace RPGF.Actions
 {
     [GenerateActionNode("Изменение поведения врага", contextMenuPath: "Битва/Изменение поведения врага")]
+    [Serializable]
     public class EnemyBehaviourChangeAction : ActionBase
     {
         public enum ChangeType

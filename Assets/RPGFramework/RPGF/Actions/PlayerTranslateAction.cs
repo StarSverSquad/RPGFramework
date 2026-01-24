@@ -2,11 +2,13 @@
 using RPGF.EventSystem;
 using RPGF.Explorer;
 using RPGF.Explorer.Player;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Actions
 {
+    [Serializable]
     public class PlayerTranslateAction : ActionBase
     {
         public enum TranslateType

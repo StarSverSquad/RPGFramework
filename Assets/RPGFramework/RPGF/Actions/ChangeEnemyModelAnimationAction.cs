@@ -13,6 +13,7 @@ using UnityEngine;
 namespace RPGF.Actions.Condition
 {
     [GenerateActionNode("Анимация врага", "Активирует триггер в выбранном аниматоре", "Битва/Анимация врага")]
+    [Serializable]
     public class ChangeEnemyModelAnimationAction : ActionBase
     {
         [Inject]

@@ -1,10 +1,12 @@
 ﻿using RPGF.Domain.DI;
 using RPGF.EventSystem;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Actions
 {
+    [Serializable]
     public class ManageBGSAction : ActionBase
     {
         public enum OperationType

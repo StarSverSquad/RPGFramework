@@ -224,7 +224,7 @@ namespace RPGF.Editor.EventSystem
             return field;
         }
 
-        protected PopupField<K> BuildPopupField<K>(int defaultIndex, List<K> values, Action<K> onChangedCallback, Func<K, string> formatValueCallback,
+        protected PopupField<K> BuildPopupField<K>(int defaultIndex, List<K> values, Action<K> onChangedCallback, Func<K, string> formatValueCallback = null,
             string label = "", string tooltip = "", bool updateUI = false, bool makeDirty = true)
         {
             PopupField<K> field = new PopupField<K>(values, defaultIndex, formatValueCallback, formatValueCallback)

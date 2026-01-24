@@ -1,11 +1,13 @@
 ﻿using RPGF.EventSystem;
 using RPGF.EventSystem.Attributes;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Actions
 {
     [GenerateActionNode("Запуск анимации", "Запускает триггер выбранного аниматора", "Система/Запуск анимации")]
+    [Serializable]
     public class InvokeAnimationAction : ActionBase
     {
         [ActionFieldOption("Аниматор:", AllowSceneObjects = true)]

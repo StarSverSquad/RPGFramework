@@ -2,11 +2,13 @@
 using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using RPGF.RPG;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Actions
 {
+    [Serializable]
     public class InvokeBattleAction : ActionBase
     {
         public const string WinNextTag = "Win";

@@ -2,6 +2,7 @@
 using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using RPGF.EventSystem.Attributes;
+using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -9,6 +10,7 @@ using UnityEngine;
 namespace RPGF.Actions
 {
     [GenerateActionNode("Изменить статы врага", contextMenuPath: "Битва/Изменить статы врага")]
+    [Serializable]
     public class ChangeEnemyStatsAction : ActionBase
     {
         [Inject]

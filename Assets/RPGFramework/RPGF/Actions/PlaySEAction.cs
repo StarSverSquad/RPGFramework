@@ -1,12 +1,14 @@
 ﻿using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using RPGF.EventSystem.Attributes;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Actions
 {
     [GenerateActionNode("Запуск SE", "Запуск звукового эффекта", "Звук/Запуск SE")]
+    [Serializable]
     public class PlaySEAction : ActionBase
     {
         [Inject]

@@ -1,10 +1,12 @@
 using RPGF.EventSystem.Attributes;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.EventSystem.Default
 {
     [GenerateActionNode("Отладка")]
+    [Serializable]
     public class DebugAction : ActionBase
     {
         public enum WarningLevelType

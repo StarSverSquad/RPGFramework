@@ -358,6 +358,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 838689001630359888, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 38.600006
+      objectReference: {fileID: 0}
     - target: {fileID: 972641263531201527, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.084
@@ -713,112 +717,113 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
-    - rid: 631918072542527562
-      type: {class: EndAction, ns: RPGF.EventSystem.Default, asm: Assembly-CSharp}
-      data:
-        nexts: []
-    - rid: 631918088263827527
-      type: {class: EndAction, ns: RPGF.EventSystem.Default, asm: Assembly-CSharp}
-      data:
-        nexts: []
-    - rid: 631918089207808224
-      type: {class: ConditionAction, ns: RPGF.Actions.Condition, asm: Assembly-CSharp}
+    - rid: 631918459169800332
+      type: {class: ChoiceAction, ns: RPGF.Actions, asm: Assembly-CSharp}
       data:
         nexts:
-        - rid: 631918089207808226
-        - rid: 631918089207808227
-        Conditions:
-        - rid: 631918089207808230
-    - rid: 631918089207808225
+        - rid: 631918459169800337
+        - rid: 631918459169800338
+        - rid: 631918459169800339
+        Choices:
+        - test 1
+        - test 2
+        - test 3
+        fallbackIndex: 1
+        canCancel: 1
+    - rid: 631918459169800333
       type: {class: MessageAction, ns: RPGF.Actions, asm: Assembly-CSharp}
       data:
         nexts:
-        - rid: 631918089207808229
+        - rid: 631918459169800340
         message:
-          text: "* \u0422\u0443\u0442 \u043D\u0438\u0447\u0435\u0433\u043E \u043D\u0435\u0442..."
+          text: '* One'
           speed: 0
           clear: 1
           wait: 1
           name: 
-          closeWindow: 0
-          letterSound: {fileID: 0}
-          image: {fileID: 0}
-          position: 0
-    - rid: 631918089207808226
-      type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
-      data:
-        Action:
-          rid: 6131212272838115524
-        Tag: Then
-        Name: "\u0422\u043E\u0433\u0434\u0430"
-        IsNext: 0
-    - rid: 631918089207808227
-      type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
-      data:
-        Action:
-          rid: 631918089207808225
-        Tag: Else
-        Name: "\u0418\u043D\u0430\u0447\u0435"
-        IsNext: 0
-    - rid: 631918089207808229
-      type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
-      data:
-        Action:
-          rid: 631918088263827527
-        Tag: DEFAULT
-        Name: "\u0414\u0430\u043B\u0435\u0435"
-        IsNext: 1
-    - rid: 631918089207808230
-      type: {class: BoolVarCondition, ns: RPGF.Actions.Condition, asm: Assembly-CSharp}
-      data:
-        Var: hasInHouseBox
-        Value: 1
-    - rid: 631918300284584025
-      type: {class: MessageAction, ns: RPGF.Actions, asm: Assembly-CSharp}
-      data:
-        nexts:
-        - rid: 631918300284584027
-        message:
-          text: "\u0414\u0430 \u0443\u0436"
-          speed: 0
-          clear: 1
-          wait: 1
-          name: DEV
-          closeWindow: 0
-          letterSound: {fileID: 0}
-          image: {fileID: 0}
-          position: 0
-    - rid: 631918300284584027
-      type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
-      data:
-        Action:
-          rid: 631918367032737904
-        Tag: DEFAULT
-        Name: "\u0414\u0430\u043B\u0435\u0435"
-        IsNext: 1
-    - rid: 631918367032737904
-      type: {class: MessageAction, ns: RPGF.Actions, asm: Assembly-CSharp}
-      data:
-        nexts:
-        - rid: 631918367032737905
-        message:
-          text: ", \u0443\u0436\u0435 <u>\u043D\u043E\u0432\u044B\u0439</u> \u0442\u0435\u043A\u0441\u0442
-            \u0431\u043E\u043A\u0441<\\|/>.<\\|/>.<\\|/>."
-          speed: 0
-          clear: 0
-          wait: 1
-          name: DEV
           closeWindow: 1
           letterSound: {fileID: 0}
           image: {fileID: 0}
           position: 0
-    - rid: 631918367032737905
+    - rid: 631918459169800334
+      type: {class: MessageAction, ns: RPGF.Actions, asm: Assembly-CSharp}
+      data:
+        nexts:
+        - rid: 631918459169800341
+        message:
+          text: '* Two'
+          speed: 0
+          clear: 1
+          wait: 1
+          name: 
+          closeWindow: 1
+          letterSound: {fileID: 0}
+          image: {fileID: 0}
+          position: 0
+    - rid: 631918459169800335
+      type: {class: EndAction, ns: RPGF.EventSystem.Default, asm: Assembly-CSharp}
+      data:
+        nexts: []
+    - rid: 631918459169800336
+      type: {class: MessageAction, ns: RPGF.Actions, asm: Assembly-CSharp}
+      data:
+        nexts:
+        - rid: 631918459169800342
+        message:
+          text: '* Three'
+          speed: 0
+          clear: 1
+          wait: 1
+          name: 
+          closeWindow: 1
+          letterSound: {fileID: 0}
+          image: {fileID: 0}
+          position: 0
+    - rid: 631918459169800337
       type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
       data:
         Action:
-          rid: 631918089207808224
+          rid: 631918459169800333
+        Tag: Choice-0
+        Name: Choice-0
+        IsNext: 0
+    - rid: 631918459169800338
+      type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
+      data:
+        Action:
+          rid: 631918459169800334
+        Tag: Choice-1
+        Name: Choice-1
+        IsNext: 0
+    - rid: 631918459169800339
+      type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
+      data:
+        Action:
+          rid: 631918459169800336
+        Tag: Choice-2
+        Name: Choice-2
+        IsNext: 0
+    - rid: 631918459169800340
+      type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
+      data:
+        Action:
+          rid: 631918459169800335
+        Tag: DEFAULT
+        Name: "\u0414\u0430\u043B\u0435\u0435"
+        IsNext: 1
+    - rid: 631918459169800341
+      type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
+      data:
+        Action:
+          rid: 631918459169800335
+        Tag: DEFAULT
+        Name: "\u0414\u0430\u043B\u0435\u0435"
+        IsNext: 1
+    - rid: 631918459169800342
+      type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
+      data:
+        Action:
+          rid: 631918459169800335
         Tag: DEFAULT
         Name: "\u0414\u0430\u043B\u0435\u0435"
         IsNext: 1
@@ -827,80 +832,66 @@ MonoBehaviour:
       data:
         Actions:
         - rid: 6131212272838115399
-        - rid: 631918367032737904
-        - rid: 631918088263827527
-        - rid: 631918089207808225
-        - rid: 631918072542527562
-        - rid: 6131212272838115524
-        - rid: 631918089207808224
-        - rid: 631918300284584025
+        - rid: 631918459169800333
+        - rid: 631918459169800334
+        - rid: 631918459169800335
+        - rid: 631918459169800336
+        - rid: 631918459169800332
         Meta:
           edges:
           - inputPortTag: Input
-            inputNodeGUID: 30714a1c74966d1428c61fd9e96fc696
+            inputNodeGUID: a70795c9e912b7140942d20468ff10c7
             outputPortTag: Output
             outputNodeGUID: 0c87a28a98b328448b726c211e196799
           - inputPortTag: Input
-            inputNodeGUID: bac5a2c053171d6409360d5a190e16b6
+            inputNodeGUID: 82a78f4b13cbe4543b81104c3b8bee49
             outputPortTag: DEFAULT
-            outputNodeGUID: d4865476fe1b553439abb0eff1a66a76
+            outputNodeGUID: 70d94fc527b16e24baf5dca28a045905
           - inputPortTag: Input
-            inputNodeGUID: f83e9cb50e0acd24fb66a017e2267be9
+            inputNodeGUID: 82a78f4b13cbe4543b81104c3b8bee49
             outputPortTag: DEFAULT
-            outputNodeGUID: cc05312055a75aa42ade4da4814f2989
+            outputNodeGUID: f3c0c2f4dbb461d4b80c516ede26bb90
           - inputPortTag: Input
-            inputNodeGUID: 7f8185fe59df5484d83c7d08be1a2f39
-            outputPortTag: Win
-            outputNodeGUID: 6158ff78303547c4b8770aeb9cc0056c
-          - inputPortTag: Input
-            inputNodeGUID: 7f8185fe59df5484d83c7d08be1a2f39
-            outputPortTag: Lose
-            outputNodeGUID: 6158ff78303547c4b8770aeb9cc0056c
-          - inputPortTag: Input
-            inputNodeGUID: 6158ff78303547c4b8770aeb9cc0056c
-            outputPortTag: Then
-            outputNodeGUID: bac5a2c053171d6409360d5a190e16b6
-          - inputPortTag: Input
-            inputNodeGUID: cc05312055a75aa42ade4da4814f2989
-            outputPortTag: Else
-            outputNodeGUID: bac5a2c053171d6409360d5a190e16b6
-          - inputPortTag: Input
-            inputNodeGUID: d4865476fe1b553439abb0eff1a66a76
+            inputNodeGUID: 82a78f4b13cbe4543b81104c3b8bee49
             outputPortTag: DEFAULT
-            outputNodeGUID: 30714a1c74966d1428c61fd9e96fc696
+            outputNodeGUID: 305c438e52c37ec45b0e3315e73114ea
+          - inputPortTag: Input
+            inputNodeGUID: 70d94fc527b16e24baf5dca28a045905
+            outputPortTag: Choice-0
+            outputNodeGUID: a70795c9e912b7140942d20468ff10c7
+          - inputPortTag: Input
+            inputNodeGUID: f3c0c2f4dbb461d4b80c516ede26bb90
+            outputPortTag: Choice-1
+            outputNodeGUID: a70795c9e912b7140942d20468ff10c7
+          - inputPortTag: Input
+            inputNodeGUID: 305c438e52c37ec45b0e3315e73114ea
+            outputPortTag: Choice-2
+            outputNodeGUID: a70795c9e912b7140942d20468ff10c7
           nodes:
           - guid: 0c87a28a98b328448b726c211e196799
             action:
               rid: 6131212272838115399
             position: {x: -692, y: 244.80002}
-          - guid: d4865476fe1b553439abb0eff1a66a76
+          - guid: 70d94fc527b16e24baf5dca28a045905
             action:
-              rid: 631918367032737904
-            position: {x: -24.8, y: -30.4}
-          - guid: f83e9cb50e0acd24fb66a017e2267be9
+              rid: 631918459169800333
+            position: {x: -91.2, y: 8.800001}
+          - guid: f3c0c2f4dbb461d4b80c516ede26bb90
             action:
-              rid: 631918088263827527
-            position: {x: 1132.8, y: 580.8}
-          - guid: cc05312055a75aa42ade4da4814f2989
+              rid: 631918459169800334
+            position: {x: -91.2, y: 293.6}
+          - guid: 82a78f4b13cbe4543b81104c3b8bee49
             action:
-              rid: 631918089207808225
-            position: {x: 694.4, y: 492.80002}
-          - guid: 7f8185fe59df5484d83c7d08be1a2f39
+              rid: 631918459169800335
+            position: {x: 376, y: 150.40001}
+          - guid: 305c438e52c37ec45b0e3315e73114ea
             action:
-              rid: 631918072542527562
-            position: {x: 1091.2, y: 380.80002}
-          - guid: 6158ff78303547c4b8770aeb9cc0056c
+              rid: 631918459169800336
+            position: {x: -91.2, y: 597.6}
+          - guid: a70795c9e912b7140942d20468ff10c7
             action:
-              rid: 6131212272838115524
-            position: {x: 694.4, y: 228.8}
-          - guid: bac5a2c053171d6409360d5a190e16b6
-            action:
-              rid: 631918089207808224
-            position: {x: 347.2, y: 84.799995}
-          - guid: 30714a1c74966d1428c61fd9e96fc696
-            action:
-              rid: 631918300284584025
-            position: {x: -438.4, y: 28.800001}
+              rid: 631918459169800332
+            position: {x: -518.4, y: 208.8}
     - rid: 6131212272838115399
       type: {class: StartAction, ns: RPGF.EventSystem.Default, asm: Assembly-CSharp}
       data:
@@ -910,43 +901,10 @@ MonoBehaviour:
       type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
       data:
         Action:
-          rid: 631918300284584025
+          rid: 631918459169800332
         Tag: DEFAULT
         Name: "\u0414\u0430\u043B\u0435\u0435"
         IsNext: 1
-    - rid: 6131212272838115524
-      type: {class: InvokeBattleAction, ns: RPGF.Actions, asm: Assembly-CSharp}
-      data:
-        nexts:
-        - rid: 6131212272838115526
-        - rid: 6131212272838115527
-        - rid: 6131212272838115528
-        battle: {fileID: 11400000, guid: 7e0441e48b282044f95477f6733bbcbd, type: 2}
-        branchFlee: 0
-    - rid: 6131212272838115526
-      type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
-      data:
-        Action:
-          rid: 631918072542527562
-        Tag: Win
-        Name: "\u041F\u0440\u0438 \u043F\u043E\u0431\u0435\u0434\u0435"
-        IsNext: 0
-    - rid: 6131212272838115527
-      type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
-      data:
-        Action:
-          rid: -2
-        Tag: Flee
-        Name: "\u041F\u0440\u0438 \u043F\u043E\u0431\u0435\u0433\u0435"
-        IsNext: 0
-    - rid: 6131212272838115528
-      type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
-      data:
-        Action:
-          rid: 631918072542527562
-        Tag: Lose
-        Name: "\u041F\u0440\u0438 \u043F\u043E\u0440\u0430\u0436\u0435\u043D\u0438\u0438"
-        IsNext: 0
 --- !u!4 &79850558270155774
 Transform:
   m_ObjectHideFlags: 0

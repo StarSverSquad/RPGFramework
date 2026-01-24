@@ -1,11 +1,13 @@
 ﻿using RPGF.EventSystem;
 using RPGF.EventSystem.Attributes;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Actions
 {
     [GenerateActionNode("Ждать", contextMenuPath: "Система/Ждать")]
+    [Serializable]
     public class WaitAction : ActionBase
     {
         [ActionFieldOption("Врема (сек.):")]

@@ -1,11 +1,13 @@
 ﻿using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using RPGF.Shared;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Actions
 {
+    [Serializable]
     public class MessageAction : ActionBase
     {
         [Inject]

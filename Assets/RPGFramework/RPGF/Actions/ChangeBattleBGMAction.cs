@@ -2,12 +2,14 @@
 using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using RPGF.EventSystem.Attributes;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Actions
 {
     [GenerateActionNode("Сменить музыку битвы", contextMenuPath: "Битва/Сменить музыку битвы")]
+    [Serializable]
     public class ChangeBattleBGMAction : ActionBase
     {
         [Inject]

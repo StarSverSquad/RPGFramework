@@ -2,12 +2,14 @@
 using RPGF.EventSystem;
 using RPGF.EventSystem.Attributes;
 using RPGF.Shared;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Actions
 {
     [GenerateActionNode("Показать изображения", contextMenuPath: "Система/Показать изображения")]
+    [Serializable]
     public class ShowImageAction : ActionBase
     {
         [Inject]

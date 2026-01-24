@@ -1,6 +1,4 @@
-﻿using RPGF;
-using RPGF.Core;
-using RPGF.Core.Services;
+﻿using RPGF.Core.Services;
 using RPGF.Domain.DI;
 using System.Collections;
 using UnityEngine;

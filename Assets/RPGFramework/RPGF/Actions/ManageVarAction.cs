@@ -2,10 +2,12 @@
 using RPGF.Core.SaveLoad;
 using RPGF.Domain.DI;
 using RPGF.EventSystem;
+using System;
 using System.Collections;
 
 namespace RPGF.Actions
 {
+    [Serializable]
     public class ManageVarAction : ActionBase
     {
         public enum VarType

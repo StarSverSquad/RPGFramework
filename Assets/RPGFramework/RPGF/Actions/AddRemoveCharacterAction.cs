@@ -2,10 +2,12 @@
 using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using RPGF.RPG;
+using System;
 using System.Collections;
 
 namespace RPGF.Actions
 {
+    [Serializable]
     public class AddRemoveCharacterAction : ActionBase
     {
         [Inject]

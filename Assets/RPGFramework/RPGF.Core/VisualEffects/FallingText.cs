@@ -5,6 +5,9 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 
+/// <summary>
+/// TODO: Refactor and move to battle part
+/// </summary>
 public class FallingText : MonoBehaviour
 {
     public enum EffectType

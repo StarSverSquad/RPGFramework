@@ -1,3 +1,4 @@
+using RPGF.Core.TextEffecter.Abstractions;
 using RPGF.Domain.TP;
 using RPGF.Domain.TP.Abstractions;
 using RPGF.Domain.TP.Models;
@@ -9,7 +10,7 @@ using System.Reflection;
 using TMPro;
 using UnityEngine;
 
-namespace RPGF.Core.TextWriter.Abstrations
+namespace RPGF.Core.TextWriter.Abstractions
 {
     public abstract class TextWriterBase : RPGFrameworkBehaviour
     {
@@ -30,6 +31,7 @@ namespace RPGF.Core.TextWriter.Abstrations
 
         [SerializeField]
         protected TextMeshProUGUI textMeshPro;
+        public TextMeshProUGUI TextMeshPro => textMeshPro;
 
         public event Action OnStartWritingCallback;
         public event Action OnEndWritingCallback;
@@ -37,6 +39,8 @@ namespace RPGF.Core.TextWriter.Abstrations
         public event Action OnSpaceCallback;
         public event Action<char> OnEveryLetterCallback;
         public event Action<TextWriterActionBase> OnActionCallback;
+
+        private List<TextEffectBase> textEffects = new();
 
         public override void Initialize()
         {
@@ -60,6 +64,13 @@ namespace RPGF.Core.TextWriter.Abstrations
             var allowedActions = metas.ToDictionary((meta) => actions[metas.IndexOf(meta)] as TextActionBase);
 
             _parser = new TextParser(allowedActions);
+        }
+
+        public void AddTextEffect(TextEffectBase effect, int startLetterIndex, int endLetterIndex)
+        {
+            effect.Invoke(this, startLetterIndex, endLetterIndex);
+
+            textEffects.Add(effect);
         }
 
         public void InvokeWrite(WriterMessage message)
@@ -259,6 +270,12 @@ namespace RPGF.Core.TextWriter.Abstrations
                 }
 
                 textMeshPro.maxVisibleCharacters++;
+                textMeshPro.ForceMeshUpdate();
+
+                foreach (var item in textEffects)
+                {
+                    item.TextTransformer.ResetMeshOnlyChanges(item.StartLetter, item.EndLetter);
+                }
 
                 OnEveryLetter(tmpText[realIndex]);
                 OnEveryLetterCallback?.Invoke(tmpText[realIndex]);
@@ -274,6 +291,11 @@ namespace RPGF.Core.TextWriter.Abstrations
             }
 
             IsSkiped = false;
+
+            foreach (var effect in textEffects)
+                effect.Stop();
+
+            textEffects.Clear();
 
             writeCoroutine = null;
 

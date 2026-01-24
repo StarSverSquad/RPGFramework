@@ -1,5 +1,5 @@
 using RPGF.Core.Localization;
-using RPGF.Core.TextWriter.Abstrations;
+using RPGF.Core.TextWriter.Abstractions;
 using RPGF.Domain.DI;
 using RPGF.Domain.TP;
 using RPGF.Domain.TP.Abstractions;

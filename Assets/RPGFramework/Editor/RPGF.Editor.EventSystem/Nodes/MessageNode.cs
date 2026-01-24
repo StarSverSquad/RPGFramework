@@ -1,9 +1,6 @@
 ﻿using RPGF.Actions;
 using RPGF.Editor.EventSystem.Attributes;
 using RPGF.Shared;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
@@ -12,19 +9,9 @@ namespace RPGF.Editor.EventSystem.Nodes
     [UseActionNode("Сообщение", contextualMenuPath: "Диалог/Сообщение")]
     public class MessageNode : ActionNodeBase<MessageAction>
     {
-        private List<TextVisualEffectBase> effectTypes;
-
         public MessageNode(MessageAction Action)
             : base(Action)
         {
-            effectTypes = Action
-                .GetType()
-                .Assembly.GetTypes()
-                .Where(i => i.BaseType != null && i.BaseType.Name == "TextVisualEffectBase")
-                .Select(i =>
-                    Activator.CreateInstance(i, new object[] { null, null }) as TextVisualEffectBase
-                )
-                .ToList();
         }
 
         public override void UIContructor()
@@ -34,14 +21,7 @@ namespace RPGF.Editor.EventSystem.Nodes
             TextField textField = BuildTextField(
                 Action.message.text,
                 newVal => Action.message.text = newVal,
-                multiline: true,
-                tooltip:
-                      "Комманды:\n"
-                    + "< color=[HEXCOLOR] >[...]< /color > - установка цвета\n"
-                    + "< size=[%] >[...]< /size > - установка размера\n"
-                    + "< \\(., :, |) > - ждать 0.25с, 0.5с, 1с\n"
-                    + "< ! > - пауза\n"
-                    + "< %[LOCALE TAG] > - локализация"
+                multiline: true
             );
 
             TextField nameField = BuildTextField(
@@ -85,20 +65,6 @@ namespace RPGF.Editor.EventSystem.Nodes
                 val => Action.message.position = val,
                 label: "Позиция");
 
-            //int defaultVal = 0;
-            //if (Action.message.textEffectTypeName != "None")
-            //    defaultVal =
-            //        effectTypes.FindIndex(i => i.GetType().Name == Action.message.textEffectTypeName) + 1;
-
-            //PopupField<string> effectPopup = BuildPopupField(
-            //    defaultVal,
-            //    new List<string>() { "None" }
-            //        .Concat(effectTypes.Select(i => i.GetType().Name))
-            //        .ToList(),
-            //    val => Action.message.textEffectTypeName = val,
-            //    FormatEffectText,
-            //    label: "Текстовый эффект");
-
             AddToExtensionContainer(txtLabel);
             AddToExtensionContainer(textField);
             AddToExtensionContainer(nameField);
@@ -109,15 +75,6 @@ namespace RPGF.Editor.EventSystem.Nodes
             AddToExtensionContainer(spriteField);
             AddToExtensionContainer(clipField);
             AddToExtensionContainer(positionField);
-            //AddToExtensionContainer(effectPopup);
-        }
-
-        private string FormatEffectText(string str)
-        {
-            if (str == "None")
-                return "Нет";
-            else
-                return effectTypes.Find(i => i.GetType().Name == str).GetTittle();
         }
     }
 }

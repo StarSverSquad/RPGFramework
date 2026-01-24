@@ -1,4 +1,4 @@
-using RPGF.Core.TextWriter.Abstrations;
+using RPGF.Core.TextWriter.Abstractions;
 using RPGF.Domain.TP;
 using RPGF.Domain.TP.Abstractions;
 using System.Collections;

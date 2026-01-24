@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using RPGF.Core.VisualEffects.Abstractions;
 
 namespace RPGF.Battle.Enemy
 {

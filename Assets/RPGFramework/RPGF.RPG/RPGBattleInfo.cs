@@ -1,3 +1,4 @@
+using RPGF.Core.Battle;
 using RPGF.EventSystem;
 using System;
 using System.Collections.Generic;
@@ -40,8 +41,8 @@ namespace RPGF.RPG
         public GameObject Background;
 
         [Space]
-        public VisualBattleTransmitionEffectBase BattleEnterEffect;
-        public VisualBattleTransmitionEffectBase BattleExitEffect;
+        public BattleTransmitionBase BattleEnterEffect;
+        public BattleTransmitionBase BattleExitEffect;
 
         [SerializeReference]
         [HideInInspector]

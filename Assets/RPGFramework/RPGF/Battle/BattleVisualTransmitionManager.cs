@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using RPGF.Core.Battle;
+using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Battle
@@ -9,15 +10,15 @@ namespace RPGF.Battle
         private Canvas currentCanvas;
 
         [SerializeField]
-        private VisualBattleTransmitionEffectBase defaultEffect;
-        public VisualBattleTransmitionEffectBase DefaultEffect => defaultEffect;
+        private BattleTransmitionBase defaultEffect;
+        public BattleTransmitionBase DefaultEffect => defaultEffect;
 
-        private VisualBattleTransmitionEffectBase effect;
+        private BattleTransmitionBase effect;
         private GameObject effectObject;
 
-        public VisualBattleTransmitionEffectBase CustomEffect => effect;
+        public BattleTransmitionBase CustomEffect => effect;
 
-        public void InitializeEffect(VisualBattleTransmitionEffectBase effect)
+        public void InitializeEffect(BattleTransmitionBase effect)
         {
             if (effect == null)
                 return;
@@ -27,7 +28,7 @@ namespace RPGF.Battle
 
             effectObject = Instantiate(effect.gameObject, transform);
 
-            this.effect = effectObject.GetComponent<VisualBattleTransmitionEffectBase>();
+            this.effect = effectObject.GetComponent<BattleTransmitionBase>();
         }
 
         public void DisposeEffect()

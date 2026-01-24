@@ -2,7 +2,7 @@
 
 namespace GlackSaga.GUI.TitleMenu.Load
 {
-    public class LoadGUIBlock : GUIChoicableBlock
+    public class LoadGUIBlock : GUIChoiceBlock
     {
         protected override void OnDispose()
         {

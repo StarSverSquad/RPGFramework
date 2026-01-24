@@ -1,0 +1,66 @@
+using RPGF.Battle.Enemy;
+using RPGF.Battle.Minigames;
+using RPGF.Battle.Player;
+using RPGF.Battle.UI;
+using RPGF.Core;
+using RPGF.RPG;
+using RPGF.Shared;
+
+namespace RPGF.Battle
+{
+    public class BattleManager : KernelManagerBase
+    {
+        public static BattleManager Instance;
+        public static bool IsBattle => Instance.Pipeline.MainIsWorking;
+
+        public BattleChoiceManager Choice;
+        public BattleFieldManager BattleField;
+        public BattleBackground Background;
+        public BattleAudioManager BattleAudio;
+        public BattlePlayerManager Player;
+        public AttackQTEManager AttackQTE;
+        public BattleEnemyModelsManager EnemyModels;
+        public BattleEnemyBehaviourManager EnemyBehaviour;
+        public BattleVisualTransmitionManager VisualTransmition;
+        public BattleUIShake Shaker;
+        public BattleUIManager UI;
+        public MinigameManager Minigame;
+        public BattleData Data;
+        public BattleSpashMessageWriter SpashWriter;
+
+        public BattlePipeline Pipeline { get; private set; }
+
+        public BattleUtility Utility { get; private set; }
+        public static BattleUtility BattleUtility => Instance.Utility;
+
+        private LocalManager Local => LocalManager.Instance;
+
+        public override void Initialize()
+        {
+            Instance = this;
+
+            Local.DI.AddSignleton(Data);
+            Local.DI.AddSignleton(EnemyModels);
+            Local.DI.AddSignleton(BattleAudio);
+
+            InitializeChild();
+        }
+
+        public override void InitializeChild()
+        {
+            Pipeline = new BattlePipeline(this, SharedManager.Instance);
+            Local.DI.AddSignleton(Pipeline);
+
+            Utility = new BattleUtility(this);
+            Local.DI.AddSignleton(Utility);
+
+            Choice.Initialize();
+
+            SpashWriter.Initialize();
+
+            Player.SetActive(false);
+            Local.DI.AddSignleton(Player);
+        }
+    }
+
+}

@@ -1,12 +1,13 @@
 using DG.Tweening;
 using RPGF.GUI;
+using RPGF.GUI.Interfaces;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GlackSaga.GUI.TitleMenu.Main
 {
-    public class TittleMenuMainBlock : GUIChoicableBlock
+    public class TittleMenuMainBlock : GUIChoiceBlock
     {
         [SerializeField]
         private RectTransform _panel;
@@ -39,7 +40,7 @@ namespace GlackSaga.GUI.TitleMenu.Main
         private Tween panelTween;
         private Tween solidClrTween;
 
-        public override void Initialize(GUIManagerBase manager)
+        public override void Initialize(IGUIManager manager)
         {
             base.Initialize(manager);
 

@@ -453,7 +453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a3df741e9caca9418e39c28599985fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hpBar: {fileID: 8069967195363740583}
+  _hpBar: {fileID: 314162803325826927}
   _mpBar: {fileID: 4132515469628177452}
   _hpText: {fileID: 88519678229815232}
   _mpText: {fileID: 4693993267267132114}
@@ -864,7 +864,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6295665843563516519}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8ccae4d555a1e24097cda466a1c803b, type: 3}
+  m_Script: {fileID: 11500000, guid: 7451b59eb3bbd5f40ba0e2284ce3c56e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Bar: {fileID: 2959854329050999572}
@@ -1106,7 +1106,7 @@ GameObject:
   - component: {fileID: 3171340495222251701}
   - component: {fileID: 7693290556097748213}
   - component: {fileID: 4979248120578721296}
-  - component: {fileID: 8069967195363740583}
+  - component: {fileID: 314162803325826927}
   m_Layer: 0
   m_Name: HpBar
   m_TagString: Untagged
@@ -1175,7 +1175,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8069967195363740583
+--- !u!114 &314162803325826927
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1184,7 +1184,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8187052389821864420}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8ccae4d555a1e24097cda466a1c803b, type: 3}
+  m_Script: {fileID: 11500000, guid: 7451b59eb3bbd5f40ba0e2284ce3c56e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Bar: {fileID: 7704097835661205431}

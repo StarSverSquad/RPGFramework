@@ -1,0 +1,51 @@
+﻿using RPGF.Core.RPGEffect;
+using RPGF.EventSystem;
+using RPGF.RPG;
+using UnityEditor;
+
+namespace RPGF.Editor.Core.Services
+{
+    public class EffectEditorService
+    {
+        public void BuildGUI(RPGEffectBase effect)
+        {
+            switch (effect)
+            {
+                case ChangeManaHealConstEffect cmhc:
+                    {
+                        cmhc.Heal = EditorGUILayout.IntField("HEAL", cmhc.Heal);
+                        cmhc.Mana = EditorGUILayout.IntField("MANA", cmhc.Mana);
+                    }
+                    break;
+                case ChangeManaHealPercentEffect cmhp:
+                    {
+                        cmhp.Heal = EditorGUILayout.FloatField("HEAL%", cmhp.Heal);
+                        cmhp.Mana = EditorGUILayout.FloatField("MANA%", cmhp.Mana);
+                    }
+                    break;
+                case InvokeEventEffect ie:
+                    {
+                        ie.@event = (GlobalEvent)EditorGUILayout.ObjectField("Событие", ie.@event, typeof(GlobalEvent), false);
+                    }
+                    break;
+                case ChangeConcentrationEffect cc:
+                    {
+                        cc.AddConcentration = EditorGUILayout.IntField("Концентрация", cc.AddConcentration);
+                    }
+                    break;
+                case ChangeStateEffect cs:
+                    {
+                        cs.IsAddState = EditorGUILayout.Toggle("Добавить?", cs.IsAddState);
+                        cs.State = (RPGEntityState)EditorGUILayout.ObjectField("Событие", cs.State, typeof(RPGEntityState), false);
+                    }
+                    break;
+                case RemoveAllStatesEffect:
+                    EditorGUILayout.HelpBox("Удалит все состояния", MessageType.Info);
+                    break;
+                default:
+                    EditorGUILayout.HelpBox("Для эффекта не создан интерфейс!", MessageType.Warning);
+                    break;
+            }
+        }
+    }
+}

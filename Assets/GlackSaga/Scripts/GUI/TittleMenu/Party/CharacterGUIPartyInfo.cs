@@ -1,3 +1,5 @@
+using RPGF.Core;
+using RPGF.UI;
 using TMPro;
 using UnityEngine;
 
@@ -32,7 +34,7 @@ namespace GlackSaga.GUI.TitleMenu.Party
 
         public void UpdateData()
         {
-            var character = Game.Character.Characters[_partyBlock.CurrentElementIndex];
+            var character = Global.Character.Characters[_partyBlock.CurrentElementIndex];
 
             _hpBar.SetValue(character.Heal, character.MaxHeal);
             _mpBar.SetValue(character.Mana, character.MaxMana);
@@ -40,10 +42,10 @@ namespace GlackSaga.GUI.TitleMenu.Party
             _hpTxt.text = $"{character.Heal} / {character.MaxHeal}";
             _mpTxt.text = $"{character.Mana} / {character.MaxMana}";
 
-            _dmgTxt.text = $"{Game.Localization.GetLocale("SYS_DMG")}: {character.Damage}";
-            _defTxt.text = $"{Game.Localization.GetLocale("SYS_DEF")}: {character.Defence}";
-            _agiTxt.text = $"{Game.Localization.GetLocale("SYS_AGI")}: {character.Agility}";
-            _luckTxt.text = $"{Game.Localization.GetLocale("SYS_LUCK")}: {character.Luck}";
+            _dmgTxt.text = $"{Global.Localization.GetLocale("SYS_DMG")}: {character.Damage}";
+            _defTxt.text = $"{Global.Localization.GetLocale("SYS_DEF")}: {character.Defence}";
+            _agiTxt.text = $"{Global.Localization.GetLocale("SYS_AGI")}: {character.Agility}";
+            _luckTxt.text = $"{Global.Localization.GetLocale("SYS_LUCK")}: {character.Luck}";
 
             for (int i = 0; i < _guiAbilitiesItems.Length; i++)
             {

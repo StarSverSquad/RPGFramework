@@ -1,8 +1,7 @@
-using RPGF;
+using RPGF.Domain.Interfaces;
 using RPGF.GUI;
 using RPGF.RPG;
 using System.Collections.Generic;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -50,7 +49,7 @@ namespace GlackSaga.GUI.TitleMenu.FullInfo
 
         private void Update()
         {
-            if (IsActivated && Input.GetKeyDown(Game.BaseOptions.Cancel))
+            if (IsActivated && Input.GetKeyDown(Global.BaseOptions.Cancel))
             {
                 Preview();
             }

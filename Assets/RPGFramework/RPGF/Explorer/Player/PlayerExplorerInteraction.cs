@@ -1,0 +1,100 @@
+using RPGF.Core;
+using RPGF.EventSystem;
+using UnityEngine;
+
+namespace RPGF.Explorer.Player
+{
+    public class PlayerExplorerInteraction : RPGFrameworkBehaviour
+    {
+        public enum ViewDirection
+        {
+            None, Up, Down, Right, Left
+        }
+
+        public Vector2 Direction = Vector2.down;
+
+        public float InteractionDistance = 2.5f;
+
+        public bool CanInteract = true;
+
+        [SerializeField]
+        private Collider2D raycastHit;
+
+        private void FixedUpdate()
+        {
+            if (Local == null)
+                return;
+
+            if (Explorer.PlayerManager.movement.CanWalk
+                && !Explorer.EventHandler.EventPlaying)
+            {
+                if (Input.GetKey(KeyCode.RightArrow))
+                {
+                    Direction = new Vector2(1, 0);
+                }
+
+                if (Input.GetKey(KeyCode.LeftArrow))
+                {
+                    Direction = new Vector2(-1, 0);
+                }
+
+                if (Input.GetKey(KeyCode.UpArrow))
+                {
+                    Direction = new Vector2(0, 1);
+                }
+
+                if (Input.GetKey(KeyCode.DownArrow))
+                {
+                    Direction = new Vector2(0, -1);
+                }
+            }
+        }
+
+        private void Update()
+        {
+            raycastHit = Physics2D.Raycast(transform.position, Direction, InteractionDistance, LayerMask.GetMask("EventInteraction")).collider;
+
+            LocationEvent @event = raycastHit != null ? raycastHit.gameObject.GetComponent<LocationEvent>() : null;
+
+            if (@event != null)
+            {
+                if (Input.GetKeyDown(KeyCode.Z) && CanInteract && @event.Interaction == LocationEvent.InteractionType.OnClick)
+                {
+                    @event.InvokeEvent();
+                }
+            }
+
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            LocationEvent @event = collision.gameObject.GetComponent<LocationEvent>();
+
+            if (@event != null)
+            {
+                if (@event.Interaction == LocationEvent.InteractionType.OnStep && CanInteract)
+                {
+                    @event.InvokeEvent();
+                }
+            }
+        }
+
+        private void OnTriggerStay2D(Collider2D collision)
+        {
+            LocationEvent @event = collision.gameObject.GetComponent<LocationEvent>();
+
+            if (@event != null)
+            {
+                if (Input.GetKeyDown(KeyCode.Z) && CanInteract && @event.Interaction == LocationEvent.InteractionType.OnClick)
+                {
+                    @event.InvokeEvent();
+                }
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            Debug.DrawRay(transform.position, Direction * InteractionDistance, Color.red);
+        }
+    }
+}

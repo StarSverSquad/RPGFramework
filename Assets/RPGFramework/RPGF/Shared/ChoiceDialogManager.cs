@@ -28,13 +28,16 @@ namespace RPGF.Shared
         [SerializeField]
         private AudioClip cancelSound;
 
-        public bool CancelBlocked { get; private set; }
+        [SerializeField]
+        private Color SelectedColor = Color.white;
 
-        private Vector2 arrowInitialPisition;
+        public bool CancelBlocked { get; private set; }
 
         private Tween arrowChangeSelectionAnimation;
 
         private GameObject[] itemObjects;
+
+        private Sequence arrowAnimation;
 
         public override void Initialize()
         {
@@ -71,8 +74,10 @@ namespace RPGF.Shared
             }
 
             var currentObject = objectList[Index].GetComponent<RectTransform>();
+            var currentText = currentObject.GetComponentInChildren<TextMeshProUGUI>();
+            currentText.color = SelectedColor;
 
-            arrow.anchoredPosition = new Vector2(arrow.anchoredPosition.x, currentObject.anchoredPosition.y - currentObject.sizeDelta.y / 2f);
+            arrow.anchoredPosition = new Vector2(arrow.anchoredPosition.x, currentObject.anchoredPosition.y + currentObject.sizeDelta.y / 2f);
 
             content.DOKill();
             content.DOSizeDelta(new Vector2(content.sizeDelta.x, yOffset), .4f)
@@ -90,8 +95,11 @@ namespace RPGF.Shared
             var prevItemObject = itemObjects[prevIndex];
             var currentItemObject = itemObjects[index];
 
-            prevItemObject.GetComponentInChildren<TextMeshProUGUI>().color = Color.white;
-            currentItemObject.GetComponentInChildren<TextMeshProUGUI>().color = new Color(235, 174, 52);
+            var prevItemTect = prevItemObject.GetComponentInChildren<TextMeshProUGUI>();
+            var currentItemText = currentItemObject.GetComponentInChildren<TextMeshProUGUI>();
+
+            prevItemTect.color = Color.white;
+            currentItemText.color = SelectedColor;
 
             var currentItemRect = currentItemObject.GetComponent<RectTransform>();
 
@@ -157,24 +165,21 @@ namespace RPGF.Shared
 
         private void StartArrowAnimation()
         {
-            arrowInitialPisition = arrow.anchoredPosition;
-
-            arrow.DOLocalRotateQuaternion(Quaternion.Euler(360, 0, 0), 4)
-                 .SetLoops(-1)
-                 .Play();
+            arrow.anchoredPosition = new Vector2(40, arrow.anchoredPosition.y);
 
             var sequence = DOTween.Sequence();
 
-            sequence.Append(arrow.DOAnchorPosX(-16, .25f).From(arrowInitialPisition).SetRelative(true));
-            sequence.Append(arrow.DOAnchorPosX(16, .25f).SetRelative(true));
+            sequence.Append(arrow.DOAnchorPosX(25, .4f).SetEase(Ease.InSine));
+            sequence.Append(arrow.DOAnchorPosX(40, .4f).SetEase(Ease.OutSine));
             sequence.SetLoops(-1);
             sequence.Play();
+
+            arrowAnimation = sequence;
         }
         private void StopArrowAnimation()
         {
+            arrowAnimation?.Kill();
             arrow.DOKill();
-
-            arrow.anchoredPosition = arrowInitialPisition;
         }
     }
 }

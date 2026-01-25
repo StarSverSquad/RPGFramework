@@ -1,12 +1,11 @@
 ﻿using DG.Tweening;
-using RPGF.Core;
 using RPGF.RPG;
 using System;
 using UnityEngine;
 
-namespace RPGF.Battle.EnemyBehaviour
+namespace RPGF.Core.Battle
 {
-    public class EnemyBehaviourBulletBase : RPGFrameworkBehaviour, IDisposable
+    public class EnemyBulletBase : RPGFrameworkBehaviour, IDisposable
     {
         public int DamageModifier = 1;
 

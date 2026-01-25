@@ -5,11 +5,11 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using RPGF.RPG;
 using RPGF.Shared;
-using RPGF.Battle.Enums;
 using RPGF.Battle.UI;
 using RPGF.Core.Localization;
 using RPGF.Domain.DI;
 using RPGF.Core.Services;
+using RPGF.Core.Battle.Enums;
 
 namespace RPGF.Battle
 {

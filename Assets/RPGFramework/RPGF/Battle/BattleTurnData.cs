@@ -1,4 +1,4 @@
-﻿using RPGF.Battle.Enums;
+﻿using RPGF.Core.Battle.Enums;
 using RPGF.RPG;
 
 namespace RPGF.Battle

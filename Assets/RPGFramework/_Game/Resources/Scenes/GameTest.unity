@@ -412,7 +412,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2205794596650153188, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: orthographic size
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2375462704246815543, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_text
@@ -821,7 +821,7 @@ MonoBehaviour:
       type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
       data:
         Action:
-          rid: 631918494483218548
+          rid: 631918483201589326
         Tag: DEFAULT
         Name: "\u0414\u0430\u043B\u0435\u0435"
         IsNext: 1
@@ -829,7 +829,7 @@ MonoBehaviour:
       type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
       data:
         Action:
-          rid: 631918494483218548
+          rid: 631918483201589326
         Tag: DEFAULT
         Name: "\u0414\u0430\u043B\u0435\u0435"
         IsNext: 1
@@ -837,7 +837,7 @@ MonoBehaviour:
       type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
       data:
         Action:
-          rid: 631918494483218548
+          rid: 631918483201589326
         Tag: DEFAULT
         Name: "\u0414\u0430\u043B\u0435\u0435"
         IsNext: 1
@@ -874,10 +874,6 @@ MonoBehaviour:
         Tag: Lose
         Name: "\u041F\u0440\u0438 \u043F\u043E\u0440\u0430\u0436\u0435\u043D\u0438\u0438"
         IsNext: 0
-    - rid: 631918494483218548
-      type: {class: EndAction, ns: RPGF.EventSystem.Default, asm: Assembly-CSharp}
-      data:
-        nexts: []
     - rid: 6131212272838115398
       type: {class: GraphEvent, ns: RPGF.EventSystem.Graph, asm: Assembly-CSharp}
       data:
@@ -888,7 +884,6 @@ MonoBehaviour:
         - rid: 631918459169800333
         - rid: 631918459169800335
         - rid: 631918483201589326
-        - rid: 631918494483218548
         - rid: 631918459169800336
         Meta:
           edges:
@@ -909,14 +904,6 @@ MonoBehaviour:
             outputPortTag: Choice-2
             outputNodeGUID: a70795c9e912b7140942d20468ff10c7
           - inputPortTag: Input
-            inputNodeGUID: 0f592fb70dffadd42b7b9967a352859c
-            outputPortTag: DEFAULT
-            outputNodeGUID: f3c0c2f4dbb461d4b80c516ede26bb90
-          - inputPortTag: Input
-            inputNodeGUID: 0f592fb70dffadd42b7b9967a352859c
-            outputPortTag: DEFAULT
-            outputNodeGUID: 70d94fc527b16e24baf5dca28a045905
-          - inputPortTag: Input
             inputNodeGUID: 82a78f4b13cbe4543b81104c3b8bee49
             outputPortTag: Win
             outputNodeGUID: 82e8bb69af4b73645a1b0b48ad670ba7
@@ -925,7 +912,15 @@ MonoBehaviour:
             outputPortTag: Lose
             outputNodeGUID: 82e8bb69af4b73645a1b0b48ad670ba7
           - inputPortTag: Input
-            inputNodeGUID: 0f592fb70dffadd42b7b9967a352859c
+            inputNodeGUID: 82e8bb69af4b73645a1b0b48ad670ba7
+            outputPortTag: DEFAULT
+            outputNodeGUID: 70d94fc527b16e24baf5dca28a045905
+          - inputPortTag: Input
+            inputNodeGUID: 82e8bb69af4b73645a1b0b48ad670ba7
+            outputPortTag: DEFAULT
+            outputNodeGUID: f3c0c2f4dbb461d4b80c516ede26bb90
+          - inputPortTag: Input
+            inputNodeGUID: 82e8bb69af4b73645a1b0b48ad670ba7
             outputPortTag: DEFAULT
             outputNodeGUID: 305c438e52c37ec45b0e3315e73114ea
           nodes:
@@ -953,10 +948,6 @@ MonoBehaviour:
             action:
               rid: 631918483201589326
             position: {x: 855.2, y: 371.2}
-          - guid: 0f592fb70dffadd42b7b9967a352859c
-            action:
-              rid: 631918494483218548
-            position: {x: 710.4, y: 294.4}
           - guid: 305c438e52c37ec45b0e3315e73114ea
             action:
               rid: 631918459169800336

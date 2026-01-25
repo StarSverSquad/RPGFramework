@@ -1,5 +1,5 @@
+using RPGF.Core.Battle;
 using DG.Tweening;
-using RPGF.Battle.EnemyBehaviour;
 using RPGF.Core;
 using System.Collections;
 using System.Linq;
@@ -31,7 +31,7 @@ namespace RPGF.Battle.Player
         {
             if (collision.CompareTag("PatternBullet"))
             {
-                var bullet = collision.gameObject.GetComponent<EnemyBehaviourBulletBase>();
+                var bullet = collision.gameObject.GetComponent<EnemyBulletBase>();
 
                 if (IsHitCooldown && !bullet.IgnoreHitCooldown)
                 {

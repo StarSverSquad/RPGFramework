@@ -1,13 +1,15 @@
-﻿using System.Collections;
+﻿using RPGF.Battle.Samples.EnemyBullet;
+using RPGF.Core.Battle;
+using System.Collections;
 using UnityEngine;
 
-namespace RPGF.Battle.EnemyBehaviour.Sample
+namespace RPGF.Battle.Samples.EnemyBehaviour
 {
     [AddComponentMenu("RPG/Battle/EnemyBehaviour/KeparicPattern0")]
     public class KeparicPattern0 : BattleEnemyBehaviourBase
     {
         [SerializeField]
-        private EnemyBehaviourBulletBase KeparicBullet;
+        private EnemyBulletBase KeparicBullet;
 
         public float TimeOffset = 1f;
 

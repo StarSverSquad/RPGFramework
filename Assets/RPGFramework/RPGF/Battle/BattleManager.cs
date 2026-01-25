@@ -1,5 +1,5 @@
+using Assets.RPGFramework.RPGF.Battle;
 using RPGF.Battle.Enemy;
-using RPGF.Battle.Minigames;
 using RPGF.Battle.Player;
 using RPGF.Battle.UI;
 using RPGF.Core;

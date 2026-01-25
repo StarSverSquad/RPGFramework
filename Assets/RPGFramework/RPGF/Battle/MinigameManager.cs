@@ -1,7 +1,8 @@
+using RPGF.Core.Battle;
 using RPGF.Core;
 using UnityEngine;
 
-namespace RPGF.Battle.Minigames
+namespace Assets.RPGFramework.RPGF.Battle
 {
     public class MinigameManager : RPGFrameworkBehaviour
     {

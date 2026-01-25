@@ -1,12 +1,13 @@
-﻿using System.Collections;
+﻿using RPGF.Core.Battle;
+using System.Collections;
 using UnityEngine;
 
-namespace RPGF.Battle.EnemyBehaviour.Sample
+namespace RPGF.Battle.Samples.EnemyBehaviour
 {
     public class TestPattern : BattleEnemyBehaviourBase
     {
         [SerializeField]
-        private EnemyBehaviourBulletBase SomeBullet;
+        private EnemyBulletBase SomeBullet;
 
         public int BulletsCount = 15;
         public float TimeOffset = 1f;

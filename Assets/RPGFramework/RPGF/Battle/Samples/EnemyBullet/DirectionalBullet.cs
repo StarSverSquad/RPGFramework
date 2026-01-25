@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using RPGF.Core.Battle;
+using UnityEngine;
 
-namespace RPGF.Battle.EnemyBehaviour.Sample
+namespace RPGF.Battle.Samples.EnemyBullet
 {
-    public class DirectionalBullet : EnemyBehaviourBulletBase
+    public class DirectionalBullet : EnemyBulletBase
     {
         public Vector2 Direction = Vector2.zero;
 

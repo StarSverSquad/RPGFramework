@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using RPGF.Core.Battle;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RPGF.Battle.Minigames.Sample
+namespace RPGF.Battle.Sample.Minigames
 {
     public class DimasBandage : MinigameBase
     {

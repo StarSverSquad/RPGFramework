@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using RPGF.Battle;
+using RPGF.Core.Battle;
+using System.Collections;
 using UnityEngine;
 
-namespace RPGF.Battle.EnemyBehaviour.Sample
+namespace RPGF.Battle.Samples.EnemyBullet
 {
-    public class KepkaBullet : EnemyBehaviourBulletBase
+    public class KepkaBullet : EnemyBulletBase
     {
         public Transform model;
 

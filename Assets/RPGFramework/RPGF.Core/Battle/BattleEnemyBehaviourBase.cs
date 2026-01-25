@@ -1,12 +1,11 @@
 using RPGF.Battle.Enemy;
 using RPGF.Battle;
-using RPGF.Core;
 using RPGF.RPG;
 using System;
 using System.Collections;
 using UnityEngine;
 
-namespace RPGF.Battle.EnemyBehaviour
+namespace RPGF.Core.Battle
 {
     public abstract class BattleEnemyBehaviourBase : RPGFrameworkBehaviour, IDisposable
     {
@@ -45,21 +44,21 @@ namespace RPGF.Battle.EnemyBehaviour
 
         protected GameObject CreateObjectRelativeCenter(GameObject obj, Vector2 offset)
         {
-            if (obj.TryGetComponent(out EnemyBehaviourBulletBase pb))
+            if (obj.TryGetComponent(out EnemyBulletBase pb))
                 pb.enemy = Owner;
 
             return BattleManager.Instance.EnemyBehaviour.CreateObjectRelativeCenter(obj, offset);
         }
         protected GameObject CreateObjectRelativeBattleField(GameObject obj, Vector2 offset)
         {
-            if (obj.TryGetComponent(out EnemyBehaviourBulletBase pb))
+            if (obj.TryGetComponent(out EnemyBulletBase pb))
                 pb.enemy = Owner;
 
             return BattleManager.Instance.EnemyBehaviour.CreateObjectRelativeBattleField(obj, offset);
         }
         protected GameObject CreateObjectInWorldSpace(GameObject obj, Vector2 position)
         {
-            if (obj.TryGetComponent(out EnemyBehaviourBulletBase pb))
+            if (obj.TryGetComponent(out EnemyBulletBase pb))
                 pb.enemy = Owner;
 
             return BattleManager.Instance.EnemyBehaviour.CreateObjectInWorldSpace(obj, position);

@@ -1,4 +1,4 @@
-﻿namespace RPGF.Battle.Enums
+﻿namespace RPGF.Core.Battle.Enums
 {
     public enum TurnAction
     {

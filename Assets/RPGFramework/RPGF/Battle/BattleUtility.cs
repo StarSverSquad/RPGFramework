@@ -1,11 +1,11 @@
 ﻿using RPGF.RPG;
-using RPGF.Battle.EnemyBehaviour;
 using RPGF.Battle.Enemy;
-using RPGF.Battle.Enums;
 using System.Linq;
 using System.Collections;
 using UnityEngine;
 using RPGF.Domain.DI;
+using RPGF.Core.Battle;
+using RPGF.Core.Battle.Enums;
 
 namespace RPGF.Battle
 {
@@ -136,7 +136,7 @@ namespace RPGF.Battle
 
         #endregion
 
-        public void DamageCharacterByBullet(BattleTurnData data, EnemyBehaviourBulletBase bullet)
+        public void DamageCharacterByBullet(BattleTurnData data, EnemyBulletBase bullet)
         {
             var box = BattleManager.Instance.UI.CharacterBox.GetBox(data.Character);
 

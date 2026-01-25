@@ -1,5 +1,4 @@
-﻿using RPGF.Battle.Enums;
-using RPGF.Battle.UI;
+﻿using RPGF.Battle.UI;
 using RPGF.UI.Choice;
 using RPGF.Core;
 using RPGF.RPG;
@@ -7,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static RPGF.Battle.BattleTurnData;
+using RPGF.Core.Battle.Enums;
 
 namespace RPGF.Battle
 {

@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 using RPGF.RPG;
 using RPGF.Core;
-using RPGF.Battle.EnemyBehaviour;
+using RPGF.Core.Battle;
 
 namespace RPGF.Battle.Enemy
 {

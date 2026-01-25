@@ -1244,7 +1244,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 1
+  m_overflowMode: 3
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -1486,7 +1486,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2385009634210149630
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4599,7 +4599,7 @@ MonoBehaviour:
   TittleMenu: {fileID: 3077593556711915100}
   Sun: {fileID: 4872088662257522434}
   explorer: {fileID: 2356675289498216603}
-  common: {fileID: 6757614129400483524}
+  shared: {fileID: 6757614129400483524}
   battle: {fileID: 359477631808309587}
 --- !u!114 &2317324867090149036
 MonoBehaviour:
@@ -5098,7 +5098,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 145.99994, y: -54.149902}
+  m_AnchoredPosition: {x: 146, y: -54.149902}
   m_SizeDelta: {x: 261.72998, y: 107.78003}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &772973754128360326
@@ -11216,6 +11216,7 @@ MonoBehaviour:
   Minigame: {fileID: 5104481964375529734}
   Data: {fileID: 5169355313720295268}
   SpashWriter: {fileID: 1488958187577538652}
+  Canvas: {fileID: 7427866169965658193}
 --- !u!114 &1492566794163858137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11272,32 +11273,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eed67671ee6c48943bb86c77af9a76d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Enemys: []
-  actionIcons:
-  - {fileID: 6674051819941947454, guid: 7718a304d2006c04a9863a6100cade02, type: 3}
-  - {fileID: -2141057946, guid: 7718a304d2006c04a9863a6100cade02, type: 3}
-  - {fileID: 5178810440651349108, guid: 7718a304d2006c04a9863a6100cade02, type: 3}
-  - {fileID: 1304362138, guid: 7718a304d2006c04a9863a6100cade02, type: 3}
-  - {fileID: 6789442188196459346, guid: 7718a304d2006c04a9863a6100cade02, type: 3}
-  - {fileID: 667584375, guid: 40745823e1aba59459ed47ebdfedc8aa, type: 3}
-  DefaultEffect: {fileID: 2429433655878315730, guid: 65fcf45a9d4420542a3cc46fa519c398, type: 3}
-  DmgText: {fileID: 8448606485995851385, guid: 9a20811517bb5bb43b6c618854a6d20b, type: 3}
-  BattleCanvas: {fileID: 7427866169965658193}
-  MaxConcentration: 100
-  AdditionConcentrationOnDefence: 10
-  GameOverSceneName: GameOver
-  Hover: {fileID: 8300000, guid: 4b6f63b613b616a40b6bb3c7f032f764, type: 3}
-  Sellect: {fileID: 8300000, guid: 96f836f1f1f7eb146a9c8c6a4581e3fa, type: 3}
-  Cancel: {fileID: 8300000, guid: 96f836f1f1f7eb146a9c8c6a4581e3fa, type: 3}
-  Deny: {fileID: 8300000, guid: 96f836f1f1f7eb146a9c8c6a4581e3fa, type: 3}
-  Heal: {fileID: 8300000, guid: 68d9bd2a3f4060d40bf0c63c4058bba1, type: 3}
-  Hurt: {fileID: 8300000, guid: 26e17df5c67bb7446a28c5fc604c8bfe, type: 3}
-  EnemyDamage: {fileID: 8300000, guid: 91b8e03fd31287848be86af34bda1100, type: 3}
-  EnemyDeath: {fileID: 8300000, guid: bf86ec7bbbf702d4eaba7f1cd517b070, type: 3}
-  Miss: {fileID: 8300000, guid: ac3311081883e694d977df8918246063, type: 3}
-  Lose: {fileID: 8300000, guid: a84c8591c405563469c4750db4c265c0, type: 3}
-  Win: {fileID: 8300000, guid: f68f166bd6663ee4bbce6e19ecd3a2c4, type: 3}
-  Flee: {fileID: 8300000, guid: 5793af13e9de1da4fb3f2d5c76061e7b, type: 3}
 --- !u!1 &6244354055022385376
 GameObject:
   m_ObjectHideFlags: 0
@@ -11910,7 +11885,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2087184418231758631
 Transform:
   m_ObjectHideFlags: 0
@@ -12917,7 +12892,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &9077631577773007576
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16697,6 +16672,10 @@ PrefabInstance:
       value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 1583742943299218023, guid: ae57416b9eadcb845958953b0abf3b39, type: 3}
+      propertyPath: m_overflowMode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1583742943299218023, guid: ae57416b9eadcb845958953b0abf3b39, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
       objectReference: {fileID: 0}
@@ -17340,6 +17319,10 @@ PrefabInstance:
     - target: {fileID: 420817568967778737, guid: ae57416b9eadcb845958953b0abf3b39, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 1583742943299218023, guid: ae57416b9eadcb845958953b0abf3b39, type: 3}
+      propertyPath: m_overflowMode
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1583742943299218023, guid: ae57416b9eadcb845958953b0abf3b39, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
@@ -18541,6 +18524,10 @@ PrefabInstance:
     - target: {fileID: 420817568967778737, guid: ae57416b9eadcb845958953b0abf3b39, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 1583742943299218023, guid: ae57416b9eadcb845958953b0abf3b39, type: 3}
+      propertyPath: m_overflowMode
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1583742943299218023, guid: ae57416b9eadcb845958953b0abf3b39, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
@@ -20355,6 +20342,10 @@ PrefabInstance:
     - target: {fileID: 420817568967778737, guid: ae57416b9eadcb845958953b0abf3b39, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
       value: 1801810542
+      objectReference: {fileID: 0}
+    - target: {fileID: 1583742943299218023, guid: ae57416b9eadcb845958953b0abf3b39, type: 3}
+      propertyPath: m_overflowMode
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1583742943299218023, guid: ae57416b9eadcb845958953b0abf3b39, type: 3}
       propertyPath: 'm_ActiveFontFeatures.Array.data[0]'

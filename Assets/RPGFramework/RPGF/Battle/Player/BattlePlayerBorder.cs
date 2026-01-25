@@ -1,7 +1,7 @@
-﻿using RPGF.Core.Battle;
-using DG.Tweening;
+﻿using DG.Tweening;
 using RPGF.Core;
 using UnityEngine;
+using RPGF.Core.Battle.Abstractions;
 
 namespace RPGF.Battle.Player
 {

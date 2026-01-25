@@ -1,3 +1,4 @@
+using RPGF.Core;
 using DG.Tweening;
 using RPGF.Core.Choice;
 using RPGF.Domain.DI;

@@ -1,6 +1,6 @@
-using RPGF.Core.Battle;
 using RPGF.Core;
 using UnityEngine;
+using RPGF.Core.Battle.Abstractions;
 
 namespace Assets.RPGFramework.RPGF.Battle
 {

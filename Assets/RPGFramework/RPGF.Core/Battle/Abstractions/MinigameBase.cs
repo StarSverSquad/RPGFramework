@@ -1,8 +1,9 @@
+using RPGF.Core;
 using System;
 using System.Collections;
 using UnityEngine;
 
-namespace RPGF.Core.Battle
+namespace RPGF.Core.Battle.Abstractions
 {
     public abstract class MinigameBase : RPGFrameworkBehaviour
     {

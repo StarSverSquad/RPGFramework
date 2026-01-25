@@ -1,4 +1,4 @@
-using RPGF.Core.Battle;
+using RPGF.Core.Battle.Abstractions;
 using RPGF.EventSystem;
 using System.Collections.Generic;
 using UnityEngine;

@@ -5,8 +5,9 @@ using RPGF.RPG;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static RPGF.Battle.BattleTurnData;
+using static RPGF.Core.Battle.BattleTurnData;
 using RPGF.Core.Battle.Enums;
+using RPGF.Core.Battle;
 
 namespace RPGF.Battle
 {
@@ -17,9 +18,10 @@ namespace RPGF.Battle
         [SerializeField]
         private BattleUIEnemyInformation _enemyInformation;
 
-        public BattleData Data => BattleManager.Instance.Data;
-        public BattleAudioManager BattleAudio => BattleManager.Instance.BattleAudio;
-        public BattlePipeline Pipeline => BattleManager.Instance.Pipeline;
+        public BattleData Data => Battle.Data;
+        public BattleConfig Config => Battle.Config;
+        public BattleAudioManager BattleAudio => Battle.BattleAudio;
+        public BattlePipeline Pipeline => Battle.Pipeline;
 
         [SerializeField]
         private ScrollableChoiceUI battleChoice;
@@ -78,17 +80,17 @@ namespace RPGF.Battle
 
         private void PrimaryChoice_OnCanceled()
         {
-            BattleAudio.PlaySound(Data.Cancel);
+            BattleAudio.PlaySound(Config.CancelSound);
         }
 
         private void PrimaryChoice_OnSuccess()
         {
-            BattleAudio.PlaySound(Data.Sellect);
+            BattleAudio.PlaySound(Config.SellectSound);
         }
 
         private void PrimaryChoice_OnSellectionChanged()
         {
-            BattleAudio.PlaySound(Data.Hover);
+            BattleAudio.PlaySound(Config.HoverSound);
         }
 
         #endregion
@@ -115,7 +117,7 @@ namespace RPGF.Battle
 
         private void Choice_OnCanceled()
         {
-            BattleAudio.PlaySound(Data.Cancel);
+            BattleAudio.PlaySound(Config.CancelSound);
 
             _enemySelector.Dispose();
             _enemyInformation.HideInformation();
@@ -123,7 +125,7 @@ namespace RPGF.Battle
 
         private void Choice_OnSellectionChanged()
         {
-            BattleAudio.PlaySound(Data.Hover);
+            BattleAudio.PlaySound(Config.HoverSound);
 
             if (Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Ability ||
                 Pipeline.CurrentChoiceAction == BattlePipeline.ChoiceAction.Act ||
@@ -150,12 +152,12 @@ namespace RPGF.Battle
 
         private void Choice_OnDeny()
         {
-            BattleAudio.PlaySound(Data.Deny);
+            BattleAudio.PlaySound(Config.DenySound);
         }
 
         private void Choice_OnSuccess()
         {
-            BattleAudio.PlaySound(Data.Sellect);
+            BattleAudio.PlaySound(Config.SellectSound);
         }
 
         #endregion

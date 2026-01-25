@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2d8e4787922712489efd10f07055cc6, type: 3}
+  m_Name: BattleConfig
+  m_EditorClassIdentifier: Assembly-CSharp::RPGF.Core.Battle.BattleConfig
+  actionIcons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  DefaultEffect: {fileID: 2429433655878315730, guid: 65fcf45a9d4420542a3cc46fa519c398, type: 3}
+  DmgText: {fileID: 8448606485995851385, guid: 9a20811517bb5bb43b6c618854a6d20b, type: 3}
+  MaxConcentration: 100
+  AdditionConcentrationOnDefence: 15
+  GameOverSceneName: GameOver
+  HoverSound: {fileID: 8300000, guid: 4b6f63b613b616a40b6bb3c7f032f764, type: 3}
+  SellectSound: {fileID: 8300000, guid: 96f836f1f1f7eb146a9c8c6a4581e3fa, type: 3}
+  CancelSound: {fileID: 8300000, guid: 96f836f1f1f7eb146a9c8c6a4581e3fa, type: 3}
+  DenySound: {fileID: 8300000, guid: 8cddf599e2478f1409717fe86ff3d0c8, type: 3}
+  HealSound: {fileID: 8300000, guid: 68d9bd2a3f4060d40bf0c63c4058bba1, type: 3}
+  HurtSound: {fileID: 8300000, guid: 26e17df5c67bb7446a28c5fc604c8bfe, type: 3}
+  EnemyDamageSound: {fileID: 8300000, guid: 91b8e03fd31287848be86af34bda1100, type: 3}
+  EnemyDeathSound: {fileID: 8300000, guid: 40420dc7af13be94b990906c75bdb3f5, type: 3}
+  MissSound: {fileID: 8300000, guid: ac3311081883e694d977df8918246063, type: 3}
+  FleeSound: {fileID: 8300000, guid: 5793af13e9de1da4fb3f2d5c76061e7b, type: 3}
+  LoseTrack: {fileID: 8300000, guid: 952e86353b3b52048acf8830d356244d, type: 3}
+  WinTrack: {fileID: 8300000, guid: f68f166bd6663ee4bbce6e19ecd3a2c4, type: 3}

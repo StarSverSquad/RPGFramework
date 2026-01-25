@@ -67,7 +67,7 @@ namespace RPGF.Battle.UI
         {
             actImage.enabled = action != TurnAction.None;
 
-            actImage.sprite = Battle.Data.GetActionIcon(action);
+            actImage.sprite = Battle.Config.GetActionIcon(action);
         }
 
         public void MarkTarget(bool mark)

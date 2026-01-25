@@ -1,5 +1,5 @@
-﻿using RPGF.Battle.Samples.EnemyBullet;
-using RPGF.Core.Battle;
+﻿using RPGF.Core.Battle.Abstractions;
+using RPGF.Battle.Samples.EnemyBullet;
 using System.Collections;
 using UnityEngine;
 

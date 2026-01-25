@@ -6,6 +6,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using RPGF.Core.Battle;
 
 namespace RPGF.Battle.UI
 {
@@ -91,7 +92,7 @@ namespace RPGF.Battle.UI
         {
             if (!FallIsActive)
             {
-                Sprite acitonSprite = Battle.Data.GetActionIcon(CharacterTurnData.BattleAction);
+                Sprite acitonSprite = Battle.Config.GetActionIcon(CharacterTurnData.BattleAction);
 
                 actionImage.sprite = acitonSprite;
                 actionImage.gameObject.SetActive(acitonSprite != null);

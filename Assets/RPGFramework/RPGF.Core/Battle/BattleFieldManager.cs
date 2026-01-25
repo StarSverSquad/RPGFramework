@@ -3,9 +3,9 @@ using RPGF.Domain.Interfaces;
 using System;
 using UnityEngine;
 
-namespace RPGF.Battle
+namespace RPGF.Core.Battle
 {
-    public class BattleFieldManager : MonoBehaviour, IActive, IDisposable
+    public class BattleFieldManager : RPGFrameworkBehaviour, IActive, IDisposable
     {
         [Tooltip("Up, Down, Left, Right")]
         [Header("Ссылки:")]

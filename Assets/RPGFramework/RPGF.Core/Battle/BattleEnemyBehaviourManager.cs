@@ -3,21 +3,25 @@ using System.Collections;
 using UnityEngine;
 using System.Linq;
 using RPGF.RPG;
-using RPGF.Core;
-using RPGF.Core.Battle;
+using RPGF.Core.Battle.Abstractions;
+using RPGF.Domain.DI;
 
-namespace RPGF.Battle.Enemy
+namespace RPGF.Core.Battle
 {
     public class BattleEnemyBehaviourManager : RPGFrameworkBehaviour
     {
-        [SerializeField]
-        private float waitWithoutBehaviours = 2f;
+        [Inject]
+        private readonly BattleFieldManager _field;
 
         private readonly List<GameObject> behavioursObjects = new();
         private readonly List<BattleEnemyBehaviourBase> behaviours = new();
 
+        [SerializeField]
+        private float waitWithoutBehaviours = 2f;
+
         public int BehaviourCount => behaviours.Count;
         public bool IsWorking => attackCoroutine != null;
+
 
         private Coroutine attackCoroutine = null;
 
@@ -62,7 +66,7 @@ namespace RPGF.Battle.Enemy
         }
         public GameObject CreateObjectRelativeBattleField(GameObject obj, Vector2 offset)
         {
-            GameObject o = Instantiate(obj, (Vector2)BattleManager.Instance.BattleField.transform.position + offset, Quaternion.identity, transform);
+            GameObject o = Instantiate(obj, (Vector2)_field.transform.position + offset, Quaternion.identity, transform);
 
             behavioursObjects.Add(o);
 

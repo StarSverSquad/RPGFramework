@@ -1,9 +1,10 @@
 ﻿using DG.Tweening;
+using RPGF.Core;
 using RPGF.RPG;
 using System;
 using UnityEngine;
 
-namespace RPGF.Core.Battle
+namespace RPGF.Core.Battle.Abstractions
 {
     public class EnemyBulletBase : RPGFrameworkBehaviour, IDisposable
     {

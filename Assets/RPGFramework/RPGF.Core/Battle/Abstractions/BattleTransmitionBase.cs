@@ -1,6 +1,7 @@
-﻿using System.Collections;
+﻿using RPGF.Core;
+using System.Collections;
 
-namespace RPGF.Core.Battle
+namespace RPGF.Core.Battle.Abstractions
 {
     public abstract class BattleTransmitionBase : RPGFrameworkBehaviour
     {

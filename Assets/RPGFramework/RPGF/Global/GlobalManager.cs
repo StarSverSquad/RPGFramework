@@ -1,5 +1,5 @@
-using DG.Tweening;
 using RPGF.Core;
+using DG.Tweening;
 using RPGF.Core.Character;
 using RPGF.Core.Inventory;
 using RPGF.Core.Localization;

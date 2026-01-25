@@ -1,7 +1,7 @@
 ﻿using RPGF.Core.Battle.Enums;
 using RPGF.RPG;
 
-namespace RPGF.Battle
+namespace RPGF.Core.Battle
 {
     public class BattleTurnData
     {

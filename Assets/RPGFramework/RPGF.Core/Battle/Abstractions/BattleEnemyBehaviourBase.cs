@@ -1,14 +1,15 @@
-using RPGF.Battle.Enemy;
-using RPGF.Battle;
+using RPGF.Domain.DI;
 using RPGF.RPG;
 using System;
 using System.Collections;
 using UnityEngine;
 
-namespace RPGF.Core.Battle
+namespace RPGF.Core.Battle.Abstractions
 {
     public abstract class BattleEnemyBehaviourBase : RPGFrameworkBehaviour, IDisposable
     {
+        private BattleEnemyBehaviourManager manager => Battle.EnemyBehaviour;       
+
         public string BehaviourTag = "";
 
         [Tooltip("Длительность во времни")]
@@ -47,26 +48,21 @@ namespace RPGF.Core.Battle
             if (obj.TryGetComponent(out EnemyBulletBase pb))
                 pb.enemy = Owner;
 
-            return BattleManager.Instance.EnemyBehaviour.CreateObjectRelativeCenter(obj, offset);
+            return manager.CreateObjectRelativeCenter(obj, offset);
         }
         protected GameObject CreateObjectRelativeBattleField(GameObject obj, Vector2 offset)
         {
             if (obj.TryGetComponent(out EnemyBulletBase pb))
                 pb.enemy = Owner;
 
-            return BattleManager.Instance.EnemyBehaviour.CreateObjectRelativeBattleField(obj, offset);
+            return manager.CreateObjectRelativeBattleField(obj, offset);
         }
         protected GameObject CreateObjectInWorldSpace(GameObject obj, Vector2 position)
         {
             if (obj.TryGetComponent(out EnemyBulletBase pb))
                 pb.enemy = Owner;
 
-            return BattleManager.Instance.EnemyBehaviour.CreateObjectInWorldSpace(obj, position);
-        }
-
-        protected BattleEnemyModel GetEnemyModel()
-        {
-            return Battle.EnemyModels.GetModel(Owner);
+            return manager.CreateObjectInWorldSpace(obj, position);
         }
 
         #endregion

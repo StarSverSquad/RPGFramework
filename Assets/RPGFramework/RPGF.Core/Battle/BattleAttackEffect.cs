@@ -1,10 +1,11 @@
+using RPGF.Core.VisualEffects.Abstractions;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RPGF.Battle
+namespace RPGF.Core.Battle
 {
-    public class BattleAttackEffect : MonoBehaviour
+    public class BattleAttackEffect : VisualEffectBase
     {
         [SerializeField]
         private Image spriteRenderer;
@@ -25,27 +26,14 @@ namespace RPGF.Battle
         private bool locateInCenter = false;
         public bool LocaleInCenter => locateInCenter;
 
-        private bool isAnimating = false;
-        public bool IsAnimating => isAnimating;
-
-        public void Invoke()
+        protected override IEnumerator EffectCoroutine()
         {
-            StartCoroutine(AnimationCoroutine());
-        }
-
-        private IEnumerator AnimationCoroutine()
-        {
-            isAnimating = true;
-
             animator.SetTrigger(animatorTriggerName);
 
             audioSource.Play();
 
-            yield return new WaitForSeconds(0.01f);
-
+            yield return new WaitForFixedUpdate();
             yield return new WaitWhile(() => !animator.GetCurrentAnimatorStateInfo(0).IsName(animatorIdleStateName));
-
-            isAnimating = false;
         }
     }
 }

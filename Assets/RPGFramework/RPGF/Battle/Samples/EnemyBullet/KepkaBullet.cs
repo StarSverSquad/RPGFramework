@@ -1,5 +1,5 @@
-﻿using RPGF.Battle;
-using RPGF.Core.Battle;
+﻿using RPGF.Core.Battle.Abstractions;
+using RPGF.Battle;
 using System.Collections;
 using UnityEngine;
 

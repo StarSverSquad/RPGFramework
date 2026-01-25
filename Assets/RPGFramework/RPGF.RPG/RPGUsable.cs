@@ -1,4 +1,4 @@
-﻿using RPGF.Battle;
+﻿using RPGF.Core.Battle;
 using RPGF.Core.RPGEffect;
 using RPGF.EventSystem;
 using RPGF.Explorer;

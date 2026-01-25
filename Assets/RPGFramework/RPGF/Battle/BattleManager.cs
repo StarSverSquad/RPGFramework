@@ -1,10 +1,11 @@
 using Assets.RPGFramework.RPGF.Battle;
+using RPGF.Core.Battle;
 using RPGF.Battle.Enemy;
 using RPGF.Battle.Player;
 using RPGF.Battle.UI;
 using RPGF.Core;
-using RPGF.RPG;
 using RPGF.Shared;
+using UnityEngine;
 
 namespace RPGF.Battle
 {
@@ -28,7 +29,11 @@ namespace RPGF.Battle
         public BattleData Data;
         public BattleSpashMessageWriter SpashWriter;
 
+        public Canvas Canvas;
+
         public BattlePipeline Pipeline { get; private set; }
+
+        public BattleConfig Config { get; private set; }
 
         public BattleUtility Utility { get; private set; }
         public static BattleUtility BattleUtility => Instance.Utility;
@@ -39,6 +44,9 @@ namespace RPGF.Battle
         {
             Instance = this;
 
+            Config = Resources.Load<BattleConfig>("BattleConfig");
+            Local.DI.AddSignleton(Config);
+
             Local.DI.AddSignleton(Data);
             Local.DI.AddSignleton(EnemyModels);
             Local.DI.AddSignleton(BattleAudio);
@@ -48,6 +56,12 @@ namespace RPGF.Battle
 
         public override void InitializeChild()
         {
+            BattleField.Initialize();
+            Local.DI.AddSignleton(BattleField);
+
+            EnemyBehaviour.Initialize();
+            Local.DI.AddSignleton(EnemyBehaviour);
+
             Pipeline = new BattlePipeline(this, SharedManager.Instance);
             Local.DI.AddSignleton(Pipeline);
 

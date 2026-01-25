@@ -2,7 +2,7 @@
 using RPGF.Domain.DI;
 using UnityEngine;
 
-namespace RPGF
+namespace RPGF.Core
 {
     [CreateAssetMenu(fileName = "Config", menuName = "RPGFramework/Config")]
     public class BaseOptions : ScriptableObject, Injectable

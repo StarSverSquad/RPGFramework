@@ -1,3 +1,4 @@
+using RPGF.Core;
 using RPGF.Domain;
 using RPGF.Domain.DI;
 using RPGF.RPG;

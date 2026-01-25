@@ -4,8 +4,9 @@ using System.Linq;
 using System.Collections;
 using UnityEngine;
 using RPGF.Domain.DI;
-using RPGF.Core.Battle;
 using RPGF.Core.Battle.Enums;
+using RPGF.Core.Battle.Abstractions;
+using RPGF.Core.Battle;
 
 namespace RPGF.Battle
 {
@@ -14,6 +15,7 @@ namespace RPGF.Battle
         private BattleManager _battle { get; set; }
 
         public BattleData Data => _battle.Data;
+        public BattleConfig Config => _battle.Config;
 
         public BattleUtility(BattleManager battle)
         {
@@ -73,19 +75,19 @@ namespace RPGF.Battle
                 if (enemy.Heal <= 0)
                 {
                     model.Death();
-                    BattleManager.Instance.BattleAudio.PlaySound(Data.EnemyDeath);
+                    BattleManager.Instance.BattleAudio.PlaySound(Config.EnemyDeathSound);
                 }
                 else
                 {
                     model.Damage();
-                    BattleManager.Instance.BattleAudio.PlaySound(Data.EnemyDamage);
+                    BattleManager.Instance.BattleAudio.PlaySound(Config.EnemyDamageSound);
                 }
 
                 SpawnFallingText(model.DamageTextWorldPoint, dmg.ToString(), Color.white, Color.red);
             }
             else
             {
-                BattleManager.Instance.BattleAudio.PlaySound(Data.Miss);
+                BattleManager.Instance.BattleAudio.PlaySound(Config.MissSound);
                 SpawnFallingText(model.DamageTextWorldPoint, "ПРОМАХ");
             }
         }
@@ -104,7 +106,7 @@ namespace RPGF.Battle
         }
         public void SpawnFallingText(Vector2 position, string text, Color colorStart, Color colorEnd)
         {
-            GameObject obj = Object.Instantiate(Data.DmgText.gameObject, position, Quaternion.identity, Data.BattleCanvas.transform);
+            GameObject obj = Object.Instantiate(Config.DmgText.gameObject, position, Quaternion.identity, _battle.Canvas.transform);
             obj.transform.position = position;
 
             FallingText dmg = obj.GetComponent<FallingText>();
@@ -122,7 +124,7 @@ namespace RPGF.Battle
                 instance.gameObject,
                 position,
                 Quaternion.identity,
-                Data.BattleCanvas.transform);
+                _battle.Canvas.transform);
 
             return obj.GetComponent<BattleAttackEffect>();
         }
@@ -130,7 +132,7 @@ namespace RPGF.Battle
         {
             return SpawnAttackEffect(
                 instance,
-                (Vector2)Data.BattleCanvas.transform.position + new Vector2(0, 0.5f)
+                (Vector2)_battle.Canvas.transform.position + new Vector2(0, 0.5f)
                 );
         }
 
@@ -208,7 +210,7 @@ namespace RPGF.Battle
 
         public void AddConcetration(int value)
         {
-            Data.Concentration = Mathf.Clamp(Data.Concentration + value, 0, Data.MaxConcentration);
+            Data.Concentration = Mathf.Clamp(Data.Concentration + value, 0, Config.MaxConcentration);
 
             _battle.UI.Concentration.SetConcentration(Data.Concentration);
         }
@@ -250,9 +252,9 @@ namespace RPGF.Battle
                 else
                     effect = SpawnAttackEffect(usable.VisualEffect, model.AttackWorldPoint);
 
-                effect.Invoke();
+                effect.Play();
 
-                yield return new WaitWhile(() => effect.IsAnimating);
+                yield return new WaitWhile(() => effect.IsPlaying);
 
                 yield return new WaitForSeconds(0.5f);
 
@@ -326,13 +328,13 @@ namespace RPGF.Battle
 
                     if (enemy.Heal <= 0)
                     {
-                        _battle.BattleAudio.PlaySound(_battle.Data.EnemyDeath);
+                        _battle.BattleAudio.PlaySound(Config.EnemyDeathSound);
                         model.Death();
                     }
                     else if (healDif < 0)
-                        _battle.BattleAudio.PlaySound(_battle.Data.EnemyDamage);
+                        _battle.BattleAudio.PlaySound(Config.EnemyDamageSound);
                     else
-                        _battle.BattleAudio.PlaySound(_battle.Data.Heal);
+                        _battle.BattleAudio.PlaySound(Config.HealSound);
                 }
                 else if (target is RPGCharacter character)
                 {
@@ -390,9 +392,9 @@ namespace RPGF.Battle
                     }
 
                     if (healDif < 0)
-                        _battle.BattleAudio.PlaySound(_battle.Data.Hurt);
+                        _battle.BattleAudio.PlaySound(Config.HurtSound);
                     else
-                        _battle.BattleAudio.PlaySound(_battle.Data.Heal);
+                        _battle.BattleAudio.PlaySound(Config.HealSound);
                 }
 
                 yield return new WaitForSeconds(.5f);

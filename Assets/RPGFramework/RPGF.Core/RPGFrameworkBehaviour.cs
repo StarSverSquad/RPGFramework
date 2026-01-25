@@ -13,7 +13,7 @@ namespace RPGF.Core
         protected GlobalManager Global => GlobalManager.Instance;
         protected LocalManager Local => LocalManager.Instance;
         protected ExplorerManager Explorer => ExplorerManager.Instance;
-        protected SharedManager Common => SharedManager.Instance;
+        protected SharedManager Shared => SharedManager.Instance;
         protected BattleManager Battle => BattleManager.Instance;
 
         public virtual void Initialize() { }

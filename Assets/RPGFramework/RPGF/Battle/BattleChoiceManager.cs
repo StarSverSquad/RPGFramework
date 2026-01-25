@@ -5,7 +5,6 @@ using RPGF.RPG;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static RPGF.Core.Battle.BattleTurnData;
 using RPGF.Core.Battle.Enums;
 using RPGF.Core.Battle;
 

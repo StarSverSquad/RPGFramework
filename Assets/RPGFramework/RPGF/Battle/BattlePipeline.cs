@@ -556,6 +556,8 @@ namespace RPGF.Battle
 
             List<BattleTurnData> targets = new List<BattleTurnData>();
 
+
+
             foreach (var enemy in Data.Enemys)
             {
                 if (enemy.States.Any(i => i.SkipTurn) || !enemy.Behaviours.Any())

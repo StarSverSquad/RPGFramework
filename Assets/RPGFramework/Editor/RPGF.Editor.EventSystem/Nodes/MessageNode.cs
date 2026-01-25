@@ -40,11 +40,6 @@ namespace RPGF.Editor.EventSystem.Nodes
                 val => Action.message.wait = val,
                 label: "Ждать?");
 
-            Toggle clearToggle = BuildToggle(
-                Action.message.clear,
-                val => Action.message.clear = val,
-                label: "Очистить?");
-
             Toggle closeToggle = BuildToggle(
                 Action.message.closeWindow,
                 val => Action.message.closeWindow = val,
@@ -70,7 +65,6 @@ namespace RPGF.Editor.EventSystem.Nodes
             AddToExtensionContainer(nameField);
             AddToExtensionContainer(speedField);
             AddToExtensionContainer(waitToggle);
-            AddToExtensionContainer(clearToggle);
             AddToExtensionContainer(closeToggle);
             AddToExtensionContainer(spriteField);
             AddToExtensionContainer(clipField);

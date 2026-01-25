@@ -34,7 +34,6 @@ namespace RPGF.Actions
                 message = new MessageBoxInfo()
                 {
                     text = message.text,
-                    clear = message.clear,
                     closeWindow = message.closeWindow,
                     image = message.image,
                     speed = message.speed,

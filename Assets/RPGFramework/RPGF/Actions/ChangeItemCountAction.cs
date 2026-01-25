@@ -15,7 +15,7 @@ namespace RPGF.Actions
         [Inject]
         private readonly InventoryService _inventory;
 
-        [ActionFieldOption("Предмет", AllowSceneObjects = true)]
+        [ActionFieldOption("Предмет:", AllowSceneObjects = true, IsObject = true)]
         public RPGCollectable Item;
         [ActionFieldOption("Количество")]
         public int Count;

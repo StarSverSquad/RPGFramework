@@ -31,8 +31,7 @@ namespace RPGF.Editor.EventSystem
                 tooltip = metaData.Description;
             }
 
-            publicFields = action.GetType().GetFields(BindingFlags.Default | BindingFlags.Public | BindingFlags.Instance)
-                                               .Where(f => f.IsPublic && !f.IsStatic && !f.IsInitOnly);
+            publicFields = action.GetType().GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Default);
         }
 
         public override void UIContructor()
@@ -41,7 +40,7 @@ namespace RPGF.Editor.EventSystem
             {
                 VisualElement additingElement = null;
 
-                var options = field.FieldType.GetCustomAttribute<ActionFieldOptionAttribute>();
+                var options = field.GetCustomAttribute<ActionFieldOptionAttribute>();
 
                 string label = options?.Label ?? field.Name;
 
@@ -106,22 +105,6 @@ namespace RPGF.Editor.EventSystem
 
                         additingElement = toggle;
                         break;
-                    case nameof(UnityEngine.Object):
-                        var objectField = new ObjectField(label)
-                        {
-                            objectType = field.FieldType,
-                            allowSceneObjects = options?.AllowSceneObjects ?? false
-                        };
-                        objectField.SetValueWithoutNotify(field.GetValue(action) as UnityEngine.Object);
-                        objectField.RegisterValueChangedCallback(value =>
-                        {
-                            field.SetValue(action, value.newValue);
-
-                            MakeDirty();
-                        });
-
-                        additingElement = objectField;
-                        break;
                     case nameof(Color):
                         var colorField = new ColorField(label);
                         colorField.SetValueWithoutNotify((Color)field.GetValue(action));
@@ -134,6 +117,24 @@ namespace RPGF.Editor.EventSystem
 
                         additingElement = colorField;
                         break;
+                }
+
+                if (options is not null && options.IsObject)
+                {
+                    var objectField = new ObjectField(label)
+                    {
+                        objectType = field.FieldType,
+                        allowSceneObjects = options?.AllowSceneObjects ?? false
+                    };
+                    objectField.SetValueWithoutNotify(field.GetValue(action) as UnityEngine.Object);
+                    objectField.RegisterValueChangedCallback(value =>
+                    {
+                        field.SetValue(action, value.newValue);
+
+                        MakeDirty();
+                    });
+
+                    additingElement = objectField;
                 }
 
                 if (additingElement == null && field.FieldType.BaseType == typeof(Enum))

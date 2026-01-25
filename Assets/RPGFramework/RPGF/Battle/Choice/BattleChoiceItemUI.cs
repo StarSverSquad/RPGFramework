@@ -1,19 +1,19 @@
 ﻿using DG.Tweening;
-using RPGF.UI.Choice;
+using RPGF.Core;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace RPGF.Battle.UI
+namespace RPGF.Battle.Choice
 {
-    public class BattleChoiceButton : ChoiceElement
+    public class BattleChoiceItemUI : RPGFrameworkBehaviour
     {
+        public TextMeshProUGUI MainText;
+        public TextMeshProUGUI CounterText;
+        public Image Icon;
+
         [SerializeField]
         private RectTransform[] FocusEffectElements = new RectTransform[2];
-
-        private Tween[] aS = new Tween[2];
-        private Tween[] bS = new Tween[2];
-
-        private Vector2[] startSizesOfFocusEffect = new Vector2[2];
 
         [SerializeField]
         private Color commonColor;
@@ -27,40 +27,32 @@ namespace RPGF.Battle.UI
 
         private Color actualColor;
 
-        private void Start()
+        private Tween[] aS = new Tween[2];
+        private Tween[] bS = new Tween[2];
+
+        private Vector2[] startSizesOfFocusEffect = new Vector2[2];
+
+        public override void Initialize()
         {
             actualColor = commonColor;
 
             startSizesOfFocusEffect[0] = FocusEffectElements[0].sizeDelta;
             startSizesOfFocusEffect[1] = FocusEffectElements[1].sizeDelta;
-
-            OnFocus.AddListener(OnButtonFocus);
-            OnLostFocus.AddListener(OnButtonUnFocus);
-            OnLocked.AddListener(OnButtonLocked);
-            OnUnlocked.AddListener(OnButtonUnLocked);
-            OnSelected.AddListener(OnButtonSelected);
-            OnFailSelect.AddListener(OnButtonFailSelect);
-
-            OnButtonUnFocus();
         }
 
-        private void OnButtonFailSelect() { }
-
-        private void OnButtonSelected() { }
-
-        private void OnButtonUnLocked()
+        public void UnLock()
         {
             actualColor = commonColor;
         }
 
-        private void OnButtonLocked()
+        public void Lock()
         {
             actualColor = lockedColor;
         }
 
-        private void OnButtonUnFocus()
+        public void UnFocus()
         {
-            mainText.color = textCommonColor;
+            MainText.color = textCommonColor;
 
             aS[0].Kill(true);
             aS[1].Kill(true);
@@ -75,12 +67,12 @@ namespace RPGF.Battle.UI
             FocusEffectElements[1].GetComponent<Image>().enabled = false;
         }
 
-        private void OnButtonFocus()
+        public void Focus()
         {
             FocusEffectElements[0].GetComponent<Image>().enabled = true;
             FocusEffectElements[1].GetComponent<Image>().enabled = true;
 
-            mainText.color = textFocusColor;
+            MainText.color = textFocusColor;
 
             Color outColor = actualColor;
             outColor.a = 0;

@@ -6,6 +6,7 @@ using RPGF.Battle.UI;
 using RPGF.Core;
 using RPGF.Shared;
 using UnityEngine;
+using RPGF.Battle.Choice;
 
 namespace RPGF.Battle
 {

@@ -13,20 +13,25 @@ namespace RPGF.Editor
     [CustomEditor(typeof(RPGConsumed))]
     public class RPGConsumedEditor : RPGFrameworkEditor<RPGConsumed>
     {
-        private EffectEditorService effectEditorService;
+        private EffectEditorService _effectEditorService;
         private int selected = 0;
+
+        private void OnEnable()
+        {
+            _effectEditorService = new EffectEditorService();
+        }
 
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
 
             Type[] types = Target.GetType().Assembly.GetTypes()
-                .Where(i => i.BaseType != null && i.BaseType.Name == "EffectBase").ToArray();
+                .Where(i => i.BaseType == typeof(RPGEffectBase)).ToArray();
 
             List<string> names = new();
             foreach (Type t in types)
             {
-                var effect = Target.GetType().Assembly.CreateInstance(t.Name) as RPGEffectBase;
+                var effect = Activator.CreateInstance(t) as RPGEffectBase;
 
                 names.Add(effect.GetName());
             }
@@ -38,7 +43,7 @@ namespace RPGF.Editor
             selected = EditorGUILayout.Popup(selected, names.ToArray());
 
             if (Button("Добавить"))
-                Target.Effects.Add(Target.GetType().Assembly.CreateInstance(types[selected].Name) as RPGEffectBase);
+                Target.Effects.Add(Activator.CreateInstance(types[selected]) as RPGEffectBase);
 
 
             for (int i = 0; i < Target.Effects.Count; i++)
@@ -47,7 +52,7 @@ namespace RPGF.Editor
 
                 Label(Target.Effects[i].GetName());
 
-                effectEditorService.BuildGUI(Target.Effects[i]);
+                _effectEditorService.BuildGUI(Target.Effects[i]);
 
                 if (GUILayout.Button("Удалить", GUILayout.Width(100), GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false)))
                     Target.Effects.RemoveAt(i);

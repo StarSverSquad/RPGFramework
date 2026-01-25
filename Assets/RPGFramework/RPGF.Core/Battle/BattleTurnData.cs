@@ -14,8 +14,6 @@ namespace RPGF.Core.Battle
 
         public int ReservedConcentration;
 
-        public RPGEnemy EnemyBuffer;
-        public RPGCharacter CharacterBuffer;
         public RPGEntity EntityBuffer;
 
         #region ACT INFO
@@ -61,9 +59,7 @@ namespace RPGF.Core.Battle
 
             Item = null;
 
-            EnemyBuffer = null;
-            CharacterBuffer = null;
-            EnemyBuffer = null;
+            EntityBuffer = null;
 
             ReservedConcentration = 0;
         }

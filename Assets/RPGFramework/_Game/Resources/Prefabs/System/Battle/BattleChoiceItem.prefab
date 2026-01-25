@@ -215,6 +215,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -426,6 +427,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -547,7 +549,7 @@ GameObject:
   - component: {fileID: 3413080052101161697}
   - component: {fileID: 116872602439846270}
   m_Layer: 0
-  m_Name: BattleButton
+  m_Name: BattleChoiceItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -588,32 +590,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0320432070cec4428bb83e1b84c2449, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainText: {fileID: 2220614131438504333}
-  counterText: {fileID: 6985184367127790074}
-  icon: {fileID: 3263372875366296390}
-  OnFocus:
-    m_PersistentCalls:
-      m_Calls: []
-  OnLostFocus:
-    m_PersistentCalls:
-      m_Calls: []
-  OnLocked:
-    m_PersistentCalls:
-      m_Calls: []
-  OnUnlocked:
-    m_PersistentCalls:
-      m_Calls: []
-  OnSelected:
-    m_PersistentCalls:
-      m_Calls: []
-  OnFailSelect:
-    m_PersistentCalls:
-      m_Calls: []
+  MainText: {fileID: 2220614131438504333}
+  CounterText: {fileID: 6985184367127790074}
+  Icon: {fileID: 3263372875366296390}
   FocusEffectElements:
   - {fileID: 1385790923685844521}
   - {fileID: 882350828352687361}
   commonColor: {r: 0.43921572, g: 0.43921572, b: 0.43921572, a: 1}
-  lockedColor: {r: 1, g: 0, b: 0, a: 1}
+  lockedColor: {r: 0.93207544, g: 0.62431467, b: 0.62431467, a: 1}
   textCommonColor: {r: 1, g: 1, b: 1, a: 1}
   textFocusColor: {r: 1, g: 0.74343246, b: 0, a: 1}
 --- !u!222 &3413080052101161697

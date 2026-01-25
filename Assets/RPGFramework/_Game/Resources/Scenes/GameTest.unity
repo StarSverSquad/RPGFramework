@@ -270,19 +270,40 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 631918494483218673
+      type: {class: ChangeItemCountAction, ns: RPGF.Actions, asm: Assembly-CSharp}
+      data:
+        nexts:
+        - rid: 631918494483218674
+        Item: {fileID: 0}
+        Count: 2
+        IsSet: 0
+    - rid: 631918494483218674
+      type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
+      data:
+        Action:
+          rid: -2
+        Tag: DEFAULT
+        Name: "\u0414\u0430\u043B\u0435\u0435"
+        IsNext: 1
     - rid: 6131212272838115447
       type: {class: GraphEvent, ns: RPGF.EventSystem.Graph, asm: Assembly-CSharp}
       data:
         Actions:
         - rid: 6131212272838115448
-        - rid: 6131212272838115449
         - rid: 6131212272838115452
+        - rid: 631918494483218673
+        - rid: 6131212272838115449
         Meta:
           edges:
           - inputPortTag: Input
             inputNodeGUID: 81ee51d10f187f24cb5f90c739f2f054
             outputPortTag: Output
             outputNodeGUID: 70b125acb37184c45addf0fee8510506
+          - inputPortTag: Input
+            inputNodeGUID: bf5ccf6f6b8910845a9484ca20ab7622
+            outputPortTag: DEFAULT
+            outputNodeGUID: 4d5e2e5a44d731b4bac283b71543bd9d
           - inputPortTag: Input
             inputNodeGUID: 4d5e2e5a44d731b4bac283b71543bd9d
             outputPortTag: DEFAULT
@@ -292,14 +313,18 @@ MonoBehaviour:
             action:
               rid: 6131212272838115448
             position: {x: 250.4, y: 249.6}
+          - guid: 4d5e2e5a44d731b4bac283b71543bd9d
+            action:
+              rid: 6131212272838115452
+            position: {x: 1017.6, y: 212}
+          - guid: bf5ccf6f6b8910845a9484ca20ab7622
+            action:
+              rid: 631918494483218673
+            position: {x: 1447.2, y: 258.4}
           - guid: 81ee51d10f187f24cb5f90c739f2f054
             action:
               rid: 6131212272838115449
             position: {x: 508, y: 228}
-          - guid: 4d5e2e5a44d731b4bac283b71543bd9d
-            action:
-              rid: 6131212272838115452
-            position: {x: 974.4, y: 303.2}
     - rid: 6131212272838115448
       type: {class: StartAction, ns: RPGF.EventSystem.Default, asm: Assembly-CSharp}
       data:
@@ -346,7 +371,7 @@ MonoBehaviour:
       type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
       data:
         Action:
-          rid: -2
+          rid: 631918494483218673
         Tag: DEFAULT
         Name: "\u0414\u0430\u043B\u0435\u0435"
         IsNext: 1

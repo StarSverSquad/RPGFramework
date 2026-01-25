@@ -19,6 +19,8 @@ namespace RPGF.EventSystem.Attributes
         /// </summary>
         public bool AllowSceneObjects { get; set; } = false;
 
+        public bool IsObject { get; set; } = false;
+
         public ActionFieldOptionAttribute(string label)
         {
             _label = label;

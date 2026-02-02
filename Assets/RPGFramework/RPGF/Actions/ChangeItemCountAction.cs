@@ -5,6 +5,7 @@ using RPGF.EventSystem.Attributes;
 using RPGF.RPG;
 using System;
 using System.Collections;
+using UnityEngine;
 
 namespace RPGF.Actions
 {
@@ -15,7 +16,7 @@ namespace RPGF.Actions
         [Inject]
         private readonly InventoryService _inventory;
 
-        [ActionFieldOption("Предмет", AllowSceneObjects = true)]
+        [ActionFieldOption("Предмет:", AllowSceneObjects = true, IsObject = true)]
         public RPGCollectable Item;
         [ActionFieldOption("Количество")]
         public int Count;
@@ -41,6 +42,16 @@ namespace RPGF.Actions
             }
 
             yield break;
+        }
+
+        public override ActionBase Clone()
+        {
+            return new ChangeItemCountAction()
+            {
+                Item = Item,
+                Count = Count,
+                IsSet = IsSet
+            };
         }
     }
 }

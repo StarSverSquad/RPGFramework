@@ -111,6 +111,11 @@ namespace RPGF.Core.Choice
             OnStarted();
             OnStartedEvent?.Invoke();
 
+            yield return null;
+
+            OnSelectionChanged(Current, Index, Index);
+            OnSelectionChangedEvent?.Invoke(Current, Index, Index);
+
             while (State == ChoiceState.Chocing)
             {
                 int newIndex = SelectionChange(Index);

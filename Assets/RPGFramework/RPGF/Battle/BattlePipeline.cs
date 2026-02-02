@@ -11,7 +11,7 @@ using RPGF.Domain.DI;
 using RPGF.Core.Services;
 using RPGF.Core.Battle.Enums;
 using RPGF.Core.Battle;
-using RPGF.Core.Battle.Abstractions;
+using RPGF.Battle.Choice;
 
 namespace RPGF.Battle
 {
@@ -865,7 +865,7 @@ namespace RPGF.Battle
                 PreviewAction();
             else
             {
-                if ((int)Choice.CurrentItem.Value == 0)
+                if ((int)Choice.BattleChoice.Index == 0)
                 {
                     turnData.BattleAction = TurnAction.Act;
                     choiceActions.Add(ChoiceAction.Enemy);
@@ -889,7 +889,7 @@ namespace RPGF.Battle
             {
                 turnData.InteractionAct = RPGEnemy.EnemyAct.NullAct;
 
-                turnData.EnemyBuffer = null;
+                turnData.EntityBuffer = null;
 
                 PreviewAction();
             }
@@ -944,36 +944,27 @@ namespace RPGF.Battle
         }
         private IEnumerator HandleEntityChoice(BattleTurnData turnData)
         {
-            _battle.Choice.InvokeChoiceEntity();
+            _battle.Choice.InvokeChoiceCharacterOrEnemy();
 
             yield return new WaitWhile(() => _battle.Choice.IsChoicing);
 
             if (_battle.Choice.IsCanceled)
             {
-                if (turnData.BattleAction == TurnAction.Item)
-                    turnData.Item = null;
+                turnData.EntityBuffer = null;
 
                 PreviewAction();
             }
             else
             {
-                turnData.EntityBuffer = (RPGEntity)_battle.Choice.CurrentItem.Value;
-
-                switch (turnData.BattleAction)
+                var result = _battle.Choice.BattleChoice.Index;
+                if (result == 0)
                 {
-                    case TurnAction.Act:
-                        choiceActions.Add(ChoiceAction.Act);
+                    choiceActions.Add(ChoiceAction.Teammate);
 
-                        break;
-                    case TurnAction.Ability:
-                        turnData.ReservedConcentration = -turnData.Ability.ConcentrationCost;
-                        Utility.AddConcetration(-turnData.Ability.ConcentrationCost);
-
-                        NextCharacter();
-                        break;
-                    default:
-                        NextCharacter();
-                        break;
+                } 
+                else
+                {
+                    choiceActions.Add(ChoiceAction.Enemy);
                 }
             }
 
@@ -987,14 +978,11 @@ namespace RPGF.Battle
 
             if (Choice.IsCanceled)
             {
-                if (turnData.BattleAction == TurnAction.Item)
-                    turnData.Item = null;
-
                 PreviewAction();
             }
             else
             {
-                turnData.CharacterBuffer = (RPGCharacter)Choice.CurrentItem.Value;
+                turnData.EntityBuffer = (RPGCharacter)Choice.CurrentItem.Value;
 
                 switch (turnData.BattleAction)
                 {
@@ -1017,16 +1005,13 @@ namespace RPGF.Battle
 
             if (_battle.Choice.IsCanceled)
             {
-                if (turnData.BattleAction == TurnAction.Item)
-                    turnData.Item = null;
-
-                turnData.EnemyBuffer = null;
+                turnData.EntityBuffer = null;
 
                 PreviewAction();
             }
             else
             {
-                turnData.EnemyBuffer = (RPGEnemy)Choice.CurrentItem.Value;
+                turnData.EntityBuffer = (RPGEnemy)Choice.CurrentItem.Value;
 
                 switch (turnData.BattleAction)
                 {
@@ -1059,7 +1044,11 @@ namespace RPGF.Battle
                 yield return new WaitWhile(() => _battle.Choice.IsChoicing);
 
                 if (_battle.Choice.IsCanceled)
+                {
+                    turnData.Item = null;
+
                     PreviewAction();
+                }
                 else
                 {
                     turnData.Item = _battle.Choice.CurrentItem.Value as RPGCollectable;
@@ -1104,7 +1093,7 @@ namespace RPGF.Battle
                 PreviewAction();
             else
             {
-                if ((int)_battle.Choice.CurrentItem.Value == 0)
+                if ((int)_battle.Choice.BattleChoice.Index == 0)
                 {
                     Utility.AddConcetration(Config.AdditionConcentrationOnDefence);
                     turnData.ReservedConcentration = Config.AdditionConcentrationOnDefence;
@@ -1155,10 +1144,10 @@ namespace RPGF.Battle
 
         private IEnumerator HandleAttackAction(BattleTurnData turnData, RPGCharacter character)
         {
-            if (!Data.Enemys.Contains(turnData.EnemyBuffer))
+            if (!Data.Enemys.Contains(turnData.EntityBuffer))
             {
                 if (Data.Enemys.Count != 0)
-                    turnData.EnemyBuffer = Data.Enemys[0];
+                    turnData.EntityBuffer = Data.Enemys[0];
                 else
                     yield break;
             }
@@ -1172,7 +1161,7 @@ namespace RPGF.Battle
 
             yield return new WaitWhile(() => _battle.AttackQTE.QTE.IsWorking);
 
-            yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.BeforeHit, false, turnData.EnemyBuffer.Tag));
+            yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.BeforeHit, false, turnData.EntityBuffer.Tag));
 
             BattleAttackEffect effect = character.WeaponSlot == null ? Config.DefaultEffect : character.WeaponSlot.VisualEffect;
 
@@ -1182,7 +1171,7 @@ namespace RPGF.Battle
                 effect = BattleManager.BattleUtility.SpawnAttackEffect(effect);
             else
             {
-                Vector2 attackPos = _battle.EnemyModels.GetModel(turnData.EnemyBuffer).AttackWorldPoint;
+                Vector2 attackPos = _battle.EnemyModels.GetModel(turnData.EntityBuffer as RPGEnemy).AttackWorldPoint;
 
                 effect = BattleManager.BattleUtility.SpawnAttackEffect(effect, attackPos);
             }
@@ -1197,11 +1186,11 @@ namespace RPGF.Battle
 
             _battle.AttackQTE.Hide();
 
-            BattleManager.BattleUtility.DamageEnemy(character, turnData.EnemyBuffer, _battle.AttackQTE.QTE.DamageFactor);
+            BattleManager.BattleUtility.DamageEnemy(character, turnData.EntityBuffer as RPGEnemy, _battle.AttackQTE.QTE.DamageFactor);
 
-            yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.AfterHit, false, turnData.EnemyBuffer.Tag));
+            yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.AfterHit, false, turnData.EntityBuffer.Tag));
 
-            yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLessEnemyHeal, false, turnData.EnemyBuffer.Tag));
+            yield return _battle.StartCoroutine(InvokeBattleEvent(RPGBattleEvent.InvokePeriod.OnLessEnemyHeal, false, turnData.EntityBuffer.Tag));
         }
         private IEnumerator HandleActAction(BattleTurnData turnData, RPGCharacter character)
         {
@@ -1233,13 +1222,13 @@ namespace RPGF.Battle
                     yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, Data.TurnsData.Select(i => i.Character).ToArray()));
                     break;
                 case UsabilityDirection.Teammate:
-                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, turnData.CharacterBuffer));
+                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, turnData.EntityBuffer));
                     break;
                 case UsabilityDirection.AllEnemys:
                     yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, Data.Enemys.ToArray()));
                     break;
                 case UsabilityDirection.Enemy:
-                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, turnData.EnemyBuffer));
+                    yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, turnData.EntityBuffer));
                     break;
                 case UsabilityDirection.Any:
                     yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(turnData.Ability, character, turnData.EntityBuffer));
@@ -1289,13 +1278,13 @@ namespace RPGF.Battle
                         yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, Data.TurnsData.Select(i => i.Character).ToArray()));
                         break;
                     case UsabilityDirection.Teammate:
-                        yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, turnData.CharacterBuffer));
+                        yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, turnData.EntityBuffer));
                         break;
                     case UsabilityDirection.AllEnemys:
                         yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, Data.Enemys.ToArray()));
                         break;
                     case UsabilityDirection.Enemy:
-                        yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, turnData.EnemyBuffer));
+                        yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, turnData.EntityBuffer));
                         break;
                     case UsabilityDirection.Any:
                         yield return _battle.StartCoroutine(_battle.Utility.UseUsableTo(consumed, character, turnData.EntityBuffer));

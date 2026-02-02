@@ -7,9 +7,11 @@ namespace RPGF.Core.Choice
         where T : ChoiceItem
     {
         [SerializeField]
-        private int PageSize = 10;
+        private int pageSize = 10;
+        public int PageSize => pageSize;
 
-        public int Page => Mathf.FloorToInt((Index + 1) / PageSize);
+        public int Page => Mathf.FloorToInt((float)Index / (float)pageSize);
+        public int PageCount => Mathf.CeilToInt((float)Items.Count / (float)pageSize);
 
         public event Action<int, int> OnPageChangedEvent;
 
@@ -17,8 +19,8 @@ namespace RPGF.Core.Choice
         {
             base.OnSelectionChanged(item, index, prevIndex);
 
-            int newPage = Mathf.FloorToInt((index + 1) / PageSize);
-            int oldPage = Mathf.FloorToInt((prevIndex + 1) / PageSize);
+            int newPage = Mathf.FloorToInt((float)index / (float)pageSize);
+            int oldPage = Mathf.FloorToInt((float)prevIndex / (float)pageSize);
 
             if (oldPage != newPage)
             {

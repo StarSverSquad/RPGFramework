@@ -1,14 +1,19 @@
-﻿using RPGF.Domain.Interfaces;
+﻿using RPGF.Core;
+using RPGF.Domain.DI;
+using RPGF.Domain.Interfaces;
 using System;
 using System.Collections;
 using UnityEngine;
 
-namespace RPGF.Battle.UI
+namespace RPGF.Battle.Choice
 {
-    public class PrimaryBattleChoiceUI : MonoBehaviour, IActive
+    public class PrimaryBattleChoiceUI : RPGFrameworkBehaviour, IActive
     {
+        [Inject]
+        private readonly BaseOptions _options;
+
         [SerializeField]
-        private BattleChoiceButton[] buttons = new BattleChoiceButton[4];
+        private BattleChoiceItemUI[] buttons = new BattleChoiceItemUI[4];
 
         [SerializeField]
         private GameObject buttonsContainer;
@@ -31,6 +36,16 @@ namespace RPGF.Battle.UI
         public event Action OnSuccess;
         public event Action OnSellectionChanged;
 
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            foreach (var button in buttons)
+            {
+                button.Initialize();
+            }
+        }
+
         public void SetActive(bool active)
         {
             buttonsContainer.SetActive(active);
@@ -43,15 +58,14 @@ namespace RPGF.Battle.UI
 
             for (int i = 0; i <= 3; i++)
             {
+
                 if (choice == i)
                 {
-                    if (!buttons[i].IsFocused)
-                        buttons[i].SetFocus(true);
+                    buttons[i].Focus();
                 }
                 else
                 {
-                    if (buttons[i].IsFocused)
-                        buttons[i].SetFocus(false);
+                    buttons[i].UnFocus();
                 }
             }
 
@@ -68,27 +82,27 @@ namespace RPGF.Battle.UI
             {
                 yield return null;
 
-                if (Input.GetKeyDown(KeyCode.UpArrow))
+                if (Input.GetKeyDown(_options.MoveUp))
                     newchoice = Mathf.Clamp(choice - 1, 0, 3);
-                else if (Input.GetKeyDown(KeyCode.DownArrow))
+                else if (Input.GetKeyDown(_options.MoveDown))
                     newchoice = Mathf.Clamp(choice + 1, 0, 3);
 
                 if (newchoice != choice)
                 {
-                    buttons[choice].SetFocus(false);
-                    buttons[newchoice].SetFocus(true);
+                    buttons[choice].UnFocus();
+                    buttons[newchoice].Focus();
 
                     choice = newchoice;
 
                     OnSellectionChanged?.Invoke();
                 }
 
-                if (Input.GetKeyDown(KeyCode.Z))
+                if (Input.GetKeyDown(_options.Accept))
                 {
                     OnSuccess?.Invoke();
                     break;
                 }
-                else if (Input.GetKeyDown(KeyCode.X))
+                else if (Input.GetKeyDown(_options.Cancel))
                 {
                     choiceCoroutine = null;
                     isCanceled = true;

@@ -1,9 +1,11 @@
 ﻿using RPGF.RPG;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Core.RPGEffect
 {
+    [Serializable]
     public class ChangeManaHealPercentEffect : RPGEffectBase
     {
         public float Heal;

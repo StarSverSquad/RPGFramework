@@ -10,8 +10,8 @@ namespace RPGF.Core.Choice
         private int pageSize = 10;
         public int PageSize => pageSize;
 
-        public int Page => Mathf.FloorToInt((Index + 1) / pageSize);
-        public int PageCount => Mathf.CeilToInt(Items.Count / pageSize);
+        public int Page => Mathf.FloorToInt((float)Index / (float)pageSize);
+        public int PageCount => Mathf.CeilToInt((float)Items.Count / (float)pageSize);
 
         public event Action<int, int> OnPageChangedEvent;
 
@@ -19,8 +19,8 @@ namespace RPGF.Core.Choice
         {
             base.OnSelectionChanged(item, index, prevIndex);
 
-            int newPage = Mathf.FloorToInt((index + 1) / pageSize);
-            int oldPage = Mathf.FloorToInt((prevIndex + 1) / pageSize);
+            int newPage = Mathf.FloorToInt((float)index / (float)pageSize);
+            int oldPage = Mathf.FloorToInt((float)prevIndex / (float)pageSize);
 
             if (oldPage != newPage)
             {

@@ -36,6 +36,16 @@ namespace RPGF.Battle.Choice
         public event Action OnSuccess;
         public event Action OnSellectionChanged;
 
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            foreach (var button in buttons)
+            {
+                button.Initialize();
+            }
+        }
+
         public void SetActive(bool active)
         {
             buttonsContainer.SetActive(active);
@@ -48,6 +58,7 @@ namespace RPGF.Battle.Choice
 
             for (int i = 0; i <= 3; i++)
             {
+
                 if (choice == i)
                 {
                     buttons[i].Focus();

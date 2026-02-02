@@ -17,7 +17,7 @@ namespace RPGF.Core.Localization
             sheets = Resources.LoadAll<LocalizationSheet>("Localizations/").OrderBy(i => i.Order).ToArray();
         }
 
-        public string GetLocale(string tag)
+        public string GetLocale(string tag, string fallback = null)
         {
             LocalizationLanguage language = _gameConfig.Config.Language;
 
@@ -27,7 +27,7 @@ namespace RPGF.Core.Localization
                     return sheet.locales[tag].Get(language);
             }
 
-            return tag;
+            return fallback ?? tag;
         }
 
         public bool TryGetLocale(string tag, out string result)

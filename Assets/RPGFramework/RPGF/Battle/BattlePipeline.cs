@@ -865,7 +865,7 @@ namespace RPGF.Battle
                 PreviewAction();
             else
             {
-                if ((int)Choice.CurrentItem.Value == 0)
+                if ((int)Choice.BattleChoice.Index == 0)
                 {
                     turnData.BattleAction = TurnAction.Act;
                     choiceActions.Add(ChoiceAction.Enemy);
@@ -950,17 +950,13 @@ namespace RPGF.Battle
 
             if (_battle.Choice.IsCanceled)
             {
-                if (turnData.BattleAction == TurnAction.Item)
-                    turnData.Item = null;
+                turnData.EntityBuffer = null;
 
                 PreviewAction();
             }
             else
             {
-                turnData.EntityBuffer = (RPGEntity)_battle.Choice.CurrentItem.Value;
-
                 var result = _battle.Choice.BattleChoice.Index;
-
                 if (result == 0)
                 {
                     choiceActions.Add(ChoiceAction.Teammate);
@@ -982,9 +978,6 @@ namespace RPGF.Battle
 
             if (Choice.IsCanceled)
             {
-                if (turnData.BattleAction == TurnAction.Item)
-                    turnData.Item = null;
-
                 PreviewAction();
             }
             else
@@ -1012,9 +1005,6 @@ namespace RPGF.Battle
 
             if (_battle.Choice.IsCanceled)
             {
-                if (turnData.BattleAction == TurnAction.Item)
-                    turnData.Item = null;
-
                 turnData.EntityBuffer = null;
 
                 PreviewAction();
@@ -1054,7 +1044,11 @@ namespace RPGF.Battle
                 yield return new WaitWhile(() => _battle.Choice.IsChoicing);
 
                 if (_battle.Choice.IsCanceled)
+                {
+                    turnData.Item = null;
+
                     PreviewAction();
+                }
                 else
                 {
                     turnData.Item = _battle.Choice.CurrentItem.Value as RPGCollectable;
@@ -1099,7 +1093,7 @@ namespace RPGF.Battle
                 PreviewAction();
             else
             {
-                if ((int)_battle.Choice.CurrentItem.Value == 0)
+                if ((int)_battle.Choice.BattleChoice.Index == 0)
                 {
                     Utility.AddConcetration(Config.AdditionConcentrationOnDefence);
                     turnData.ReservedConcentration = Config.AdditionConcentrationOnDefence;

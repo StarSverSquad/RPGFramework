@@ -28,7 +28,7 @@ namespace RPGF.Battle.Choice
         private PrimaryBattleChoiceUI primaryChoice;
         public PrimaryBattleChoiceUI PrimaryChoice => primaryChoice;
 
-        public bool IsChoicing => battleChoice.State == Core.Choice.ChoiceState.Chocing || primaryChoice.IsChoicing;
+        public bool IsChoicing => battleChoice.IsChoiceCoroutineWorking || primaryChoice.IsChoicing;
 
         public bool IsCanceled => battleChoice.State == Core.Choice.ChoiceState.Canceled;
         public bool IsPrimaryCanceled => primaryChoice.IsCanceled;
@@ -240,7 +240,7 @@ namespace RPGF.Battle.Choice
                 return info;
             }).ToList();
 
-            battleChoice.Invoke();
+            battleChoice.Invoke(choices);
         }
 
         public void InvokeChoiceAbility()
@@ -318,8 +318,8 @@ namespace RPGF.Battle.Choice
 
                 BattleChoiceItem element = new()
                 {
-                    Label = slot.Item.Name,
-                    Description = slot.Item.Description,
+                    Label = GetLocale($"{slot.Item.Tag}_name", slot.Item.Name),
+                    Description = GetLocale($"{slot.Item.Tag}_description", slot.Item.Description),
                     Icon = slot.Item.Icon,
                     CounterText = slot.Count - alreadyUsing == 1 ? "" : $"{slot.Count - alreadyUsing}x",
                     Value = slot.Item,

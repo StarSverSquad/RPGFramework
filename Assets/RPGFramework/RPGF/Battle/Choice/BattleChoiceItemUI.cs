@@ -40,6 +40,26 @@ namespace RPGF.Battle.Choice
             startSizesOfFocusEffect[1] = FocusEffectElements[1].sizeDelta;
         }
 
+        public void SetIcon(Sprite sprite)
+        {
+            var current = MainText.margin;
+
+            if (sprite is not null)
+            {
+                Icon.enabled = true;
+                Icon.sprite = sprite;
+
+                current.x = 65;
+                MainText.margin = current;
+            }
+            else
+            {
+                Icon.enabled = false;
+                current.x = 10;
+                MainText.margin = current;
+            }
+        }
+
         public void UnLock()
         {
             actualColor = commonColor;

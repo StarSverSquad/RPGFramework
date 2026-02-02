@@ -5,6 +5,7 @@ using RPGF.EventSystem.Attributes;
 using RPGF.RPG;
 using System;
 using System.Collections;
+using UnityEngine;
 
 namespace RPGF.Actions
 {
@@ -41,6 +42,16 @@ namespace RPGF.Actions
             }
 
             yield break;
+        }
+
+        public override ActionBase Clone()
+        {
+            return new ChangeItemCountAction()
+            {
+                Item = Item,
+                Count = Count,
+                IsSet = IsSet
+            };
         }
     }
 }

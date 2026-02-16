@@ -12,9 +12,9 @@ namespace RPGF.Battle.Player
         public float HitCooldown = 1f;
 
         [SerializeField]
-        private AudioSource audioSource;
+        private AudioSource hurtSound;
         [SerializeField]
-        private SpriteRenderer spriteRenderer;
+        private SpriteRenderer hurtMask;
 
         public bool IsHitCooldown => cooldownCorotine != null;
 
@@ -48,19 +48,9 @@ namespace RPGF.Battle.Player
                 if (bullet.DestroyAfterHit)
                     Destroy(bullet.gameObject);
 
-                audioSource.Play();
+                hurtSound.Play();
 
-                damageAnimation?.Kill();
-
-                damageAnimation = DOTween.Sequence();
-
-                damageAnimation.Append(
-                    spriteRenderer.DOColor(new Color(0.5f, 0.5f, 0.5f), 0.15f).From(Color.white));
-
-                damageAnimation.Append(
-                    spriteRenderer.DOColor(Color.white, 0.15f));
-
-                damageAnimation.SetLoops(3).Play();
+                AnimateDamage();
 
                 if (!IsHitCooldown)
                     cooldownCorotine = StartCoroutine(CooldownCoroutine());
@@ -70,6 +60,21 @@ namespace RPGF.Battle.Player
                     Battle.Utility.DamageCharacterByBullet(item, bullet);
                 }
             }
+        }
+
+        private void AnimateDamage()
+        {
+            damageAnimation?.Kill();
+
+            damageAnimation = DOTween.Sequence();
+
+            damageAnimation.Append(
+                hurtMask.DOColor(new Color(0, 0, 0, 0.5f), 0.15f).From(new Color(0, 0, 0, 0)));
+
+            damageAnimation.Append(
+                hurtMask.DOColor(new Color(0, 0, 0, 0), 0.15f));
+
+            damageAnimation.SetLoops(3).Play();
         }
 
         private IEnumerator CooldownCoroutine()

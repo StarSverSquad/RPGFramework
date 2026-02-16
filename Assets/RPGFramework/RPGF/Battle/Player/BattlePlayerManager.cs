@@ -1,29 +1,44 @@
 ﻿using RPGF.Core;
+using RPGF.Core.Battle.PlayerMode;
 using RPGF.Domain.Interfaces;
+using System;
 using UnityEngine;
 
 namespace RPGF.Battle.Player
 {
-    public class BattlePlayerManager : RPGFrameworkBehaviour, IActive
+    public class BattlePlayerManager : RPGFrameworkBehaviour, IActive, IDisposable
     {
         [SerializeField]
         private GameObject container;
 
-        public BattlePlayerBorder border;
-        public BattlePlayerInteraction interaction;
-        public BattlePlayerMovement movement;
+        public BattlePlayerBorder Border;
+        public BattlePlayerInteraction Interaction;
+        public BattlePlayerModeManager Mode;
+
+        public PlayerModeData PlayerModeData;
+
+        public override void Initialize()
+        {
+            Mode.Initialize();
+        }
 
         public void SetActive(bool active)
         {
             container.SetActive(active);
 
-            movement.CanMove = active;
+            PlayerModeData.CanMove = active;
+            PlayerModeData.CanAccelerate = active;
 
             if (active)
             {
-                movement.MoveSpeed = movement.DefaultMoveSpeed;
+                PlayerModeData.MoveSpeed = PlayerModeData.DefaultMoveSpeed;
                 transform.position = Battle.BattleField.StartPosition;
             }
+        }
+
+        public void Dispose()
+        {
+            Mode.Dispose();
         }
     }
 }

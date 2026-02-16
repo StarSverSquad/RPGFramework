@@ -1,21 +1,17 @@
-﻿using RPGF.Core;
+using RPGF.Core.Battle.PlayerMode;
 using UnityEngine;
 
-namespace RPGF.Battle.Player
+namespace RPGF.Battle.Player.Mode
 {
-    public class BattlePlayerMovement : RPGFrameworkBehaviour
+    public class SoulPlayerMode : PlayerModeBase
     {
-        [SerializeField]
-        private Rigidbody2D rb;
+        public override PlayerModeEnum PlayerMode => PlayerModeEnum.Soul;
 
-        public bool CanMove = true;
-
-        public float DefaultMoveSpeed = 1;
-        public float MoveSpeed = 1;
+        public override Color SoulColor => Color.gold;
 
         private void FixedUpdate()
         {
-            if (CanMove)
+            if (Data.CanMove)
             {
                 Vector2 direction = Vector2.zero;
 
@@ -28,10 +24,10 @@ namespace RPGF.Battle.Player
                 if (Input.GetKey(Global.BaseOptions.MoveRight))
                     direction += Vector2.right;
 
-                rb.linearVelocity = direction.normalized * MoveSpeed;
+                Data.Rigidbody.linearVelocity = direction.normalized * Data.MoveSpeed;
             }
             else
-                rb.linearVelocity = Vector2.zero;
+                Data.Rigidbody.linearVelocity = Vector2.zero;
         }
     }
 }

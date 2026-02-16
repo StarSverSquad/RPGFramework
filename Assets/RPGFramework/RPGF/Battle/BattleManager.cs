@@ -7,6 +7,7 @@ using RPGF.Core;
 using RPGF.Shared;
 using UnityEngine;
 using RPGF.Battle.Choice;
+using RPGFramework.RPGF.Battle;
 
 namespace RPGF.Battle
 {
@@ -29,6 +30,7 @@ namespace RPGF.Battle
         public MinigameManager Minigame;
         public BattleData Data;
         public BattleSpashMessageWriter SpashWriter;
+        public SpiderModeGridManager SpiderModeGrid;
 
         public Canvas Canvas;
 
@@ -40,6 +42,7 @@ namespace RPGF.Battle
         public static BattleUtility BattleUtility => Instance.Utility;
 
         private LocalManager Local => LocalManager.Instance;
+
 
         public override void Initialize()
         {
@@ -57,11 +60,11 @@ namespace RPGF.Battle
 
         public override void InitializeChild()
         {
-            BattleField.Initialize();
             Local.DI.AddSignleton(BattleField);
+            BattleField.Initialize();
 
-            EnemyBehaviour.Initialize();
             Local.DI.AddSignleton(EnemyBehaviour);
+            EnemyBehaviour.Initialize();
 
             Pipeline = new BattlePipeline(this, SharedManager.Instance);
             Local.DI.AddSignleton(Pipeline);
@@ -73,8 +76,12 @@ namespace RPGF.Battle
 
             SpashWriter.Initialize();
 
-            Player.SetActive(false);
             Local.DI.AddSignleton(Player);
+            Player.Initialize();
+            Player.SetActive(false);
+
+            Local.DI.InjectInto(SpiderModeGrid);
+            SpiderModeGrid.Initialize();
         }
     }
 

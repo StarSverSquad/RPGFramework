@@ -1,5 +1,7 @@
-﻿using RPGF.Core.Battle.Abstractions;
+﻿using RPGF.Battle.Player;
 using RPGF.Battle.Samples.EnemyBullet;
+using RPGF.Core.Battle.Abstractions;
+using RPGF.Domain.DI;
 using System.Collections;
 using UnityEngine;
 
@@ -8,6 +10,9 @@ namespace RPGF.Battle.Samples.EnemyBehaviour
     [AddComponentMenu("RPG/Battle/EnemyBehaviour/KeparicPattern0")]
     public class KeparicPattern0 : BattleEnemyBehaviourBase
     {
+        [Inject]
+        private readonly BattlePlayerManager _player;
+
         [SerializeField]
         private EnemyBulletBase KeparicBullet;
 
@@ -23,6 +28,8 @@ namespace RPGF.Battle.Samples.EnemyBehaviour
 
         private IEnumerator MainPattern()
         {
+            _player.Mode.SetMode(Core.Battle.PlayerMode.PlayerModeEnum.Spider);
+
             Battle.BattleField.Resize(new Vector2(1.5f, 3));
 
             bool right = true;
@@ -68,6 +75,11 @@ namespace RPGF.Battle.Samples.EnemyBehaviour
 
                 yield return new WaitForSeconds(TimeOffset);
             }
+        }
+
+        public override void Dispose()
+        {
+            _player.Mode.SetMode(Core.Battle.PlayerMode.PlayerModeEnum.Soul);
         }
     }
 }

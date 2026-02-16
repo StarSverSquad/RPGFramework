@@ -12,6 +12,8 @@ namespace RPGF.Core.Battle
     {
         [Inject]
         private readonly BattleFieldManager _field;
+        [Inject]
+        private readonly DependencyInjection DI;
 
         private readonly List<GameObject> behavioursObjects = new();
         private readonly List<BattleEnemyBehaviourBase> behaviours = new();
@@ -43,7 +45,11 @@ namespace RPGF.Core.Battle
             transform.position = (Vector2)Camera.main.transform.position;
 
             foreach (var behaviour in behaviours)
+            {
+                DI.InjectInto(behaviour);
                 behaviour.Invoke();
+            }
+                
 
             attackCoroutine = StartCoroutine(BehavioursControllCoroutine());
         }

@@ -612,6 +612,7 @@ namespace RPGF.Battle
             yield return new WaitForSeconds(0.3f);
 
             _battle.BattleField.SetActive(false);
+            _battle.Player.Dispose();
 
             UI.CharacterBox.Hide();
 

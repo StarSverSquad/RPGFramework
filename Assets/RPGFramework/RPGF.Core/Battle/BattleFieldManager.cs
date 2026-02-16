@@ -26,6 +26,13 @@ namespace RPGF.Core.Battle
         [SerializeField]
         private Vector2 DefaultCenterOffset = Vector2.down;
 
+        public event Action<Vector2, float, Ease> OnResize;
+        public event Action<float, float, Ease> OnRortate;
+        public event Action<Vector2, float, Ease> OnMove;
+
+        public event Action OnHide;
+        public event Action OnShow;
+
         private Tween resizeTween;
         private Tween rotateTween;
         private Tween moveTween;
@@ -77,6 +84,8 @@ namespace RPGF.Core.Battle
                     DisposeResizeTween();
                 };
             }
+
+            OnResize?.Invoke(size, time, ease);
         }
 
         public void Rotate(float angle, float time = 0, Ease ease = Ease.Linear)
@@ -99,6 +108,8 @@ namespace RPGF.Core.Battle
                     DisposeRotateTween();
                 };
             }
+
+            OnRortate?.Invoke(angle, time, ease);
         }
 
         public void MoveTo(Vector2 position, float time = 0, Ease ease = Ease.Linear)
@@ -121,6 +132,8 @@ namespace RPGF.Core.Battle
                     DisposeMoveTween();
                 };
             }
+
+            OnMove?.Invoke(position, time, ease);
         }
         public void MoveRelative(Vector2 offset, float time = 0, Ease ease = Ease.Linear)
         {
@@ -134,6 +147,8 @@ namespace RPGF.Core.Battle
 
             background?.transform.DOKill();
             background.transform.DOScale(Vector3.one, _animationTime).From(new Vector2(1.5f, 1.5f)).Play();
+
+            OnShow?.Invoke();
         }
         public void Hide()
         {
@@ -142,6 +157,8 @@ namespace RPGF.Core.Battle
 
             background?.transform.DOKill();
             background.transform.DOScale(new Vector2(1.5f, 1.5f), _animationTime).Play();
+
+            OnHide?.Invoke();
         }
 
         #endregion

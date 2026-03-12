@@ -7,7 +7,7 @@ using RPGF.Core;
 using RPGF.Shared;
 using UnityEngine;
 using RPGF.Battle.Choice;
-using RPGFramework.RPGF.Battle;
+using RPGF.Core.Battle.BattleField;
 
 namespace RPGF.Battle
 {

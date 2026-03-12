@@ -590,8 +590,8 @@ namespace RPGF.Battle
 
             _battle.Player.SetActive(true);
 
-            _battle.BattleField.SetActive(true);
-            _battle.BattleField.Show();
+            //_battle.BattleField.SetActive(true);
+            //_battle.BattleField.Show();
 
             _battle.EnemyBehaviour.Invoke();
 
@@ -607,11 +607,11 @@ namespace RPGF.Battle
             }
 
             _battle.Player.SetActive(false);
-            _battle.BattleField.Hide();
+            _battle.BattleField.Dispose();
 
             yield return new WaitForSeconds(0.3f);
 
-            _battle.BattleField.SetActive(false);
+            //_battle.BattleField.SetActive(false);
             _battle.Player.Dispose();
 
             UI.CharacterBox.Hide();

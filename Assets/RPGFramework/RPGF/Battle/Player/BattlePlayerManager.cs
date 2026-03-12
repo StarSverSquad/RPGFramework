@@ -13,13 +13,13 @@ namespace RPGF.Battle.Player
 
         public BattlePlayerBorder Border;
         public BattlePlayerInteraction Interaction;
-        public BattlePlayerModeManager Mode;
+        public BattlePlayerModeManager ModeManager;
 
         public PlayerModeData PlayerModeData;
 
         public override void Initialize()
         {
-            Mode.Initialize();
+            ModeManager.Initialize();
         }
 
         public void SetActive(bool active)
@@ -32,13 +32,13 @@ namespace RPGF.Battle.Player
             if (active)
             {
                 PlayerModeData.MoveSpeed = PlayerModeData.DefaultMoveSpeed;
-                transform.position = Battle.BattleField.StartPosition;
+                //transform.position = Battle.BattleField.StartPosition;
             }
         }
 
         public void Dispose()
         {
-            Mode.Dispose();
+            ModeManager.Dispose();
         }
     }
 }

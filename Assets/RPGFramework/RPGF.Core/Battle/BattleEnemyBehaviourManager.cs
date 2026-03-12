@@ -5,6 +5,7 @@ using System.Linq;
 using RPGF.RPG;
 using RPGF.Core.Battle.Abstractions;
 using RPGF.Domain.DI;
+using RPGF.Core.Battle.BattleField;
 
 namespace RPGF.Core.Battle
 {

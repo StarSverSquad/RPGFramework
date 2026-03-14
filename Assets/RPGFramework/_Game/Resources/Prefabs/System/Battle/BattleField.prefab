@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5450268622348916644}
   - component: {fileID: 928706993265602043}
+  - component: {fileID: 2143283610024349212}
   m_Layer: 0
   m_Name: ContentMask
   m_TagString: Untagged
@@ -54,7 +55,7 @@ SpriteMask:
   m_SmallMeshCulling: 1
   m_ForceMeshLod: -1
   m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 2
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 15d0c3709176029428a0da2f8cecf0b5, type: 2}
@@ -81,7 +82,7 @@ SpriteMask:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: db58aa0ccca2ef143be7e544480067a4, type: 3}
-  m_MaskAlphaCutoff: 0.2
+  m_MaskAlphaCutoff: 0.131
   m_FrontSortingLayerID: 0
   m_BackSortingLayerID: 0
   m_FrontSortingLayer: 0
@@ -91,6 +92,20 @@ SpriteMask:
   m_IsCustomRangeActive: 0
   m_SpriteSortPoint: 0
   m_MaskSource: 0
+--- !u!114 &2143283610024349212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175513190468517824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 703435e2e01cb5c4e93472903355f437, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RPGF.Core.Helpers.AutoTiling
+  referenceRenderer: {fileID: 4798714977258673290}
+  margin: {x: 0.17, y: 0.17}
 --- !u!1 &4535630135285238637
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,7 +394,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2146222304473327051}
-  - component: {fileID: 3818648682315370584}
+  - component: {fileID: 7566819421535052251}
   m_Layer: 0
   m_Name: BattleField
   m_TagString: Untagged
@@ -403,7 +418,7 @@ Transform:
   - {fileID: 5359205567713324873}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3818648682315370584
+--- !u!114 &7566819421535052251
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -415,6 +430,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f25ecc7ab5f4e454bbd5b2df2f0a1c17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RPGF.Core.Battle.BattleField.SimpleBattleField
+  _field: {fileID: 4798714977258673290}
+  _mask: {fileID: 2143283610024349212}
+  animationTime: 0.1
 --- !u!1 &7249814241782714702
 GameObject:
   m_ObjectHideFlags: 0

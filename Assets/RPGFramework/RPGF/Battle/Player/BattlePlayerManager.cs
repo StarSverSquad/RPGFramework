@@ -11,7 +11,7 @@ namespace RPGF.Battle.Player
         [SerializeField]
         private GameObject container;
 
-        public BattlePlayerBorder Border;
+        public BattlePlayerHalo Halo;
         public BattlePlayerInteraction Interaction;
         public BattlePlayerModeManager ModeManager;
 
@@ -32,13 +32,14 @@ namespace RPGF.Battle.Player
             if (active)
             {
                 PlayerModeData.MoveSpeed = PlayerModeData.DefaultMoveSpeed;
-                //transform.position = Battle.BattleField.StartPosition;
+                transform.position = Battle.BattleField.Center;
             }
         }
 
         public void Dispose()
         {
             ModeManager.Dispose();
+            Halo.Dispose();
         }
     }
 }

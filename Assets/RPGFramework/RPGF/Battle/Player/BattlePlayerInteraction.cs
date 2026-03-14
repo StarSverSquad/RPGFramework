@@ -3,7 +3,7 @@ using RPGF.Core;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using RPGF.Core.Battle.Abstractions;
+using RPGF.Core.Battle.Projectiles.Abstractions;
 
 namespace RPGF.Battle.Player
 {
@@ -19,7 +19,6 @@ namespace RPGF.Battle.Player
         public bool IsHitCooldown => cooldownCorotine != null;
 
         private Coroutine cooldownCorotine;
-
         private Sequence damageAnimation;
 
         private void OnEnable()
@@ -29,24 +28,27 @@ namespace RPGF.Battle.Player
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.CompareTag("PatternBullet"))
+            if (collision.CompareTag(TagConstants.ProjectileTag))
             {
-                var bullet = collision.gameObject.GetComponent<EnemyBulletBase>();
+                var projectile = collision.gameObject.GetComponent<ProjectileBase>();
 
-                if (IsHitCooldown && !bullet.IgnoreHitCooldown)
+                if (IsHitCooldown && !projectile.IgnoreHitCooldown)
                 {
-                    bullet.OnCooldownHit();
+                    projectile.OnHitWhileCooldown();
 
-                    if (bullet.DestroyAfterHit)
-                        Destroy(bullet.gameObject);
+                    if (projectile.DestroyAfterHit)
+                    {
+                        projectile.Dispose();
+                        Destroy(projectile.gameObject);
+                    }
 
                     return;
                 }
 
-                bullet.OnHit();
+                projectile.OnHit();
 
-                if (bullet.DestroyAfterHit)
-                    Destroy(bullet.gameObject);
+                if (projectile.DestroyAfterHit)
+                    Destroy(projectile.gameObject);
 
                 hurtSound.Play();
 
@@ -57,7 +59,7 @@ namespace RPGF.Battle.Player
 
                 foreach (var item in Battle.Data.TurnsData.Where(i => i.IsTarget))
                 {
-                    Battle.Utility.DamageCharacterByBullet(item, bullet);
+                    Battle.Utility.DamageCharacterByProjectile(item, projectile);
                 }
             }
         }

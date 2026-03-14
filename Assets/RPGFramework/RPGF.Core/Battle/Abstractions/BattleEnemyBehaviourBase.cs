@@ -1,3 +1,4 @@
+using RPGF.Core.Battle.Projectiles.Abstractions;
 using RPGF.Domain.DI;
 using RPGF.RPG;
 using System;
@@ -45,21 +46,21 @@ namespace RPGF.Core.Battle.Abstractions
 
         protected GameObject CreateObjectRelativeCenter(GameObject obj, Vector2 offset)
         {
-            if (obj.TryGetComponent(out EnemyBulletBase pb))
+            if (obj.TryGetComponent(out ProjectileBase pb))
                 pb.enemy = Owner;
 
             return manager.CreateObjectRelativeCenter(obj, offset);
         }
         protected GameObject CreateObjectRelativeBattleField(GameObject obj, Vector2 offset)
         {
-            if (obj.TryGetComponent(out EnemyBulletBase pb))
+            if (obj.TryGetComponent(out ProjectileBase pb))
                 pb.enemy = Owner;
 
             return manager.CreateObjectRelativeBattleField(obj, offset);
         }
         protected GameObject CreateObjectInWorldSpace(GameObject obj, Vector2 position)
         {
-            if (obj.TryGetComponent(out EnemyBulletBase pb))
+            if (obj.TryGetComponent(out ProjectileBase pb))
                 pb.enemy = Owner;
 
             return manager.CreateObjectInWorldSpace(obj, position);

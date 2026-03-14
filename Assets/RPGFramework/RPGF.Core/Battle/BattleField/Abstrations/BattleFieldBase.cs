@@ -11,7 +11,7 @@ namespace RPGF.Core.Battle.BattleField.Abstractions
         [Inject]
         private readonly BattleFieldManager _manager;
 
-        protected Vector2 Center => _manager.transform.position;
+        protected Vector2 Center => _manager.Center;
 
         [Header("Ссылки:")]
         [SerializeField]

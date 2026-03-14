@@ -15,6 +15,10 @@ namespace RPGF.Core.Battle.BattleField
 
         private readonly List<BattleFieldBase> fields = new();
 
+        [SerializeField]
+        private Vector2 centerOffset = Vector2.zero;
+        public Vector2 Center => (Vector2)transform.position + centerOffset;
+
         public BattleFieldBase MainField => fields.FirstOrDefault();
         public bool HasField => fields.Any();
 

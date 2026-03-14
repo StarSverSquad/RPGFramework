@@ -120,9 +120,6 @@ namespace RPGF.Domain.DI
         {
             T value = Activator.CreateInstance<T>();
 
-            if (value is InjectionTarget target)
-                InjectInto(target);
-
             AddSignleton(value);
 
             return value;

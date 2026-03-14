@@ -1029,11 +1029,11 @@ GameObject:
   - component: {fileID: 5357846586610584431}
   - component: {fileID: 8449253130758582169}
   - component: {fileID: 5320943889552874976}
-  - component: {fileID: 4124602129812649874}
-  - component: {fileID: 8237017577730870280}
   - component: {fileID: 5626744907146664301}
   - component: {fileID: 2970273802726155118}
   - component: {fileID: 7613984895761959279}
+  - component: {fileID: 4124602129812649874}
+  - component: {fileID: 8237017577730870280}
   m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
@@ -1070,7 +1070,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   container: {fileID: 3026750736285496102}
-  Border: {fileID: 6308127252130601265}
+  Halo: {fileID: 7850427865413357224}
   Interaction: {fileID: 1648837770815794854}
   ModeManager: {fileID: 5320943889552874976}
   PlayerModeData: {fileID: 5626744907146664301}
@@ -1091,6 +1091,51 @@ MonoBehaviour:
   - {fileID: 2970273802726155118}
   - {fileID: 7613984895761959279}
   soulModel: {fileID: 1676247812452798225}
+--- !u!114 &5626744907146664301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748881467222081450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9292acb159640614c8b00395ddb28685, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RPGF.Core.Battle.PlayerMode.PlayerModeData
+  Rigidbody: {fileID: 4124602129812649874}
+  MoveSpeed: 4
+  DefaultMoveSpeed: 4
+  AccelerateFactor: 1.3
+  CanMove: 1
+  CanAccelerate: 1
+--- !u!114 &2970273802726155118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748881467222081450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f81e2b43114c3d43bdb0ac385958a89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RPGF.Battle.Player.Mode.SoulPlayerMode
+--- !u!114 &7613984895761959279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748881467222081450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82488cde31bd4154b9ed9dcf43eef6f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RPGF.Battle.Player.Mode.SpiderPlayerMode
+  verticalMoveTime: 0.1
+  initialMaxVerticalOffset: 1
+  ladderModeSpeed: 0
 --- !u!50 &4124602129812649874
 Rigidbody2D:
   serializedVersion: 5
@@ -1176,51 +1221,6 @@ PolygonCollider2D:
       - {x: 0.18027183, y: -0.024175644}
       - {x: 0.18091103, y: 0.13233854}
   m_UseDelaunayMesh: 0
---- !u!114 &5626744907146664301
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 748881467222081450}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9292acb159640614c8b00395ddb28685, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RPGF.Core.Battle.PlayerMode.PlayerModeData
-  Rigidbody: {fileID: 4124602129812649874}
-  MoveSpeed: 4
-  DefaultMoveSpeed: 4
-  AccelerateFactor: 1.3
-  CanMove: 1
-  CanAccelerate: 1
---- !u!114 &2970273802726155118
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 748881467222081450}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f81e2b43114c3d43bdb0ac385958a89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RPGF.Battle.Player.Mode.SoulPlayerMode
---- !u!114 &7613984895761959279
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 748881467222081450}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82488cde31bd4154b9ed9dcf43eef6f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RPGF.Battle.Player.Mode.SpiderPlayerMode
-  verticalMoveTime: 0.1
-  initialMaxVerticalOffset: 1
-  ladderModeSpeed: 0
 --- !u!1 &835614866425820452
 GameObject:
   m_ObjectHideFlags: 0
@@ -4906,7 +4906,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 146.00006, y: -54.149902}
+  m_AnchoredPosition: {x: 146, y: -54.149902}
   m_SizeDelta: {x: 261.72998, y: 107.78003}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &772973754128360326
@@ -6094,7 +6094,7 @@ GameObject:
   - component: {fileID: 286732144077620468}
   - component: {fileID: 3407360911683736848}
   m_Layer: 0
-  m_Name: Border
+  m_Name: Halo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8641,6 +8641,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6537275630116913554}
   - component: {fileID: 8226082795102276659}
+  - component: {fileID: 3311093043888096563}
   m_Layer: 0
   m_Name: BattleFields
   m_TagString: Untagged
@@ -8677,6 +8678,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0089012cb3f9d924eb1a27b87427dedb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  centerOffset: {x: 0, y: -1}
+--- !u!114 &3311093043888096563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5060710229843373793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbf155ed5358f484ebdd34becce44c14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RPGF.Core.Battle.Projectiles.ProjectileManager
+  projectileContainer: {fileID: 4748417331171564143}
 --- !u!1 &5074577840134714083
 GameObject:
   m_ObjectHideFlags: 0
@@ -11103,6 +11118,7 @@ MonoBehaviour:
   container: {fileID: 6653017777265320983}
   Choice: {fileID: 1492566794163858137}
   BattleField: {fileID: 8226082795102276659}
+  Projectiles: {fileID: 3311093043888096563}
   Background: {fileID: 5870881595871833980}
   BattleAudio: {fileID: 6211553997891423842}
   Player: {fileID: 8449253130758582169}
@@ -11115,7 +11131,6 @@ MonoBehaviour:
   Minigame: {fileID: 5104481964375529734}
   Data: {fileID: 5169355313720295268}
   SpashWriter: {fileID: 1488958187577538652}
-  SpiderModeGrid: {fileID: 0}
   Canvas: {fileID: 7427866169965658193}
 --- !u!114 &1492566794163858137
 MonoBehaviour:
@@ -11865,10 +11880,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5193024628968830943}
   - component: {fileID: 5924471641432792281}
-  - component: {fileID: 6308127252130601265}
   - component: {fileID: 3526954564788620398}
+  - component: {fileID: 7850427865413357224}
   m_Layer: 9
-  m_Name: BorderHitBox
+  m_Name: HaloHitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11925,20 +11940,6 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.63
---- !u!114 &6308127252130601265
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6830394178220161009}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15d08e0ea1d944d4483c6f5142f7dd32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 3407360911683736848}
-  audioSource: {fileID: 3526954564788620398}
 --- !u!82 &3526954564788620398
 AudioSource:
   m_ObjectHideFlags: 0
@@ -12036,6 +12037,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7850427865413357224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6830394178220161009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c350cce12b876d7409278bb9bef9170d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RPGF.Battle.Player.BattlePlayerHalo
+  spriteRenderer: {fileID: 3407360911683736848}
+  audioSource: {fileID: 3526954564788620398}
 --- !u!1 &6877437003739846803
 GameObject:
   m_ObjectHideFlags: 0

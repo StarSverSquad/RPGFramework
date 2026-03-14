@@ -608,10 +608,10 @@ namespace RPGF.Battle
 
             _battle.Player.SetActive(false);
             _battle.BattleField.Dispose();
+            _battle.Projectiles.Dispose();
 
             yield return new WaitForSeconds(0.3f);
 
-            //_battle.BattleField.SetActive(false);
             _battle.Player.Dispose();
 
             UI.CharacterBox.Hide();

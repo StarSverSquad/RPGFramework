@@ -8,6 +8,7 @@ using RPGF.Shared;
 using UnityEngine;
 using RPGF.Battle.Choice;
 using RPGF.Core.Battle.BattleField;
+using RPGF.Core.Battle.Projectiles;
 
 namespace RPGF.Battle
 {
@@ -18,6 +19,7 @@ namespace RPGF.Battle
 
         public BattleChoiceManager Choice;
         public BattleFieldManager BattleField;
+        public ProjectileManager Projectiles;
         public BattleBackground Background;
         public BattleAudioManager BattleAudio;
         public BattlePlayerManager Player;
@@ -30,7 +32,6 @@ namespace RPGF.Battle
         public MinigameManager Minigame;
         public BattleData Data;
         public BattleSpashMessageWriter SpashWriter;
-        public SpiderModeGridManager SpiderModeGrid;
 
         public Canvas Canvas;
 
@@ -63,6 +64,9 @@ namespace RPGF.Battle
             Local.DI.AddSignleton(BattleField);
             BattleField.Initialize();
 
+            Local.DI.AddSignleton(Projectiles);
+            Projectiles.Initialize();
+
             Local.DI.AddSignleton(EnemyBehaviour);
             EnemyBehaviour.Initialize();
 
@@ -80,8 +84,8 @@ namespace RPGF.Battle
             Player.Initialize();
             Player.SetActive(false);
 
-            Local.DI.InjectInto(SpiderModeGrid);
-            SpiderModeGrid.Initialize();
+            //Local.DI.InjectInto(SpiderModeGrid);
+            //SpiderModeGrid.Initialize();
         }
     }
 

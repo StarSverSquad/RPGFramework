@@ -4906,7 +4906,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 146, y: -54.149902}
+  m_AnchoredPosition: {x: 145.99976, y: -54.149902}
   m_SizeDelta: {x: 261.72998, y: 107.78003}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &772973754128360326
@@ -8645,7 +8645,7 @@ GameObject:
   m_Layer: 0
   m_Name: BattleFields
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -8678,7 +8678,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0089012cb3f9d924eb1a27b87427dedb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  centerOffset: {x: 0, y: -1}
+  centerOffset: {x: 0, y: 0}
 --- !u!114 &3311093043888096563
 MonoBehaviour:
   m_ObjectHideFlags: 0

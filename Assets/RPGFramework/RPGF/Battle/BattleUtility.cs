@@ -147,7 +147,7 @@ namespace RPGF.Battle
 
             float defenceFactor = data.BattleAction == TurnAction.Defence ? .5f : 1f;
 
-            int realDamage = data.Character.GiveDamage(Mathf.RoundToInt(projectile.enemy.Damage * projectile.DamageFactor * defenceFactor));
+            int realDamage = data.Character.GiveDamage(Mathf.RoundToInt((projectile.Owner?.Damage ?? 1) * projectile.DamageFactor * defenceFactor));
 
             _battle.Shaker.Shake(2);
 

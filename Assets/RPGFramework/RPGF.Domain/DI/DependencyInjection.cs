@@ -24,12 +24,19 @@ namespace RPGF.Domain.DI
 
         public void InjectInto(InjectionTarget target, params Injectable[] injectables)
         {
-            var injectionFileds = target.GetType()
-                                        .GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Default)
-                                        .Where(f => f.GetCustomAttribute<InjectAttribute>() != null
-                                                    && f.IsPrivate && f.IsInitOnly);
+            List<FieldInfo> injectionFields = new();
 
-            foreach (var field in injectionFileds)
+            var type = target.GetType();
+            while (type != null)
+            {
+                injectionFields.AddRange(type.GetFields(BindingFlags.Instance | BindingFlags.NonPublic)
+                                             .Where(f => f.GetCustomAttribute<InjectAttribute>() is not null
+                                                         && f.IsPrivate && f.IsInitOnly));
+
+                type = type.BaseType;
+            }
+
+            foreach (var field in injectionFields)
             {
                 if (field.GetValue(target) is not null)
                     continue;

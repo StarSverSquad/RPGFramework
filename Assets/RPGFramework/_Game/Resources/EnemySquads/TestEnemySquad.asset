@@ -10,13 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: db90801ee6a72ee46bdd78b491030146, type: 3}
-  m_Name: TechSquad
-  m_EditorClassIdentifier: 
-  Tag: TechSquad
-  Name: "\u041E\u0431\u0443\u0447\u0435\u043D\u0438\u0435"
-  Enemies: []
+  m_Name: TestEnemySquad
+  m_EditorClassIdentifier: Assembly-CSharp::RPGF.RPG.RPGEnemySquad
+  Tag: 
+  Name: 
+  Enemies:
+  - ScreenPosition: {x: 0, y: 2}
+    Enemy: {fileID: 11400000, guid: e83c96b9fa3e7504c95420c26dbb7a3e, type: 2}
   MoneyConstDrop: 0
-  Money: 999
+  Money: 0
   ExpConstDrop: 0
-  Expireance: 50
+  Expireance: 0
   EnemiesDrop: []

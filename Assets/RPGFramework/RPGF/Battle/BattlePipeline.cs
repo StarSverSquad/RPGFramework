@@ -292,6 +292,8 @@ namespace RPGF.Battle
 
             _battle.UI.Concentration.SetConcentration(0);
 
+            _battle.BattleField.transform.position = Camera.main.transform.position;
+
             _battle.Background.CreateBackground(Data.BattleInfo.Background);
 
             if (Data.BattleInfo.BattleMusic != null)
@@ -556,18 +558,14 @@ namespace RPGF.Battle
 
             List<BattleTurnData> targets = new List<BattleTurnData>();
 
-
-
             foreach (var enemy in Data.Enemys)
             {
                 if (enemy.States.Any(i => i.SkipTurn) || !enemy.Behaviours.Any())
                     continue;
 
-                var pattern = enemy.Behaviours[Random.Range(0, enemy.Behaviours.Count)];
+                var behaviours = enemy.Behaviours[Random.Range(0, enemy.Behaviours.Count)];
 
-                _di.InjectInto(pattern);
-
-                _battle.EnemyBehaviour.AddBehaviour(pattern, enemy);
+                _battle.EnemyBehaviour.AddBehaviour(behaviours, enemy);
             }
 
             int targetedCharacterCount = Random.Range(1, Data.TurnsData.Where(i => !i.IsDead).Count() + 1);
@@ -590,8 +588,11 @@ namespace RPGF.Battle
 
             _battle.Player.SetActive(true);
 
-            //_battle.BattleField.SetActive(true);
-            //_battle.BattleField.Show();
+            if (_battle.EnemyBehaviour.BattleFieldRequired)
+            {
+                var field = _battle.BattleField.Create(_battle.Config.DefaultBattleField);
+                field.Show();
+            }
 
             _battle.EnemyBehaviour.Invoke();
 

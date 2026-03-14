@@ -22,6 +22,9 @@ namespace RPGF.Core.Battle.BattleField.Abstractions
         [SerializeField]
         private float animationTime = 0.1f;
         public float AnimationTime => animationTime;
+        public float DestroyTime => animationTime + .25f;
+
+        public Vector2 Size => _field.size;
 
         private Tween translateTween = null;
         private Tween rotateTween = null;

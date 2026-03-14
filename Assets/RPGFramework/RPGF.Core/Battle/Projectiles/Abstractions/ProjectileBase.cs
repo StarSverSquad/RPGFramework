@@ -1,5 +1,4 @@
-﻿using DG.Tweening;
-using RPGF.RPG;
+﻿using RPGF.RPG;
 using System;
 using UnityEngine;
 
@@ -8,17 +7,18 @@ namespace RPGF.Core.Battle.Projectiles.Abstractions
     public abstract class ProjectileBase : RPGFrameworkBehaviour, IDisposable
     {
         [Header("Настройки:")]
-        public int DamageFactor = 1;
+        [Range(0f, 5f)]
+        public float DamageFactor = 1f;
+        [Range(0, 100)]
         public int ConcentrationAmount = 4;
-        [Header("Интерации:")]
+        [Space]
+        public RPGEntityState[] States;
+        [Header("Интеракции:")]
         public bool CanHitHalo = true;
         public bool DestroyAfterHit = true;
         public bool IgnoreHitCooldown = false;
 
-        public RPGEntityState[] States;
-
-        [HideInInspector]
-        public RPGEnemy enemy;
+        public RPGEnemy Owner { get; set; }
 
         public virtual void SetHide(bool hide)
         {

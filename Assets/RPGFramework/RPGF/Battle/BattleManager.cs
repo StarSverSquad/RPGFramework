@@ -9,6 +9,7 @@ using UnityEngine;
 using RPGF.Battle.Choice;
 using RPGF.Core.Battle.BattleField;
 using RPGF.Core.Battle.Projectiles;
+using RPGF.Core.Battle.Behaviour;
 
 namespace RPGF.Battle
 {

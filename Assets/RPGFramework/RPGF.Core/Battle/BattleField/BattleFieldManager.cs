@@ -27,23 +27,22 @@ namespace RPGF.Core.Battle.BattleField
             base.Initialize();
         }
 
-        public BattleFieldBase Create(BattleFieldBase original, Vector2 position)
+        public T Create<T>(T original)
+            where T : BattleFieldBase
         {
-            var gameObject = Instantiate(original.gameObject, transform.position, Quaternion.identity, transform);
-            var field = gameObject.GetComponent<BattleFieldBase>();
-
-            DI.InjectInto(field);
-
-            field.MoveTo(position);
-
-            fields.Add(field);
-
-            return field;
+            return Create(original, Vector2.zero);
         }
         public T Create<T>(T original, Vector2 position)
             where T : BattleFieldBase
         {
-            return Create(original, position);
+            var gameObject = Instantiate(original.gameObject, position + Center, Quaternion.identity, transform);
+            var field = gameObject.GetComponent<BattleFieldBase>();
+
+            DI.InjectInto(field);
+
+            fields.Add(field);
+
+            return field as T;
         }
 
         public void Remove(BattleFieldBase field)
@@ -55,7 +54,7 @@ namespace RPGF.Core.Battle.BattleField
 
             field.Dispose();
             field.Hide();
-            Destroy(field.gameObject, field.AnimationTime);
+            Destroy(field.gameObject, field.DestroyTime);
         }
 
         public IEnumerator<BattleFieldBase> GetEnumerator()
@@ -73,7 +72,7 @@ namespace RPGF.Core.Battle.BattleField
             {
                 field.Dispose();
                 field.Hide();
-                Destroy(field.gameObject, field.AnimationTime);
+                Destroy(field.gameObject, field.DestroyTime);
             }
             fields.Clear();
         }

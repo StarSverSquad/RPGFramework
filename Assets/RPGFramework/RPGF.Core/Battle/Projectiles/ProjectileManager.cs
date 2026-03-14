@@ -1,6 +1,7 @@
 ﻿using RPGF.Core.Battle.BattleField;
 using RPGF.Core.Battle.Projectiles.Abstractions;
 using RPGF.Domain.DI;
+using RPGF.RPG;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,7 +18,7 @@ namespace RPGF.Core.Battle.Projectiles
         [SerializeField]
         private Transform projectileContainer;
 
-        public T Create<T>(T originalProjectile, Vector2 position)
+        public T Create<T>(T originalProjectile, Vector2 position, RPGEnemy owner = null)
             where T : ProjectileBase
         {
             var projObject = Instantiate(
@@ -29,16 +30,17 @@ namespace RPGF.Core.Battle.Projectiles
 
             var projectile = projObject.GetComponent<ProjectileBase>();
             projectile.Initialize();
+            projectile.Owner = owner;
 
             _projectiles.Add(projectile);
 
             return projectile as T;
         }
 
-        public T CreateHidden<T>(T originalProjectile, Vector2 position)
+        public T CreateHidden<T>(T originalProjectile, Vector2 position, RPGEnemy owner = null)
             where T : ProjectileBase
         {
-            var projectile = Create(originalProjectile, position);
+            var projectile = Create(originalProjectile, position, owner);
             projectile.SetHide(true);
 
             return projectile;

@@ -12,16 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db90801ee6a72ee46bdd78b491030146, type: 3}
   m_Name: SampleSquad
   m_EditorClassIdentifier: 
+  Tag: 
   Name: "\u0417\u043B\u0430\u044F \u043A\u0435\u043F\u043A\u0430"
-  Enemies:
-  - ScreenPosition: {x: 0, y: 100}
-    Enemy: {fileID: 11400000, guid: acf4fc2f7314cb443a088f827572caae, type: 2}
+  Enemies: []
   MoneyConstDrop: 0
   Money: 27
   ExpConstDrop: 0
   Expireance: 15
-  EnemiesDrop:
-  - item: {fileID: 11400000, guid: 7b71d16363bcbf243bf129f89af5c30b, type: 2}
-    Chance: 1
-    Count: 2
-    CountRange: 1
+  EnemiesDrop: []

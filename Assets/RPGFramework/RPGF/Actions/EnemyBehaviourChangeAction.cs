@@ -6,8 +6,8 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
-using RPGF.Core.Battle.Abstractions;
 using RPGF.Core.Battle;
+using RPGF.Core.Battle.Behaviour.Abstractions;
 
 namespace RPGF.Actions
 {

@@ -1,4 +1,5 @@
-﻿using RPGF.Core.Battle.Enums;
+﻿using RPGF.Core.Battle.BattleField.Abstractions;
+using RPGF.Core.Battle.Enums;
 using RPGF.Domain.DI;
 using UnityEngine;
 
@@ -14,6 +15,7 @@ namespace RPGF.Core.Battle
         [Header("Префабы")]
         public BattleAttackEffect DefaultEffect;
         public FallingText DmgText;
+        public BattleFieldBase DefaultBattleField;
 
         [Header("Настройки")]
         public int MaxConcentration;

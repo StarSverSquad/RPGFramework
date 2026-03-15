@@ -7,6 +7,9 @@ using RPGF.Core;
 using RPGF.Shared;
 using UnityEngine;
 using RPGF.Battle.Choice;
+using RPGF.Core.Battle.BattleField;
+using RPGF.Core.Battle.Projectiles;
+using RPGF.Core.Battle.Behaviour;
 
 namespace RPGF.Battle
 {
@@ -17,6 +20,7 @@ namespace RPGF.Battle
 
         public BattleChoiceManager Choice;
         public BattleFieldManager BattleField;
+        public ProjectileManager Projectiles;
         public BattleBackground Background;
         public BattleAudioManager BattleAudio;
         public BattlePlayerManager Player;
@@ -41,6 +45,7 @@ namespace RPGF.Battle
 
         private LocalManager Local => LocalManager.Instance;
 
+
         public override void Initialize()
         {
             Instance = this;
@@ -57,11 +62,14 @@ namespace RPGF.Battle
 
         public override void InitializeChild()
         {
-            BattleField.Initialize();
             Local.DI.AddSignleton(BattleField);
+            BattleField.Initialize();
 
-            EnemyBehaviour.Initialize();
+            Local.DI.AddSignleton(Projectiles);
+            Projectiles.Initialize();
+
             Local.DI.AddSignleton(EnemyBehaviour);
+            EnemyBehaviour.Initialize();
 
             Pipeline = new BattlePipeline(this, SharedManager.Instance);
             Local.DI.AddSignleton(Pipeline);
@@ -73,9 +81,9 @@ namespace RPGF.Battle
 
             SpashWriter.Initialize();
 
-            Player.SetActive(false);
             Local.DI.AddSignleton(Player);
+            Player.Initialize();
+            Player.SetActive(false);
         }
     }
-
 }

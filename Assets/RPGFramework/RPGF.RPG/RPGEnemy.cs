@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using RPGF.Core.Battle.Abstractions;
+using RPGF.Core.Battle.Behaviour.Abstractions;
 
 namespace RPGF.RPG
 {

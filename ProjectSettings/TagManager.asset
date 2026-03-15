@@ -4,8 +4,8 @@
 TagManager:
   serializedVersion: 3
   tags:
-  - PatternBullet
   - LocationsContainer
+  - Projectile
   layers:
   - Default
   - TransparentFX
@@ -14,7 +14,7 @@ TagManager:
   - Water
   - UI
   - EventInteraction
-  - PatternBullets
+  - Projectiles
   - BattleFieldBorder
   - PlayerHitboxes
   - 
@@ -48,3 +48,4 @@ TagManager:
     locked: 0
   m_RenderingLayers:
   - Default
+  - HiddenProjectiles

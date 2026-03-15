@@ -23,7 +23,9 @@ namespace RPGF.Core.Services
                 {
                     case Usability.Any:
                         if (BattleManager.IsBattle)
+                        {
                             usable.Event.Invoke(_eventHandler, _di);
+                        }
                         else if (!_eventHandler.EventPlaying)
                         {
                             usable.Event.Invoke(_eventHandler, _di);

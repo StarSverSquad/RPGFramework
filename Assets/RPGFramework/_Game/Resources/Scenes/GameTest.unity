@@ -144,7 +144,7 @@ Transform:
   m_GameObject: {fileID: 71837036}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.3281736, y: 0.43974233, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -268,15 +268,103 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
+    - rid: 631918494483218673
+      type: {class: ChangeItemCountAction, ns: RPGF.Actions, asm: Assembly-CSharp}
+      data:
+        nexts:
+        - rid: 631918494483218674
+        Item: {fileID: 11400000, guid: 5bfee000d1674684396189488fdb65e5, type: 2}
+        Count: 3
+        IsSet: 0
+    - rid: 631918494483218674
+      type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
+      data:
+        Action:
+          rid: 1131250193918328943
+        Tag: DEFAULT
+        Name: "\u0414\u0430\u043B\u0435\u0435"
+        IsNext: 1
+    - rid: 1131250193918328908
+      type: {class: EndAction, ns: RPGF.EventSystem.Default, asm: Assembly-CSharp}
+      data:
+        nexts: []
+    - rid: 1131250193918328943
+      type: {class: ChangeItemCountAction, ns: RPGF.Actions, asm: Assembly-CSharp}
+      data:
+        nexts:
+        - rid: 1131250193918328947
+        Item: {fileID: 11400000, guid: 4818a4782dca2724e9034e7d83cbb0ac, type: 2}
+        Count: 3
+        IsSet: 0
+    - rid: 1131250193918328944
+      type: {class: ChangeItemCountAction, ns: RPGF.Actions, asm: Assembly-CSharp}
+      data:
+        nexts:
+        - rid: 1131250193918328948
+        Item: {fileID: 11400000, guid: bee54741d6f8b664eb4f2b221b86c7ba, type: 2}
+        Count: 3
+        IsSet: 0
+    - rid: 1131250193918328945
+      type: {class: ChangeItemCountAction, ns: RPGF.Actions, asm: Assembly-CSharp}
+      data:
+        nexts:
+        - rid: 1131250193918328949
+        Item: {fileID: 11400000, guid: a9659b81d6169654c82bf530835181f4, type: 2}
+        Count: 3
+        IsSet: 0
+    - rid: 1131250193918328946
+      type: {class: ChangeItemCountAction, ns: RPGF.Actions, asm: Assembly-CSharp}
+      data:
+        nexts:
+        - rid: 1131250193918328950
+        Item: {fileID: 11400000, guid: 1963e3fe3ca847e459d834aac9b58c3b, type: 2}
+        Count: 3
+        IsSet: 0
+    - rid: 1131250193918328947
+      type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
+      data:
+        Action:
+          rid: 1131250193918328944
+        Tag: DEFAULT
+        Name: "\u0414\u0430\u043B\u0435\u0435"
+        IsNext: 1
+    - rid: 1131250193918328948
+      type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
+      data:
+        Action:
+          rid: 1131250193918328945
+        Tag: DEFAULT
+        Name: "\u0414\u0430\u043B\u0435\u0435"
+        IsNext: 1
+    - rid: 1131250193918328949
+      type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
+      data:
+        Action:
+          rid: 1131250193918328946
+        Tag: DEFAULT
+        Name: "\u0414\u0430\u043B\u0435\u0435"
+        IsNext: 1
+    - rid: 1131250193918328950
+      type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
+      data:
+        Action:
+          rid: 1131250193918328908
+        Tag: DEFAULT
+        Name: "\u0414\u0430\u043B\u0435\u0435"
+        IsNext: 1
     - rid: 6131212272838115447
       type: {class: GraphEvent, ns: RPGF.EventSystem.Graph, asm: Assembly-CSharp}
       data:
         Actions:
         - rid: 6131212272838115448
-        - rid: 6131212272838115449
         - rid: 6131212272838115452
+        - rid: 6131212272838115449
+        - rid: 631918494483218673
+        - rid: 1131250193918328943
+        - rid: 1131250193918328944
+        - rid: 1131250193918328945
+        - rid: 1131250193918328946
+        - rid: 1131250193918328908
         Meta:
           edges:
           - inputPortTag: Input
@@ -284,22 +372,70 @@ MonoBehaviour:
             outputPortTag: Output
             outputNodeGUID: 70b125acb37184c45addf0fee8510506
           - inputPortTag: Input
+            inputNodeGUID: bf5ccf6f6b8910845a9484ca20ab7622
+            outputPortTag: DEFAULT
+            outputNodeGUID: 4d5e2e5a44d731b4bac283b71543bd9d
+          - inputPortTag: Input
             inputNodeGUID: 4d5e2e5a44d731b4bac283b71543bd9d
             outputPortTag: DEFAULT
             outputNodeGUID: 81ee51d10f187f24cb5f90c739f2f054
+          - inputPortTag: Input
+            inputNodeGUID: cc94780f972d7a442ae68aa6aabd0b29
+            outputPortTag: DEFAULT
+            outputNodeGUID: bf5ccf6f6b8910845a9484ca20ab7622
+          - inputPortTag: Input
+            inputNodeGUID: 119a7781efa48d34bae161fab65c1e6c
+            outputPortTag: DEFAULT
+            outputNodeGUID: cc94780f972d7a442ae68aa6aabd0b29
+          - inputPortTag: Input
+            inputNodeGUID: a049f8dcf3aeb8b4a9551ada298619ca
+            outputPortTag: DEFAULT
+            outputNodeGUID: 119a7781efa48d34bae161fab65c1e6c
+          - inputPortTag: Input
+            inputNodeGUID: 578734fe98c31034e94e59b4e16ef921
+            outputPortTag: DEFAULT
+            outputNodeGUID: a049f8dcf3aeb8b4a9551ada298619ca
+          - inputPortTag: Input
+            inputNodeGUID: f355bf3b2f8692243b34e4e368ec83a5
+            outputPortTag: DEFAULT
+            outputNodeGUID: 578734fe98c31034e94e59b4e16ef921
           nodes:
           - guid: 70b125acb37184c45addf0fee8510506
             action:
               rid: 6131212272838115448
             position: {x: 250.4, y: 249.6}
+          - guid: 4d5e2e5a44d731b4bac283b71543bd9d
+            action:
+              rid: 6131212272838115452
+            position: {x: 1017.6, y: 212}
           - guid: 81ee51d10f187f24cb5f90c739f2f054
             action:
               rid: 6131212272838115449
             position: {x: 508, y: 228}
-          - guid: 4d5e2e5a44d731b4bac283b71543bd9d
+          - guid: bf5ccf6f6b8910845a9484ca20ab7622
             action:
-              rid: 6131212272838115452
-            position: {x: 974.4, y: 303.2}
+              rid: 631918494483218673
+            position: {x: 1370.4, y: 240}
+          - guid: cc94780f972d7a442ae68aa6aabd0b29
+            action:
+              rid: 1131250193918328943
+            position: {x: 1798.4, y: 297.6}
+          - guid: 119a7781efa48d34bae161fab65c1e6c
+            action:
+              rid: 1131250193918328944
+            position: {x: 2212, y: 364}
+          - guid: a049f8dcf3aeb8b4a9551ada298619ca
+            action:
+              rid: 1131250193918328945
+            position: {x: 2576.8, y: 430.4}
+          - guid: 578734fe98c31034e94e59b4e16ef921
+            action:
+              rid: 1131250193918328946
+            position: {x: 2969.6, y: 496.80002}
+          - guid: f355bf3b2f8692243b34e4e368ec83a5
+            action:
+              rid: 1131250193918328908
+            position: {x: 3447.2, y: 524.8}
     - rid: 6131212272838115448
       type: {class: StartAction, ns: RPGF.EventSystem.Default, asm: Assembly-CSharp}
       data:
@@ -346,7 +482,7 @@ MonoBehaviour:
       type: {class: NextAction, ns: RPGF.EventSystem, asm: Assembly-CSharp}
       data:
         Action:
-          rid: -2
+          rid: 631918494483218673
         Tag: DEFAULT
         Name: "\u0414\u0430\u043B\u0435\u0435"
         IsNext: 1
@@ -358,6 +494,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 704768651913895761, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 838689001630359888, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 38.600006
@@ -410,10 +550,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2205794596650153188, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
-      propertyPath: orthographic size
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 2375462704246815543, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_text
       value: TITLEMENU_LOADING_BTN
@@ -452,7 +588,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4093224919480984948, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 114.99994
+      value: 115
       objectReference: {fileID: 0}
     - target: {fileID: 4597126536109806219, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -496,7 +632,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8470733032426464922, guid: cfd0914a5f4e9ec458e509594e1e1f13, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 463.70004
+      value: 463.7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -549,19 +685,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Enter
   SpawnDirection: 1
---- !u!114 &1291406219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3498704944257661326}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cef463750f410d64a86c12dcdec36c98, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rPGCharacter: {fileID: 1709161115110982532}
 --- !u!1 &1428878188
 GameObject:
   m_ObjectHideFlags: 0
@@ -750,11 +873,10 @@ MonoBehaviour:
         nexts:
         - rid: 631918459169800340
         message:
-          text: "* \u043E\u0431\u044B\u0447\u043D\u044B\u0439 \u0442\u0435\u043A\u0441\u0442
-            <effect type=\"shake\">\u0434\u0440\u043E\u0436\u0430\u043D\u0438\u0435</effect>
-            \u0438 <effect type=\"wooble\">\u0432\u0443\u0431\u043B</effect> \u043A\u043E\u043D\u0435\u0446!"
+          text: "* <b>\u042D\u0444\u0444\u0435\u043A\u0442\u044B</b>: <effect type=\"shake\">\u0434\u0440\u043E\u0436\u0430\u043D\u0438\u0435</effect>
+            \u0438 <effect type=\"wooble\">\u0432\u0443\u0431\u043B</effect> \u0438
+            <effect type=\"wave\">\u0432\u043E\u043B\u043D\u0430</effect>."
           speed: 0
-          clear: 1
           wait: 1
           name: 
           closeWindow: 1
@@ -767,9 +889,9 @@ MonoBehaviour:
         nexts:
         - rid: 631918459169800341
         message:
-          text: '* Two'
+          text: "* \u041B\u043E\u043A\u0430\u043B\u0438\u0437\u0430\u0446\u0438\u044F:
+            <%SYS_DEF/>."
           speed: 0
-          clear: 1
           wait: 1
           name: 
           closeWindow: 1
@@ -786,9 +908,8 @@ MonoBehaviour:
         nexts:
         - rid: 631918459169800342
         message:
-          text: '* Three'
+          text: "* \u0416\u0434\u0435\u043C<!/> \u0438 \u0436\u0434\u0435\u043C<\\|/>.<\\|/>.<\\|/>. "
           speed: 0
-          clear: 1
           wait: 1
           name: 
           closeWindow: 1
@@ -881,12 +1002,12 @@ MonoBehaviour:
       data:
         Actions:
         - rid: 6131212272838115399
-        - rid: 631918459169800334
-        - rid: 631918459169800336
         - rid: 631918459169800332
+        - rid: 631918459169800334
         - rid: 631918459169800333
         - rid: 631918459169800335
         - rid: 631918483201589326
+        - rid: 631918459169800336
         Meta:
           edges:
           - inputPortTag: Input
@@ -906,6 +1027,14 @@ MonoBehaviour:
             outputPortTag: Choice-2
             outputNodeGUID: a70795c9e912b7140942d20468ff10c7
           - inputPortTag: Input
+            inputNodeGUID: 82a78f4b13cbe4543b81104c3b8bee49
+            outputPortTag: Win
+            outputNodeGUID: 82e8bb69af4b73645a1b0b48ad670ba7
+          - inputPortTag: Input
+            inputNodeGUID: 82a78f4b13cbe4543b81104c3b8bee49
+            outputPortTag: Lose
+            outputNodeGUID: 82e8bb69af4b73645a1b0b48ad670ba7
+          - inputPortTag: Input
             inputNodeGUID: 82e8bb69af4b73645a1b0b48ad670ba7
             outputPortTag: DEFAULT
             outputNodeGUID: 70d94fc527b16e24baf5dca28a045905
@@ -917,43 +1046,35 @@ MonoBehaviour:
             inputNodeGUID: 82e8bb69af4b73645a1b0b48ad670ba7
             outputPortTag: DEFAULT
             outputNodeGUID: 305c438e52c37ec45b0e3315e73114ea
-          - inputPortTag: Input
-            inputNodeGUID: 82a78f4b13cbe4543b81104c3b8bee49
-            outputPortTag: Lose
-            outputNodeGUID: 82e8bb69af4b73645a1b0b48ad670ba7
-          - inputPortTag: Input
-            inputNodeGUID: 82a78f4b13cbe4543b81104c3b8bee49
-            outputPortTag: Win
-            outputNodeGUID: 82e8bb69af4b73645a1b0b48ad670ba7
           nodes:
           - guid: 0c87a28a98b328448b726c211e196799
             action:
               rid: 6131212272838115399
             position: {x: -692, y: 244.80002}
-          - guid: f3c0c2f4dbb461d4b80c516ede26bb90
-            action:
-              rid: 631918459169800334
-            position: {x: -91.2, y: 293.6}
-          - guid: 305c438e52c37ec45b0e3315e73114ea
-            action:
-              rid: 631918459169800336
-            position: {x: -91.2, y: 597.6}
           - guid: a70795c9e912b7140942d20468ff10c7
             action:
               rid: 631918459169800332
             position: {x: -518.4, y: 208.8}
+          - guid: f3c0c2f4dbb461d4b80c516ede26bb90
+            action:
+              rid: 631918459169800334
+            position: {x: -91.2, y: 293.6}
           - guid: 70d94fc527b16e24baf5dca28a045905
             action:
               rid: 631918459169800333
-            position: {x: -91.2, y: 8.800001}
+            position: {x: -124.8, y: 4.800001}
           - guid: 82a78f4b13cbe4543b81104c3b8bee49
             action:
               rid: 631918459169800335
-            position: {x: 1120.8, y: 340}
+            position: {x: 1239.2, y: 340}
           - guid: 82e8bb69af4b73645a1b0b48ad670ba7
             action:
               rid: 631918483201589326
-            position: {x: 693.6, y: 311.2}
+            position: {x: 855.2, y: 371.2}
+          - guid: 305c438e52c37ec45b0e3315e73114ea
+            action:
+              rid: 631918459169800336
+            position: {x: -52.8, y: 629.6}
     - rid: 6131212272838115399
       type: {class: StartAction, ns: RPGF.EventSystem.Default, asm: Assembly-CSharp}
       data:
@@ -1017,21 +1138,6 @@ Transform:
   - {fileID: 1712980998311117452}
   - {fileID: 7875689235728188382}
   m_Father: {fileID: 5125654499283723096}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &936164579936382408
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8014028221562284631}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.81, y: -0.080448866, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7875689235728188382}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &1112957653700903132
 TilemapRenderer:
@@ -1107,65 +1213,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!212 &1379025743383567219
-SpriteRenderer:
-  serializedVersion: 2
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3498704944257661326}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_Sprite: {fileID: 610256549221734320, guid: 630022f70b834014488e313e64025986, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.6666667, y: 1.6388888}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
 --- !u!1839735485 &1505807043704368766
 Tilemap:
   m_ObjectHideFlags: 0
@@ -1454,22 +1501,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!114 &1709161115110982532
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3498704944257661326}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bf276078a9b8c34bb401bba1a9b34c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _startDiration: 1
-  _autoOrdeting: 1
-  _autoInitialize: 1
-  _linkedEvent: {fileID: 0}
 --- !u!4 &1712980998311117452
 Transform:
   m_ObjectHideFlags: 0
@@ -1591,26 +1622,6 @@ MonoBehaviour:
   SpawnPoints: []
   CameraPoint: {fileID: 6263942026863119462}
   MapContainer: {fileID: 5797074047421777900}
---- !u!1 &3498704944257661326
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6000911334410337809}
-  - component: {fileID: 1379025743383567219}
-  - component: {fileID: 8915582427876708215}
-  - component: {fileID: 1709161115110982532}
-  - component: {fileID: 1291406219}
-  m_Layer: 0
-  m_Name: DimainModel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
 --- !u!4 &3546345097719447082
 Transform:
   m_ObjectHideFlags: 0
@@ -2254,7 +2265,7 @@ Transform:
   m_GameObject: {fileID: 6691272761900589634}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.3281736, y: -0.43974233, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2298,65 +2309,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!212 &5519479318095497386
-SpriteRenderer:
-  serializedVersion: 2
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8014028221562284631}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_MaskInteraction: 0
-  m_Sprite: {fileID: 610256549221734320, guid: 630022f70b834014488e313e64025986, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 0.6666667, y: 1.6388888}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
 --- !u!1 &5733818135011269112
 GameObject:
   m_ObjectHideFlags: 0
@@ -2392,21 +2344,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6000911334410337809
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3498704944257661326}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.53, y: -0.080448866, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7875689235728188382}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!19719996 &6102050804294390421
 TilemapCollider2D:
   m_ObjectHideFlags: 0
@@ -2521,49 +2458,9 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6000911334410337809}
-  - {fileID: 936164579936382408}
+  m_Children: []
   m_Father: {fileID: 899882478665643308}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &8014028221562284631
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 936164579936382408}
-  - component: {fileID: 5519479318095497386}
-  - component: {fileID: 8014028221562284632}
-  m_Layer: 0
-  m_Name: DimainModel (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &8014028221562284632
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8014028221562284631}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2f5f7fbc1f22854ca0be713757303e4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _startDiration: 1
-  _autoOrdeting: 1
-  _autoInitialize: 1
-  _linkedEvent: {fileID: 0}
-  _upIdle: {fileID: -8559205811778548465, guid: 630022f70b834014488e313e64025986, type: 3}
-  _downIdle: {fileID: 610256549221734320, guid: 630022f70b834014488e313e64025986, type: 3}
-  _leftIdle: {fileID: 5469495527762082106, guid: 630022f70b834014488e313e64025986, type: 3}
-  _rightIdle: {fileID: -2320359899443307339, guid: 630022f70b834014488e313e64025986, type: 3}
 --- !u!1 &8112597512402843331
 GameObject:
   m_ObjectHideFlags: 0
@@ -3413,28 +3310,6 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
---- !u!95 &8915582427876708215
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3498704944257661326}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 95f2317c180218d4fa9cd183792a1774, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!156049354 &9133514212032686049
 Grid:
   m_ObjectHideFlags: 0

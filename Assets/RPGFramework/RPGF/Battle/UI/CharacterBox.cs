@@ -1,4 +1,3 @@
-using RPGF.Battle.Enums;
 using RPGF.Core;
 using RPGF.UI;
 using RPGF.RPG;
@@ -7,6 +6,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using RPGF.Core.Battle.Enums;
 
 namespace RPGF.Battle.UI
 {
@@ -67,7 +67,7 @@ namespace RPGF.Battle.UI
         {
             actImage.enabled = action != TurnAction.None;
 
-            actImage.sprite = Battle.Data.GetActionIcon(action);
+            actImage.sprite = Battle.Config.GetActionIcon(action);
         }
 
         public void MarkTarget(bool mark)

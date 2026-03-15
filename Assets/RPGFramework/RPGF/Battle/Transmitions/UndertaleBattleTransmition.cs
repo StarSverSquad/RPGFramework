@@ -1,5 +1,5 @@
-﻿using DG.Tweening;
-using RPGF.Core.Battle;
+﻿using RPGF.Core.Battle.Abstractions;
+using DG.Tweening;
 using RPGF.Explorer;
 using System.Collections;
 using UnityEngine;

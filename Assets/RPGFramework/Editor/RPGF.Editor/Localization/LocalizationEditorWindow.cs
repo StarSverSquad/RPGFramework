@@ -87,7 +87,7 @@ namespace RPGF.Editor.Localization
         {
             EditorGUILayout.BeginVertical(UnityEngine.GUI.skin.box);
 
-            EditorGUILayout.SelectableLabel($"<%{tag}>");
+            EditorGUILayout.SelectableLabel($"<%{tag}/>");
             EditorGUILayout.Space(3);
 
             var localeFields = value.GetType().GetFields()

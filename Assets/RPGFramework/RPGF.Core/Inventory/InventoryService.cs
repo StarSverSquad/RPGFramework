@@ -10,7 +10,7 @@ namespace RPGF.Core.Inventory
 {
     public class InventoryService : IEnumerable<InventorySlotData>, IDisposable, ISupportDI
     {
-        private InventoryData _data;
+        private readonly InventoryData _data;
 
         public InventorySlotData[] Slots => _data.Slots.ToArray();
 
@@ -25,7 +25,7 @@ namespace RPGF.Core.Inventory
         }
         public InventorySlotData this[RPGCollectable item]
         {
-            get => _data.Slots.First(i => i.Item == item);
+            get => _data.Slots.First(i => i.Item.Tag == item.Tag);
         }
 
 
@@ -38,15 +38,9 @@ namespace RPGF.Core.Inventory
             return _data.Slots.Where(i => i.Item is RPGWerable).Select(i => i.Item as RPGWerable).ToList();
         }
 
-        public InventorySlotData GetSlotByItemTag(string name)
+        public InventorySlotData GetSlotByItemTag(string tag)
         {
-            foreach (InventorySlotData slot in _data.Slots)
-            {
-                if (slot.Item.Tag == name)
-                    return slot;
-            }
-
-            return null;
+            return _data.Slots.FirstOrDefault(slot => slot.Item.Tag == tag);
         }
 
         /// <summary>
@@ -56,7 +50,7 @@ namespace RPGF.Core.Inventory
         /// </summary>
         public InventorySlotData CreateSlot(RPGCollectable slotfor)
         {
-            InventorySlotData slot = new InventorySlotData()
+            InventorySlotData slot = new()
             {
                 Item = slotfor,
                 Count = 0
@@ -74,9 +68,9 @@ namespace RPGF.Core.Inventory
         /// </summary>
         public void DeleteSlot(InventorySlotData slot) => _data.Slots.Remove(slot);
 
-        public void DeleteSlotByItemName(string name)
+        public void DeleteSlotByItemTag(string tag)
         {
-            InventorySlotData slot = GetSlotByItemTag(name);
+            InventorySlotData slot = GetSlotByItemTag(tag);
 
             if (slot != null)
                 DeleteSlot(slot);
@@ -123,7 +117,7 @@ namespace RPGF.Core.Inventory
             slot.Count += value;
 
             if (slot.Count <= 0)
-                DeleteSlotByItemName(item.Tag);
+                DeleteSlotByItemTag(item.Tag);
         }
         /// <summary>
         /// Устанавлиет кол-во предметов
@@ -145,7 +139,7 @@ namespace RPGF.Core.Inventory
             slot.Count = value;
 
             if (slot.Count <= 0)
-                DeleteSlotByItemName(item.name);
+                DeleteSlotByItemTag(item.name);
         }
 
         public IEnumerator GetEnumerator()

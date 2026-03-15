@@ -10,7 +10,6 @@ namespace RPGF.Core.TextWriter
         public string text;
         public float speed;
 
-        public bool clear;
         public bool wait;
 
         public WriterMessage()
@@ -18,7 +17,6 @@ namespace RPGF.Core.TextWriter
             text = string.Empty;
             speed = 0;
 
-            clear = true;
             wait = true;
         }
     }

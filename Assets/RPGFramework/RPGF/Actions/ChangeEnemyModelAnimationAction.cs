@@ -1,4 +1,5 @@
-﻿using RPGF.Battle;
+﻿using RPGF.Core.Battle;
+using RPGF.Battle;
 using RPGF.Battle.Enemy;
 using RPGF.Domain.DI;
 using RPGF.EventSystem;

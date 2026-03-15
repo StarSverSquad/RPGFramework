@@ -13,11 +13,11 @@ namespace RPGF.Core
         protected GlobalManager Global => GlobalManager.Instance;
         protected LocalManager Local => LocalManager.Instance;
         protected ExplorerManager Explorer => ExplorerManager.Instance;
-        protected SharedManager Common => SharedManager.Instance;
+        protected SharedManager Shared => SharedManager.Instance;
         protected BattleManager Battle => BattleManager.Instance;
 
         public virtual void Initialize() { }
 
-        protected string GetLocale(string tag) => Global.Localization.GetLocale(tag);
+        protected string GetLocale(string tag, string fallback = null) => Global.Localization.GetLocale(tag, fallback);
     }
 }

@@ -11,6 +11,7 @@ namespace RPGF.Core.TextWriter.Actions
         public override IEnumerator Action(TextActionParams @params)
         {
             TextWriter.PauseWrite();
+            TextWriter.CancelSkip();
 
             yield break;
         }

@@ -1,5 +1,4 @@
 ﻿using RPGF.Battle;
-using RPGF.Battle.EnemyBehaviour;
 using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using RPGF.EventSystem.Attributes;
@@ -7,6 +6,8 @@ using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
+using RPGF.Core.Battle;
+using RPGF.Core.Battle.Behaviour.Abstractions;
 
 namespace RPGF.Actions
 {

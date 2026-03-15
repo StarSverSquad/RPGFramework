@@ -1,10 +1,10 @@
 using RPGF.Battle.Enemy;
-using RPGF.Battle.EnemyBehaviour;
-using RPGF.Battle.Minigames;
 using RPGF.EventSystem;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using RPGF.Core.Battle.Abstractions;
+using RPGF.Core.Battle.Behaviour.Abstractions;
 
 namespace RPGF.RPG
 {

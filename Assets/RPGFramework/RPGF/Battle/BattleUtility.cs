@@ -1,19 +1,24 @@
 ﻿using RPGF.RPG;
-using RPGF.Battle.EnemyBehaviour;
 using RPGF.Battle.Enemy;
-using RPGF.Battle.Enums;
 using System.Linq;
 using System.Collections;
 using UnityEngine;
 using RPGF.Domain.DI;
+using RPGF.Core.Battle.Enums;
+using RPGF.Core.Battle;
+using RPGF.Core.Battle.Projectiles.Abstractions;
+using RPGF.Core.Localization;
 
 namespace RPGF.Battle
 {
-    public class BattleUtility : Injectable
+    public class BattleUtility : ISupportDI
     {
-        private BattleManager _battle { get; set; }
+        [Inject]
+        private readonly LocalizationService _localization;
+        private readonly BattleManager _battle;
 
         public BattleData Data => _battle.Data;
+        public BattleConfig Config => _battle.Config;
 
         public BattleUtility(BattleManager battle)
         {
@@ -31,11 +36,11 @@ namespace RPGF.Battle
             foreach (var item in info.enemySquad.Enemies)
                 AddEnemy(item.Enemy, item.ScreenPosition);
 
-            BattleManager.Instance.Pipeline.InvokeMainPipeline();
+            _battle.Pipeline.InvokeMainPipeline();
         }
         public void StopBattle()
         {
-            BattleManager.Instance.Pipeline.InvokeBreak();
+            _battle.Pipeline.InvokeBreak();
         }
 
         #endregion
@@ -56,13 +61,13 @@ namespace RPGF.Battle
             if (!Data.Enemys.Contains(enemy))
                 return;
 
-            BattleManager.Instance.EnemyModels.DeleteModel(enemy);
+            _battle.EnemyModels.DeleteModel(enemy);
 
             Data.Enemys.Remove(enemy);
         }
         public void DamageEnemy(RPGCharacter who, RPGEnemy enemy, float damageFactor = 1f)
         {
-            BattleEnemyModel model = BattleManager.Instance.EnemyModels.GetModel(enemy);
+            BattleEnemyModel model = _battle.EnemyModels.GetModel(enemy);
 
             int dmg = enemy.CalculateDamage(who, damageFactor);
 
@@ -73,20 +78,20 @@ namespace RPGF.Battle
                 if (enemy.Heal <= 0)
                 {
                     model.Death();
-                    BattleManager.Instance.BattleAudio.PlaySound(Data.EnemyDeath);
+                    _battle.BattleAudio.PlaySound(Config.EnemyDeathSound);
                 }
                 else
                 {
                     model.Damage();
-                    BattleManager.Instance.BattleAudio.PlaySound(Data.EnemyDamage);
+                    _battle.BattleAudio.PlaySound(Config.EnemyDamageSound);
                 }
 
                 SpawnFallingText(model.DamageTextWorldPoint, dmg.ToString(), Color.white, Color.red);
             }
             else
             {
-                BattleManager.Instance.BattleAudio.PlaySound(Data.Miss);
-                SpawnFallingText(model.DamageTextWorldPoint, "ПРОМАХ");
+                _battle.BattleAudio.PlaySound(Config.MissSound);
+                SpawnFallingText(model.DamageTextWorldPoint, _localization.GetLocale("SYS_BATTLE_MISS", "ПРОМАХ"));
             }
         }
 
@@ -104,7 +109,7 @@ namespace RPGF.Battle
         }
         public void SpawnFallingText(Vector2 position, string text, Color colorStart, Color colorEnd)
         {
-            GameObject obj = Object.Instantiate(Data.DmgText.gameObject, position, Quaternion.identity, Data.BattleCanvas.transform);
+            GameObject obj = Object.Instantiate(Config.DmgText.gameObject, position, Quaternion.identity, _battle.Canvas.transform);
             obj.transform.position = position;
 
             FallingText dmg = obj.GetComponent<FallingText>();
@@ -122,7 +127,7 @@ namespace RPGF.Battle
                 instance.gameObject,
                 position,
                 Quaternion.identity,
-                Data.BattleCanvas.transform);
+                _battle.Canvas.transform);
 
             return obj.GetComponent<BattleAttackEffect>();
         }
@@ -130,24 +135,24 @@ namespace RPGF.Battle
         {
             return SpawnAttackEffect(
                 instance,
-                (Vector2)Data.BattleCanvas.transform.position + new Vector2(0, 0.5f)
+                (Vector2)_battle.Canvas.transform.position + new Vector2(0, 0.5f)
                 );
         }
 
         #endregion
 
-        public void DamageCharacterByBullet(BattleTurnData data, EnemyBehaviourBulletBase bullet)
+        public void DamageCharacterByProjectile(BattleTurnData data, ProjectileBase projectile)
         {
-            var box = BattleManager.Instance.UI.CharacterBox.GetBox(data.Character);
+            var box = _battle.UI.CharacterBox.GetBox(data.Character);
 
-            float defenceAspect = data.BattleAction == TurnAction.Defence ? .5f : 1f;
+            float defenceFactor = data.BattleAction == TurnAction.Defence ? .5f : 1f;
 
-            int realDamage = data.Character.GiveDamage(Mathf.RoundToInt(bullet.enemy.Damage * bullet.DamageModifier * defenceAspect));
+            int realDamage = data.Character.GiveDamage(Mathf.RoundToInt((projectile.Owner?.Damage ?? 1) * projectile.DamageFactor * defenceFactor));
 
-            BattleManager.Instance.Shaker.Shake(2);
+            _battle.Shaker.Shake(2);
 
             float stateTextOffset = 2f;
-            foreach (var state in bullet.States)
+            foreach (var state in projectile.States)
             {
                 data.Character.AddState(state);
 
@@ -164,19 +169,19 @@ namespace RPGF.Battle
             {
                 FallCharacter(data);
 
-                if (BattleManager.Instance.Pipeline.IsEnemyTurn
+                if (_battle.Pipeline.IsEnemyTurn
                     && Data.TurnsData.Where(i => i.IsTarget == true).Count() == 0)
                 {
                     Data.TurnsData.Where(i => i.IsDead == false).ToList().ForEach(item =>
                     {
                         item.IsTarget = true;
-                        BattleManager.Instance.UI.CharacterBox.GetBox(item.Character).MarkTarget(true);
+                        _battle.UI.CharacterBox.GetBox(item.Character).MarkTarget(true);
                     });
                 }
 
                 if (Data.TurnsData.Where(i => i.IsDead == false).Count() == 0)
                 {
-                    BattleManager.Instance.Pipeline.InvokeLose();
+                    _battle.Pipeline.InvokeLose();
                 }
             }
             else
@@ -184,16 +189,15 @@ namespace RPGF.Battle
                 if (realDamage > 0)
                     SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f), realDamage.ToString(), Color.white, Color.red);
                 else
-                    SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f), "ПРОМАХ");
+                    SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1f), _localization.GetLocale("SYS_BATTLE_MISS", "ПРОМАХ"));
             }
-
         }
 
         public void FallCharacter(BattleTurnData data)
         {
-            var box = BattleManager.Instance.UI.CharacterBox.GetBox(data.Character);
+            var box = _battle.UI.CharacterBox.GetBox(data.Character);
 
-            SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f), "ПАЛ");
+            SpawnFallingText((Vector2)box.transform.position + new Vector2(0, 1.4f), _localization.GetLocale("SYS_BATTLE_FALL", "ПАЛ"));
 
             box.SetDead(true);
             box.MarkTarget(false);
@@ -208,8 +212,7 @@ namespace RPGF.Battle
 
         public void AddConcetration(int value)
         {
-            Data.Concentration = Mathf.Clamp(Data.Concentration + value, 0, Data.MaxConcentration);
-
+            Data.Concentration = Mathf.Clamp(Data.Concentration + value, 0, Config.MaxConcentration);
             _battle.UI.Concentration.SetConcentration(Data.Concentration);
         }
 
@@ -250,9 +253,9 @@ namespace RPGF.Battle
                 else
                     effect = SpawnAttackEffect(usable.VisualEffect, model.AttackWorldPoint);
 
-                effect.Invoke();
+                effect.Play();
 
-                yield return new WaitWhile(() => effect.IsAnimating);
+                yield return new WaitWhile(() => effect.IsPlaying);
 
                 yield return new WaitForSeconds(0.5f);
 
@@ -326,13 +329,13 @@ namespace RPGF.Battle
 
                     if (enemy.Heal <= 0)
                     {
-                        _battle.BattleAudio.PlaySound(_battle.Data.EnemyDeath);
+                        _battle.BattleAudio.PlaySound(Config.EnemyDeathSound);
                         model.Death();
                     }
                     else if (healDif < 0)
-                        _battle.BattleAudio.PlaySound(_battle.Data.EnemyDamage);
+                        _battle.BattleAudio.PlaySound(Config.EnemyDamageSound);
                     else
-                        _battle.BattleAudio.PlaySound(_battle.Data.Heal);
+                        _battle.BattleAudio.PlaySound(Config.HealSound);
                 }
                 else if (target is RPGCharacter character)
                 {
@@ -390,9 +393,9 @@ namespace RPGF.Battle
                     }
 
                     if (healDif < 0)
-                        _battle.BattleAudio.PlaySound(_battle.Data.Hurt);
+                        _battle.BattleAudio.PlaySound(Config.HurtSound);
                     else
-                        _battle.BattleAudio.PlaySound(_battle.Data.Heal);
+                        _battle.BattleAudio.PlaySound(Config.HealSound);
                 }
 
                 yield return new WaitForSeconds(.5f);

@@ -26,7 +26,7 @@ namespace RPGF
         [SerializeField]
         private ExplorerManager explorer;
         [SerializeField]
-        private SharedManager common;
+        private SharedManager shared;
         [SerializeField]
         private BattleManager battle;
 
@@ -77,7 +77,7 @@ namespace RPGF
             Character.Initialize();
             DI.AddSignleton(Character);
 
-            common.Initialize();
+            shared.Initialize();
 
             battle.Initialize();
         }

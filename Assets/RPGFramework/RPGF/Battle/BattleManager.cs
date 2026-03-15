@@ -1,10 +1,15 @@
+using Assets.RPGFramework.RPGF.Battle;
+using RPGF.Core.Battle;
 using RPGF.Battle.Enemy;
-using RPGF.Battle.Minigames;
 using RPGF.Battle.Player;
 using RPGF.Battle.UI;
 using RPGF.Core;
-using RPGF.RPG;
 using RPGF.Shared;
+using UnityEngine;
+using RPGF.Battle.Choice;
+using RPGF.Core.Battle.BattleField;
+using RPGF.Core.Battle.Projectiles;
+using RPGF.Core.Battle.Behaviour;
 
 namespace RPGF.Battle
 {
@@ -15,6 +20,7 @@ namespace RPGF.Battle
 
         public BattleChoiceManager Choice;
         public BattleFieldManager BattleField;
+        public ProjectileManager Projectiles;
         public BattleBackground Background;
         public BattleAudioManager BattleAudio;
         public BattlePlayerManager Player;
@@ -28,16 +34,24 @@ namespace RPGF.Battle
         public BattleData Data;
         public BattleSpashMessageWriter SpashWriter;
 
+        public Canvas Canvas;
+
         public BattlePipeline Pipeline { get; private set; }
+
+        public BattleConfig Config { get; private set; }
 
         public BattleUtility Utility { get; private set; }
         public static BattleUtility BattleUtility => Instance.Utility;
 
         private LocalManager Local => LocalManager.Instance;
 
+
         public override void Initialize()
         {
             Instance = this;
+
+            Config = Resources.Load<BattleConfig>("BattleConfig");
+            Local.DI.AddSignleton(Config);
 
             Local.DI.AddSignleton(Data);
             Local.DI.AddSignleton(EnemyModels);
@@ -48,6 +62,15 @@ namespace RPGF.Battle
 
         public override void InitializeChild()
         {
+            Local.DI.AddSignleton(BattleField);
+            BattleField.Initialize();
+
+            Local.DI.AddSignleton(Projectiles);
+            Projectiles.Initialize();
+
+            Local.DI.AddSignleton(EnemyBehaviour);
+            EnemyBehaviour.Initialize();
+
             Pipeline = new BattlePipeline(this, SharedManager.Instance);
             Local.DI.AddSignleton(Pipeline);
 
@@ -58,9 +81,9 @@ namespace RPGF.Battle
 
             SpashWriter.Initialize();
 
-            Player.SetActive(false);
             Local.DI.AddSignleton(Player);
+            Player.Initialize();
+            Player.SetActive(false);
         }
     }
-
 }

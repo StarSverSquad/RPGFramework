@@ -13,12 +13,12 @@ namespace RPGF.Core.Battle.Projectiles
         [SerializeField]
         private float speed;
         public float Speed { get { return speed; } set { speed = value; } }
-
+            
         protected Vector2 Direction => new(Mathf.Cos(angle), Mathf.Sin(angle));
 
         private void FixedUpdate()
         {
-            transform.Translate(speed * Time.fixedDeltaTime * Direction.normalized);
+            transform.Translate(speed * Time.fixedDeltaTime * Direction, Space.Self);
         }
 
         private void OnDrawGizmosSelected()

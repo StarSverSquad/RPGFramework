@@ -1,61 +1,64 @@
 ﻿using DG.Tweening;
+using RPGF.Battle.BattleField;
+using RPGF.Core.Battle.BattleField;
 using RPGF.Core.Battle.PlayerMode;
-using System;
+using RPGF.Domain.DI;
+using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 namespace RPGF.Battle.Player.Mode
 {
     public class SpiderPlayerMode : PlayerModeBase
     {
+        [Inject]
+        private readonly BattleFieldManager _fields;
+
         public override PlayerModeEnum PlayerMode => PlayerModeEnum.Spider;
         public override Color SoulColor => Color.purple;
-
-        public int MaxVerticalOffset { get; set; }
-
-        private bool ladderMode = false;
-        public bool LadderMode
-        {
-            get { return ladderMode; } 
-            set 
-            { 
-                ladderMode = value;
-                OnLadderModeChanged?.Invoke(value);
-            }
-        }
 
         [Header("Basic")]
         [SerializeField]
         private float verticalMoveTime = 0.25f;
-        [SerializeField]
-        private int initialMaxVerticalOffset = 1;
-        [Header("Ladder mode")]
-        [SerializeField]
-        private float ladderModeSpeed;
 
-        private float verticalOffset = 0;
+        private int verticalOffset = 0;
+        private SpiderBattleField battleField;
         private Tween verticalModeTween = null;
-
-        public event Action<bool> OnLadderModeChanged;
+        private Coroutine ladderModeCoroutine = null;
 
         public override void Initialize()
         {
-            MaxVerticalOffset = initialMaxVerticalOffset;
+            battleField = _fields.OfType<SpiderBattleField>().FirstOrDefault();
 
-            OnLadderModeChanged += OnLadderModeChangedHandler;
+            if (battleField != null)
+            {
+                battleField.OnLadderModeChangedCallback += OnLadderModeChangedHandler;
+                UpdateVertical();
+            }
+            else
+            {
+                Debug.LogError("Spider battle field is not found!");
+            }
         }
 
         private void Update()
         {
             if (Data.CanMove)
             {
-                if (Input.GetKeyDown(Global.BaseOptions.MoveUp) && verticalOffset < MaxVerticalOffset)
+                if (Input.GetKeyDown(Global.BaseOptions.MoveUp) && verticalOffset < battleField.MaxVerticalOffset)
                 {
                     verticalOffset++;
                     UpdateVertical();
                 }
-                else if (Input.GetKeyDown(Global.BaseOptions.MoveDown) && verticalOffset > -MaxVerticalOffset)
+                else if (Input.GetKeyDown(Global.BaseOptions.MoveDown) && verticalOffset > -battleField.MaxVerticalOffset)
                 {
                     verticalOffset--;
+                    UpdateVertical();
+                }
+
+                if (battleField.LadderMode && verticalOffset <= -battleField.MaxVerticalOffset)
+                {
+                    verticalOffset++;
                     UpdateVertical();
                 }
             }
@@ -72,24 +75,30 @@ namespace RPGF.Battle.Player.Mode
                 if (Input.GetKey(Global.BaseOptions.MoveRight))
                     direction += Vector2.right;
 
-                Data.Rigidbody.linearVelocity = direction.normalized * Data.MoveSpeed;
+                direction *= Data.MoveSpeed;
 
-                if (LadderMode && verticalOffset > -MaxVerticalOffset)
+                if (battleField.LadderMode && verticalOffset > -battleField.MaxVerticalOffset)
                 {
-                    verticalOffset -= Data.MoveSpeed * Time.fixedDeltaTime;
-                    Data.Rigidbody.transform.position -= new Vector3(0, Data.MoveSpeed * Time.fixedDeltaTime);
+                    direction += Vector2.down * battleField.LadderModeSpeed;
                 }
+
+                transform.Translate(Time.fixedDeltaTime * direction, Space.Self);
             }
-            else
-                Data.Rigidbody.linearVelocity = Vector2.zero;
         }
 
         private void UpdateVertical()
         {
             verticalModeTween?.Kill();
 
+            var newY = battleField.GetWebPoint(verticalOffset).position.y;
+
+            if (battleField.LadderMode)
+            {
+                newY -= 0.125f;
+            }
+
             verticalModeTween = transform
-                .DOMoveY(Battle.BattleField.transform.position.y + verticalOffset, verticalMoveTime)
+                .DOLocalMoveY(newY, verticalMoveTime)
                 .SetEase(Ease.Linear)
                 .Play();
         }
@@ -98,17 +107,44 @@ namespace RPGF.Battle.Player.Mode
         {
             if (!ladderMode)
             {
-                verticalOffset = Mathf.Round(verticalOffset);
+                UpdateVertical();  
 
-                UpdateVertical();
+                if (ladderModeCoroutine != null)
+                {
+                    StopCoroutine(ladderModeCoroutine);
+                    ladderModeCoroutine = null;
+                }
+            }
+            else
+            {
+                ladderModeCoroutine = StartCoroutine(LadderModeCoroutine());
+            }
+        }
+
+        private IEnumerator LadderModeCoroutine()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(SpiderBattleField.WebGap / battleField.LadderModeSpeed);
+
+                if (verticalOffset > -battleField.MaxVerticalOffset)
+                {
+                    verticalOffset--;
+                }
             }
         }
 
         public override void Dispose()
         {
             verticalOffset = 0;
-            MaxVerticalOffset = initialMaxVerticalOffset;
-            LadderMode = false;
+
+            if (ladderModeCoroutine != null)
+            {
+                StopCoroutine(ladderModeCoroutine);
+                ladderModeCoroutine = null;
+            }
+
+            battleField = null;
         }
     }
 }

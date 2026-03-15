@@ -1,4 +1,3 @@
-using RPGF.Core.Battle;
 using RPGF.Core.Battle.BattleField;
 using RPGF.Core.Battle.Behaviour.Abstractions;
 using RPGF.Core.Battle.Projectiles;
@@ -8,14 +7,12 @@ using UnityEngine;
 
 namespace RPGF.Battle.EnemyBehaviour
 {
-    public class TestBehaviour : BattleEnemyBehaviourBase
+    public class SampleBehaviour : BattleEnemyBehaviourBase
     {
         [Inject]
         private readonly ProjectileManager _projectiles;
         [Inject]
         private readonly BattleFieldManager _field;
-        [Inject]
-        private readonly BattleConfig _config;
 
         [SerializeField]
         private BulletProjectile bullet;

@@ -23,7 +23,8 @@ namespace RPGF.Battle.Player
         {
             foreach (var playerMode in playerModes)
             {
-                playerMode.Initialize(data);
+                playerMode.PreInitialize(data);
+                Local.DI.InjectInto(playerMode);
             }
 
             SetMode(PlayerModeEnum.Soul);
@@ -31,12 +32,14 @@ namespace RPGF.Battle.Player
 
         public void SetMode(PlayerModeEnum mode)
         {
+            playerModes.FirstOrDefault(i => i.PlayerMode == CurrentMode)?.Dispose();
             foreach (var playerMode in playerModes)
             {
                 playerMode.SetActive(playerMode.PlayerMode == mode);
                 if (playerMode.PlayerMode == mode)
                 {
                     soulModel.color = playerMode.SoulColor;
+                    playerMode.Initialize();
                 }
             }
 

@@ -292,7 +292,7 @@ namespace RPGF.Battle
 
             _battle.UI.Concentration.SetConcentration(0);
 
-            _battle.BattleField.transform.position = Camera.main.transform.position;
+            _battle.BattleField.transform.position = (Vector2)Camera.main.transform.position;
 
             _battle.Background.CreateBackground(Data.BattleInfo.Background);
 

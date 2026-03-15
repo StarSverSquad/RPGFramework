@@ -4,6 +4,7 @@ using UnityEngine;
 using RPGF.Core.Battle.Projectiles.Abstractions;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace RPGF.Battle.Player
 {
@@ -20,12 +21,12 @@ namespace RPGF.Battle.Player
         {
             if (collision.CompareTag(TagConstants.ProjectileTag))
             {
-                if (hittedProjectilesIds.Contains(collision.gameObject.GetInstanceID()))
+                if (hittedProjectilesIds.Any(i => i == collision.gameObject.GetInstanceID()))
                     return;
 
                 var bullet = collision.gameObject.GetComponent<ProjectileBase>();
 
-                if (bullet.CanHitHalo)
+                if (!bullet.CanHitHalo)
                     return;
 
                 hittedProjectilesIds.Add(collision.gameObject.GetInstanceID());

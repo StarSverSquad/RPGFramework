@@ -11,10 +11,10 @@ namespace RPGF.Core.Battle.Behaviour.Abstractions
         private string behaviourTag;
         public string BehaviourTag => behaviourTag;
 
-        [Tooltip("Длительность во времни")]
-        public float Time = 1f;
-        [Tooltip("Ожидать завершения паттерна?")]
-        public bool WaitEnd = false;
+        [Tooltip("Длительность")]
+        public float Time = 6f;
+        [Tooltip("Ожидать завершения?")]
+        public bool WaitEnd = true;
         [Tooltip("Необходимо поле битвы?")]
         public bool BattleFieldRequired = true;
 

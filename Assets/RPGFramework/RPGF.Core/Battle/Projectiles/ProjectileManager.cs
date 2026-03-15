@@ -23,9 +23,13 @@ namespace RPGF.Core.Battle.Projectiles
         {
             var projObject = Instantiate(
                 originalProjectile.gameObject, 
-                _battleField.Center + position, 
-                Quaternion.identity, 
-                projectileContainer
+                position,
+                Quaternion.identity,
+                new InstantiateParameters()
+                {
+                   parent = projectileContainer.transform,
+                   worldSpace = false,
+                }
             );
 
             var projectile = projObject.GetComponent<ProjectileBase>();

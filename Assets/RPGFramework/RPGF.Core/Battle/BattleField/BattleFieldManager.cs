@@ -35,10 +35,19 @@ namespace RPGF.Core.Battle.BattleField
         public T Create<T>(T original, Vector2 position)
             where T : BattleFieldBase
         {
-            var gameObject = Instantiate(original.gameObject, position + Center, Quaternion.identity, transform);
+            var gameObject = Instantiate(
+                original.gameObject, 
+                position, 
+                Quaternion.identity, 
+                new InstantiateParameters()
+                {
+                    parent = transform,
+                    worldSpace = false
+                });
             var field = gameObject.GetComponent<BattleFieldBase>();
 
             DI.InjectInto(field);
+            field.Initialize();
 
             fields.Add(field);
 

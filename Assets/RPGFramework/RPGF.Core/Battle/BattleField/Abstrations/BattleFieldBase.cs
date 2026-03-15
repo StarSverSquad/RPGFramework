@@ -15,9 +15,9 @@ namespace RPGF.Core.Battle.BattleField.Abstractions
 
         [Header("Ссылки:")]
         [SerializeField]
-        private SpriteRenderer _field;
+        protected SpriteRenderer _field;
         [SerializeField]
-        private AutoTiling _mask;
+        protected AutoTiling _mask;
         [Header("Настройки:")]
         [SerializeField]
         private float animationTime = 0.1f;
@@ -33,10 +33,7 @@ namespace RPGF.Core.Battle.BattleField.Abstractions
         protected Tween animationSizeTween = null;
         protected Tween animationColorTween = null;
 
-        public override void Initialize()
-        {
-            
-        }
+        public override void Initialize() { }
 
         #region Move/Translate API
 
@@ -53,7 +50,6 @@ namespace RPGF.Core.Battle.BattleField.Abstractions
             translateTween = transform
                 .DOMove(Center + position, time)
                 .SetEase(easing)
-                .SetLoops(-1)
                 .Play();
         }
 
@@ -70,7 +66,6 @@ namespace RPGF.Core.Battle.BattleField.Abstractions
             translateTween = transform
                 .DOMove(transform.position + (Vector3)offset, time)
                 .SetEase(easing)
-                .SetLoops(-1)
                 .Play();
         }
 
@@ -88,9 +83,8 @@ namespace RPGF.Core.Battle.BattleField.Abstractions
         {
             rotateTween?.Kill();
 
-            transform.DORotate(new Vector3(0, 0, angle), time)
+            rotateTween = transform.DORotate(new Vector3(0, 0, angle), time)
                 .SetEase(easing)
-                .SetLoops(-1)
                 .Play();
                 
         }
@@ -98,7 +92,7 @@ namespace RPGF.Core.Battle.BattleField.Abstractions
         {
             rotateTween?.Kill();
 
-            transform.DORotate(new Vector3(0, 0, 360 * (toRight ? -1 : 1)), 1f / rotatesPerSecound, RotateMode.FastBeyond360)
+            rotateTween = transform.DORotate(new Vector3(0, 0, 360 * (toRight ? -1 : 1)), 1f / rotatesPerSecound, RotateMode.FastBeyond360)
                 .SetLoops(-1, LoopType.Incremental)
                 .SetEase(Ease.Linear)
                 .Play();
@@ -113,6 +107,8 @@ namespace RPGF.Core.Battle.BattleField.Abstractions
             resizeTween?.Kill();
 
             _field.size = size;
+
+            OnResize();
         }
         public void Resize(Vector2 size, float time, Ease Easing = Ease.Linear)
         {
@@ -120,13 +116,9 @@ namespace RPGF.Core.Battle.BattleField.Abstractions
 
             resizeTween = DOTween
                 .To(() => _field.size, (value) => _field.size = value, size, time)
-                .SetEase(Easing)
-                .SetLoops(-1);
+                .SetEase(Easing);
 
-            resizeTween.onUpdate = () =>
-            {
-                _mask.Tiling();
-            };
+            resizeTween.onUpdate = OnResize;
 
             resizeTween.Play();
         }
@@ -172,6 +164,11 @@ namespace RPGF.Core.Battle.BattleField.Abstractions
         }
 
         #endregion
+
+        protected virtual void OnResize()
+        {
+            _mask.Tiling();
+        }
 
         public virtual void Dispose()
         {

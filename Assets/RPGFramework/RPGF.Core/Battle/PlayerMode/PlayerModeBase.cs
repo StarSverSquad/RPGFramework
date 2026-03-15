@@ -10,11 +10,9 @@ namespace RPGF.Core.Battle.PlayerMode
 
         public PlayerModeData Data { get; set; }
 
-        public void Initialize(PlayerModeData data)
+        public void PreInitialize(PlayerModeData data)
         {
             Data = data;
-
-            Initialize();
         }
 
         public void SetActive(bool active)

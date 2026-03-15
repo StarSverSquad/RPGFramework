@@ -11,6 +11,8 @@ namespace RPGF.Battle.Player.Mode
 {
     public class SpiderPlayerMode : PlayerModeBase
     {
+        public const float LadderModeOffsetCorection = 0.125f;
+
         [Inject]
         private readonly BattleFieldManager _fields;
 
@@ -94,7 +96,7 @@ namespace RPGF.Battle.Player.Mode
 
             if (battleField.LadderMode)
             {
-                newY -= 0.125f;
+                newY -= LadderModeOffsetCorection;
             }
 
             verticalModeTween = transform

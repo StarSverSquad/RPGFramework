@@ -84,10 +84,6 @@ namespace RPGF.Battle
             Local.DI.AddSignleton(Player);
             Player.Initialize();
             Player.SetActive(false);
-
-            //Local.DI.InjectInto(SpiderModeGrid);
-            //SpiderModeGrid.Initialize();
         }
     }
-
 }

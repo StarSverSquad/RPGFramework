@@ -1,4 +1,5 @@
 using RPGF.Core;
+using RPGF.Domain.DI;
 using RPGF.GUI.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,9 @@ namespace RPGF.GUI
 {
     public abstract class GUIManagerBase : RPGFrameworkBehaviour, IGUIManager 
     {
-   
+        [Inject]
+        private readonly DependencyInjection DI;
+
         [SerializeField]
         protected GUIBlockBase firstBlock;
         [SerializeField]
@@ -34,6 +37,7 @@ namespace RPGF.GUI
 
             foreach (var item in GetComponentsInChildren<GUIBlockBase>(true))
             {
+                DI.InjectInto(item);
                 item.Initialize(this);
             }
 

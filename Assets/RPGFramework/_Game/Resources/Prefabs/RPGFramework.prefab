@@ -13516,13 +13516,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4842747758338538784}
+  - component: {fileID: 3202894073394006380}
   m_Layer: 0
   m_Name: Items
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4842747758338538784
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13542,6 +13543,53 @@ RectTransform:
   m_AnchoredPosition: {x: 0.009765625, y: 0}
   m_SizeDelta: {x: -0.019042969, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &3202894073394006380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7730227473934702467}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 457d7a376492dc946b6520c5a94ffdd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GlackSaga.GUI.TitleMenu.Items.ItemsGUIBlock
+  _disableOnDiactivate: 1
+  _enableOnActivate: 1
+  OnActivateEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDiativateEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDisposeEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnFocusEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnLostFocusEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPreviewEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnNextEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  _startChoiceOnActivate: 0
+  _elements: []
+  _isHorizontal: 1
+  OnSelectionChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCanceledEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnChoicedEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &7738241987094430739
 GameObject:
   m_ObjectHideFlags: 0
@@ -20364,6 +20412,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6887263879776589156}
     m_Modifications:
+    - target: {fileID: 2035358483498372409, guid: 6bb813b8522c0d648aa09132e2c8bff0, type: 3}
+      propertyPath: OnSelect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2427118352529543545}
+    - target: {fileID: 2035358483498372409, guid: 6bb813b8522c0d648aa09132e2c8bff0, type: 3}
+      propertyPath: OnSelect.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 3202894073394006380}
     - target: {fileID: 3715717550345654339, guid: 6bb813b8522c0d648aa09132e2c8bff0, type: 3}
       propertyPath: m_Name
       value: ItemButton

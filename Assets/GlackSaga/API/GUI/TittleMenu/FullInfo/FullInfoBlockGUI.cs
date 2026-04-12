@@ -1,5 +1,5 @@
 using RPGF.Domain.Interfaces;
-using RPGF.GUI;
+using RPGF.GUI.Abstractions;
 using RPGF.RPG;
 using System.Collections.Generic;
 using TMPro;

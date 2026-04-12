@@ -1,9 +1,9 @@
-﻿using RPGF.GUI;
-using RPGF.UI;
+﻿using RPGF.UI;
 using RPGF.RPG;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using RPGF.GUI.Abstractions;
 
 namespace GlackSaga.GUI.TitleMenu
 {

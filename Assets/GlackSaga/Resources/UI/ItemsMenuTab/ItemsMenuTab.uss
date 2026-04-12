@@ -6,10 +6,6 @@
     -unity-background-scale-mode: stretch-to-fill;
     background-size: 100% 100%;
     background-position-y: center;
-    -unity-slice-left: 33;
-    -unity-slice-top: 33;
-    -unity-slice-right: 33;
-    -unity-slice-bottom: 33;
     -unity-slice-scale: 0.6px;
     width: 49%;
 }
@@ -19,10 +15,6 @@
     -unity-background-scale-mode: stretch-to-fill;
     background-size: 100% 100%;
     background-position-y: center;
-    -unity-slice-left: 33;
-    -unity-slice-top: 33;
-    -unity-slice-right: 33;
-    -unity-slice-bottom: 33;
     -unity-slice-scale: 0.6px;
     width: 49%;
     -unity-background-image-tint-color: rgb(230, 207, 38);
@@ -45,10 +37,6 @@
 .content {
     background-image: url("project://database/Assets/GlackSaga/Resources/Sprites/Tittle_Menu_UI.png?fileID=-184794977997846973&guid=68c17bbb17ba7a74eb46d379d988f116&type=3#Tittle_Menu_UI_2");
     -unity-slice-scale: 0.6px;
-    -unity-slice-left: 64;
-    -unity-slice-top: 64;
-    -unity-slice-right: 64;
-    -unity-slice-bottom: 64;
     -unity-background-scale-mode: stretch-to-fill;
     background-position-x: center;
     background-position-y: center;

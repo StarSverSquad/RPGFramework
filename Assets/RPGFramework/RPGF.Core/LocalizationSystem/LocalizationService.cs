@@ -30,9 +30,9 @@ namespace RPGF.Core.Localization
             return fallback ?? tag;
         }
 
-        public bool TryGetLocale(string tag, out string result)
+        public bool TryGetLocale(string tag, out string result, string fallback = null)
         {
-            var locale = GetLocale(tag);
+            var locale = GetLocale(tag, fallback);
 
             result = locale;
 

@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-namespace RPGF.GUI
+namespace RPGF.GUI.Abstractions
 {
     [RequireComponent(typeof(RectTransform))]
     public class GUIInteractableBase : RPGFrameworkBehaviour, IGUIInteractable, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
@@ -52,10 +52,7 @@ namespace RPGF.GUI
         public virtual void SetFocus(bool focus)
         {
             if (!gameObject.activeInHierarchy)
-            {
-                Debug.LogWarning("Can't set focus on deactivated element");
                 return;
-            }
 
             Focused = focus;
 

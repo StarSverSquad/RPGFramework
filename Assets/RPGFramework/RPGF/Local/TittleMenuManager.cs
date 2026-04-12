@@ -1,4 +1,5 @@
 ﻿using RPGF.GUI;
+using RPGF.GUI.Abstractions;
 
 public class TittleMenuManager : GUIManagerBase
 {

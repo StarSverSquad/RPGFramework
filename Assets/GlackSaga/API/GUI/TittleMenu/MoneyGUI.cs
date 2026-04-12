@@ -1,5 +1,5 @@
 using DG.Tweening;
-using RPGF.GUI;
+using RPGF.GUI.Abstractions;
 using System;
 using TMPro;
 using UnityEngine;

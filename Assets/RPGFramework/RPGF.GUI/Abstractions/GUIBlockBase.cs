@@ -3,9 +3,9 @@ using RPGF.GUI.Interfaces;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace RPGF.GUI
+namespace RPGF.GUI.Abstractions
 {
-    public class GUIBlockBase : RPGFrameworkBehaviour, IGUIBlock
+    public abstract class GUIBlockBase : RPGFrameworkBehaviour, IGUIBlock
     {
         [SerializeField]
         private bool _disableOnDiactivate = true;
@@ -15,10 +15,10 @@ namespace RPGF.GUI
         private bool _enableOnActivate = true;
         public bool EnableOnActivate => _enableOnActivate;
 
-        public IGUIManager Manager { get; private set; }
+        public IGUIManager Manager { get; protected set; }
 
-        public bool IsActivated { get; private set; } = false;
-        public bool IsFocused { get; private set; } = false;
+        public bool IsActivated { get; protected set; } = false;
+        public bool IsFocused { get; protected set; } = false;
 
         #region EVENTS
 
@@ -60,7 +60,7 @@ namespace RPGF.GUI
             {
                 OnActivate();
                 OnActivateEvent?.Invoke();
-            }
+            }      
 
             IsActivated = true;
         }
@@ -76,14 +76,12 @@ namespace RPGF.GUI
             }
 
             if (_disableOnDiactivate)
-            {
                 gameObject.SetActive(false);
-            }
 
             IsActivated = false;
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             if (gameObject.activeInHierarchy)
             {
@@ -92,7 +90,7 @@ namespace RPGF.GUI
             }
         }
 
-        public void SetFocus(bool focus)
+        public virtual void SetFocus(bool focus)
         {
             if (!gameObject.activeInHierarchy)
             {
@@ -114,7 +112,7 @@ namespace RPGF.GUI
             }
         }
 
-        public void Preview()
+        public virtual void Preview()
         {
             OnPreview();
             OnPreviewEvent?.Invoke();
@@ -123,7 +121,7 @@ namespace RPGF.GUI
 
             Manager.PreviewBlock();
         }
-        public void Next(IGUIBlock gUIBlock)
+        public virtual void Next(IGUIBlock gUIBlock)
         {
             var block = (GUIBlockBase)gUIBlock;
 
@@ -152,7 +150,6 @@ namespace RPGF.GUI
         protected virtual void OnNext(GUIBlockBase gUIBlock) { }
 
         #endregion
-
 
         protected virtual void OnDisable()
         {

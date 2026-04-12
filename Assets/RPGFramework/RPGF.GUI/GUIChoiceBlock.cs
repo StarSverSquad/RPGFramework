@@ -1,4 +1,5 @@
-﻿using RPGF.GUI.Interfaces;
+﻿using RPGF.GUI.Abstractions;
+using RPGF.GUI.Interfaces;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +10,15 @@ namespace RPGF.GUI
 {
     public class GUIChoiceBlock : GUIBlockBase
     {
-        [Space, Header("Choice block _options:")]
+        [Space, Header("Choice block options:")]
         [SerializeField]
-        private bool _startChoiceOnActivate = false;
+        protected List<GUIInteractableBase> Elements = new();
         [SerializeField]
-        private List<GUIInteractableBase> _elements = new();
+        private bool startChoiceOnActivate = false;
         [SerializeField]
-        private bool _isHorizontal = true;
+        private bool isHorizontal = true;
 
-        public GUIInteractableBase CurrentElement => _elements[index];
+        public GUIInteractableBase CurrentElement => Elements[index];
         public int CurrentElementIndex => index;
 
         private int index = 0;
@@ -35,7 +36,7 @@ namespace RPGF.GUI
 
         protected override void OnActivate()
         {
-            if (_startChoiceOnActivate)
+            if (startChoiceOnActivate)
                 StartChoice();
         }
 
@@ -47,17 +48,15 @@ namespace RPGF.GUI
 
         protected override void OnDiativate()
         {
-            foreach (var item in _elements)
-            {
+            foreach (var item in Elements)
                 item.SetFocus(false);
-            }
 
             StopChoice();
         }
 
         public void StartChoice()
         {
-            _elements[index].SetFocus(true);
+            Elements[index].SetFocus(true);
 
             StopChoice();
             choiceCoroutine = StartCoroutine(ChoiceCoroutine());
@@ -73,14 +72,14 @@ namespace RPGF.GUI
 
         public void SetElements(params GUIInteractableBase[] elements)
         {
-            _elements = elements.ToList();
+            Elements = elements.ToList();
         }
 
-        protected void ChangeSelect(int newIndex)
+        protected virtual void ChangeSelect(int newIndex)
         {
             CurrentElement.SetFocus(false);
 
-            index = Mathf.Clamp(newIndex, 0, _elements.Count - 1);
+            index = Mathf.Clamp(newIndex, 0, Elements.Count - 1);
 
             CurrentElement.SetFocus(true);
 
@@ -96,7 +95,7 @@ namespace RPGF.GUI
             {
                 yield return null;
 
-                if (_isHorizontal)
+                if (isHorizontal)
                 {
                     if (Input.GetKeyDown(Global.BaseOptions.MoveLeft))
                     {

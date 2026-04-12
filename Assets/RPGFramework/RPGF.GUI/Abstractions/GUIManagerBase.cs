@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace RPGF.GUI
+namespace RPGF.GUI.Abstractions
 {
     public abstract class GUIManagerBase : RPGFrameworkBehaviour, IGUIManager 
     {

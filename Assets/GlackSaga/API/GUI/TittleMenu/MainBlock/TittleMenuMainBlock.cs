@@ -15,18 +15,17 @@ namespace GlackSaga.GUI.TitleMenu.Main
         private float _panelHideOffset = 110f;
         [SerializeField]
         private float _panelAnimationTime = 0.5f;
-
+        [SerializeField]
+        private float _wordsBgTransparency = 0.5f;
         [Space]
         [SerializeField]
         private MoneyGUI _money;
         [SerializeField]
         private Image _solidColorBg;
         [SerializeField]
-        private RectTransform _wordsBg;
+        private Image _wordsBg;
         [SerializeField]
         private float _solidColorBgAlpha;
-        [SerializeField]
-        private Vector2 _wordsBgOutPosition;
         [SerializeField]
         private float _bgAnimtionTime = 0.5f;
 
@@ -36,7 +35,6 @@ namespace GlackSaga.GUI.TitleMenu.Main
         private Coroutine openAnimation;
         private Coroutine closeAnimation;
 
-        private Tween bgTween;
         private Tween panelTween;
         private Tween solidClrTween;
 
@@ -46,7 +44,7 @@ namespace GlackSaga.GUI.TitleMenu.Main
 
             _panel.anchoredPosition = new Vector2(0, _panelHideOffset);
 
-            _wordsBg.anchoredPosition = _wordsBgOutPosition;
+            _wordsBg.color = new Color(_wordsBg.color.r, _wordsBg.color.g, _wordsBg.color.b, 0);
 
             Color solidClr = _solidColorBg.color; solidClr.a = 0;
             _solidColorBg.color = solidClr;
@@ -91,7 +89,9 @@ namespace GlackSaga.GUI.TitleMenu.Main
             Color solidClr = _solidColorBg.color; solidClr.a = _solidColorBgAlpha;
             solidClrTween = _solidColorBg.DOColor(solidClr, _bgAnimtionTime).Play();
 
-            bgTween = _wordsBg.DOAnchorPos(Vector2.zero, _bgAnimtionTime).Play();
+            _wordsBg.DOColor(
+                new Color(_wordsBg.color.r, _wordsBg.color.g, _wordsBg.color.b, _wordsBgTransparency), _bgAnimtionTime)
+                .Play();
 
             yield return new WaitForSeconds(_bgAnimtionTime);
 
@@ -113,7 +113,9 @@ namespace GlackSaga.GUI.TitleMenu.Main
             Color solidClr = _solidColorBg.color; solidClr.a = 0;
             solidClrTween = _solidColorBg.DOColor(solidClr, _bgAnimtionTime).Play();
 
-            bgTween = _wordsBg.DOAnchorPos(_wordsBgOutPosition, _bgAnimtionTime).Play();
+            _wordsBg.DOColor(
+                new Color(_wordsBg.color.r, _wordsBg.color.g, _wordsBg.color.b, 0), _bgAnimtionTime)
+                .Play();
 
             panelTween = _panel
                 .DOAnchorPosY(_panelHideOffset, _panelAnimationTime)
@@ -133,11 +135,9 @@ namespace GlackSaga.GUI.TitleMenu.Main
 
         private void DisposeTweens()
         {
-            bgTween?.Kill();
             panelTween?.Kill();
             solidClrTween?.Kill();
 
-            bgTween = null;
             panelTween = null;
             solidClrTween = null;
         }

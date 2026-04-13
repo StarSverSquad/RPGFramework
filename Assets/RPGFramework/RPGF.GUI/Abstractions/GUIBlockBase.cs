@@ -8,10 +8,10 @@ namespace RPGF.GUI.Abstractions
 {
     public abstract class GUIBlockBase : RPGFrameworkBehaviour, IGUIBlock
     {
+        [Header("Block options:")]
         [SerializeField]
         private bool _disableOnDiactivate = true;
         public bool DisableOnDiactivate => _disableOnDiactivate;
-
         [SerializeField]
         private bool _enableOnActivate = true;
         public bool EnableOnActivate => _enableOnActivate;
@@ -22,21 +22,17 @@ namespace RPGF.GUI.Abstractions
         public bool IsFocused { get; protected set; } = false;
 
         #region EVENTS
-
+        
         [Foldout("Block events")]
-        [Space]
         public UnityEvent OnActivateEvent;
         [Foldout("Block events")]
         public UnityEvent OnDiativateEvent;
-        [Space]
         [Foldout("Block events")]
         public UnityEvent OnDisposeEvent;
-        [Space]
         [Foldout("Block events")]
         public UnityEvent OnFocusEvent;
         [Foldout("Block events")]
         public UnityEvent OnLostFocusEvent;
-        [Space]
         [Foldout("Block events")]
         public UnityEvent OnPreviewEvent;
         [Foldout("Block events")]

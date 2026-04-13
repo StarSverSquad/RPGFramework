@@ -1,4 +1,5 @@
-﻿using RPGF.GUI.Abstractions;
+﻿using NaughtyAttributes;
+using RPGF.GUI.Abstractions;
 using RPGF.GUI.Interfaces;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace RPGF.GUI
     public class GUIChoiceBlock : GUIBlockBase
     {
         [Space, Header("Choice block options:")]
+        [ReorderableList]
         [SerializeField]
         protected List<GUIInteractableBase> Elements = new();
         [SerializeField]
@@ -25,8 +27,11 @@ namespace RPGF.GUI
         private Coroutine choiceCoroutine = null;
 
         [Space]
+        [Foldout("Choice block events")]
         public UnityEvent OnSelectionChangedEvent;
+        [Foldout("Choice block events")]
         public UnityEvent OnCanceledEvent;
+        [Foldout("Choice block events")]
         public UnityEvent<int> OnChoicedEvent;
 
         public override void Initialize(IGUIManager manager)

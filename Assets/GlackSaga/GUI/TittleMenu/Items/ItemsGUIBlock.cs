@@ -1,3 +1,4 @@
+using NaughtyAttributes;
 using RPGF.Core.Inventory;
 using RPGF.Domain.DI;
 using RPGF.GUI;
@@ -5,6 +6,7 @@ using RPGF.RPG;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -22,25 +24,47 @@ namespace GlackSaga.GUI.TittleMenu.Items
         [Inject]
         private readonly InventoryService _inventoryService;
 
+        #region Links
+
+        [Header("Items block options:")] 
+        [SerializeField]
+        private ItemsGUITab[] itemsGUITabs = new ItemsGUITab[2];
+        [Header("Links:")]
+        [SerializeField]
+        private Image arrowUp;
+        [SerializeField] 
+        private Image arrowDown;
+        [Space]
+        [SerializeField]
+        private TextMeshProUGUI emptyText;
+        [Space]
+        [SerializeField]
+        private TextMeshProUGUI itemName;
+        [SerializeField]
+        private TextMeshProUGUI hpGain;
+        [SerializeField]
+        private TextMeshProUGUI mpGain;
+        [SerializeField]
+        private TextMeshProUGUI description;
+
+        #endregion
+
         public int Page { get; private set; } = 0;
         public int PageSize => Elements.Count;
         public int MaxPage => Mathf.CeilToInt(selectedSlots.Count / PageSize);
 
         public int AbsoluteIndex => CurrentElementIndex + (Page * PageSize);
 
-        [SerializeField]
-        private ItemsGUITab[] itemsGUITabs = new ItemsGUITab[2];
-
-        [SerializeField]
-        private Image arrowUp;
-        [SerializeField] 
-        private Image arrowDown;
+        public ItemsTab SelectedTab { get; private set; } = ItemsTab.Regular;
 
         private List<InventorySlotData> selectedSlots = new();
 
-        public ItemsTab SelectedTab { get; private set; } = ItemsTab.Regular;
+        #region Events
 
+        [Foldout("Items block events")]
         public UnityEvent OnTabChanged;
+
+        #endregion
 
         private void Update()
         {
@@ -153,6 +177,18 @@ namespace GlackSaga.GUI.TittleMenu.Items
             else
             {
                 arrowDown.gameObject.SetActive(false);
+            }
+        }
+
+        private void SetData(InventorySlotData slot)
+        {
+            if (slot is not null)
+            {
+
+            }
+            else
+            {
+
             }
         }
 

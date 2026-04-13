@@ -1,4 +1,5 @@
-﻿using RPGF.Core;
+﻿using NaughtyAttributes;
+using RPGF.Core;
 using RPGF.GUI.Interfaces;
 using UnityEngine;
 using UnityEngine.Events;
@@ -22,16 +23,23 @@ namespace RPGF.GUI.Abstractions
 
         #region EVENTS
 
+        [Foldout("Block events")]
         [Space]
         public UnityEvent OnActivateEvent;
+        [Foldout("Block events")]
         public UnityEvent OnDiativateEvent;
         [Space]
+        [Foldout("Block events")]
         public UnityEvent OnDisposeEvent;
         [Space]
+        [Foldout("Block events")]
         public UnityEvent OnFocusEvent;
+        [Foldout("Block events")]
         public UnityEvent OnLostFocusEvent;
         [Space]
+        [Foldout("Block events")]
         public UnityEvent OnPreviewEvent;
+        [Foldout("Block events")]
         public UnityEvent<GUIBlockBase> OnNextEvent;
 
         #endregion

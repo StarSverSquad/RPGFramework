@@ -1,11 +1,13 @@
 using NaughtyAttributes;
 using RPGF.Core.Inventory;
+using RPGF.Core.RPGEffect;
 using RPGF.Domain.DI;
 using RPGF.GUI;
 using RPGF.RPG;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -111,6 +113,8 @@ namespace GlackSaga.GUI.TittleMenu.Items
             {
                 base.ChangeSelect(newIndex);
             }
+
+            SetData(selectedSlots[absoluteIndex]);
         }
 
         protected override void OnActivate()
@@ -138,6 +142,16 @@ namespace GlackSaga.GUI.TittleMenu.Items
             selectedSlots = _inventoryService.Slots
                 .Where(i => SelectedTab == ItemsTab.Key ? i.Item.Rare == Rareness.Key : i.Item.Rare != Rareness.Key)
                 .ToList();
+
+            if (selectedSlots.Count == 0)
+            {
+                emptyText.gameObject.SetActive(true);
+                SetData(null);
+            }
+            else
+            {
+                emptyText.gameObject.SetActive(false);
+            }
 
             SetPage(0);
         }
@@ -184,11 +198,72 @@ namespace GlackSaga.GUI.TittleMenu.Items
         {
             if (slot is not null)
             {
+                itemName.text = GetLocale(slot.Item.GetLocaleNameTag(), slot.Item.Name);
+                description.text = GetLocale(slot.Item.GetLocaleDesciptionTag(), slot.Item.Description);
 
+                var changeManaHealByConst = slot.Item.Effects.OfType<ChangeManaHealConstEffect>();
+                var changeManaHealByPersent = slot.Item.Effects.OfType<ChangeManaHealPercentEffect>();
+
+                int hpCountGain = changeManaHealByConst.Sum(i => i.Heal);
+                float hpPercentGain = changeManaHealByPersent.Sum(i => i.Heal);
+
+                int mpCountGain = changeManaHealByConst.Sum(i => i.Mana);
+                float mpPercentGain = changeManaHealByPersent.Sum(i => i.Mana);
+
+                StringBuilder hpGainTextBuilder = new();
+                if (hpCountGain > 0 || hpPercentGain > 0)
+                {
+                    hpGainTextBuilder.Append("+ ");
+                }
+                if (hpCountGain > 0)
+                {
+                    hpGainTextBuilder.Append(hpCountGain);
+                }
+                if (hpCountGain > 0 && hpPercentGain > 0)
+                {
+                    hpGainTextBuilder.Append(", + ");
+                }
+                if (hpPercentGain > 0)
+                {
+                    hpGainTextBuilder.Append($"{Mathf.RoundToInt(hpPercentGain * 100)}%");
+                }
+                if (hpCountGain > 0 || hpPercentGain > 0)
+                {
+                    hpGainTextBuilder.Append(" [HP]");
+                }
+
+
+                StringBuilder mpGainTextBuilder = new();
+                if (mpCountGain > 0 || mpPercentGain > 0)
+                {
+                    mpGainTextBuilder.Append("+ ");
+                }
+                if (mpCountGain > 0)
+                {
+                    mpGainTextBuilder.Append(mpCountGain);
+                }
+                if (mpCountGain > 0 && mpPercentGain > 0)
+                {
+                    mpGainTextBuilder.Append(", + ");
+                }
+                if (mpPercentGain > 0)
+                {
+                    mpGainTextBuilder.Append($"{Mathf.RoundToInt(mpPercentGain * 100)}%");
+                }
+                if (mpCountGain > 0 || mpPercentGain > 0)
+                {
+                    mpGainTextBuilder.Append(" [MP]");
+                }
+
+                hpGain.text = hpGainTextBuilder.ToString();
+                mpGain.text = mpGainTextBuilder.ToString();
             }
             else
             {
-
+                itemName.text = string.Empty;
+                description.text = string.Empty;
+                hpGain.text = string.Empty;
+                mpGain.text = string.Empty;
             }
         }
 
@@ -202,6 +277,8 @@ namespace GlackSaga.GUI.TittleMenu.Items
             SelectedTab = ItemsTab.Regular;
 
             Page = 0;
+
+            SetData(null);
 
             selectedSlots.Clear();
         }

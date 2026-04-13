@@ -24,14 +24,14 @@ MonoBehaviour:
   ForAlive: 1
   ForDeath: 1
   Effects:
-  - rid: 631918494483218702
+  - rid: 415278159294365960
   Rare: 0
   WriteMessage: 1
   references:
     version: 2
     RefIds:
-    - rid: 631918494483218702
-      type: {class: ChangeManaHealPercentEffect, ns: RPGF.Core.RPGEffect, asm: Assembly-CSharp}
+    - rid: 415278159294365960
+      type: {class: ChangeManaHealConstEffect, ns: RPGF.Core.RPGEffect, asm: Assembly-CSharp}
       data:
-        Heal: 20
-        Mana: 0
+        Heal: 50
+        Mana: 150

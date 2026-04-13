@@ -7,5 +7,15 @@ namespace RPGF.RPG
     public class RPGCollectable : RPGUsable
     {
         public Rareness Rare;
+
+        public override string GetLocaleNameTag()
+        {
+            return "Item_" + base.GetLocaleNameTag();
+        }
+
+        public override string GetLocaleDesciptionTag()
+        {
+            return "Item_" + base.GetLocaleDesciptionTag();
+        }
     }
 }

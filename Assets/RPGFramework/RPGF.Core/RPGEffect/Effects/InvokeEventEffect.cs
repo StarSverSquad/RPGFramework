@@ -8,6 +8,7 @@ using UnityEngine;
 
 namespace RPGF.Core.RPGEffect
 {
+    [Serializable]
     public class InvokeEventEffect : RPGEffectBase
     {
         public GlobalEvent @event;

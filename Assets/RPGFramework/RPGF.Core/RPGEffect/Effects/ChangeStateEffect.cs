@@ -1,10 +1,12 @@
 ﻿using RPGF.Battle;
 using RPGF.RPG;
+using System;
 using System.Collections;
 using System.Linq;
 
 namespace RPGF.Core.RPGEffect
 {
+    [Serializable]
     public class ChangeStateEffect : RPGEffectBase
     {
         public bool IsAddState = true;

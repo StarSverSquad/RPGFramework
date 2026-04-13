@@ -1,10 +1,12 @@
 ﻿using RPGF.Battle;
 using RPGF.RPG;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Core.RPGEffect
 {
+    [Serializable]
     public class ChangeConcentrationEffect : RPGEffectBase
     {
         public int AddConcentration;

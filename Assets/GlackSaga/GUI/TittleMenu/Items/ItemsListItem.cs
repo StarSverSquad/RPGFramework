@@ -21,7 +21,7 @@ namespace GlackSaga.GUI.TittleMenu.Items
         public void SetData(InventorySlotData slot)
         {
             icon.sprite = slot.Item.Icon;
-            text.text = GetLocale($"ITEM_{slot.Item.Tag}", slot.Item.Name);
+            text.text = GetLocale(slot.Item.GetLocaleNameTag(), slot.Item.Name);
             counter.text = $"{slot.Count}x";
         }
 

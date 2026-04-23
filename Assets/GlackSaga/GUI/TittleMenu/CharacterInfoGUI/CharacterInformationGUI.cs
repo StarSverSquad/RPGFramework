@@ -3,11 +3,11 @@ using RPGF.RPG;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using RPGF.GUI.Abstractions;
+
 
 namespace GlackSaga.GUI.TitleMenu
 {
-    class CharacterInformationGUI : GUIElementBase
+    class CharacterInformationGUI : RPGF.GUI.GUIElement
     {
         [SerializeField]
         private LineBar _hpBar;

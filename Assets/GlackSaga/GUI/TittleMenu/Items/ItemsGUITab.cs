@@ -1,11 +1,10 @@
-﻿using RPGF.GUI.Abstractions;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GlackSaga.GUI.TittleMenu.Items
 {
-    public class ItemsGUITab : GUIElementBase
+    public class ItemsGUITab : RPGF.GUI.GUIElement
     {
         [SerializeField]
         private Image background;

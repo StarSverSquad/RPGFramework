@@ -1,13 +1,14 @@
-﻿using RPGF.Core;
+﻿using NaughtyAttributes;
+using RPGF.Core;
 using RPGF.GUI.Interfaces;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-namespace RPGF.GUI.Abstractions
+namespace RPGF.GUI
 {
     [RequireComponent(typeof(RectTransform))]
-    public class GUIInteractableBase : RPGFrameworkBehaviour, IGUIInteractable, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+    public class GUIInteractable : RPGFrameworkBehaviour, IGUIInteractable, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
     {
         [SerializeField]
         private bool withMouseInteract = true;
@@ -19,9 +20,13 @@ namespace RPGF.GUI.Abstractions
         private RectTransform rectTransform;
         public RectTransform RectTransform => rectTransform;
 
+        [Foldout("Events")]
         public UnityEvent OnFocus;
+        [Foldout("Events")]
         public UnityEvent OnUnfocus;
+        [Foldout("Events")]
         public UnityEvent OnCancel;
+        [Foldout("Events")]
         public UnityEvent OnSelect;
 
         public override void Initialize()

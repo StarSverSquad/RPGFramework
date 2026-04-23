@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace GlackSaga.GUI.TitleMenu.Main
 {
-    public class TittleMenuMainBlock : GUIChoiceBlock
+    public class TittleMenuMainBlock : GUISelectableBlock
     {
         [SerializeField]
         private RectTransform _panel;
@@ -66,7 +66,7 @@ namespace GlackSaga.GUI.TitleMenu.Main
             _characterInformation.Hide();
         }
 
-        public override void OnCanceled()
+        protected override void OnCanceled()
         {
             if (closeAnimation != null)
                 StopCoroutine(closeAnimation);

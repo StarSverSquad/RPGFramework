@@ -1,12 +1,11 @@
 using DG.Tweening;
-using RPGF.GUI.Abstractions;
 using System;
 using TMPro;
 using UnityEngine;
 
 namespace GlackSaga.GUI.TitleMenu
 {
-    public class MoneyGUI : GUIElementBase, IDisposable
+    public class MoneyGUI : RPGF.GUI.GUIElement, IDisposable
     {
         [SerializeField]
         private TextMeshProUGUI _moneyText;

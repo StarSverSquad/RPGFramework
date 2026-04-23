@@ -1,5 +1,4 @@
 ﻿using NaughtyAttributes;
-using RPGF.GUI.Abstractions;
 using RPGF.GUI.Interfaces;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,19 +8,20 @@ using UnityEngine.Events;
 
 namespace RPGF.GUI
 {
-    public class GUIChoiceBlock : GUIBlockBase
+    public class GUISelectableBlock : GUIBlock
     {
         [Space, Header("Choice block options:")]
         [ReorderableList]
         [SerializeField]
-        protected List<GUIInteractableBase> Elements = new();
+        protected List<GUIInteractable> Elements = new();
         [SerializeField]
         private bool startChoiceOnActivate = false;
         [SerializeField]
         private bool isHorizontal = true;
 
-        public GUIInteractableBase CurrentElement => Elements[index];
-        public int CurrentElementIndex => index;
+        public GUIInteractable CurrentElement => Elements[index];
+        public int CurrentIndex => index;
+        public bool Canceled { get; private set; } = false;
 
         private int index = 0;
         private Coroutine choiceCoroutine = null;
@@ -63,8 +63,10 @@ namespace RPGF.GUI
         {
             Elements[index].SetFocus(true);
 
+            Canceled = false;
+
             StopChoice();
-            choiceCoroutine = StartCoroutine(ChoiceCoroutine());
+            choiceCoroutine = StartCoroutine(SelectCoroutine());
         }
         public void StopChoice()
         {
@@ -75,7 +77,7 @@ namespace RPGF.GUI
             }
         }
 
-        public void SetElements(params GUIInteractableBase[] elements)
+        public void SetElements(params GUIInteractable[] elements)
         {
             Elements = elements.ToList();
         }
@@ -90,15 +92,17 @@ namespace RPGF.GUI
 
             OnSelectionChanged();
             OnSelectionChangedEvent?.Invoke();
-        } 
+        }
 
-        private IEnumerator ChoiceCoroutine()
+        private IEnumerator SelectCoroutine()
         {
             bool end = false;
 
             while (!end)
             {
                 yield return null;
+
+                OnSelectUpdate();
 
                 if (isHorizontal)
                 {
@@ -138,6 +142,8 @@ namespace RPGF.GUI
                 {
                     end = true;
 
+                    Canceled = true;
+
                     CurrentElement.Cancel();
 
                     OnCanceled();
@@ -146,10 +152,11 @@ namespace RPGF.GUI
             }
 
             choiceCoroutine = null;
-        } 
+        }
 
-        public virtual void OnChoiced(int index) { }
-        public virtual void OnSelectionChanged() { }
-        public virtual void OnCanceled() { }
+        protected virtual void OnChoiced(int index) { }
+        protected virtual void OnSelectionChanged() { }
+        protected virtual void OnCanceled() { }
+        protected virtual void OnSelectUpdate() { }
     }
 }

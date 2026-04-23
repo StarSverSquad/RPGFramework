@@ -1,12 +1,12 @@
 ﻿using RPGF.Core.Inventory;
-using RPGF.GUI.Abstractions;
+using RPGF.GUI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GlackSaga.GUI.TittleMenu.Items
 {
-    public class ItemsListItem : GUIInteractableBase
+    public class ItemsListItem : GUIInteractable
     {
         [SerializeField]
         private Image icon;

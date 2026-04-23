@@ -1,10 +1,15 @@
+using GlackSaga.GUI.TitleMenu;
+using GlackSaga.GUI.TittleMenu.CharactetSelector;
 using NaughtyAttributes;
+using RPGF.Core.Character;
 using RPGF.Core.Inventory;
 using RPGF.Core.RPGEffect;
+using RPGF.Core.Services;
 using RPGF.Domain.DI;
 using RPGF.GUI;
 using RPGF.RPG;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +20,7 @@ using UnityEngine.UI;
 
 namespace GlackSaga.GUI.TittleMenu.Items
 {
-    public class ItemsGUIBlock : GUIChoiceBlock
+    public class ItemsGUIBlock : GUISelectableBlock
     {
         public enum ItemsTab
         {
@@ -25,12 +30,20 @@ namespace GlackSaga.GUI.TittleMenu.Items
 
         [Inject]
         private readonly InventoryService _inventoryService;
+        [Inject]
+        private readonly CharacterService _characterService;
+        [Inject]
+        private readonly InvokeUsableEventService _invokeUsableEventService;
 
         #region Links
 
         [Header("Items block options:")] 
         [SerializeField]
         private ItemsGUITab[] itemsGUITabs = new ItemsGUITab[2];
+        [SerializeField]
+        private CharacterSelectorGUIBlock characterSelector;
+        [SerializeField]
+        private CharacterInformationManager characterInformation;
         [Header("Links:")]
         [SerializeField]
         private Image arrowUp;
@@ -48,6 +61,11 @@ namespace GlackSaga.GUI.TittleMenu.Items
         private TextMeshProUGUI mpGain;
         [SerializeField]
         private TextMeshProUGUI description;
+        [Space]
+        [SerializeField]
+        private AudioSource DenySound;
+        [SerializeField]
+        private AudioSource UseSound;
 
         #endregion
 
@@ -55,11 +73,13 @@ namespace GlackSaga.GUI.TittleMenu.Items
         public int PageSize => Elements.Count;
         public int MaxPage => Mathf.CeilToInt(selectedSlots.Count / PageSize);
 
-        public int AbsoluteIndex => CurrentElementIndex + (Page * PageSize);
+        public int AbsoluteIndex => CurrentIndex + (Page * PageSize);
 
         public ItemsTab SelectedTab { get; private set; } = ItemsTab.Regular;
 
         private List<InventorySlotData> selectedSlots = new();
+
+        private Coroutine usingItemCoroutine = null;
 
         #region Events
 
@@ -67,29 +87,6 @@ namespace GlackSaga.GUI.TittleMenu.Items
         public UnityEvent OnTabChanged;
 
         #endregion
-
-        private void Update()
-        {
-            if (!IsActivated)
-                return;
-
-            ItemsTab tab = SelectedTab;
-            if (Input.GetKeyDown(Global.BaseOptions.MoveRight))
-            {
-                tab = ItemsTab.Key;
-            }
-            else if (Input.GetKeyDown(Global.BaseOptions.MoveLeft))
-            {
-                tab = ItemsTab.Regular;
-            }
-
-            if (tab != SelectedTab)
-            {
-                SelectedTab = tab;
-                UpdateTab();
-                OnTabChanged?.Invoke();
-            }
-        }
 
         protected override void ChangeSelect(int newIndex)
         {
@@ -267,6 +264,37 @@ namespace GlackSaga.GUI.TittleMenu.Items
             }
         }
 
+        protected override void OnChoiced(int index)
+        {
+            var absoluteIndex = index + (Page * PageSize);
+            var slot = selectedSlots[absoluteIndex];
+
+            if (usingItemCoroutine is not null)
+                StopCoroutine(usingItemCoroutine);
+
+            usingItemCoroutine = StartCoroutine(UseItemPipeline(slot));
+        }
+
+        protected override void OnSelectUpdate()
+        {
+            ItemsTab tab = SelectedTab;
+            if (Input.GetKeyDown(Global.BaseOptions.MoveRight))
+            {
+                tab = ItemsTab.Key;
+            }
+            else if (Input.GetKeyDown(Global.BaseOptions.MoveLeft))
+            {
+                tab = ItemsTab.Regular;
+            }
+
+            if (tab != SelectedTab)
+            {
+                SelectedTab = tab;
+                UpdateTab();
+                OnTabChanged?.Invoke();
+            }
+        }
+
         protected override void OnDiativate()
         {
             base.OnDiativate();
@@ -281,6 +309,76 @@ namespace GlackSaga.GUI.TittleMenu.Items
             SetData(null);
 
             selectedSlots.Clear();
+        }
+
+        private IEnumerator UseItemPipeline(InventorySlotData slot)
+        {
+            var item = slot.Item;
+
+            if (item.Usage == Usability.Battle)
+            {
+                DenySound.Play();
+                StartChoice();
+                yield break;
+            }
+
+            RPGCharacter[] targets;
+            switch (item.Direction)
+            {
+                case UsabilityDirection.Any:
+                case UsabilityDirection.Teammate:
+
+                    Next(characterSelector);
+
+                    yield return new WaitWhile(() => characterSelector.IsActivated);
+
+                    if (characterSelector.Canceled)
+                    {
+                        StartChoice();
+                        yield break;
+                    }
+
+                    targets = new[] { characterSelector.SeletedCharacter };
+
+                    break;
+                case UsabilityDirection.All:
+                case UsabilityDirection.AllTeam:
+                    targets = _characterService.Characters;
+                    break;
+                default:
+                    DenySound.Play();
+                    StartChoice();
+                    yield break;
+            }
+
+            foreach (var target in targets)
+            {
+                foreach (var effect in item.Effects)
+                {
+                    yield return effect.Invoke(target, target);
+                }
+            }
+
+            if (_inventoryService[item].Count == 1)
+            {
+                if (CurrentIndex == 0 && Page > 0)
+                {
+                    SetPage(Page - 1);
+                    ChangeSelect(PageSize - 1);
+                }
+                else
+                {
+                    ChangeSelect(CurrentIndex - 1);
+                }
+            }
+
+            _inventoryService.AddToItemCount(item, -1);
+            UpdateItems();
+
+            characterInformation.UpdateInformation();
+            UseSound.Play();
+
+            StartChoice();
         }
     }
 }

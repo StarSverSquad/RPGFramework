@@ -1,12 +1,17 @@
 ﻿using DG.Tweening;
-using RPGF.Core;
+using RPGF.Core.Character;
+using RPGF.Domain.DI;
+using RPGF.GUI;
 using System;
 using UnityEngine;
 
 namespace GlackSaga.GUI.TitleMenu
 {
-    class CharacterInformationManager : RPGFrameworkBehaviour, IDisposable
+    class CharacterInformationManager : GUIBlock, IDisposable
     {
+        [Inject]
+        private readonly CharacterService _characterService;
+
         [SerializeField]
         private CharacterInformationGUI[] _charactersGUI = new CharacterInformationGUI[4];
         [Space]
@@ -19,18 +24,7 @@ namespace GlackSaga.GUI.TitleMenu
 
         public override void Initialize()
         {
-            for (int i = 0; i < _charactersGUI.Length; i++)
-            {
-                if (i < Global.Character.Characters.Length)
-                {
-                    _charactersGUI[i].gameObject.SetActive(true);
-                    _charactersGUI[i].Initialize(Global.Character.Characters[i]);
-                }
-                else
-                {
-                    _charactersGUI[i].gameObject.SetActive(false);
-                }
-            }
+            UpdateInformation();
         }
 
         public void Show()
@@ -46,6 +40,22 @@ namespace GlackSaga.GUI.TitleMenu
             animTween = _root
                 .DOAnchorPosY(0, _animationTime)
                 .Play();
+        }
+
+        public void UpdateInformation()
+        {
+            for (int i = 0; i < _charactersGUI.Length; i++)
+            {
+                if (i < _characterService.Characters.Length)
+                {
+                    _charactersGUI[i].gameObject.SetActive(true);
+                    _charactersGUI[i].Initialize(_characterService.Characters[i]);
+                }
+                else
+                {
+                    _charactersGUI[i].gameObject.SetActive(false);
+                }
+            }
         }
 
         public void Dispose()

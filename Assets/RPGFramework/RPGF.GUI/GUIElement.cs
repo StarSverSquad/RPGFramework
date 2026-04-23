@@ -1,20 +1,22 @@
-﻿using RPGF.Core;
-using RPGF.GUI;
+﻿using NaughtyAttributes;
+using RPGF.Core;
 using RPGF.GUI.Interfaces;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace RPGF.GUI.Abstractions
+namespace RPGF.GUI
 {
     [RequireComponent(typeof(RectTransform))]
-    public class GUIElementBase : RPGFrameworkBehaviour, IGUIElement
+    public class GUIElement : RPGFrameworkBehaviour, IGUIElement
     {
         private RectTransform rectTransform;
         public RectTransform RectTransform => rectTransform;
 
         public bool Focused { get; protected set; }
 
+        [Foldout("Element events")]
         public UnityEvent OnFocus;
+        [Foldout("Element events")]
         public UnityEvent OnUnfocus;
 
         public override void Initialize()

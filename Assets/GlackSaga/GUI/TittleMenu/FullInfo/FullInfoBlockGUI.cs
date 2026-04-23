@@ -1,5 +1,5 @@
 using RPGF.Domain.Interfaces;
-using RPGF.GUI.Abstractions;
+using RPGF.GUI;
 using RPGF.RPG;
 using System.Collections.Generic;
 using TMPro;
@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace GlackSaga.GUI.TitleMenu.FullInfo
 {
-    public class FullInfoBlockGUI : GUIBlockBase, ISetData<RPGCharacter>
+    public class FullInfoBlockGUI : GUIBlock, ISetData<RPGCharacter>
     {
         [SerializeField]
         private Image _charImage;

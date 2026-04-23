@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SYS_HEAL_S
+  m_text: HP
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: df37411d96b098b49b581e5aa83e98e8, type: 2}
   m_sharedMaterial: {fileID: -6142092428639818903, guid: df37411d96b098b49b581e5aa83e98e8, type: 2}
@@ -104,6 +104,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -149,7 +150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01aec2be2ee125a408ebefd458a01119, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _warnOnNotFound: 1
+  translationTag: SYS_HEAL_S
+  warningOnNotFound: 1
 --- !u!1 &1045871420102809485
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,6 +255,7 @@ MonoBehaviour:
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -453,6 +456,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a3df741e9caca9418e39c28599985fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnFocus:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUnfocus:
+    m_PersistentCalls:
+      m_Calls: []
   _hpBar: {fileID: 314162803325826927}
   _mpBar: {fileID: 4132515469628177452}
   _hpText: {fileID: 88519678229815232}
@@ -562,6 +571,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -742,6 +752,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1011,7 +1022,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: SYS_MANA_S
+  m_text: MP
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: df37411d96b098b49b581e5aa83e98e8, type: 2}
   m_sharedMaterial: {fileID: -6142092428639818903, guid: df37411d96b098b49b581e5aa83e98e8, type: 2}
@@ -1049,6 +1060,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1094,7 +1106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01aec2be2ee125a408ebefd458a01119, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _warnOnNotFound: 1
+  translationTag: SYS_MANA_S
+  warningOnNotFound: 1
 --- !u!1 &8187052389821864420
 GameObject:
   m_ObjectHideFlags: 0

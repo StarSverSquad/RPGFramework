@@ -13,7 +13,7 @@ namespace RPGF.GUI.Abstractions
         private readonly DependencyInjection DI;
 
         [SerializeField]
-        protected GUIBlockBase firstBlock;
+        protected GUIBlock firstBlock;
         [SerializeField]
         protected GameObject content;
 
@@ -35,7 +35,7 @@ namespace RPGF.GUI.Abstractions
         {
             GUIStack = new Stack<IGUIBlock>();
 
-            foreach (var item in GetComponentsInChildren<GUIBlockBase>(true))
+            foreach (var item in GetComponentsInChildren<GUIBlock>(true))
             {
                 DI.InjectInto(item);
                 item.Initialize(this);

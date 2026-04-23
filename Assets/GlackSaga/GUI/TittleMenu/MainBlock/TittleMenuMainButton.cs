@@ -1,13 +1,13 @@
+
 using DG.Tweening;
 using RPGF.GUI;
-using RPGF.GUI.Abstractions;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace GlackSaga.GUI.TitleMenu.Main
 {
-    public class TittleMenuMainButton : GUIInteractableBase
+    public class TittleMenuMainButton : GUIInteractable
     {
         [Space]
         [SerializeField]

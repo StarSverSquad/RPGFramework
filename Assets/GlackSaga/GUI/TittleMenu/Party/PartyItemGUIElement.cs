@@ -1,6 +1,6 @@
 using DG.Tweening;
 using RPGF.Domain.Interfaces;
-using RPGF.GUI.Abstractions;
+using RPGF.GUI;
 using RPGF.RPG;
 using System;
 using TMPro;
@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace GlackSaga.GUI.TitleMenu.Party
 {
-    public class PartyItemGUIElement : GUIInteractableBase, IDisposable, ISetData<RPGCharacter>
+    public class PartyItemGUIElement : GUIInteractable, IDisposable, ISetData<RPGCharacter>
     {
         [Header("LINKS:")]
         [SerializeField]

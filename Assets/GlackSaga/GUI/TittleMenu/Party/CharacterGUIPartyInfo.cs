@@ -34,7 +34,7 @@ namespace GlackSaga.GUI.TitleMenu.Party
 
         public void UpdateData()
         {
-            var character = Global.Character.Characters[_partyBlock.CurrentElementIndex];
+            var character = Global.Character.Characters[_partyBlock.CurrentIndex];
 
             _hpBar.SetValue(character.Heal, character.MaxHeal);
             _mpBar.SetValue(character.Mana, character.MaxMana);

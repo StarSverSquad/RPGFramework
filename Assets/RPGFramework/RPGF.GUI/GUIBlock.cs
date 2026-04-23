@@ -4,9 +4,9 @@ using RPGF.GUI.Interfaces;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace RPGF.GUI.Abstractions
+namespace RPGF.GUI
 {
-    public abstract class GUIBlockBase : RPGFrameworkBehaviour, IGUIBlock
+    public abstract class GUIBlock : RPGFrameworkBehaviour, IGUIBlock
     {
         [Header("Block options:")]
         [SerializeField]
@@ -36,7 +36,7 @@ namespace RPGF.GUI.Abstractions
         [Foldout("Block events")]
         public UnityEvent OnPreviewEvent;
         [Foldout("Block events")]
-        public UnityEvent<GUIBlockBase> OnNextEvent;
+        public UnityEvent<GUIBlock> OnNextEvent;
 
         #endregion
 
@@ -127,14 +127,14 @@ namespace RPGF.GUI.Abstractions
         }
         public virtual void Next(IGUIBlock gUIBlock)
         {
-            var block = (GUIBlockBase)gUIBlock;
+            var block = (GUIBlock)gUIBlock;
 
             OnNext(block);
             OnNextEvent?.Invoke(block);
 
             Manager.NextBlock(block);
         }
-        public void Next(GUIBlockBase gUIBlock)
+        public void Next(GUIBlock gUIBlock)
         {
             Next(gUIBlock as IGUIBlock);
         }
@@ -151,7 +151,7 @@ namespace RPGF.GUI.Abstractions
         protected virtual void OnDispose() { }
 
         protected virtual void OnPreview() { }
-        protected virtual void OnNext(GUIBlockBase gUIBlock) { }
+        protected virtual void OnNext(GUIBlock gUIBlock) { }
 
         #endregion
 

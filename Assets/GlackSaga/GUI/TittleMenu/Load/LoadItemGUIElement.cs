@@ -1,8 +1,8 @@
-﻿using RPGF.GUI.Abstractions;
+﻿using RPGF.GUI;
 
 namespace GlackSaga.GUI.TitleMenu.Load
 {
-    public class LoadItemGUIElement : GUIInteractableBase
+    public class LoadItemGUIElement : GUIInteractable
     {
     }
 }

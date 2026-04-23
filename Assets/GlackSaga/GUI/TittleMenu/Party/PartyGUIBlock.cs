@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GlackSaga.GUI.TitleMenu.Party
 {
-    public class PartyGUIBlock : GUIChoiceBlock
+    public class PartyGUIBlock : GUISelectableBlock
     {
         [SerializeField]
         private FullInfoBlockGUI _fullInfoGUI;
@@ -35,7 +35,7 @@ namespace GlackSaga.GUI.TitleMenu.Party
             base.OnActivate();
         }
 
-        public override void OnChoiced(int index)
+        protected override void OnChoiced(int index)
         {
             _fullInfoGUI.SetData(Global.Character.Characters[index]);
             Next(_fullInfoGUI);

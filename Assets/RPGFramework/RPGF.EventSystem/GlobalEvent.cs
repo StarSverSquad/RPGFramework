@@ -1,5 +1,6 @@
 ﻿using RPGF.Domain.DI;
 using RPGF.EventSystem.Graph;
+using System.Collections;
 using UnityEngine;
 
 namespace RPGF.EventSystem
@@ -14,6 +15,11 @@ namespace RPGF.EventSystem
         public void Invoke(MonoBehaviour listener, DependencyInjection di)
         {
             InnerEvent.Invoke(listener, di);
+        }
+
+        public IEnumerator WaitForEnd()
+        {
+            yield return new WaitWhile(() => IsPlaying);
         }
     }
 }

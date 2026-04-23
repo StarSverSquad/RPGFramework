@@ -1,4 +1,5 @@
 ﻿using RPGF.Battle;
+using RPGF.Core.RPGEffect.Attributes;
 using RPGF.RPG;
 using System;
 using System.Collections;
@@ -7,6 +8,7 @@ using System.Linq;
 namespace RPGF.Core.RPGEffect
 {
     [Serializable]
+    [UseRPGEffect("Изменить состояние")]
     public class ChangeStateEffect : RPGEffectBase
     {
         public bool IsAddState = true;
@@ -30,11 +32,6 @@ namespace RPGF.Core.RPGEffect
             }
 
             yield break;
-        }
-
-        public override string GetName()
-        {
-            return "Изменить состояние";
         }
     }
 }

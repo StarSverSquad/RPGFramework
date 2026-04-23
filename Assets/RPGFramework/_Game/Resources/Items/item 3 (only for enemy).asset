@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a14ea40aa1be66b4281865508d377ae2, type: 3}
-  m_Name: item 3
+  m_Name: item 3 (only for enemy)
   m_EditorClassIdentifier: Assembly-CSharp::RPGF.RPG.RPGConsumed
   Tag: pivo05_2
-  Name: "\u041F\u0438\u0432\u043E 0.5 2"
-  Description: "\u041F\u0438\u0432\u043E \u0436\u0438\u0433\u0443\u043B\u044C 2"
+  Name: "\u041F\u0438\u0432\u043E 0.5 \u0434\u043B\u044F \u0432\u043E\u0440\u0430\u0433\u0430"
+  Description: "\u041F\u0438\u0432\u043E \u0436\u0438\u0433\u0443\u043B\u044C (\u043E\u0442\u0440\u0430\u0432\u043B\u0435\u043D\u043D\u044B\u0439)"
   Icon: {fileID: 1239406882, guid: 43a40bfc1d0a404438f3a7f4ccf8b0e6, type: 3}
   Usage: 0
   Direction: 6
@@ -24,14 +24,14 @@ MonoBehaviour:
   ForAlive: 1
   ForDeath: 1
   Effects:
-  - rid: 415278159294365960
+  - rid: 415278383791341704
   Rare: 0
   WriteMessage: 1
   references:
     version: 2
     RefIds:
-    - rid: 415278159294365960
-      type: {class: ChangeManaHealConstEffect, ns: RPGF.Core.RPGEffect, asm: Assembly-CSharp}
+    - rid: 415278383791341704
+      type: {class: ChangeManaHealPercentEffect, ns: RPGF.Core.RPGEffect, asm: Assembly-CSharp}
       data:
-        Heal: 50
-        Mana: 150
+        Heal: -15
+        Mana: 0

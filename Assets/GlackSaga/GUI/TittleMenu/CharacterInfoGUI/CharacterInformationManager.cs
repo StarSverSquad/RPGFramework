@@ -58,7 +58,7 @@ namespace GlackSaga.GUI.TitleMenu
             }
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
             DisposeTween();
         }

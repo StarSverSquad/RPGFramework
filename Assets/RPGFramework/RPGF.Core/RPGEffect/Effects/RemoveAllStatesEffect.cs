@@ -1,10 +1,12 @@
-﻿using RPGF.RPG;
+﻿using RPGF.Core.RPGEffect.Attributes;
+using RPGF.RPG;
 using System;
 using System.Collections;
 
 namespace RPGF.Core.RPGEffect
 {
     [Serializable]
+    [UseRPGEffect("Убрать все состояния")]
     public class RemoveAllStatesEffect : RPGEffectBase
     {
         public override IEnumerator Invoke(RPGEntity user, RPGEntity target)
@@ -12,11 +14,6 @@ namespace RPGF.Core.RPGEffect
             target.RemoveAllStates();
 
             yield break;
-        }
-
-        public override string GetName()
-        {
-            return "Убрать все состояния";
         }
     }
 }

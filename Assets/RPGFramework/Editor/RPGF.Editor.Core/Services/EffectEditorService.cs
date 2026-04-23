@@ -1,10 +1,12 @@
 ﻿using RPGF.Core.RPGEffect;
-using RPGF.EventSystem;
 using RPGF.RPG;
 using UnityEditor;
 
 namespace RPGF.Editor.Core.Services
 {
+    /// <summary>
+    /// 0_o
+    /// </summary>
     public class EffectEditorService
     {
         public void BuildGUI(RPGEffectBase effect)
@@ -21,11 +23,6 @@ namespace RPGF.Editor.Core.Services
                     {
                         cmhp.Heal = EditorGUILayout.FloatField("HEAL%", cmhp.Heal);
                         cmhp.Mana = EditorGUILayout.FloatField("MANA%", cmhp.Mana);
-                    }
-                    break;
-                case InvokeEventEffect ie:
-                    {
-                        ie.@event = (GlobalEvent)EditorGUILayout.ObjectField("Событие", ie.@event, typeof(GlobalEvent), false);
                     }
                     break;
                 case ChangeConcentrationEffect cc:

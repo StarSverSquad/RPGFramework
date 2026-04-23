@@ -71,7 +71,7 @@ namespace GlackSaga.GUI.TittleMenu.Items
 
         public int Page { get; private set; } = 0;
         public int PageSize => Elements.Count;
-        public int MaxPage => Mathf.CeilToInt(selectedSlots.Count / PageSize);
+        public int MaxPage => Mathf.CeilToInt((float)selectedSlots.Count / PageSize) - 1;
 
         public int AbsoluteIndex => CurrentIndex + (Page * PageSize);
 
@@ -96,12 +96,12 @@ namespace GlackSaga.GUI.TittleMenu.Items
                 return;
             }
 
-            if (Page > 0 && newIndex >= PageSize)
+            if (Page > 0 && newIndex < 0)
             {
                 SetPage(Page - 1);
                 base.ChangeSelect(PageSize - 1);
             }
-            else if (Page < MaxPage && newIndex < 0)
+            else if (Page < MaxPage && newIndex >= PageSize)
             {
                 SetPage(Page + 1);
                 base.ChangeSelect(0);
@@ -181,7 +181,7 @@ namespace GlackSaga.GUI.TittleMenu.Items
                 arrowUp.gameObject.SetActive(true);
             }
 
-            if (page < MaxPage - 1)
+            if (page < MaxPage)
             {
                 arrowDown.gameObject.SetActive(true);
             }
@@ -378,7 +378,16 @@ namespace GlackSaga.GUI.TittleMenu.Items
             characterInformation.UpdateInformation();
             UseSound.Play();
 
-            StartChoice();
+            if (item.Event != null)
+            {
+                _invokeUsableEventService.InvokeEvent(item);
+
+                Manager.Close();
+            }
+            else
+            {
+                StartChoice();
+            }
         }
     }
 }

@@ -1,12 +1,10 @@
-﻿using GlackSaga.GUI.TitleMenu;
-using RPGF.Core.Character;
+﻿using RPGF.Core.Character;
 using RPGF.Domain.DI;
 using RPGF.GUI;
-using RPGF.GUI.Interfaces;
 using RPGF.RPG;
 using UnityEngine;
 
-namespace GlackSaga.GUI.TittleMenu.CharactetSelector
+namespace GlackSaga.GUI.TitleMenu.CharactetSelector
 {
     public class CharacterSelectorGUIBlock : GUISelectableBlock
     {

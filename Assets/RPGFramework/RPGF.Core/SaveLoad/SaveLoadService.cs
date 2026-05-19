@@ -115,7 +115,7 @@ namespace RPGF.Core.SaveLoad
                     HeadTag = person.HeadSlot?.Tag,
                     BodyTag = person.BodySlot?.Tag,
                     ShieldTag = person.ShieldSlot?.Tag,
-                    TalismanTag = person.TalismanSlot?.Tag,
+                    TalismanTag = person.AccessorySlot?.Tag,
                     Abilities = person.Abilities.Select(i => i.Tag).ToList(),
                     States = person.States.Select(i => i.Tag).ToList(),
                     InParty = Characters.Find(i => i == person)
@@ -154,7 +154,7 @@ namespace RPGF.Core.SaveLoad
                 Glek.ShieldSlot = (RPGWerable)_gameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.ShieldTag);
 
             if (SavedCharacter.TalismanTag != string.Empty)
-                Glek.TalismanSlot = (RPGWerable)_gameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.TalismanTag);
+                Glek.AccessorySlot = (RPGWerable)_gameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.TalismanTag);
 
             Glek.Abilities.Clear();
             foreach (var ability in SavedCharacter.Abilities)

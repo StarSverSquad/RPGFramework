@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GlackSaga.GUI.TittleMenu.Items
+namespace GlackSaga.GUI.TitleMenu.Items
 {
     public class ItemsGUITab : RPGF.GUI.GUIElement
     {

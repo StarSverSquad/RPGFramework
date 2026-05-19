@@ -48,7 +48,7 @@ namespace RPGF.RPG
         public RPGWerable HeadSlot = null;
         public RPGWerable BodySlot = null;
         public RPGWerable ShieldSlot = null;
-        public RPGWerable TalismanSlot = null;
+        public RPGWerable AccessorySlot = null;
 
         public override void InitializeEntity()
         {
@@ -99,14 +99,14 @@ namespace RPGF.RPG
                 Agility += ShieldSlot.Agility;
             }
 
-            if (TalismanSlot != null)
+            if (AccessorySlot != null)
             {
-                MaxHeal += TalismanSlot.Heal;
-                MaxMana += TalismanSlot.Mana;
+                MaxHeal += AccessorySlot.Heal;
+                MaxMana += AccessorySlot.Mana;
 
-                Damage += TalismanSlot.Damage;
-                Defence += TalismanSlot.Defence;
-                Agility += TalismanSlot.Agility;
+                Damage += AccessorySlot.Damage;
+                Defence += AccessorySlot.Defence;
+                Agility += AccessorySlot.Agility;
             }
 
             Heal = Math.Clamp(Heal, 0, MaxHeal);

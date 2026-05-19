@@ -56,7 +56,7 @@ MonoBehaviour:
         English: Head
     - Key: SYS_WEAR_SLOT_HEAD_S
       Value:
-        Russian: "\u0413\u041E\u041B\u041E\u0412\u0410"
+        Russian: "\u0413\u041E\u041B\u041E\u0412"
         English: HEAD
     - Key: SYS_WEAR_SLOT_SHIELD
       Value:
@@ -66,14 +66,6 @@ MonoBehaviour:
       Value:
         Russian: "\u0429\u0418\u0422"
         English: SHLD
-    - Key: SYS_WEAR_SLOT_TALISMAN
-      Value:
-        Russian: "\u0422\u0430\u043B\u0438\u0441\u043C\u0430\u043D"
-        English: Talisman
-    - Key: SYS_WEAR_SLOT_TALISMAN_S
-      Value:
-        Russian: "\u0422\u0410\u041B\u0421\u041C\u041D"
-        English: TALSMN
     - Key: SYS_WEARS_TITLE
       Value:
         Russian: "\u042D\u043A\u0438\u043F\u0438\u0440\u043E\u0432\u043A\u0430"
@@ -130,4 +122,12 @@ MonoBehaviour:
       Value:
         Russian: INNER <b> TEST <!/> TEST </b> OUTER
         English: NO ALLOWED
+    - Key: SYS_WEAR_SLOT_ACCESSORY
+      Value:
+        Russian: "\u0410\u043A\u0441\u0435\u0441\u0441\u0443\u0430\u0440"
+        English: Accessory
+    - Key: SYS_WEAR_SLOT_ACCESSORY_S
+      Value:
+        Russian: AKCC
+        English: ACCS
   Order: -1

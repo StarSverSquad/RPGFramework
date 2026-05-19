@@ -75,7 +75,7 @@ namespace GlackSaga.GUI.TitleMenu.FullInfo
             _headItem.SetData(value.HeadSlot);
             _bodyItem.SetData(value.BodySlot);
             _shieldItem.SetData(value.ShieldSlot);
-            _talismanItem.SetData(value.TalismanSlot);
+            _talismanItem.SetData(value.AccessorySlot);
 
             foreach (var item in _abilitiesItems)
                 item.gameObject.SetActive(false);

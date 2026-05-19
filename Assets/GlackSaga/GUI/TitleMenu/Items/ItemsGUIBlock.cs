@@ -1,5 +1,4 @@
-using GlackSaga.GUI.TitleMenu;
-using GlackSaga.GUI.TittleMenu.CharactetSelector;
+using GlackSaga.GUI.TitleMenu.CharactetSelector;
 using NaughtyAttributes;
 using RPGF.Core.Character;
 using RPGF.Core.Inventory;
@@ -18,7 +17,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace GlackSaga.GUI.TittleMenu.Items
+namespace GlackSaga.GUI.TitleMenu.Items
 {
     public class ItemsGUIBlock : GUISelectableBlock
     {

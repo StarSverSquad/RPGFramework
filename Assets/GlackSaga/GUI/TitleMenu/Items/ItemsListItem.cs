@@ -18,6 +18,8 @@ namespace GlackSaga.GUI.TitleMenu.Items
         [Space]
         [SerializeField]
         private Color focusColor = Color.white;
+        [SerializeField]
+        private Color unfocusedColor = Color.white;
 
         public void SetData(InventorySlotData slot)
         {
@@ -33,7 +35,7 @@ namespace GlackSaga.GUI.TitleMenu.Items
 
         public override void OnUnfocused()
         {
-            text.color = Color.white;
+            text.color = unfocusedColor;
         }
     }
 }

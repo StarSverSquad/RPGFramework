@@ -18,15 +18,15 @@ MonoBehaviour:
   DefaultHeal: 50
   DefaultMana: 20
   DefaultDamage: 8
-  DefaultDefence: 5
+  DefaultDefense: 0
   DefaultAgility: 7
   DefaultLuck: 3
   Class: "\u0420\u0435\u043F\u0435\u0440"
-  Icon: {fileID: 0}
-  TitleImage: {fileID: 0}
-  BattleTinyIcon: {fileID: -316442473, guid: 7718a304d2006c04a9863a6100cade02, type: 3}
-  BattleImage: {fileID: 0}
-  BattleQueryImage: {fileID: 4875276092585482972, guid: 7718a304d2006c04a9863a6100cade02, type: 3}
+  Icon: {fileID: 7794112036745931748, guid: 9175785ce91e0a944bfe42b3c4436d30, type: 3}
+  TitleImage: {fileID: 7794112036745931748, guid: 9175785ce91e0a944bfe42b3c4436d30, type: 3}
+  BattleTinyIcon: {fileID: 7794112036745931748, guid: 9175785ce91e0a944bfe42b3c4436d30, type: 3}
+  BattleImage: {fileID: 7794112036745931748, guid: 9175785ce91e0a944bfe42b3c4436d30, type: 3}
+  BattleQueryImage: {fileID: 7794112036745931748, guid: 9175785ce91e0a944bfe42b3c4436d30, type: 3}
   Color: {r: 0.6301887, g: 0, b: 0, a: 0.6}
   Model: {fileID: 1709161116130641932, guid: f00c45bcd09c9764ba5bffc3eb1cefd3, type: 3}
   ParticipateInBattle: 1
@@ -207,4 +207,4 @@ MonoBehaviour:
   HeadSlot: {fileID: 0}
   BodySlot: {fileID: 0}
   ShieldSlot: {fileID: 0}
-  TalismanSlot: {fileID: 0}
+  AccessorySlot: {fileID: 0}

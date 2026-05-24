@@ -1,10 +1,14 @@
 ﻿using RPGF.Battle;
+using RPGF.Core.RPGEffect.Attributes;
 using RPGF.RPG;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Core.RPGEffect
 {
+    [Serializable]
+    [UseRPGEffect("Изменить концентрацию")]
     public class ChangeConcentrationEffect : RPGEffectBase
     {
         public int AddConcentration;
@@ -14,11 +18,6 @@ namespace RPGF.Core.RPGEffect
             BattleManager.BattleUtility.AddConcetration(Mathf.RoundToInt(AddConcentration * Factor));
 
             yield break;
-        }
-
-        public override string GetName()
-        {
-            return "Изменить концентрацию";
         }
     }
 }

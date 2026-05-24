@@ -1,11 +1,11 @@
-﻿using RPGF.Core.Battle;
+﻿using System;
+using System.Collections;
+using System.Linq;
 using RPGF.Battle;
+using RPGF.Core.Battle;
 using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using RPGF.EventSystem.Attributes;
-using System;
-using System.Collections;
-using System.Linq;
 using UnityEngine;
 
 namespace RPGF.Actions
@@ -51,7 +51,7 @@ namespace RPGF.Actions
                 }
 
                 enemy.DefaultDamage = newDamage;
-                enemy.DefaultDefence = newDefance;
+                enemy.DefaultDefense = newDefance;
                 enemy.DefaultAgility = newAgility;
                 enemy.DefaultLuck = newLuck;
 

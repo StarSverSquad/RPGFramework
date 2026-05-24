@@ -7,18 +7,14 @@ namespace RPGF.Core.RPGEffect
     [Serializable]
     public abstract class RPGEffectBase
     {
+        /// <summary>
+        /// It define power of effect
+        /// </summary>
         public float Factor { get; set; } = 1f;
 
         public virtual IEnumerator Invoke(RPGEntity user, RPGEntity target)
         {
             yield break;
-        }
-
-        public abstract string GetName();
-
-        public override string ToString()
-        {
-            return GetName();
         }
     }
 }

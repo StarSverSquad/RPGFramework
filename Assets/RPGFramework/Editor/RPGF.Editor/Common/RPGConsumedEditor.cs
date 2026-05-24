@@ -1,10 +1,12 @@
 ﻿using RPGF.Core.RPGEffect;
+using RPGF.Core.RPGEffect.Attributes;
 using RPGF.Editor.Core;
 using RPGF.Editor.Core.Services;
 using RPGF.RPG;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -26,14 +28,16 @@ namespace RPGF.Editor
             base.OnInspectorGUI();
 
             Type[] types = Target.GetType().Assembly.GetTypes()
-                .Where(i => i.BaseType == typeof(RPGEffectBase)).ToArray();
+                .Where(
+                    i => i.BaseType == typeof(RPGEffectBase) 
+                    && i.GetCustomAttribute<UseRPGEffectAttribute>() != null)
+                .ToArray();
 
             List<string> names = new();
             foreach (Type t in types)
             {
-                var effect = Activator.CreateInstance(t) as RPGEffectBase;
-
-                names.Add(effect.GetName());
+                var meta = t.GetCustomAttribute<UseRPGEffectAttribute>();
+                names.Add(meta.Label);
             }
 
             BeginVertical();
@@ -50,7 +54,9 @@ namespace RPGF.Editor
             {
                 BeginVertical();
 
-                Label(Target.Effects[i].GetName());
+                var meta = Target.Effects[i].GetType().GetCustomAttribute<UseRPGEffectAttribute>();
+
+                Label(meta.Label);
 
                 _effectEditorService.BuildGUI(Target.Effects[i]);
 

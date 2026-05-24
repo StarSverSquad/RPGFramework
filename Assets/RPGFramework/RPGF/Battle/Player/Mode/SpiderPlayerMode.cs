@@ -1,10 +1,10 @@
-﻿using DG.Tweening;
+﻿using System.Collections;
+using System.Linq;
+using DG.Tweening;
 using RPGF.Battle.BattleField;
 using RPGF.Core.Battle.BattleField;
 using RPGF.Core.Battle.PlayerMode;
 using RPGF.Domain.DI;
-using System.Collections;
-using System.Linq;
 using UnityEngine;
 
 namespace RPGF.Battle.Player.Mode
@@ -14,7 +14,7 @@ namespace RPGF.Battle.Player.Mode
         public const float LadderModeOffsetCorection = 0.125f;
 
         [Inject]
-        private readonly BattleFieldManager _fields;
+        private readonly BattleFieldManager _fields = null!;
 
         public override PlayerModeEnum PlayerMode => PlayerModeEnum.Spider;
         public override Color SoulColor => Color.purple;
@@ -67,7 +67,7 @@ namespace RPGF.Battle.Player.Mode
         }
 
         private void FixedUpdate()
-        {    
+        {
             if (Data.CanMove)
             {
                 Vector2 direction = Vector2.zero;
@@ -109,7 +109,7 @@ namespace RPGF.Battle.Player.Mode
         {
             if (!ladderMode)
             {
-                UpdateVertical();  
+                UpdateVertical();
 
                 if (ladderModeCoroutine != null)
                 {

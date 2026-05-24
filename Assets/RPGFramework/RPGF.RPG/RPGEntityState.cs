@@ -1,5 +1,5 @@
-using RPGF.EventSystem;
 using System;
+using RPGF.EventSystem;
 using UnityEngine;
 
 namespace RPGF.RPG
@@ -16,7 +16,7 @@ namespace RPGF.RPG
 
         public Sprite Icon;
 
-        [Tooltip("Блокирует возможность хода!")]
+        [Tooltip("РџСЂРѕРїСѓСЃРєР°С‚СЊ С…РѕРґ")]
         public bool SkipTurn;
 
         public bool OnlyForBattle;
@@ -25,7 +25,7 @@ namespace RPGF.RPG
         public int AddMana;
 
         public int AddDamage;
-        public int AddDefence;
+        public int AddDefense;
         public int AddAgility;
         public int AddLuck;
 

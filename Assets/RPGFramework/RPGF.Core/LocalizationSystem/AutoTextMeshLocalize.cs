@@ -7,31 +7,25 @@ namespace RPGF.Core.Localization
     public class AutoTextMeshLocalize : RPGFrameworkBehaviour
     {
         [SerializeField]
-        private bool _warnOnNotFound = true;
-
-        private TextMeshProUGUI textMeshProUGUI;
-
-        private bool isTryLocalize = false;
+        private string translationTag = string.Empty;
+        [SerializeField]
+        private bool warningOnNotFound = true;
 
         public bool HasLocale { get; private set; } = false;
+
+        private bool isTryLocalize = false;
 
         private void OnEnable()
         {
             if (Global == null || !gameObject.activeInHierarchy)
                 return;
 
-            textMeshProUGUI = GetComponent<TextMeshProUGUI>();
-
-            if (!isTryLocalize)
+            if (!isTryLocalize && TryGetComponent<TextMeshProUGUI>(out var textMeshProUGUI))
             {
-                string localeText = string.Empty;
-
-                HasLocale = Global.Localization.TryGetLocale(textMeshProUGUI.text, out localeText);
-
-                textMeshProUGUI = GetComponent<TextMeshProUGUI>();
+                HasLocale = Global.Localization.TryGetLocale(translationTag, out var localeText);
                 textMeshProUGUI.text = localeText;
 
-                if (!HasLocale && _warnOnNotFound)
+                if (!HasLocale && warningOnNotFound)
                 {
                     Debug.LogWarning($"Localization not found for: {textMeshProUGUI.text}");
                 }

@@ -1,7 +1,13 @@
-﻿using RPGF.GUI;
+﻿using RPGF.Domain.DI;
+using RPGF.Explorer.Player;
+using RPGF.GUI;
+using RPGF.GUI.Abstractions;
 
 public class TittleMenuManager : GUIManagerBase
 {
+    [Inject]
+    private readonly PlayerExplorerManager _playerExplorerManager = null!;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -9,11 +15,13 @@ public class TittleMenuManager : GUIManagerBase
 
     public override void OnOpen()
     {
-        Explorer.PlayerManager.movement.SetMovementAccess(false);
+        _playerExplorerManager.movement.SetMovementAccess(false);
+        _playerExplorerManager.interaction.CanInteract = false;
     }
 
     public override void OnClose()
     {
-        Explorer.PlayerManager.movement.SetMovementAccess(true);
+        _playerExplorerManager.movement.SetMovementAccess(true);
+        _playerExplorerManager.interaction.CanInteract = true;
     }
 }

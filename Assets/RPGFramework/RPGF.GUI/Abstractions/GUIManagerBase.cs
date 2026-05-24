@@ -1,16 +1,16 @@
+using System;
+using System.Collections.Generic;
 using RPGF.Core;
 using RPGF.Domain.DI;
 using RPGF.GUI.Interfaces;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace RPGF.GUI.Abstractions
 {
-    public abstract class GUIManagerBase : RPGFrameworkBehaviour, IGUIManager 
+    public abstract class GUIManagerBase : RPGFrameworkBehaviour, IGUIManager
     {
         [Inject]
-        private readonly DependencyInjection DI;
+        private readonly DependencyInjection DI = null!;
 
         [SerializeField]
         protected GUIBlock firstBlock;
@@ -25,7 +25,7 @@ namespace RPGF.GUI.Abstractions
 
         public event Action OnOpenEvent;
         public event Action OnCloseEvent;
-        
+
         public event Action<IGUIBlock> OnNextBlockEvent;
         public event Action OnPreviewBlockEvent;
 
@@ -59,7 +59,7 @@ namespace RPGF.GUI.Abstractions
             OnNext(block);
             OnNextBlockEvent?.Invoke(block);
         }
-        public void PreviewBlock()
+        public void PreviousBlock()
         {
             var block = GUIStack.Pop();
 
@@ -71,7 +71,7 @@ namespace RPGF.GUI.Abstractions
                 GUIStack.Peek().Activate();
                 GUIStack.Peek().SetFocus(true);
             }
-                
+
             OnPreviewBlock();
             OnPreviewBlockEvent?.Invoke();
 

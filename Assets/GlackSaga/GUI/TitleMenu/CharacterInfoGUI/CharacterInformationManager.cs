@@ -1,8 +1,8 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using RPGF.Core.Character;
 using RPGF.Domain.DI;
 using RPGF.GUI;
-using System;
 using UnityEngine;
 
 namespace GlackSaga.GUI.TitleMenu
@@ -10,7 +10,7 @@ namespace GlackSaga.GUI.TitleMenu
     class CharacterInformationManager : GUIBlock, IDisposable
     {
         [Inject]
-        private readonly CharacterService _characterService;
+        private readonly CharacterService _characterService = null!;
 
         [SerializeField]
         private CharacterInformationGUI[] _charactersGUI = new CharacterInformationGUI[4];

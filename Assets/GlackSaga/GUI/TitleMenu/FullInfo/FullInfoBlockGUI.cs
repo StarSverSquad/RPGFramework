@@ -1,7 +1,7 @@
+using System.Collections.Generic;
 using RPGF.Domain.Interfaces;
 using RPGF.GUI;
 using RPGF.RPG;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -67,7 +67,7 @@ namespace GlackSaga.GUI.TitleMenu.FullInfo
             _charLevel.text = $"{GetLocale("SYS_LEVEL")}: {value.Level}";
 
             _charDmg.text = $"{GetLocale("SYS_DMG")}: {value.Damage}";
-            _charDef.text = $"{GetLocale("SYS_DEF")}: {value.Defence}";
+            _charDef.text = $"{GetLocale("SYS_DEF")}: {value.Defense}";
             _charAgi.text = $"{GetLocale("SYS_AGI")}: {value.Agility}";
             _charLuck.text = $"{GetLocale("SYS_LUCK")}: {value.Luck}";
 

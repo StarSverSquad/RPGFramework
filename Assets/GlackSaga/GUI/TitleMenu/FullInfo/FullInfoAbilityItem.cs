@@ -1,5 +1,6 @@
 ﻿using RPGF.Core;
 using RPGF.Domain.Interfaces;
+using RPGF.GUI;
 using RPGF.RPG;
 using TMPro;
 using UnityEngine;
@@ -7,7 +8,7 @@ using UnityEngine.UI;
 
 namespace GlackSaga.GUI.TitleMenu.FullInfo
 {
-    public class FullInfoAbilityItem : RPGFrameworkBehaviour, ISetData<RPGAbility>
+    public class FullInfoAbilityItem : GUIWidget, ISetData<RPGAbility>
     {
         [SerializeField]
         private Image _icon;

@@ -1,3 +1,9 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using GlackSaga.GUI.TitleMenu;
 using GlackSaga.GUI.TitleMenu.CharactetSelector;
 using NaughtyAttributes;
 using RPGF.Core.Character;
@@ -7,11 +13,6 @@ using RPGF.Core.Services;
 using RPGF.Domain.DI;
 using RPGF.GUI;
 using RPGF.RPG;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -19,7 +20,7 @@ using UnityEngine.UI;
 
 namespace GlackSaga.GUI.TitleMenu.Items
 {
-    public class ItemsGUIBlock : GUISelectableBlock
+    public class ItemsGUIBlock : InventoryPaginatedGUIBlock
     {
         public enum ItemsTab
         {
@@ -28,15 +29,13 @@ namespace GlackSaga.GUI.TitleMenu.Items
         }
 
         [Inject]
-        private readonly InventoryService _inventoryService;
+        private readonly CharacterService _characterService = null!;
         [Inject]
-        private readonly CharacterService _characterService;
-        [Inject]
-        private readonly InvokeUsableEventService _invokeUsableEventService;
+        private readonly InvokeUsableEventService _invokeUsableEventService = null!;
 
         #region Links
 
-        [Header("Items block options:")] 
+        [Header("Items block options:")]
         [SerializeField]
         private ItemsGUITab[] itemsGUITabs = new ItemsGUITab[2];
         [SerializeField]
@@ -46,7 +45,7 @@ namespace GlackSaga.GUI.TitleMenu.Items
         [Header("Links:")]
         [SerializeField]
         private Image arrowUp;
-        [SerializeField] 
+        [SerializeField]
         private Image arrowDown;
         [Space]
         [SerializeField]
@@ -68,15 +67,7 @@ namespace GlackSaga.GUI.TitleMenu.Items
 
         #endregion
 
-        public int Page { get; private set; } = 0;
-        public int PageSize => Elements.Count;
-        public int MaxPage => Mathf.CeilToInt((float)selectedSlots.Count / PageSize) - 1;
-
-        public int AbsoluteIndex => CurrentIndex + (Page * PageSize);
-
         public ItemsTab SelectedTab { get; private set; } = ItemsTab.Regular;
-
-        private List<InventorySlotData> selectedSlots = new();
 
         private Coroutine usingItemCoroutine = null;
 
@@ -86,32 +77,6 @@ namespace GlackSaga.GUI.TitleMenu.Items
         public UnityEvent OnTabChanged;
 
         #endregion
-
-        protected override void ChangeSelect(int newIndex)
-        {
-            var absoluteIndex = newIndex + (Page * PageSize);
-            if (absoluteIndex >= selectedSlots.Count || absoluteIndex < 0)
-            {
-                return;
-            }
-
-            if (Page > 0 && newIndex < 0)
-            {
-                SetPage(Page - 1);
-                base.ChangeSelect(PageSize - 1);
-            }
-            else if (Page < MaxPage && newIndex >= PageSize)
-            {
-                SetPage(Page + 1);
-                base.ChangeSelect(0);
-            }
-            else
-            {
-                base.ChangeSelect(newIndex);
-            }
-
-            SetData(selectedSlots[absoluteIndex]);
-        }
 
         protected override void OnActivate()
         {
@@ -128,69 +93,101 @@ namespace GlackSaga.GUI.TitleMenu.Items
                 tab.SetFocus(tabIndex == (int)SelectedTab);
             }
 
-            UpdateItems();
+            RefreshSlots();
 
-            ChangeSelect(0);
+            if (HasSlots)
+            {
+                ChangeSelect(0);
+            }
         }
 
-        private void UpdateItems()
+        protected override IEnumerable<InventorySlotData> FilterSlots(IEnumerable<InventorySlotData> slots)
         {
-            selectedSlots = _inventoryService.Slots
-                .Where(i => SelectedTab == ItemsTab.Key ? i.Item.Rare == Rareness.Key : i.Item.Rare != Rareness.Key)
-                .ToList();
+            return slots.Where(i => SelectedTab == ItemsTab.Key
+                ? i.Item.Rare == Rareness.Key
+                : i.Item.Rare != Rareness.Key);
+        }
 
-            if (selectedSlots.Count == 0)
+        protected override void OnSlotsRefreshed()
+        {
+            if (!HasSlots)
             {
                 emptyText.gameObject.SetActive(true);
-                SetData(null);
+                UpdateItemDetails(null);
             }
             else
             {
                 emptyText.gameObject.SetActive(false);
             }
-
-            SetPage(0);
         }
 
-        private void SetPage(int page)
+        protected override void BindElement(int elementIndex, InventorySlotData slot)
         {
-            this.Page = page;
+            BindElementWithInterface(elementIndex, slot);
+        }
 
-            for (int i = 0; i < PageSize; i++)
+        protected override void HideElement(int elementIndex)
+        {
+            HideElementAt(elementIndex);
+        }
+
+        protected override void UpdatePaginationArrows(int page, int maxPage)
+        {
+            arrowUp.gameObject.SetActive(page > 0);
+            arrowDown.gameObject.SetActive(page < maxPage);
+        }
+
+        protected override void OnSlotSelected(InventorySlotData slot)
+        {
+            UpdateItemDetails(slot);
+        }
+
+        protected override void OnChoiced(int index)
+        {
+            var slot = GetSlotAt(index + (Page * PageSize));
+
+            if (usingItemCoroutine is not null)
             {
-                var itemGUI = Elements[i] as ItemsListItem;
-                var slotIndex = i + (page * PageSize);
-                if (slotIndex >= selectedSlots.Count)
-                {
-                    itemGUI.gameObject.SetActive(false);
-
-                    continue;
-                }
-
-                itemGUI.SetData(selectedSlots[slotIndex]);
-                itemGUI.gameObject.SetActive(true);
+                StopCoroutine(usingItemCoroutine);
             }
 
-            if (page == 0)
+            usingItemCoroutine = StartCoroutine(UseItemPipeline(slot));
+        }
+
+        protected override void OnSelectUpdate()
+        {
+            ItemsTab tab = SelectedTab;
+            if (Input.GetKeyDown(Global.BaseOptions.MoveRight))
             {
-                arrowUp.gameObject.SetActive(false);
+                tab = ItemsTab.Key;
             }
-            else
+            else if (Input.GetKeyDown(Global.BaseOptions.MoveLeft))
             {
-                arrowUp.gameObject.SetActive(true);
+                tab = ItemsTab.Regular;
             }
 
-            if (page < MaxPage)
+            if (tab != SelectedTab)
             {
-                arrowDown.gameObject.SetActive(true);
-            }
-            else
-            {
-                arrowDown.gameObject.SetActive(false);
+                SelectedTab = tab;
+                UpdateTab();
+                OnTabChanged?.Invoke();
             }
         }
 
-        private void SetData(InventorySlotData slot)
+        protected override void OnDiativate()
+        {
+            base.OnDiativate();
+
+            foreach (var item in itemsGUITabs)
+            {
+                item.SetFocus(false);
+            }
+
+            SelectedTab = ItemsTab.Regular;
+            UpdateItemDetails(null);
+        }
+
+        private void UpdateItemDetails(InventorySlotData slot)
         {
             if (slot is not null)
             {
@@ -228,7 +225,6 @@ namespace GlackSaga.GUI.TitleMenu.Items
                     hpGainTextBuilder.Append(" [HP]");
                 }
 
-
                 StringBuilder mpGainTextBuilder = new();
                 if (mpCountGain > 0 || mpPercentGain > 0)
                 {
@@ -261,53 +257,6 @@ namespace GlackSaga.GUI.TitleMenu.Items
                 hpGain.text = string.Empty;
                 mpGain.text = string.Empty;
             }
-        }
-
-        protected override void OnChoiced(int index)
-        {
-            var absoluteIndex = index + (Page * PageSize);
-            var slot = selectedSlots[absoluteIndex];
-
-            if (usingItemCoroutine is not null)
-                StopCoroutine(usingItemCoroutine);
-
-            usingItemCoroutine = StartCoroutine(UseItemPipeline(slot));
-        }
-
-        protected override void OnSelectUpdate()
-        {
-            ItemsTab tab = SelectedTab;
-            if (Input.GetKeyDown(Global.BaseOptions.MoveRight))
-            {
-                tab = ItemsTab.Key;
-            }
-            else if (Input.GetKeyDown(Global.BaseOptions.MoveLeft))
-            {
-                tab = ItemsTab.Regular;
-            }
-
-            if (tab != SelectedTab)
-            {
-                SelectedTab = tab;
-                UpdateTab();
-                OnTabChanged?.Invoke();
-            }
-        }
-
-        protected override void OnDiativate()
-        {
-            base.OnDiativate();
-
-            foreach (var item in itemsGUITabs)
-                item.SetFocus(false);
-
-            SelectedTab = ItemsTab.Regular;
-
-            Page = 0;
-
-            SetData(null);
-
-            selectedSlots.Clear();
         }
 
         private IEnumerator UseItemPipeline(InventorySlotData slot)
@@ -358,21 +307,17 @@ namespace GlackSaga.GUI.TitleMenu.Items
                 }
             }
 
-            if (_inventoryService[item].Count == 1)
-            {
-                if (CurrentIndex == 0 && Page > 0)
-                {
-                    SetPage(Page - 1);
-                    ChangeSelect(PageSize - 1);
-                }
-                else
-                {
-                    ChangeSelect(CurrentIndex - 1);
-                }
-            }
+            Inventory.AddToItemCount(item, -1);
+            RefreshSlots();
 
-            _inventoryService.AddToItemCount(item, -1);
-            UpdateItems();
+            if (HasSlots)
+            {
+                ChangeSelect(Mathf.Min(CurrentIndex, PageSize - 1));
+            }
+            else
+            {
+                UpdateItemDetails(null);
+            }
 
             characterInformation.UpdateInformation();
             UseSound.Play();

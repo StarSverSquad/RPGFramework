@@ -1,11 +1,11 @@
+using System.Collections.Generic;
+using System.Linq;
 using RPGF.Core.Character;
 using RPGF.Core.Inventory;
 using RPGF.Core.Location;
 using RPGF.Domain.DI;
 using RPGF.Explorer;
 using RPGF.RPG;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace RPGF.Core.SaveLoad
 {
@@ -109,7 +109,7 @@ namespace RPGF.Core.SaveLoad
                     DefaultHeal = person.DefaultHeal,
                     DefaultMana = person.DefaultMana,
                     DefaultDamage = person.DefaultDamage,
-                    DefaultDefence = person.DefaultDefence,
+                    DefaultDefence = person.DefaultDefense,
                     DefaultAgility = person.DefaultAgility,
                     WeaponTag = person.WeaponSlot?.Tag,
                     HeadTag = person.HeadSlot?.Tag,
@@ -138,7 +138,7 @@ namespace RPGF.Core.SaveLoad
             Glek.DefaultHeal = SavedCharacter.DefaultHeal;
             Glek.DefaultMana = SavedCharacter.DefaultMana;
             Glek.DefaultDamage = SavedCharacter.DefaultDamage;
-            Glek.DefaultDefence = SavedCharacter.DefaultDefence;
+            Glek.DefaultDefense = SavedCharacter.DefaultDefence;
             Glek.DefaultAgility = SavedCharacter.DefaultAgility;
 
             if (SavedCharacter.WeaponTag != string.Empty)

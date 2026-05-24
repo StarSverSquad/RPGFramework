@@ -9,20 +9,20 @@ namespace RPGF.RPG
     {
         public enum UsedType
         {
-            Head, Body, Shield, Talisman, Weapon
+            Head, Body, Shield, Accessory, Weapon
         }
 
         public UsedType UsedOn;
 
-        [Tooltip("Если пустой, то подойдёт для любого")]
+        [Tooltip("РўСЂРµР±СѓРµС‚СЃСЏ РєР»Р°СЃСЃ, С‡С‚РѕР±С‹ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ СЌС‚РѕС‚ РїСЂРµРґРјРµС‚")]
         public List<string> RequireClasses = new();
 
-        [Header("Свойства предмета:")]
+        [Header("РЎС‚Р°С‚РёСЃС‚РёРєР° РїСЂРµРґРјРµС‚Р°:")]
         public int Heal;
         public int Mana;
 
         public int Damage;
-        public int Defence;
+        public int Defense;
         public int Agility;
         public int Luck;
     }

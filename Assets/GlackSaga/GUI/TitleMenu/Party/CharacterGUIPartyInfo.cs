@@ -43,7 +43,7 @@ namespace GlackSaga.GUI.TitleMenu.Party
             _mpTxt.text = $"{character.Mana} / {character.MaxMana}";
 
             _dmgTxt.text = $"{Global.Localization.GetLocale("SYS_DMG")}: {character.Damage}";
-            _defTxt.text = $"{Global.Localization.GetLocale("SYS_DEF")}: {character.Defence}";
+            _defTxt.text = $"{Global.Localization.GetLocale("SYS_DEF")}: {character.Defense}";
             _agiTxt.text = $"{Global.Localization.GetLocale("SYS_AGI")}: {character.Agility}";
             _luckTxt.text = $"{Global.Localization.GetLocale("SYS_LUCK")}: {character.Luck}";
 

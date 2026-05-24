@@ -16,7 +16,7 @@ namespace RPGF.RPG
 
         public virtual string GetLocaleDesciptionTag()
         {
-            return $"{Tag}_Desciption";
+            return $"{Tag}_Description";
         }
     }
 }

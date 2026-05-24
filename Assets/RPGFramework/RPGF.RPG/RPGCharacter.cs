@@ -1,6 +1,6 @@
-using RPGF.Core.Character;
 using System;
 using System.Collections.Generic;
+using RPGF.Core.Character;
 using UnityEngine;
 
 namespace RPGF.RPG
@@ -8,7 +8,7 @@ namespace RPGF.RPG
     [CreateAssetMenu(fileName = "Character", menuName = "RPG/Character")]
     public class RPGCharacter : RPGEntity
     {
-        [Header("Настройки персонажа")]
+        [Header("РќР°СЃС‚СЂРѕР№РєРё РїРµСЂСЃРѕРЅР°Р¶Р°")]
         public string Class = string.Empty;
 
         public Sprite Icon;
@@ -24,13 +24,13 @@ namespace RPGF.RPG
         public bool ParticipateInBattle = true;
         public bool CanMoveInBattle = true;
 
-        [Header("Уровень")]
+        [Header("РЈСЂРѕРІРµРЅСЊ")]
         public int Level = 1;
         public int Expireance = 0;
         public int ExpireanceBorder = 0;
         public AnimationCurve ExpireanceBorderFactor;
 
-        [Header("Кривые развития")]
+        [Header("РљСЂРёРІС‹Рµ СЂР°Р·РІРёС‚РёСЏ")]
         public AnimationCurve LvlHealFactor;
         public AnimationCurve LvlManaFactor;
         public AnimationCurve LvlDamageFactor;
@@ -38,11 +38,11 @@ namespace RPGF.RPG
         public AnimationCurve LvlAgilityFactor;
         public AnimationCurve LvlLuckFactor;
 
-        [Header("Способности")]
+        [Header("РЎРїРѕСЃРѕР±РЅРѕСЃС‚Рё")]
         public List<RPGAbility> Abilities = new List<RPGAbility>();
-   
+
         public const RPGWerable.UsedType WeaponType = RPGWerable.UsedType.Weapon;
-        [Header("Вещи")]
+        [Header("Р’РµС‰Рё")]
         public RPGWeapon WeaponSlot = null;
 
         public RPGWerable HeadSlot = null;
@@ -65,18 +65,20 @@ namespace RPGF.RPG
                 MaxMana += WeaponSlot.Mana;
 
                 Damage += WeaponSlot.Damage;
-                Defence += WeaponSlot.Defence;
+                Defense += WeaponSlot.Defense;
                 Agility += WeaponSlot.Agility;
+                Luck += WeaponSlot.Luck;
             }
 
-            if (HeadSlot != null )
+            if (HeadSlot != null)
             {
                 MaxHeal += HeadSlot.Heal;
                 MaxMana += HeadSlot.Mana;
 
                 Damage += HeadSlot.Damage;
-                Defence += HeadSlot.Defence;
+                Defense += HeadSlot.Defense;
                 Agility += HeadSlot.Agility;
+                Luck += HeadSlot.Luck;
             }
 
             if (BodySlot != null)
@@ -85,8 +87,9 @@ namespace RPGF.RPG
                 MaxMana += BodySlot.Mana;
 
                 Damage += BodySlot.Damage;
-                Defence += BodySlot.Defence;
+                Defense += BodySlot.Defense;
                 Agility += BodySlot.Agility;
+                Luck += BodySlot.Luck;
             }
 
             if (ShieldSlot != null)
@@ -95,8 +98,9 @@ namespace RPGF.RPG
                 MaxMana += ShieldSlot.Mana;
 
                 Damage += ShieldSlot.Damage;
-                Defence += ShieldSlot.Defence;
+                Defense += ShieldSlot.Defense;
                 Agility += ShieldSlot.Agility;
+                Luck += ShieldSlot.Luck;
             }
 
             if (AccessorySlot != null)
@@ -105,8 +109,9 @@ namespace RPGF.RPG
                 MaxMana += AccessorySlot.Mana;
 
                 Damage += AccessorySlot.Damage;
-                Defence += AccessorySlot.Defence;
+                Defense += AccessorySlot.Defense;
                 Agility += AccessorySlot.Agility;
+                Luck += AccessorySlot.Luck;
             }
 
             Heal = Math.Clamp(Heal, 0, MaxHeal);
@@ -129,13 +134,64 @@ namespace RPGF.RPG
             DefaultHeal = (int)(LvlHealFactor.Evaluate(Level) * DefaultHeal);
             DefaultMana = (int)(LvlManaFactor.Evaluate(Level) * DefaultMana);
             DefaultDamage = (int)(LvlDamageFactor.Evaluate(Level) * DefaultDamage);
-            DefaultDefence = (int)(LvlDefenceFactor.Evaluate(Level) * DefaultDefence);
+            DefaultDefense = (int)(LvlDefenceFactor.Evaluate(Level) * DefaultDefense);
             DefaultAgility = (int)(LvlAgilityFactor.Evaluate(Level) * DefaultAgility);
             DefaultLuck = (int)(LvlLuckFactor.Evaluate(Level) * DefaultAgility);
 
             UpdateStats();
 
             Heal = MaxHeal; Mana = MaxMana;
+        }
+
+        public RPGWerable GetWerableByType(RPGWerable.UsedType type)
+        {
+            switch (type)
+            {
+                case RPGWerable.UsedType.Weapon:
+                    return WeaponSlot;
+                case RPGWerable.UsedType.Head:
+                    return HeadSlot;
+                case RPGWerable.UsedType.Body:
+                    return BodySlot;
+                case RPGWerable.UsedType.Shield:
+                    return ShieldSlot;
+                case RPGWerable.UsedType.Accessory:
+                    return AccessorySlot;
+                default:
+                    Debug.LogError($"Unknown used type: {type}");
+                    return null;
+            }
+        }
+
+        public void SetWerableByType(RPGWerable.UsedType type, RPGWerable value)
+        {
+            if (type == RPGWerable.UsedType.Weapon && value is not RPGWeapon)
+            {
+                Debug.LogError($"Value is not a weapon: {value}");
+                return;
+            }
+
+            switch (type)
+            {
+                case RPGWerable.UsedType.Weapon:
+                    WeaponSlot = value as RPGWeapon;
+                    break;
+                case RPGWerable.UsedType.Head:
+                    HeadSlot = value;
+                    break;
+                case RPGWerable.UsedType.Body:
+                    BodySlot = value;
+                    break;
+                case RPGWerable.UsedType.Shield:
+                    ShieldSlot = value;
+                    break;
+                case RPGWerable.UsedType.Accessory:
+                    AccessorySlot = value;
+                    break;
+                default:
+                    Debug.LogError($"Unknown used type: {type}");
+                    break;
+            }
         }
     }
 }

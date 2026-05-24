@@ -1,8 +1,8 @@
-﻿using NaughtyAttributes;
-using RPGF.GUI.Interfaces;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NaughtyAttributes;
+using RPGF.GUI.Interfaces;
 using UnityEngine;
 using UnityEngine.Events;
 

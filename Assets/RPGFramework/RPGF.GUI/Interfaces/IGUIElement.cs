@@ -3,10 +3,8 @@ using UnityEngine;
 
 namespace RPGF.GUI.Interfaces
 {
-    public interface IGUIElement : IDisposable
+    public interface IGUIElement : IGUIWidget, IDisposable
     {
-        public RectTransform RectTransform { get; }
-
         public bool Focused { get; }
 
         public void SetFocus(bool focus);

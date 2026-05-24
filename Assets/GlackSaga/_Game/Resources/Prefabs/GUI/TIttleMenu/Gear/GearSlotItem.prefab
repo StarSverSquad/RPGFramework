@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 7224772335206670093}
   - component: {fileID: 3861972384223257060}
   m_Layer: 0
-  m_Name: SelectSlotItem
+  m_Name: GearSlotItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -179,6 +179,11 @@ MonoBehaviour:
   OnSelect:
     m_PersistentCalls:
       m_Calls: []
+  nameText: {fileID: 6377727754392798612}
+  background: {fileID: 7224772335206670093}
+  usedType: 0
+  focusedColor: {r: 1, g: 0.6470588, b: 0, a: 1}
+  unfocusedColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &5534963507927363281
 GameObject:
   m_ObjectHideFlags: 0
@@ -213,8 +218,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 83.52, y: -0.22999573}
-  m_SizeDelta: {x: -167.97, y: 0.46}
+  m_AnchoredPosition: {x: 59.755005, y: -0.22999573}
+  m_SizeDelta: {x: -119.51, y: 0.46}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2611888523329215675
 CanvasRenderer:

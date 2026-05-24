@@ -9,7 +9,7 @@ namespace GlackSaga.GUI.TitleMenu.CharactetSelector
     public class CharacterSelectorGUIBlock : GUISelectableBlock
     {
         [Inject]
-        private readonly CharacterService _characterService;
+        private readonly CharacterService _characterService = null!;
 
         [Header("Links:")]
         [SerializeField]

@@ -22,7 +22,7 @@ namespace RPGF.GUI
         public bool IsFocused { get; protected set; } = false;
 
         #region EVENTS
-        
+
         [Foldout("Block events")]
         public UnityEvent OnActivateEvent;
         [Foldout("Block events")]
@@ -64,7 +64,7 @@ namespace RPGF.GUI
             {
                 OnActivate();
                 OnActivateEvent?.Invoke();
-            }      
+            }
 
             IsActivated = true;
         }
@@ -123,7 +123,7 @@ namespace RPGF.GUI
 
             Dispose();
 
-            Manager.PreviewBlock();
+            Manager.PreviousBlock();
         }
         public virtual void Next(IGUIBlock gUIBlock)
         {

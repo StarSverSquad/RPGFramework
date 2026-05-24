@@ -1253,9 +1253,7 @@ namespace RPGF.Battle
         {
             if (turnData.Item.Event != null)
             {
-                _invokeUsableEvent.InvokeEvent(turnData.Item);
-
-                yield return new WaitWhile(() => turnData.Item.Event.IsPlaying);
+                yield return _invokeUsableEvent.AwaitInvokeEvent(turnData.Item);
             }
 
             if (turnData.IsConsumed && turnData.Item is RPGConsumed consumed)

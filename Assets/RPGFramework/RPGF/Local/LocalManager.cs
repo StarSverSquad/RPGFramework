@@ -66,10 +66,10 @@ namespace RPGF
             Camera.Initialize();
             DI.AddSignleton(Camera);
 
-            TittleMenu.Initialize();
-            DI.AddSignleton(TittleMenu);
-
             explorer.Initialize();
+
+            DI.AddSignleton(TittleMenu);
+            TittleMenu.Initialize();
 
             Location.Initialize();
             DI.AddSignleton(Location);

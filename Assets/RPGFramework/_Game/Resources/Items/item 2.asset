@@ -25,13 +25,19 @@ MonoBehaviour:
   ForDeath: 1
   Effects:
   - rid: 631918494483218702
+  - rid: 415278159294365961
   Rare: 0
   WriteMessage: 1
   references:
     version: 2
     RefIds:
+    - rid: 415278159294365961
+      type: {class: ChangeManaHealConstEffect, ns: RPGF.Core.RPGEffect, asm: Assembly-CSharp}
+      data:
+        Heal: 50
+        Mana: 25
     - rid: 631918494483218702
       type: {class: ChangeManaHealPercentEffect, ns: RPGF.Core.RPGEffect, asm: Assembly-CSharp}
       data:
-        Heal: 20
-        Mana: 0
+        Heal: 0.05
+        Mana: 0.1

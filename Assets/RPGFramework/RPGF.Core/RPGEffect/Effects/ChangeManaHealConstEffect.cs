@@ -1,9 +1,13 @@
-﻿using RPGF.RPG;
+﻿using RPGF.Core.RPGEffect.Attributes;
+using RPGF.RPG;
+using System;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Core.RPGEffect
 {
+    [Serializable]
+    [UseRPGEffect("Изменить HP\\MP")]
     public class ChangeManaHealConstEffect : RPGEffectBase
     {
         public int Heal;
@@ -15,11 +19,6 @@ namespace RPGF.Core.RPGEffect
             target.Mana += Mathf.RoundToInt(Mana * Factor);
 
             yield break;
-        }
-
-        public override string GetName()
-        {
-            return "Изменить HP\\MP";
         }
     }
 }

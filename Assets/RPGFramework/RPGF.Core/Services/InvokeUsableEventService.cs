@@ -4,7 +4,6 @@ using RPGF.Domain.Interfaces;
 using RPGF.Explorer;
 using RPGF.RPG;
 using System.Collections;
-using UnityEngine;
 
 namespace RPGF.Core.Services
 {
@@ -47,11 +46,11 @@ namespace RPGF.Core.Services
             }
         }
 
-        public IEnumerable WaitInvokeEvent(RPGUsable usable)
+        public IEnumerator AwaitInvokeEvent(RPGUsable usable)
         {
             InvokeEvent(usable);
 
-            yield return new WaitWhile(() => usable.Event.IsPlaying);
+            yield return usable.Event.WaitForEnd();
         }
     }
 }

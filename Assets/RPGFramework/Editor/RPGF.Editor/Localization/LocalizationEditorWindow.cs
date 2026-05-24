@@ -1,7 +1,7 @@
-﻿using RPGF.Core.Localization;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using RPGF.Core.Localization;
 using UnityEditor;
 using UnityEngine;
 
@@ -16,7 +16,7 @@ namespace RPGF.Editor.Localization
 
         private string searchText;
 
-        private Dictionary<string, bool> localeFoldouts = new();
+        private readonly Dictionary<string, bool> localeFoldouts = new();
 
         public static LocalizationEditorWindow Create(LocalizationSheet sheet)
         {
@@ -54,11 +54,13 @@ namespace RPGF.Editor.Localization
             GUILayout.BeginVertical();
             scroll = EditorGUILayout.BeginScrollView(scroll);
 
-            var locales = sheet.locales.data.Where(locale => Regex.IsMatch(locale.Key, @$"\w*{searchText}\w*")).ToList();
-            for (int i = 0; i < locales.Count; i++)
-            {
-                var locale = locales[i];
+            var locales = sheet.locales.data
+                .Where(locale => Regex.IsMatch(locale.Key, @$"\w*{searchText}\w*"))
+                .OrderBy(locale => locale.Key)
+                .ToArray();
 
+            foreach (var locale in locales)
+            {
                 if (!localeFoldouts.Keys.Any(key => key == locale.Key))
                     localeFoldouts.Add(locale.Key, false);
 

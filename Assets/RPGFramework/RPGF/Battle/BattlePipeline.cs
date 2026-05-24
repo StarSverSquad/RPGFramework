@@ -1,22 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+using RPGF.Battle.Choice;
+using RPGF.Battle.UI;
+using RPGF.Core.Battle;
+using RPGF.Core.Battle.Enums;
+using RPGF.Core.Localization;
+using RPGF.Core.Services;
+using RPGF.Domain.DI;
 using RPGF.RPG;
 using RPGF.Shared;
-using RPGF.Battle.UI;
-using RPGF.Core.Localization;
-using RPGF.Domain.DI;
-using RPGF.Core.Services;
-using RPGF.Core.Battle.Enums;
-using RPGF.Core.Battle;
-using RPGF.Battle.Choice;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace RPGF.Battle
 {
     public class BattlePipeline : ISupportDI
     {
+        private static readonly WaitForSeconds _waitForSeconds1 = new(1f);
+        private static readonly WaitForSeconds _waitForSeconds_5 = new(.5f);
+        private static readonly WaitForSeconds _waitForSeconds_3 = new(.3f);
+        private static readonly WaitForSeconds _waitForSeconds_25 = new(.25f);
+
         public enum ChoiceAction
         {
             Primary, Special, Act, Ability, Entity, Teammate, Enemy,
@@ -24,13 +29,13 @@ namespace RPGF.Battle
         }
 
         [Inject]
-        private readonly BattleManager _battle;
+        private readonly BattleManager _battle = null!;
         [Inject]
-        private readonly SharedManager _shared;
+        private readonly SharedManager _shared = null!;
         [Inject]
-        private readonly DependencyInjection _di;
+        private readonly DependencyInjection _di = null!;
         [Inject]
-        private readonly InvokeUsableEventService _invokeUsableEvent;
+        private readonly InvokeUsableEventService _invokeUsableEvent = null!;
 
         #region PROPS
 
@@ -46,7 +51,7 @@ namespace RPGF.Battle
 
         #endregion
 
-        private List<ChoiceAction> choiceActions = new();
+        private readonly List<ChoiceAction> choiceActions = new();
 
         private bool loseKey, winKey, fleeKey, breakKey;
         private bool isCancelChoice;
@@ -305,11 +310,11 @@ namespace RPGF.Battle
 
             if (Data.BattleInfo.ShowStartMessage)
             {
-                string numeriticDifText = Data.BattleInfo.enemySquad.Enemies.Count > 1 ? Localization.GetLocale("SYS_BATTLE_ENCOUNTER_MULTI") : Localization.GetLocale("SYS_BATTLE_ENCOUNTER_SIGNLE");
+                string numericDifText = Data.BattleInfo.enemySquad.Enemies.Count > 1 ? Localization.GetLocale("SYS_BATTLE_ENCOUNTER_MULTI") : Localization.GetLocale("SYS_BATTLE_ENCOUNTER_SINGLE");
 
                 _shared.MessageDialog.Write(new MessageBoxInfo()
                 {
-                    text = $"* {Data.BattleInfo.enemySquad.Name} {numeriticDifText}!",
+                    text = $"* {Data.BattleInfo.enemySquad.Name} {numericDifText}!",
                     closeWindow = true
                 });
 
@@ -409,7 +414,7 @@ namespace RPGF.Battle
             UI.CharacterQuery.Hide();
             UI.Concentration.NearWindow();
 
-            yield return new WaitForSeconds(.5f);
+            yield return _waitForSeconds_5;
 
             UI.CharacterBox.Show();
 
@@ -481,7 +486,7 @@ namespace RPGF.Battle
             }
             else if (period == RPGBattleEvent.InvokePeriod.OnLessEnemyHeal)
             {
-                events = events.Where(i => Data.Enemys.Any(enem => enem.Heal <= i.Heal && i.EntityTag == enem.Tag)).ToList();
+                events = events.Where(i => Data.Enemys.Any(enemy => enemy.Heal <= i.Heal && i.EntityTag == enemy.Tag)).ToList();
             }
 
             foreach (var @event in events)
@@ -554,9 +559,9 @@ namespace RPGF.Battle
         {
             IsEnemyTurn = true;
 
-            yield return new WaitForSeconds(0.5f);
+            yield return _waitForSeconds_5;
 
-            List<BattleTurnData> targets = new List<BattleTurnData>();
+            List<BattleTurnData> targets = new();
 
             foreach (var enemy in Data.Enemys)
             {
@@ -611,7 +616,7 @@ namespace RPGF.Battle
             _battle.BattleField.Dispose();
             _battle.Projectiles.Dispose();
 
-            yield return new WaitForSeconds(0.3f);
+            yield return _waitForSeconds_3;
 
             _battle.Player.Dispose();
 
@@ -836,7 +841,7 @@ namespace RPGF.Battle
                         turnData.BattleAction = TurnAction.Attack;
                         choiceActions.Add(ChoiceAction.Enemy);
                         break;
-                    // Выбрано дейтсвие
+                    // Выбрано действие
                     case 1:
                         choiceActions.Add(ChoiceAction.Special);
                         break;
@@ -850,7 +855,7 @@ namespace RPGF.Battle
                     case 3:
                         choiceActions.Add(ChoiceAction.Defence);
                         break;
-                    // Неизветсное действие
+                    // Неизвестное действие
                     default:
                         Debug.LogWarning("Unknown battle action!");
                         break;
@@ -963,7 +968,7 @@ namespace RPGF.Battle
                 {
                     choiceActions.Add(ChoiceAction.Teammate);
 
-                } 
+                }
                 else
                 {
                     choiceActions.Add(ChoiceAction.Enemy);
@@ -1157,7 +1162,7 @@ namespace RPGF.Battle
             _battle.AttackQTE.Show();
 
             if (!_battle.AttackQTE.IsShowed)
-                yield return new WaitForSeconds(1f);
+                yield return _waitForSeconds1;
 
             _battle.AttackQTE.Invoke();
 
@@ -1182,7 +1187,7 @@ namespace RPGF.Battle
 
             yield return new WaitWhile(() => effect.IsPlaying);
 
-            yield return new WaitForSeconds(0.5f);
+            yield return _waitForSeconds_5;
 
             Object.Destroy(effect.gameObject);
 
@@ -1267,10 +1272,10 @@ namespace RPGF.Battle
                     });
 
                     yield return new WaitWhile(() => _shared.MessageDialog.IsWriting);
-                    yield return new WaitForSeconds(.25f);
+                    yield return _waitForSeconds_25;
                 }
                 else
-                    yield return new WaitForSeconds(.5f);
+                    yield return _waitForSeconds_5;
 
                 switch (consumed.Direction)
                 {
@@ -1305,20 +1310,20 @@ namespace RPGF.Battle
 
             _shared.MessageDialog.Write(new MessageBoxInfo()
             {
-                text = $"* {character.Name} пытаеться сбежать<\\:>.<\\:>.<\\:>.",
+                text = $"* {character.Name} пытается сбежать<\\:>.<\\:>.<\\:>.",
                 closeWindow = true,
             });
 
             yield return new WaitWhile(() => _shared.MessageDialog.IsWriting);
 
-            yield return new WaitForSeconds(.5f);
+            yield return _waitForSeconds_5;
 
-            int totalEnemysAgility, totalCharactersAgility;
+            int totalEnemiesAgility, totalCharactersAgility;
 
             totalCharactersAgility = Data.TurnsData.Select(i => i.Character.Agility).Sum();
-            totalEnemysAgility = Data.Enemys.Select(i => i.Agility).Sum();
+            totalEnemiesAgility = Data.Enemys.Select(i => i.Agility).Sum();
 
-            int randNum = Random.Range(0, totalCharactersAgility + totalEnemysAgility);
+            int randNum = Random.Range(0, totalCharactersAgility + totalEnemiesAgility);
 
             if (randNum - totalCharactersAgility < 0)
             {

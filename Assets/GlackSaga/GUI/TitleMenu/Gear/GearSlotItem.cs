@@ -37,7 +37,7 @@ namespace GlackSaga.GUI.TitleMenu.Gear
                 return;
             }
 
-            nameText.color = Color.white;
+            nameText.color = unfocusedColor;
             nameText.text = GetLocale(value.GetLocaleNameTag(), value.Name);
         }
 

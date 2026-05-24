@@ -76,7 +76,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1.25
+  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &1466223922168158737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,7 +105,7 @@ MonoBehaviour:
   background: {fileID: 5482507100246792062}
   characterName: {fileID: 4375641254028580949}
   focusedColor: {r: 1, g: 0.68750006, b: 0, a: 1}
-  unfocusedColor: {r: 1, g: 1, b: 1, a: 1}
+  unfocusedColor: {r: 0.94117653, g: 0.8470589, b: 0.7019608, a: 1}
 --- !u!1 &7818339863985762016
 GameObject:
   m_ObjectHideFlags: 0
@@ -181,7 +181,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 0.94117653, g: 0.8470589, b: 0.7019608, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

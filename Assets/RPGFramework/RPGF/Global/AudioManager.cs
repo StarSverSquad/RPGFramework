@@ -1,7 +1,7 @@
-using DG.Tweening;
-using RPGF.Core;
 using System;
 using System.Collections;
+using DG.Tweening;
+using RPGF.Core;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -9,7 +9,6 @@ namespace RPGF
 {
     public class AudioManager : RPGFrameworkBehaviour
     {
-        [Header("Источники:")]
         [SerializeField]
         private AudioSource BGMSource;
         [SerializeField]

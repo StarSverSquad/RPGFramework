@@ -1,7 +1,0 @@
-<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/GlackSaga/Resources/UI/ItemsMenuTab/ItemsMenuTab.uss?fileID=7433441132597879392&amp;guid=b588a0881d301674aaf79c387b0ce4b9&amp;type=3#ItemsMenuTab"/>
-    <ui:VisualElement name="ListItem" class="content-list-item" style="flex-grow: 0; padding-top: 4px; padding-right: 4px; padding-bottom: 4px; padding-left: 4px; flex-direction: row;">
-        <ui:Image source="project://database/Assets/RPGFramework/_Game/Resources/Sprites/IconSet.png?fileID=-75997682&amp;guid=43a40bfc1d0a404438f3a7f4ccf8b0e6&amp;type=3#IconSet_11" name="ListItemIcon" class="content-list-item-icon" style="aspect-ratio: 1;"/>
-        <ui:Label text="some item name" name="ListItemName" class="content-list-item-name" style="flex-grow: 1; flex-shrink: 1; overflow: hidden; text-overflow: ellipsis;"/>
-    </ui:VisualElement>
-</ui:UXML>

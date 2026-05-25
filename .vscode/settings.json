@@ -108,9 +108,10 @@
         }
     ],
     "dotrush.roslyn.projectOrSolutionFiles": [
-        "d:\\UnityProj\\RPGFramework\\RPGFramework.slnx",
-        "d:\\UnityProj\\RPGFramework\\Assembly-CSharp-Editor.csproj",
-        "d:\\UnityProj\\RPGFramework\\Assembly-CSharp.csproj"
+        "d:\\UnityProj\\RPGFramework\\RPGFramework.slnx"
     ],
-    "dotnet.defaultSolution": "RPGFramework.sln"
+    "dotnet.defaultSolution": "RPGFramework.sln",
+    "files.watcherExclude": {
+        "**/Assembly-CSharp*.csproj": true
+    }
 }

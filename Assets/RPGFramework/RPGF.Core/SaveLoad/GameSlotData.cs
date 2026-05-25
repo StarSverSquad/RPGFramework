@@ -1,7 +1,7 @@
-using RPGF;
-using RPGF.Domain;
 using System;
 using System.Collections.Generic;
+using RPGF;
+using RPGF.Domain;
 using UnityEngine;
 
 namespace RPGF.Core.SaveLoad

@@ -25,8 +25,6 @@ namespace GlackSaga.GUI.TitleMenu.Gear
         private RPGCharacter character;
         private RPGWerable.UsedType usedType;
 
-        public override int PageSize => Elements.Count;
-
         public void SetData(RPGCharacter character, RPGWerable.UsedType usedType)
         {
             this.character = character;

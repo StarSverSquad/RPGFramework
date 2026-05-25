@@ -11,7 +11,7 @@ namespace RPGF.GUI
         public int ItemCount => SelectedItems.Count;
         public int MaxPage => CalculateMaxPage();
 
-        public virtual int PageSize => Elements.Count;
+        public int PageSize => Elements.Count;
 
         public bool HasItems => SelectedItems.Count > 0;
 

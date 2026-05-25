@@ -1,7 +1,7 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using RPGF.Core.Helpers;
 using RPGF.Domain.DI;
-using System;
 using UnityEngine;
 
 namespace RPGF.Core.Battle.BattleField.Abstractions
@@ -86,7 +86,7 @@ namespace RPGF.Core.Battle.BattleField.Abstractions
             rotateTween = transform.DORotate(new Vector3(0, 0, angle), time)
                 .SetEase(easing)
                 .Play();
-                
+
         }
         public void Rotate360(float rotatesPerSecound, bool toRight = true)
         {
@@ -178,7 +178,7 @@ namespace RPGF.Core.Battle.BattleField.Abstractions
             rotateTween?.Kill();
             rotateTween = null;
 
-            resizeTween?.Kill(); 
+            resizeTween?.Kill();
             resizeTween = null;
 
             animationColorTween?.Kill();

@@ -1,18 +1,15 @@
-﻿using RPGF.Core.Battle.BattleField;
+﻿using System;
+using System.Collections.Generic;
+using RPGF.Core.Battle.BattleField;
 using RPGF.Core.Battle.Projectiles.Abstractions;
 using RPGF.Domain.DI;
 using RPGF.RPG;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace RPGF.Core.Battle.Projectiles
 {
     public class ProjectileManager : RPGFrameworkBehaviour, IDisposable
     {
-        [Inject]
-        private readonly BattleFieldManager _battleField;
-
         private readonly List<ProjectileBase> _projectiles = new();
 
         [SerializeField]
@@ -22,13 +19,13 @@ namespace RPGF.Core.Battle.Projectiles
             where T : ProjectileBase
         {
             var projObject = Instantiate(
-                originalProjectile.gameObject, 
+                originalProjectile.gameObject,
                 position,
                 Quaternion.identity,
                 new InstantiateParameters()
                 {
-                   parent = projectileContainer.transform,
-                   worldSpace = false,
+                    parent = projectileContainer.transform,
+                    worldSpace = false,
                 }
             );
 

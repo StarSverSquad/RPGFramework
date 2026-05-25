@@ -10,7 +10,7 @@ namespace RPGF.Battle.Choice
     public class PrimaryBattleChoiceUI : RPGFrameworkBehaviour, IActive
     {
         [Inject]
-        private readonly BaseOptions _options;
+        private readonly BaseOptions _options = null!;
 
         [SerializeField]
         private BattleChoiceItemUI[] buttons = new BattleChoiceItemUI[4];

@@ -1,4 +1,4 @@
-using DG.Tweening;
+﻿using DG.Tweening;
 using RPGF.Battle.BattleField;
 using RPGF.Battle.Player;
 using RPGF.Core.Battle.BattleField;
@@ -13,11 +13,11 @@ namespace RPGF.Battle.EnemyBehaviour
     public class TestSpiderBehaviour : BattleEnemyBehaviourBase
     {
         [Inject]
-        private readonly ProjectileManager _projectiles;
+        private readonly ProjectileManager _projectiles = null!;
         [Inject]
-        private readonly BattlePlayerManager _player;
+        private readonly BattlePlayerManager _player = null!;
         [Inject]
-        private readonly BattleFieldManager _fields;
+        private readonly BattleFieldManager _fields = null!;
 
         [SerializeField]
         private BulletProjectile bullet;

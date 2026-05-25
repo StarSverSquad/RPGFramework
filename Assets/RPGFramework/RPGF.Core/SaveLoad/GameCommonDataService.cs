@@ -6,7 +6,7 @@ namespace RPGF.Core.SaveLoad
     public class GameCommonDataService : ISupportDI
     {
         [Inject]
-        private readonly GameFilesService _gameFiles;
+        private readonly GameFilesService _gameFiles = null!;
 
         public GameCommonData CommonData { get; private set; }
 

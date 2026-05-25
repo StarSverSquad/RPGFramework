@@ -1,13 +1,13 @@
-using RPGF;
+Ôªøusing RPGF;
 using RPGF.Domain.DI;
 
 namespace RPGF.Actions.Condition
 {
-    [UseCondition("œÓ ‰ÂÌ¸„‡Ï")]
+    [UseCondition("–ü–æ –¥–µ–Ω—å–≥–∞–º")]
     public class MoneyCondition : ConditionBase
     {
         [Inject]
-        private readonly GameData _gameData;
+        private readonly GameData _gameData = null!;
 
         public int Value;
 

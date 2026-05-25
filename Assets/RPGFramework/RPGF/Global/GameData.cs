@@ -1,4 +1,4 @@
-using RPGF.Core;
+﻿using RPGF.Core;
 using RPGF.Domain;
 using RPGF.Domain.DI;
 using RPGF.Domain.Interfaces;
@@ -12,7 +12,7 @@ namespace RPGF
     public class GameData : IDisposable, IManagerInitialize, ISupportDI
     {
         [Inject]
-        private readonly BaseOptions _options;
+        private readonly BaseOptions _options = null!;
 
         public CustomDictionary<int> IntValues;
         public CustomDictionary<float> FloatValues;

@@ -13,7 +13,7 @@ namespace RPGF.Actions
     public class ShowColorAction : ActionBase
     {
         [Inject]
-        private readonly MediaManager _media;
+        private readonly MediaManager _media = null!;
 
         [ActionFieldOption("Цвет:")]
         public Color Color;

@@ -10,9 +10,9 @@ namespace RPGF.Core.SaveLoad
     public class GameConfigService : ISupportDI
     {
         [Inject]
-        private readonly GameFilesService _gameFiles;
+        private readonly GameFilesService _gameFiles = null!;
         [Inject]
-        private readonly AudioManager _audio;
+        private readonly AudioManager _audio = null!;
 
         public GameConfigData Config { get; private set; }
 

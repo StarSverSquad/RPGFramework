@@ -12,11 +12,11 @@ namespace RPGF.Battle.Choice
     public class BattleChoice : PaginationChoiceBase<BattleChoiceItem>, IDisposable
     {
         [Inject]
-        private readonly BaseOptions options;
+        private readonly BaseOptions options = null!;
         [Inject]
-        private readonly BattleConfig _config;
+        private readonly BattleConfig _config = null!;
         [Inject]
-        private readonly BattleAudioManager _audio;
+        private readonly BattleAudioManager _audio = null!;
 
 
         [SerializeField]

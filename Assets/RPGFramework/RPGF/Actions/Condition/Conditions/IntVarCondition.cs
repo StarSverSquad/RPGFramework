@@ -1,13 +1,13 @@
-using RPGF;
+п»їusing RPGF;
 using RPGF.Domain.DI;
 
 namespace RPGF.Actions.Condition
 {
-    [UseCondition("По целочисленной переменной")]
+    [UseCondition("РџРѕ С†РµР»РѕС‡РёСЃР»РµРЅРЅРѕР№ РїРµСЂРµРјРµРЅРЅРѕР№")]
     public class IntVarCondition : ConditionBase
     {
         [Inject]
-        private readonly GameData _gameData;
+        private readonly GameData _gameData = null!;
 
         public string Var;
         public int Value;

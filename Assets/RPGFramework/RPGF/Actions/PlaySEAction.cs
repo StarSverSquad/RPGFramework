@@ -12,7 +12,7 @@ namespace RPGF.Actions
     public class PlaySEAction : ActionBase
     {
         [Inject]
-        private readonly AudioManager _audio;
+        private readonly AudioManager _audio = null!;
 
         [ActionFieldOption("Аудио:")]
         public AudioClip clip;

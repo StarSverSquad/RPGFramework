@@ -1,4 +1,4 @@
-using RPGF.Core.Battle.BattleField;
+﻿using RPGF.Core.Battle.BattleField;
 using RPGF.Core.Battle.Behaviour.Abstractions;
 using RPGF.Core.Battle.Projectiles;
 using RPGF.Domain.DI;
@@ -10,9 +10,9 @@ namespace RPGF.Battle.EnemyBehaviour
     public class SampleBehaviour : BattleEnemyBehaviourBase
     {
         [Inject]
-        private readonly ProjectileManager _projectiles;
+        private readonly ProjectileManager _projectiles = null!;
         [Inject]
-        private readonly BattleFieldManager _field;
+        private readonly BattleFieldManager _field = null!;
 
         [SerializeField]
         private BulletProjectile bullet;

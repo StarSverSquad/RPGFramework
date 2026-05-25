@@ -1,4 +1,4 @@
-using RPGF.Core;
+﻿using RPGF.Core;
 using DG.Tweening;
 using RPGF.Core.Choice;
 using RPGF.Domain.DI;
@@ -11,9 +11,9 @@ namespace RPGF.Shared
     public class ChoiceDialogManager : ChoiceBase<ChoiceItem>
     {
         [Inject]
-        private readonly BaseOptions _options;
+        private readonly BaseOptions _options = null!;
         [Inject]
-        private readonly AudioManager _audio;
+        private readonly AudioManager _audio = null!;
 
         [SerializeField]
         private GameObject itemPrefab;

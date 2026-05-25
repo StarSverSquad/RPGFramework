@@ -14,7 +14,7 @@ namespace RPGF.Actions
     public class ChangeItemCountAction : ActionBase
     {
         [Inject]
-        private readonly InventoryService _inventory;
+        private readonly InventoryService _inventory = null!;
 
         [ActionFieldOption("Предмет:", AllowSceneObjects = true, IsObject = true)]
         public RPGCollectable Item;

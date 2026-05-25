@@ -10,7 +10,7 @@ namespace RPGF.Actions.Condition
     public class ConditionAction : ActionBase
     {
         [Inject]
-        private readonly DependencyInjection _di;
+        private readonly DependencyInjection _di = null!;
 
         public const string NextThenTag = "Then";
         public const string NextElseTag = "Else";

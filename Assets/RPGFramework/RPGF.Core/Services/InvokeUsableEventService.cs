@@ -10,9 +10,9 @@ namespace RPGF.Core.Services
     public class InvokeUsableEventService : IService
     {
         [Inject]
-        private readonly ExplorerEventHandler _eventHandler;
+        private readonly ExplorerEventHandler _eventHandler = null!;
         [Inject]
-        private readonly DependencyInjection _di;
+        private readonly DependencyInjection _di = null!;
 
         public void InvokeEvent(RPGUsable usable)
         {

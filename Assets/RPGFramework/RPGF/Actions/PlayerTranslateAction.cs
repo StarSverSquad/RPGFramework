@@ -1,9 +1,10 @@
-﻿using RPGF.Domain;
+﻿using System;
+using System.Collections;
+using RPGF.Domain;
+using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using RPGF.Explorer;
 using RPGF.Explorer.Player;
-using System;
-using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Actions
@@ -16,7 +17,8 @@ namespace RPGF.Actions
             Move, MoveRelative
         }
 
-        private readonly PlayerExplorerManager _playerManager;
+        [Inject]
+        private readonly PlayerExplorerManager _playerManager = null!;
 
         public MoveDirection Direction;
         public TranslateType Type;

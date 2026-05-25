@@ -18,9 +18,9 @@ namespace RPGF.Actions.Condition
     public class ChangeEnemyModelAnimationAction : ActionBase
     {
         [Inject]
-        private readonly BattleEnemyModelsManager _models;
+        private readonly BattleEnemyModelsManager _models = null!;
         [Inject]
-        private readonly BattleData _data;
+        private readonly BattleData _data = null!;
 
         [ActionFieldOption("Тег врага:")]
         public string EnemyTag;

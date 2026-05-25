@@ -1,12 +1,12 @@
-using RPGF.Domain.DI;
+п»їusing RPGF.Domain.DI;
 
 namespace RPGF.Actions.Condition
 {
-    [UseCondition("По дробной переменной")]
+    [UseCondition("РџРѕ РґСЂРѕР±РЅРѕР№ РїРµСЂРµРјРµРЅРЅРѕР№")]
     public class FloatVarCondition : ConditionBase
     {
         [Inject]
-        private readonly GameData _gameData;
+        private readonly GameData _gameData = null!;
 
         public string Var;
         public float Value;

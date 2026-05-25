@@ -1,14 +1,14 @@
-using RPGF.Core.SaveLoad;
+п»їusing RPGF.Core.SaveLoad;
 using RPGF.Domain.DI;
 using UnityEngine;
 
 namespace RPGF.Actions.Condition
 {
-    [UseCondition("По быстрым сохранениям")]
+    [UseCondition("РџРѕ Р±С‹СЃС‚СЂС‹Рј СЃРѕС…СЂР°РЅРµРЅРёСЏРј")]
     public class FastSaveCondition : ConditionBase
     {
         [Inject]
-        private readonly FastSaveService _fastSave;
+        private readonly FastSaveService _fastSave = null!;
 
         public string Key;
         public int Value;
@@ -26,7 +26,7 @@ namespace RPGF.Actions.Condition
         {
             if (!_fastSave.HaveKey(Key))
             {
-                Debug.LogWarning($"{Key} переменная не найдена в FastSaves!");
+                Debug.LogWarning($"{Key} РїРµСЂРµРјРµРЅРЅР°СЏ РЅРµ РЅР°Р№РґРµРЅР° РІ FastSaves!");
                 return false;
             }
 

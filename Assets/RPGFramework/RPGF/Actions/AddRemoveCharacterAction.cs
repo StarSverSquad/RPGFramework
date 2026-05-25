@@ -11,9 +11,9 @@ namespace RPGF.Actions
     public class AddRemoveCharacterAction : ActionBase
     {
         [Inject]
-        private readonly CharacterManager _character;
+        private readonly CharacterManager _character = null!;
         [Inject]
-        private readonly CharacterService _characterService;
+        private readonly CharacterService _characterService = null!;
 
         public bool isAdd;
         public bool updateModels;

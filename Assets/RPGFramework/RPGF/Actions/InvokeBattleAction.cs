@@ -16,9 +16,9 @@ namespace RPGF.Actions
         public const string LoseNextTag = "Lose";
 
         [Inject]
-        private readonly BattlePipeline _pipeline;
+        private readonly BattlePipeline _pipeline = null!;
         [Inject]
-        private readonly BattleUtility _utility;
+        private readonly BattleUtility _utility = null!;
 
         public RPGBattleInfo battle;
 

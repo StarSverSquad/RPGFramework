@@ -1,4 +1,4 @@
-using RPGF.Domain.DI;
+п»їusing RPGF.Domain.DI;
 using RPGF.EventSystem;
 using RPGF.EventSystem.Attributes;
 using RPGF.Explorer;
@@ -8,16 +8,16 @@ using UnityEngine;
 
 namespace RPGF.Actions
 {
-    [GenerateActionNode("Запуск события", "Запускает другое событие", "Прочее/Запуск события")]
+    [GenerateActionNode("Р—Р°РїСѓСЃРє СЃРѕР±С‹С‚РёСЏ", "Р—Р°РїСѓСЃРєР°РµС‚ РґСЂСѓРіРѕРµ СЃРѕР±С‹С‚РёРµ", "РџСЂРѕС‡РµРµ/Р—Р°РїСѓСЃРє СЃРѕР±С‹С‚РёСЏ")]
     [Serializable]
     public class InvokeEventAction : ActionBase
     {
         [Inject]
-        private readonly ExplorerEventHandler _eventHandler;
+        private readonly ExplorerEventHandler _eventHandler = null!;
 
-        [ActionFieldOption("Событие", AllowSceneObjects = true)]
+        [ActionFieldOption("РЎРѕР±С‹С‚РёРµ", AllowSceneObjects = true)]
         public LocationEvent Event;
-        [ActionFieldOption("Ждать?")]
+        [ActionFieldOption("Р–РґР°С‚СЊ?")]
         public bool IsWait;
 
         public InvokeEventAction() : base()

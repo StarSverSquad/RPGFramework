@@ -14,7 +14,7 @@ namespace RPGF.Battle
     public class BattleUtility : ISupportDI
     {
         [Inject]
-        private readonly LocalizationService _localization;
+        private readonly LocalizationService _localization = null!;
         private readonly BattleManager _battle;
 
         public BattleData Data => _battle.Data;

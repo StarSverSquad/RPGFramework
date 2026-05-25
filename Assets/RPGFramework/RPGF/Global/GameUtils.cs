@@ -8,13 +8,13 @@ namespace RPGF
     public class GameUtils : ISupportDI
     {
         [Inject]
-        private readonly InventoryService _inventory;
+        private readonly InventoryService _inventory = null!;
         [Inject]
-        private readonly CharacterService _character;
+        private readonly CharacterService _character = null!;
         [Inject]
-        private readonly GameData _gameData;
+        private readonly GameData _gameData = null!;
         [Inject]
-        private readonly GlobalLocationManager _locationManager;
+        private readonly GlobalLocationManager _locationManager = null!;
 
         public void StartNewGame(RpgfLocationInfo startLocation)
         {

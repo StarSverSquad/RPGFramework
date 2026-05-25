@@ -11,7 +11,7 @@ namespace RPGF.Core.Battle.BattleField
     public class BattleFieldManager : RPGFrameworkBehaviour, IEnumerable<BattleFieldBase>, IDisposable
     {
         [Inject]
-        private readonly DependencyInjection DI;
+        private readonly DependencyInjection DI = null!;
 
         private readonly List<BattleFieldBase> fields = new();
 

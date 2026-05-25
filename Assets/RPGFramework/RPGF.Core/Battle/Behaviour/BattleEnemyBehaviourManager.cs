@@ -13,7 +13,7 @@ namespace RPGF.Core.Battle.Behaviour
     public class BattleEnemyBehaviourManager : RPGFrameworkBehaviour, IDisposable
     {
         [Inject]
-        private readonly DependencyInjection _di;
+        private readonly DependencyInjection _di = null!;
 
         private readonly List<BattleEnemyBehaviourBase> _behaviours = new();
 

@@ -17,7 +17,7 @@ namespace RPGF.Shared
         }
 
         [Inject]
-        private readonly BaseOptions _options;
+        private readonly BaseOptions _options = null!;
 
         [Header("Dto")]
         [Tooltip("0 - bottom, 1 - center, 2 - top")]

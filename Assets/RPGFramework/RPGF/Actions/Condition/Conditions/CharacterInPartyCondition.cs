@@ -1,4 +1,4 @@
-using RPGF.Core.Character;
+п»їusing RPGF.Core.Character;
 using RPGF.Domain.DI;
 using RPGF.RPG;
 using System.Linq;
@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace RPGF.Actions.Condition
 {
-    [UseCondition("Персонаж в команде")]
+    [UseCondition("РџРµСЂСЃРѕРЅР°Р¶ РІ РєРѕРјР°РЅРґРµ")]
     public class CharacterInPartyCondition : ConditionBase
     {
         [Inject]
-        private readonly CharacterService _character;
+        private readonly CharacterService _character = null!;
 
         public RPGCharacter Value;
 
@@ -23,7 +23,7 @@ namespace RPGF.Actions.Condition
         {
             if (Value == null)
             {
-                Debug.LogError($"CHARACTER_IN_PARTY_CONDITION: персонаж не указан");
+                Debug.LogError($"CHARACTER_IN_PARTY_CONDITION: РїРµСЂСЃРѕРЅР°Р¶ РЅРµ СѓРєР°Р·Р°РЅ");
 
                 return false;
             }

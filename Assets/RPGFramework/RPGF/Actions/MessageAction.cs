@@ -11,7 +11,7 @@ namespace RPGF.Actions
     public class MessageAction : ActionBase
     {
         [Inject]
-        private readonly MessageBoxManager _messageBox;
+        private readonly MessageBoxManager _messageBox = null!;
 
         public MessageBoxInfo message;
 

@@ -14,7 +14,7 @@ namespace RPGF.Actions
     public class ChoiceAction : ActionBase
     {
         [Inject]
-        private readonly ChoiceDialogManager _choice;
+        private readonly ChoiceDialogManager _choice = null!;
 
         [SerializeReference]
         public List<string> Choices;

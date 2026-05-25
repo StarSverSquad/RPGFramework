@@ -5,7 +5,7 @@ namespace RPGF.Core.SaveLoad
     public class FastSaveService : ISupportDI
     {
         [Inject]
-        private readonly GameCommonDataService _commonData;
+        private readonly GameCommonDataService _commonData = null!;
 
         public int this[string key]
         {

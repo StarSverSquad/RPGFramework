@@ -9,7 +9,7 @@ namespace RPGF.Core.Battle.BattleField.Abstractions
     public abstract class BattleFieldBase : RPGFrameworkBehaviour, IDisposable
     {
         [Inject]
-        private readonly BattleFieldManager _manager;
+        private readonly BattleFieldManager _manager = null!;
 
         protected Vector2 Center => _manager.Center;
 

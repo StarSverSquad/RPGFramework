@@ -15,7 +15,7 @@ namespace RPGF.Actions
         }
 
         [Inject]
-        private readonly AudioManager _audio;
+        private readonly AudioManager _audio = null!;
 
         public OperationType Operation;
 

@@ -15,7 +15,7 @@ namespace RPGF.Actions
     public class ChangeEnemyStatsAction : ActionBase
     {
         [Inject]
-        private readonly BattleData _battleData;
+        private readonly BattleData _battleData = null!;
 
         [ActionFieldOption("Тег врага:")]
         public string EnemyTag;

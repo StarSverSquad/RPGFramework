@@ -1,4 +1,4 @@
-using RPGF.Domain;
+п»їusing RPGF.Domain;
 using RPGF.Domain.DI;
 using System;
 using System.Collections;
@@ -11,9 +11,9 @@ namespace RPGF.Core.Location
     public class GlobalLocationManager : RPGFrameworkBehaviour
     {
         [Inject]
-        private readonly LoadingScreenManager _loadingScreen;
+        private readonly LoadingScreenManager _loadingScreen = null!;
         [Inject]
-        private readonly SceneLoadManager _sceneLoader;
+        private readonly SceneLoadManager _sceneLoader = null!;
 
         public RpgfLocationInfo CurrentLocation { get; private set; } = null;
         public bool IsChanging => changingCoroutine != null;
@@ -95,7 +95,7 @@ namespace RPGF.Core.Location
 
             if (!Local)
             {
-                Debug.LogError("LocalManager не найден!");
+                Debug.LogError("LocalManager РЅРµ РЅР°Р№РґРµРЅ!");
                 yield break;
             }
 
@@ -107,7 +107,7 @@ namespace RPGF.Core.Location
             {
                 if (location.SpawnPoints.Count() == 0)
                 {
-                    Debug.LogError("У локации нет точки спавна!");
+                    Debug.LogError("РЈ Р»РѕРєР°С†РёРё РЅРµС‚ С‚РѕС‡РєРё СЃРїР°РІРЅР°!");
                     yield break;
                 }
 

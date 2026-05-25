@@ -13,7 +13,7 @@ namespace RPGF.Actions
     public class ChangeBattleBGMAction : ActionBase
     {
         [Inject]
-        private readonly BattleAudioManager _audio;
+        private readonly BattleAudioManager _audio = null!;
 
         [ActionFieldOption("Трек:")]
         public AudioClip Clip;

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using RPGF.Core.Character;
 using RPGF.Core.Inventory;
@@ -12,17 +12,17 @@ namespace RPGF.Core.SaveLoad
     public class SaveLoadService : ISupportDI
     {
         [Inject]
-        private readonly CharacterService _characters;
+        private readonly CharacterService _characters = null!;
         [Inject]
-        private readonly GameFilesService _gameFiles;
+        private readonly GameFilesService _gameFiles = null!;
         [Inject]
-        private readonly InventoryService _inventory;
+        private readonly InventoryService _inventory = null!;
         [Inject]
-        private readonly GameCommonDataService _commonData;
+        private readonly GameCommonDataService _commonData = null!;
         [Inject]
-        private readonly GlobalLocationManager _location;
+        private readonly GlobalLocationManager _location = null!;
         [Inject]
-        private readonly GameData _gameData;
+        private readonly GameData _gameData = null!;
 
         public void GameSave(int slotId)
         {

@@ -21,7 +21,7 @@ namespace RPGF.Actions
         }
 
         [Inject]
-        private readonly BattleData _data;
+        private readonly BattleData _data = null!;
 
         [ActionFieldOption("Тип изменения")]
         public ChangeType Type;

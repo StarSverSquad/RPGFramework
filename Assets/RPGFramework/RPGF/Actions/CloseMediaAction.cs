@@ -16,7 +16,7 @@ namespace RPGF.Actions
     public class CloseMediaAction : ActionBase
     {
         [Inject]
-        private readonly MediaManager _media;
+        private readonly MediaManager _media = null!;
 
         [ActionFieldOption("Время затинения")]
         public float FadeTime;

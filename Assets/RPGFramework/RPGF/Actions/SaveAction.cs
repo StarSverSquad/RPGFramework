@@ -1,4 +1,4 @@
-using RPGF.Core.SaveLoad;
+п»їusing RPGF.Core.SaveLoad;
 using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using RPGF.EventSystem.Attributes;
@@ -7,14 +7,14 @@ using System.Collections;
 
 namespace RPGF.Actions
 {
-    [GenerateActionNode("Сохранить игру", contextMenuPath: "Система/Сохранить игру")]
+    [GenerateActionNode("РЎРѕС…СЂР°РЅРёС‚СЊ РёРіСЂСѓ", contextMenuPath: "РЎРёСЃС‚РµРјР°/РЎРѕС…СЂР°РЅРёС‚СЊ РёРіСЂСѓ")]
     [Serializable]
     public class SaveAction : ActionBase
     {
         [Inject]
-        private readonly SaveLoadService _saveLoad;
+        private readonly SaveLoadService _saveLoad = null!;
 
-        [ActionFieldOption("ID слота:")]
+        [ActionFieldOption("ID СЃР»РѕС‚Р°:")]
         public int slotId;
 
         public SaveAction() : base()

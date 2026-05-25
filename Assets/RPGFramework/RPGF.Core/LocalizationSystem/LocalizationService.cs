@@ -8,7 +8,7 @@ namespace RPGF.Core.Localization
     public class LocalizationService : ISupportDI
     {
         [Inject]
-        private readonly GameConfigService _gameConfig;
+        private readonly GameConfigService _gameConfig = null!;
 
         private LocalizationSheet[] sheets;
 

@@ -20,9 +20,9 @@ namespace RPGF.Actions
         }
 
         [Inject]
-        private readonly CharacterManager _character;
+        private readonly CharacterManager _character = null!;
         [Inject]
-        private readonly PlayerExplorerManager _player;
+        private readonly PlayerExplorerManager _player = null!;
 
         public bool InParty;
 

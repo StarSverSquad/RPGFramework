@@ -1,4 +1,4 @@
-using RPGF.Core.Localization;
+﻿using RPGF.Core.Localization;
 using RPGF.Core.TextWriter.Abstractions;
 using RPGF.Domain.DI;
 using RPGF.Domain.TP;
@@ -11,7 +11,7 @@ namespace RPGF.Core.TextWriter.Actions
     public class InsertLocaleAction : TextWriterActionBase
     {
         [Inject]
-        private readonly LocalizationService _localization;
+        private readonly LocalizationService _localization = null!;
 
         public override IEnumerator Action(TextActionParams @params)
         {

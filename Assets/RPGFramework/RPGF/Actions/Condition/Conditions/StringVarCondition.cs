@@ -1,12 +1,12 @@
-using RPGF.Domain.DI;
+п»їusing RPGF.Domain.DI;
 
 namespace RPGF.Actions.Condition
 {
-    [UseCondition("По строковой переменной")]
+    [UseCondition("РџРѕ СЃС‚СЂРѕРєРѕРІРѕР№ РїРµСЂРµРјРµРЅРЅРѕР№")]
     public class StringVarCondition : ConditionBase
     {
         [Inject]
-        private readonly GameData _gameData;
+        private readonly GameData _gameData = null!;
 
         public string Var;
         public string Value;

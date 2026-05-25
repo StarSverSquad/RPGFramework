@@ -14,7 +14,7 @@ namespace RPGF.Actions
     public class SetupSunLightAction : ActionBase
     {
         [Inject]
-        private readonly SunManager _sun;
+        private readonly SunManager _sun = null!;
 
         [ActionFieldOption("Интенсивность:")]
         public float Intensity;

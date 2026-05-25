@@ -17,7 +17,7 @@ namespace RPGF.Actions
         public OperationType Operation;
 
         [Inject]
-        private readonly AudioManager _audio;
+        private readonly AudioManager _audio = null!;
 
         public bool IngoreIfThisClip;
         public bool WaitFade;

@@ -10,7 +10,7 @@ namespace RPGF.Actions.Condition
     public class ItemCondition : ConditionBase
     {
         [Inject]
-        private readonly InventoryService _inventory;
+        private readonly InventoryService _inventory = null!;
 
         public RPGCollectable Value;
 

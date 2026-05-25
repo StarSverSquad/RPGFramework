@@ -13,7 +13,7 @@ namespace RPGF.Actions
     public class ShowImageAction : ActionBase
     {
         [Inject]
-        private readonly MediaManager _media;
+        private readonly MediaManager _media = null!;
 
         [ActionFieldOption("Изображение:")]
         public Sprite ImageSprite;

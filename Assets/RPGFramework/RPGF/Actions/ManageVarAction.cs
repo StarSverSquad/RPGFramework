@@ -24,9 +24,9 @@ namespace RPGF.Actions
         public OperationType Operation;
 
         [Inject]
-        private readonly FastSaveService _fastSave;
+        private readonly FastSaveService _fastSave = null!;
         [Inject]
-        private readonly GameData _gameData;
+        private readonly GameData _gameData = null!;
 
         public string VarName;
 

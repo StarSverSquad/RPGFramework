@@ -1,12 +1,12 @@
-using RPGF.Domain.DI;
+п»їusing RPGF.Domain.DI;
 
 namespace RPGF.Actions.Condition
 {
-    [UseCondition("По переключателю")]
+    [UseCondition("РџРѕ РїРµСЂРµРєР»СЋС‡Р°С‚РµР»СЋ")]
     public class BoolVarCondition : ConditionBase
     {
         [Inject]
-        private readonly GameData _gameData;
+        private readonly GameData _gameData = null!;
 
         public string Var;
         public bool Value;

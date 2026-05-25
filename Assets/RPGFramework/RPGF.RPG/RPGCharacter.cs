@@ -165,16 +165,21 @@ namespace RPGF.RPG
 
         public void SetWerableByType(RPGWerable.UsedType type, RPGWerable value)
         {
-            if (type == RPGWerable.UsedType.Weapon && value is not RPGWeapon)
-            {
-                Debug.LogError($"Value is not a weapon: {value}");
-                return;
-            }
-
             switch (type)
             {
                 case RPGWerable.UsedType.Weapon:
-                    WeaponSlot = value as RPGWeapon;
+                    if (type == RPGWerable.UsedType.Weapon && value is RPGWeapon)
+                    {
+                        WeaponSlot = value as RPGWeapon;
+                    }
+                    else if (value == null)
+                    {
+                        WeaponSlot = null;
+                    }
+                    else
+                    {
+                        Debug.LogError($"Item is not a weapon");
+                    }
                     break;
                 case RPGWerable.UsedType.Head:
                     HeadSlot = value;

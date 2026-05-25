@@ -9,15 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 111e0490d395045438c9244ba9b3c7cc, type: 3}
-  m_Name: ShigolShield
-  m_EditorClassIdentifier: Assembly-CSharp::RPGF.RPG.RPGWerable
-  Tag: ShigolShield
-  Name: "\u0429\u0438\u0442 \u0449\u0438\u0433\u043B\u043E\u0432"
-  Description: "\u0429\u0438\u0442 \u0440\u0435\u0430\u043B\u044C\u043D\u044B\u0445
+  m_Script: {fileID: 11500000, guid: 623e880a485fa2b4f9c60dc3e10db621, type: 3}
+  m_Name: ShigolsSword
+  m_EditorClassIdentifier: RPGFramework::RPGF.RPG.RPGWeapon
+  Tag: shigols-sword
+  Name: "\u041C\u0435\u0447 \u0449\u0438\u0433\u043B\u043E\u0432"
+  Description: "\u041C\u0435\u0447 \u043D\u0430\u0441\u0442\u043E\u044F\u0449\u0438\u0445
     \u0449\u0438\u0433\u043B\u043E\u0432"
-  Icon: {fileID: -974733980, guid: 43a40bfc1d0a404438f3a7f4ccf8b0e6, type: 3}
-  Usage: 0
+  Icon: {fileID: -1192304089, guid: 43a40bfc1d0a404438f3a7f4ccf8b0e6, type: 3}
+  Usage: 1
   Direction: 0
   Event: {fileID: 0}
   VisualEffect: {fileID: 0}
@@ -25,14 +25,14 @@ MonoBehaviour:
   ForAlive: 1
   ForDeath: 1
   Effects: []
-  Rare: 0
-  UsedOn: 2
+  Rare: 1
+  UsedOn: 4
   RequireClasses: []
-  Heal: 30
-  Mana: 0
-  Damage: 0
+  Heal: 15
+  Mana: 15
+  Damage: 10
   Defense: 3
-  Agility: 0
+  Agility: 1
   Luck: 1
   references:
     version: 2

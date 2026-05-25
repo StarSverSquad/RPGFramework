@@ -4,13 +4,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace RPGF.EventSystem
 {
     [Serializable]
-    public abstract class ActionBase : ICloneable<ActionBase>, IDisposable, IInitializable, InjectionTarget
+    public abstract class ActionBase : ICloneable<ActionBase>, IDisposable, IManagerInitialize, InjectionTarget
     {
         public const string DefaultNextTag = "DEFAULT";
         public const string DefaultNextName = "Далее";

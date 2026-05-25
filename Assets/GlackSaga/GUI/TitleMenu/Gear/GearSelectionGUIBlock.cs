@@ -38,23 +38,23 @@ namespace GlackSaga.GUI.TitleMenu.Gear
             base.Initialize(manager);
         }
 
-        public new void RefreshSlots()
+        protected override IEnumerable<InventorySlotData> BuildItems()
         {
-            SelectedSlots.Clear();
-            SelectedSlots.Add(null);
-            SelectedSlots.AddRange(FilterSlots(Inventory.Slots));
+            yield return null;
 
-            OnSlotsRefreshed();
-            SetPage(0);
+            foreach (var slot in FilterSlots(Inventory.Slots))
+            {
+                yield return slot;
+            }
         }
 
         protected override void OnActivate()
         {
-            RefreshSlots();
+            RefreshItems();
 
             base.OnActivate();
 
-            if (HasSlots)
+            if (HasItems)
             {
                 ChangeSelect(0);
             }
@@ -66,12 +66,12 @@ namespace GlackSaga.GUI.TitleMenu.Gear
 
         protected override void OnChoiced(int index)
         {
-            if (!HasSlots)
+            if (!HasItems)
             {
                 return;
             }
 
-            var slot = GetSlotAt(index + (Page * PageSize));
+            var slot = GetItemAt(ToAbsoluteIndex(index));
 
             if (slot == null)
             {
@@ -159,7 +159,7 @@ namespace GlackSaga.GUI.TitleMenu.Gear
             downArrow.SetActive(page < maxPage);
         }
 
-        protected override void OnSlotSelected(InventorySlotData slot)
+        protected override void OnItemSelected(InventorySlotData slot)
         {
             if (slot == null)
             {

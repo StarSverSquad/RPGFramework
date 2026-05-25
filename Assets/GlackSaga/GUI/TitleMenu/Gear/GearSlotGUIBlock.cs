@@ -48,7 +48,7 @@ namespace GlackSaga.GUI.TitleMenu.Gear
             if (Elements[index] is GearSlotItem gearSlotItem)
             {
                 gearSelectionGUIBlock.SetData(character, gearSlotItem.UsedType);
-                gearSelectionGUIBlock.RefreshSlots();
+                gearSelectionGUIBlock.RefreshItems();
                 Manager.NextBlock(gearSelectionGUIBlock);
             }
         }

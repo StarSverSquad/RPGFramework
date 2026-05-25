@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GlackSaga.GUI.TitleMenu;
 using GlackSaga.GUI.TitleMenu.CharactetSelector;
 using NaughtyAttributes;
 using RPGF.Core.Character;
@@ -11,7 +10,6 @@ using RPGF.Core.Inventory;
 using RPGF.Core.RPGEffect;
 using RPGF.Core.Services;
 using RPGF.Domain.DI;
-using RPGF.GUI;
 using RPGF.RPG;
 using TMPro;
 using UnityEngine;
@@ -93,9 +91,9 @@ namespace GlackSaga.GUI.TitleMenu.Items
                 tab.SetFocus(tabIndex == (int)SelectedTab);
             }
 
-            RefreshSlots();
+            RefreshItems();
 
-            if (HasSlots)
+            if (HasItems)
             {
                 ChangeSelect(0);
             }
@@ -108,9 +106,9 @@ namespace GlackSaga.GUI.TitleMenu.Items
                 : i.Item.Rare != Rareness.Key);
         }
 
-        protected override void OnSlotsRefreshed()
+        protected override void OnItemsRefreshed()
         {
-            if (!HasSlots)
+            if (!HasItems)
             {
                 emptyText.gameObject.SetActive(true);
                 UpdateItemDetails(null);
@@ -137,14 +135,14 @@ namespace GlackSaga.GUI.TitleMenu.Items
             arrowDown.gameObject.SetActive(page < maxPage);
         }
 
-        protected override void OnSlotSelected(InventorySlotData slot)
+        protected override void OnItemSelected(InventorySlotData slot)
         {
             UpdateItemDetails(slot);
         }
 
         protected override void OnChoiced(int index)
         {
-            var slot = GetSlotAt(index + (Page * PageSize));
+            var slot = GetItemAt(ToAbsoluteIndex(index));
 
             if (usingItemCoroutine is not null)
             {
@@ -308,9 +306,9 @@ namespace GlackSaga.GUI.TitleMenu.Items
             }
 
             Inventory.AddToItemCount(item, -1);
-            RefreshSlots();
+            RefreshItems();
 
-            if (HasSlots)
+            if (HasItems)
             {
                 ChangeSelect(Mathf.Min(CurrentIndex, PageSize - 1));
             }

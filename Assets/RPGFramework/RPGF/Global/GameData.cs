@@ -1,15 +1,15 @@
 using RPGF.Core;
 using RPGF.Domain;
 using RPGF.Domain.DI;
+using RPGF.Domain.Interfaces;
 using RPGF.RPG;
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace RPGF
 {
-    public class GameData : IDisposable, IInitializable, ISupportDI
+    public class GameData : IDisposable, IManagerInitialize, ISupportDI
     {
         [Inject]
         private readonly BaseOptions _options;

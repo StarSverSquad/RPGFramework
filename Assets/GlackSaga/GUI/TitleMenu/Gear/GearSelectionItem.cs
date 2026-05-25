@@ -1,7 +1,6 @@
 using RPGF.Core.Inventory;
 using RPGF.Domain.Interfaces;
 using RPGF.GUI;
-using RPGF.RPG;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;

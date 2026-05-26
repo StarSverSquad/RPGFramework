@@ -1,17 +1,17 @@
-using RPGF.Actions.Condition;
-using RPGF.Editor.EventSystem.Attributes;
-using RPGF.RPG;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using RPGF.Actions.Condition;
+using RPGF.Editor.EventSystem.Attributes;
+using RPGF.RPG;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace RPGF.Editor.EventSystem.Nodes
 {
-    [UseActionNode("Условие", "Обычное условное вырожение", "Ветвление/Условие")]
+    [UseActionNode("РЈСЃР»РѕРІРёРµ", "РћР±С‹С‡РЅРѕРµ СѓСЃР»РѕРІРЅРѕРµ РІС‹СЂРѕР¶РµРЅРёРµ", "Р’РµС‚РІР»РµРЅРёРµ/РЈСЃР»РѕРІРёРµ")]
     public class ConditionNode : ActionNodeBase<ConditionAction>
     {
         public enum ConditionType
@@ -29,7 +29,7 @@ namespace RPGF.Editor.EventSystem.Nodes
             extensionContainer.style.minWidth = 200;
 
             types = Action.GetType().Assembly.GetTypes()
-                .Where(i => !i.IsAbstract 
+                .Where(i => !i.IsAbstract
                             && i.BaseType == typeof(ConditionBase)
                             && i.GetCustomAttribute<UseConditionAttribute>() is not null)
                 .ToDictionary(type => type.GetCustomAttribute<UseConditionAttribute>().Label);
@@ -78,7 +78,7 @@ namespace RPGF.Editor.EventSystem.Nodes
                 MakeDirty();
             })
             {
-                text = "Добавить условие"
+                text = "Р”РѕР±Р°РІРёС‚СЊ СѓСЃР»РѕРІРёРµ"
             };
 
             extensionContainer.Add(typePopup);
@@ -112,8 +112,8 @@ namespace RPGF.Editor.EventSystem.Nodes
                             horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
                             horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
 
-                            Label lbl0 = new Label("Переменная");
-                            Label lbl1 = new Label("Значение");
+                            Label lbl0 = new Label("РџРµСЂРµРјРµРЅРЅР°СЏ");
+                            Label lbl1 = new Label("Р—РЅР°С‡РµРЅРёРµ");
 
                             horizontal0.Add(lbl0);
                             horizontal0.Add(lbl1);
@@ -159,8 +159,8 @@ namespace RPGF.Editor.EventSystem.Nodes
                             horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
                             horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
 
-                            Label lbl0 = new Label("Переменная");
-                            Label lbl1 = new Label("Значение");
+                            Label lbl0 = new Label("РџРµСЂРµРјРµРЅРЅР°СЏ");
+                            Label lbl1 = new Label("Р—РЅР°С‡РµРЅРёРµ");
 
                             horizontal0.Add(lbl0);
                             horizontal0.Add(lbl1);
@@ -206,8 +206,8 @@ namespace RPGF.Editor.EventSystem.Nodes
                             horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
                             horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
 
-                            Label lbl0 = new Label("Переменная");
-                            Label lbl1 = new Label("Значение");
+                            Label lbl0 = new Label("РџРµСЂРµРјРµРЅРЅР°СЏ");
+                            Label lbl1 = new Label("Р—РЅР°С‡РµРЅРёРµ");
 
                             horizontal0.Add(lbl0);
                             horizontal0.Add(lbl1);
@@ -262,8 +262,8 @@ namespace RPGF.Editor.EventSystem.Nodes
                             horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
                             horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
 
-                            Label lbl0 = new Label("Переменная");
-                            Label lbl1 = new Label("Значение");
+                            Label lbl0 = new Label("РџРµСЂРµРјРµРЅРЅР°СЏ");
+                            Label lbl1 = new Label("Р—РЅР°С‡РµРЅРёРµ");
 
                             horizontal0.Add(lbl0);
                             horizontal0.Add(lbl1);
@@ -318,7 +318,7 @@ namespace RPGF.Editor.EventSystem.Nodes
                             horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
                             horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
 
-                            Label label1 = new Label("Деньги");
+                            Label label1 = new Label("Р”РµРЅСЊРіРё");
                             label1.style.marginLeft = 1;
 
                             horizontal1.Add(label1);
@@ -356,7 +356,7 @@ namespace RPGF.Editor.EventSystem.Nodes
                             horizontal1.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
                             horizontal1.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
 
-                            Label label1 = new Label("Персонаж");
+                            Label label1 = new Label("РџРµСЂСЃРѕРЅР°Р¶");
                             label1.style.marginLeft = 1;
 
                             horizontal1.Add(label1);
@@ -389,8 +389,8 @@ namespace RPGF.Editor.EventSystem.Nodes
                             horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
                             horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
 
-                            Label lbl0 = new Label("Предмет");
-                            Label lbl1 = new Label("Количество");
+                            Label lbl0 = new Label("РџСЂРµРґРјРµС‚");
+                            Label lbl1 = new Label("РљРѕР»РёС‡РµСЃС‚РІРѕ");
 
                             horizontal0.Add(lbl0);
                             horizontal0.Add(lbl1);
@@ -456,8 +456,8 @@ namespace RPGF.Editor.EventSystem.Nodes
                             horizontal0.style.flexDirection = new StyleEnum<FlexDirection>(FlexDirection.Row);
                             horizontal0.style.justifyContent = new StyleEnum<Justify>(Justify.SpaceBetween);
 
-                            Label lbl0 = new Label("Ключ");
-                            Label lbl1 = new Label("Значение");
+                            Label lbl0 = new Label("РљР»СЋС‡");
+                            Label lbl1 = new Label("Р—РЅР°С‡РµРЅРёРµ");
 
                             horizontal0.Add(lbl0);
                             horizontal0.Add(lbl1);
@@ -493,7 +493,7 @@ namespace RPGF.Editor.EventSystem.Nodes
                         }
                         break;
                     default:
-                        Debug.LogWarning($"Для типа {condition.GetType().Name} нет UI");
+                        Debug.LogWarning($"Р”Р»СЏ С‚РёРїР° {condition.GetType().Name} РЅРµС‚ UI");
                         break;
                 }
 
@@ -511,7 +511,7 @@ namespace RPGF.Editor.EventSystem.Nodes
                     MakeDirty();
                 })
                 {
-                    text = "Удалить условие"
+                    text = "РЈРґР°Р»РёС‚СЊ СѓСЃР»РѕРІРёРµ"
                 };
 
                 extensionContainer.Add(removeButton);

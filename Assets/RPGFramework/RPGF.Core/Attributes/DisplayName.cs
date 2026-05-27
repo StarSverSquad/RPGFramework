@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace RPGF.Domain.Attributes
+namespace RPGF.Core.Attributes
 {
     [AttributeUsage(AttributeTargets.Field, AllowMultiple = false, Inherited = false)]
     public class DisplayName : PropertyAttribute

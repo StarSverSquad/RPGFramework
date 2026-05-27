@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-namespace RPGF.Domain
+namespace RPGF.Core.Enums
 {
     public enum ViewDirection
     {

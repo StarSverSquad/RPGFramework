@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using RPGF;
+using RPGF.Core.Enums;
 using RPGF.Domain;
 using UnityEngine;
 

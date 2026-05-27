@@ -1,4 +1,5 @@
 using RPGF.Core;
+using RPGF.Core.Enums;
 using RPGF.Domain;
 using RPGF.Explorer.Player;
 using UnityEngine;

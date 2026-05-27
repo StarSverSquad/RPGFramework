@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using RPGF.Core.Enums;
 using RPGF.Domain;
 using RPGF.Domain.DI;
 using RPGF.EventSystem;

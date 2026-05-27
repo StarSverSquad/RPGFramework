@@ -1,4 +1,5 @@
-﻿using RPGF.Domain;
+﻿using RPGF.Core.Enums;
+using RPGF.Domain;
 using UnityEngine;
 
 namespace RPGF.Core.Character

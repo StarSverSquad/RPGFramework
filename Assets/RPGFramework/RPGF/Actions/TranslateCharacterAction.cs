@@ -1,12 +1,13 @@
-﻿using RPGF;
+﻿using System;
+using System.Collections;
+using RPGF;
 using RPGF.Core.Character;
+using RPGF.Core.Enums;
 using RPGF.Domain;
 using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using RPGF.Explorer;
 using RPGF.Explorer.Player;
-using System;
-using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Actions

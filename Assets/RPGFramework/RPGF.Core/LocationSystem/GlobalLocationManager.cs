@@ -1,8 +1,9 @@
-﻿using RPGF.Domain;
-using RPGF.Domain.DI;
-using System;
+﻿using System;
 using System.Collections;
 using System.Linq;
+using RPGF.Core.Enums;
+using RPGF.Domain;
+using RPGF.Domain.DI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 

@@ -1,7 +1,8 @@
+using System;
 using DG.Tweening;
 using RPGF.Core;
+using RPGF.Core.Enums;
 using RPGF.Domain;
-using System;
 using UnityEngine;
 
 namespace RPGF.Explorer.Player

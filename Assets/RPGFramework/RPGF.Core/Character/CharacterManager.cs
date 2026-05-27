@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 using RPGF;
-using RPGF.RPG;
-using RPGF.Explorer.Player;
-using RPGF.Explorer;
+using RPGF.Core.Enums;
 using RPGF.Domain;
+using RPGF.Explorer;
+using RPGF.Explorer.Player;
+using RPGF.RPG;
+using UnityEngine;
 
 namespace RPGF.Core.Character
 {

@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 namespace RPGF.Domain
 {
@@ -52,7 +51,7 @@ namespace RPGF.Domain
             if (!HaveKey(key))
                 data.Add(new DictionaryItem(key, value));
             else
-                Debug.LogError($"Ключ \"{key}\" уже существует");
+                Console.WriteLine($"Key \"{key}\" already exists");
         }
 
         public void Remove(string key)
@@ -60,7 +59,7 @@ namespace RPGF.Domain
             if (HaveKey(key))
                 data.Remove(data.Where(i => i.Key == key).FirstOrDefault());
             else
-                Debug.LogError($"Ключ \"{key}\" не существует");
+                Console.WriteLine($"Key \"{key}\" not found");
         }
 
         public bool HaveKey(string key)

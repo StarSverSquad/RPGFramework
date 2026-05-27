@@ -1,6 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System;
 using RPGF.Domain.TP.Abstractions;
-using System;
 
 namespace RPGF.Domain.TP
 {
@@ -10,7 +9,7 @@ namespace RPGF.Domain.TP
         public TextActionType Type { get; }
         public string TagPattern { get; }
 
-        public UseTextActionAttribute([RegexPattern] string tagPattern, TextActionType type)
+        public UseTextActionAttribute(string tagPattern, TextActionType type)
         {
             TagPattern = tagPattern;
             Type = type;

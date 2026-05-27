@@ -1,6 +1,7 @@
-﻿using RPGF.Core.Location;
+﻿using System;
+using RPGF.Core.Enums;
+using RPGF.Core.Location;
 using RPGF.Domain;
-using System;
 using UnityEngine;
 
 namespace RPGF.Core.Location

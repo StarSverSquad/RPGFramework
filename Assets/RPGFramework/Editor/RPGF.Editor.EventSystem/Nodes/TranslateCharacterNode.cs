@@ -1,4 +1,5 @@
 using RPGF.Actions;
+using RPGF.Core.Enums;
 using RPGF.Domain;
 using RPGF.Editor.EventSystem.Attributes;
 using UnityEditor.UIElements;
@@ -6,7 +7,7 @@ using UnityEngine.UIElements;
 
 namespace RPGF.Editor.EventSystem.Nodes
 {
-    [UseActionNode("Перемещение персонажа", contextualMenuPath: "События исследования/Перемещение персонажа")]
+    [UseActionNode("РџРµСЂРµРјРµС‰РµРЅРёРµ РїРµСЂСЃРѕРЅР°Р¶Р°", contextualMenuPath: "РЎРѕР±С‹С‚РёСЏ РёСЃСЃР»РµРґРѕРІР°РЅРёСЏ/РџРµСЂРµРјРµС‰РµРЅРёРµ РїРµСЂСЃРѕРЅР°Р¶Р°")]
     public class TranslateCharacterNode : ActionNodeBase<TranslateCharacterAction>
     {
         public TranslateCharacterNode(TranslateCharacterAction Action) : base(Action)
@@ -22,10 +23,10 @@ namespace RPGF.Editor.EventSystem.Nodes
                 {
                     return i switch
                     {
-                        TranslateCharacterAction.TranslateType.Move => "Переместить",
-                        TranslateCharacterAction.TranslateType.MoveRelative => "Относительное перемещение",
-                        TranslateCharacterAction.TranslateType.Rotate => "Повернуть",
-                        TranslateCharacterAction.TranslateType.RotateToPlayer => "Повернуть к игроку",
+                        TranslateCharacterAction.TranslateType.Move => "РџРµСЂРµРјРµСЃС‚РёС‚СЊ",
+                        TranslateCharacterAction.TranslateType.MoveRelative => "РћС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕРµ РїРµСЂРµРјРµС‰РµРЅРёРµ",
+                        TranslateCharacterAction.TranslateType.Rotate => "РџРѕРІРµСЂРЅСѓС‚СЊ",
+                        TranslateCharacterAction.TranslateType.RotateToPlayer => "РџРѕРІРµСЂРЅСѓС‚СЊ Рє РёРіСЂРѕРєСѓ",
                         _ => "Unknown"
                     };
                 },
@@ -37,7 +38,7 @@ namespace RPGF.Editor.EventSystem.Nodes
             Toggle InpartyToggle = BuildToggle(
                 Action.InParty,
                 value => Action.InParty = value,
-                "Персонаж в группе?",
+                "РџРµСЂСЃРѕРЅР°Р¶ РІ РіСЂСѓРїРїРµ?",
                 updateUI: true
                 );
 
@@ -48,7 +49,7 @@ namespace RPGF.Editor.EventSystem.Nodes
                 TextField TagField = BuildTextField(
                     Action.CharacterTag,
                     value => Action.CharacterTag = value,
-                    "Тег персонажа:"
+                    "РўРµРі РїРµСЂСЃРѕРЅР°Р¶Р°:"
                     );
 
                 AddToExtensionContainer(TagField);
@@ -58,7 +59,7 @@ namespace RPGF.Editor.EventSystem.Nodes
                 ObjectField CharacterField = BuildObjectField(
                     Action.CharacterInScene,
                     value => Action.CharacterInScene = value,
-                    "Персонаж на сцене:"
+                    "РџРµСЂСЃРѕРЅР°Р¶ РЅР° СЃС†РµРЅРµ:"
                     );
 
                 AddToExtensionContainer(CharacterField);
@@ -72,14 +73,14 @@ namespace RPGF.Editor.EventSystem.Nodes
                         Toggle ReplaceInstanceToggle = BuildToggle(
                             Action.ReplaceInstantly,
                             value => Action.ReplaceInstantly = value,
-                            "Резко переместить?",
+                            "Р РµР·РєРѕ РїРµСЂРµРјРµСЃС‚РёС‚СЊ?",
                             updateUI: true
                             );
 
                         var withRotationToggle = BuildToggle(
                             Action.WithRotation,
                             value => Action.WithRotation = value,
-                            "С вращением?"
+                            "РЎ РІСЂР°С‰РµРЅРёРµРј?"
                             );
 
                         AddToExtensionContainer(withRotationToggle);
@@ -90,7 +91,7 @@ namespace RPGF.Editor.EventSystem.Nodes
                             FloatField timeField = BuildFloatField(
                                 Action.Time,
                                 value => Action.Time = value,
-                                "Время перемещения:"
+                                "Р’СЂРµРјСЏ РїРµСЂРµРјРµС‰РµРЅРёСЏ:"
                                 );
 
                             AddToExtensionContainer(timeField);
@@ -98,7 +99,7 @@ namespace RPGF.Editor.EventSystem.Nodes
                             Toggle WaitToggle = BuildToggle(
                                 Action.Wait,
                                 value => Action.Wait = value,
-                                "Ждать завершения?"
+                                "Р–РґР°С‚СЊ Р·Р°РІРµСЂС€РµРЅРёСЏ?"
                                 );
 
                             AddToExtensionContainer(WaitToggle);
@@ -106,7 +107,7 @@ namespace RPGF.Editor.EventSystem.Nodes
 
                         if (Action.Type == TranslateCharacterAction.TranslateType.MoveRelative)
                         {
-                            Label OffsetLabel = new Label("Смещение:");
+                            Label OffsetLabel = new Label("РЎРјРµС‰РµРЅРёРµ:");
 
                             Vector2Field OffsetField = BuildVector2Field(
                                 Action.Offset,
@@ -121,7 +122,7 @@ namespace RPGF.Editor.EventSystem.Nodes
                             ObjectField TransofrmField = BuildObjectField(
                                 Action.Point,
                                 value => Action.Point = value,
-                                "Точка перемещения:"
+                                "РўРѕС‡РєР° РїРµСЂРµРјРµС‰РµРЅРёСЏ:"
                                 );
 
                             AddToExtensionContainer(TransofrmField);
@@ -137,14 +138,14 @@ namespace RPGF.Editor.EventSystem.Nodes
                             {
                                 return i switch
                                 {
-                                    ViewDirection.Down => "Вниз",
-                                    ViewDirection.Left => "Влево",
-                                    ViewDirection.Right => "Вправо",
-                                    ViewDirection.Up => "Вверх",
+                                    ViewDirection.Down => "Р’РЅРёР·",
+                                    ViewDirection.Left => "Р’Р»РµРІРѕ",
+                                    ViewDirection.Right => "Р’РїСЂР°РІРѕ",
+                                    ViewDirection.Up => "Р’РІРµСЂС…",
                                     _ => "Unknown"
                                 };
                             },
-                            "Направление поворота:"
+                            "РќР°РїСЂР°РІР»РµРЅРёРµ РїРѕРІРѕСЂРѕС‚Р°:"
                             );
 
                         AddToExtensionContainer(DiretionEnum);

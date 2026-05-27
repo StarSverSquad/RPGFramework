@@ -1,6 +1,4 @@
-﻿using UnityEngine.UI;
-
-namespace RPGF.Domain.TP
+﻿namespace RPGF.Domain.TP
 {
     public static class TextParserRegexHelper
     {

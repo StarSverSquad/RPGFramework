@@ -1,8 +1,8 @@
 ﻿using System.Linq;
-using UnityEditor;
 using RPGF.Core.Location;
-using UnityEngine;
 using RPGF.Editor.Core;
+using UnityEditor;
+using UnityEngine;
 
 namespace RPGF.Editor
 {
@@ -11,10 +11,9 @@ namespace RPGF.Editor
     {
         public override void OnInspectorGUI()
         {
-            Target.Name = TextField("Название", Target.Name);
+            EditorGUILayout.HelpBox("Для локализации используйте теги в формате LOC_{tag}_Name и LOC_{tag}_Description", MessageType.Info);
 
-            Label("Описание");
-            Target.Description = TextArea(Target.Description);
+            Target.Tag = TextField("Тег", Target.Tag);
 
             Target.CameraCapture = EnumPopup("Камера", Target.CameraCapture);
 

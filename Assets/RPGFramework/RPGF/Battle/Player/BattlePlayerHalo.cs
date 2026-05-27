@@ -4,13 +4,14 @@ using System.Linq;
 using DG.Tweening;
 using RPGF.Core;
 using RPGF.Core.Battle.Projectiles.Abstractions;
+using Unity.VisualScripting.Antlr3.Runtime.Collections;
 using UnityEngine;
 
 namespace RPGF.Battle.Player
 {
     public class BattlePlayerHalo : RPGFrameworkBehaviour, IDisposable
     {
-        private readonly List<int> hitenProjectilesIds = new();
+        private readonly HashSet<EntityId> hitProjectilesIds = new();
 
         [SerializeField]
         private SpriteRenderer spriteRenderer;
@@ -21,7 +22,7 @@ namespace RPGF.Battle.Player
         {
             if (collision.CompareTag(TagConstants.ProjectileTag))
             {
-                if (hitenProjectilesIds.Any(i => i == collision.gameObject.GetEntityId()))
+                if (hitProjectilesIds.Contains(collision.gameObject.GetEntityId()))
                     return;
 
                 var bullet = collision.gameObject.GetComponent<ProjectileBase>();
@@ -29,7 +30,7 @@ namespace RPGF.Battle.Player
                 if (!bullet.CanHitHalo)
                     return;
 
-                hitenProjectilesIds.Add(collision.gameObject.GetEntityId());
+                hitProjectilesIds.Add(collision.gameObject.GetEntityId());
 
                 bullet.OnHitHalo();
 
@@ -43,7 +44,7 @@ namespace RPGF.Battle.Player
 
         public void Dispose()
         {
-            hitenProjectilesIds.Clear();
+            hitProjectilesIds.Clear();
         }
     }
 }

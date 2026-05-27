@@ -6,6 +6,7 @@
         public void PreviousBlock();
 
         public void Open();
+        public void Open(IGUIBlock block);
         public void Close();
     }
 }

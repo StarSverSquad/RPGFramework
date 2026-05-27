@@ -67,11 +67,11 @@ namespace RPGF.Core.Location
         {
             return Resources.Load<RpgfLocationInfo>($"Locations/{fileName}");
         }
-        public RpgfLocationInfo LoadLocationInfoByName(string locName)
+        public RpgfLocationInfo LoadLocationInfoByTag(string locationTag)
         {
             var locations = Resources.LoadAll<RpgfLocationInfo>($"Locations");
 
-            return locations.First(i => i.Name == locName);
+            return locations.FirstOrDefault(i => i.Tag == locationTag);
         }
 
         #endregion

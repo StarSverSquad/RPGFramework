@@ -1,8 +1,8 @@
-﻿using RPGF.Domain.DI;
-using RPGF.RPG;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using RPGF.Domain.DI;
+using RPGF.RPG;
 
 namespace RPGF.Core.Character
 {
@@ -10,16 +10,16 @@ namespace RPGF.Core.Character
     {
         public event Action OnCharaterListChanged;
 
-        private List<RPGCharacter> characters;
+        private readonly List<RPGCharacter> characters;
         public RPGCharacter[] Characters => characters.ToArray();
 
-        private List<RPGCharacter> registredCharacters;
+        private readonly List<RPGCharacter> registeredCharacters;
         public RPGCharacter[] RegistredCharacters => characters.ToArray();
 
         public CharacterService()
         {
             characters = new List<RPGCharacter>();
-            registredCharacters = new List<RPGCharacter>();
+            registeredCharacters = new List<RPGCharacter>();
         }
 
         public void AddCharacter(RPGCharacter character, bool initialize = true)
@@ -54,12 +54,12 @@ namespace RPGF.Core.Character
             if (CharacterIsRegisted(character))
                 return;
 
-            registredCharacters.Add(character.Clone() as RPGCharacter);
+            registeredCharacters.Add(character.Clone() as RPGCharacter);
         }
 
         public bool CharacterIsRegisted(RPGCharacter character)
         {
-            return registredCharacters.Any(i => i.Tag == character.Tag);
+            return registeredCharacters.Any(i => i.Tag == character.Tag);
         }
 
         public RPGCharacter GetRegisteredCharacter(RPGCharacter character)
@@ -67,12 +67,12 @@ namespace RPGF.Core.Character
             if (!CharacterIsRegisted(character))
                 RegisterCharacter(character);
 
-            return registredCharacters.FirstOrDefault(i => i.Tag == character.Tag);
+            return registeredCharacters.FirstOrDefault(i => i.Tag == character.Tag);
         }
 
         public void Dispose()
         {
-            registredCharacters.Clear();
+            registeredCharacters.Clear();
             characters.Clear();
         }
     }

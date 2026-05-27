@@ -1,5 +1,7 @@
-﻿using RPGF.Domain.DI;
+﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using RPGF.Domain.DI;
 using UnityEngine;
 
 namespace RPGF.Core.SaveLoad
@@ -44,9 +46,33 @@ namespace RPGF.Core.SaveLoad
             }
         }
 
+        public IEnumerable<T> LoadFiles<T>(string fileFormat)
+            where T : class
+        {
+            try
+            {
+                var files = Directory.GetFiles(SavePath.FullName).Where(file => file.EndsWith(fileFormat));
+
+                return files.Select(file => LoadFile<T>(file));
+            }
+            catch (FileNotFoundException)
+            {
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public GameSlotData LoadSlot(string slotName)
         {
             return LoadFile<GameSlotData>($"{slotName}.{SLOTFORMAT}");
+        }
+
+        public IEnumerable<GameSlotData> LoadAllSlots()
+        {
+            return LoadFiles<GameSlotData>(SLOTFORMAT);
         }
 
         public GameCommonData LoadCommon()

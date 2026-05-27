@@ -1,7 +1,7 @@
-using RPGF.Core.Services;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using RPGF.Core.Services;
 using TMPro;
 using UnityEngine;
 
@@ -131,7 +131,7 @@ public class FallingText : MonoBehaviour
             }
 
             for (int i = maxCharacters; i < transformText.CharactersCount; i++)
-            {       
+            {
                 Color32 clr = Color.white; clr.a = 0;
 
                 transformText.SetCharacterColor(i, clr);

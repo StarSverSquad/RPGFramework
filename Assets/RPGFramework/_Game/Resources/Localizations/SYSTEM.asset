@@ -166,4 +166,21 @@ MonoBehaviour:
       Value:
         Russian: "\u041D\u0438\u0447\u0435\u0433\u043E"
         English: Nothing
-  Order: -1
+    - Key: SYS_SAVE_NEW
+      Value:
+        Russian: "\u041D\u043E\u0432\u044B\u0439 \u043D\u0435\u0439\u0440\u043E\u043D"
+        English: New neuron
+    - Key: SYS_SAVE_SLOT
+      Value:
+        Russian: "\u041D\u0435\u0439\u0440\u043E\u043D"
+        English: Neuron
+    - Key: SYS_SAVE_NO_SAVES
+      Value:
+        Russian: "\u0417\u0430\u043F\u0438\u0441\u0430\u043D\u043D\u044B\u0445 \u043D\u0435\u0439\u0440\u043E\u043D\u043E\u0432
+          \u043D\u0435 \u043E\u0431\u043D\u0430\u0440\u0443\u0436\u0435\u043D\u043E"
+        English: No recorded neurons were found
+    - Key: SYS_SAVE_MODE
+      Value:
+        Russian: "\u0420\u0435\u0436\u0438\u043C \u0437\u0430\u043F\u0438\u0441\u0438"
+        English: Record mode
+  Order: -99999

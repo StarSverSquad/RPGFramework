@@ -54,6 +54,8 @@ namespace RPGF.GUI
 
             for (int i = 0; i < PageSize; i++)
             {
+                Elements[i].SetFocus(false);
+
                 var itemIndex = i + (page * PageSize);
                 if (itemIndex >= SelectedItems.Count)
                 {
@@ -61,6 +63,7 @@ namespace RPGF.GUI
                     continue;
                 }
 
+                ShowElement(i);
                 BindElement(i, SelectedItems[itemIndex]);
             }
 
@@ -108,15 +111,23 @@ namespace RPGF.GUI
 
         protected abstract void BindElement(int elementIndex, T item);
 
-        protected abstract void HideElement(int elementIndex);
-
         protected abstract void UpdatePaginationArrows(int page, int maxPage);
 
         protected virtual void OnItemsRefreshed() { }
 
         protected virtual void OnItemSelected(T item) { }
 
-        protected void ShowElement(int elementIndex)
+        protected virtual void ShowElement(int elementIndex)
+        {
+            ShowElementAt(elementIndex);
+        }
+
+        protected virtual void HideElement(int elementIndex)
+        {
+            HideElementAt(elementIndex);
+        }
+
+        protected virtual void ShowElementAt(int elementIndex)
         {
             Elements[elementIndex].gameObject.SetActive(true);
         }

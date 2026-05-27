@@ -12,7 +12,9 @@ namespace RPGF.Core.SaveLoad
     {
         public int Id;
 
-        public string LocationName;
+        public string LocationTag;
+
+        public string SaveDateTime;
 
         public CustomDictionary<int> IntValues;
         public CustomDictionary<float> FloatValues;
@@ -38,5 +40,4 @@ namespace RPGF.Core.SaveLoad
             InventoryItems = new CustomDictionary<int>();
         }
     }
-
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using RPGF.Core.Character;
 using RPGF.Core.Inventory;
@@ -6,6 +7,7 @@ using RPGF.Core.Location;
 using RPGF.Domain.DI;
 using RPGF.Explorer;
 using RPGF.RPG;
+using UnityEngine;
 
 namespace RPGF.Core.SaveLoad
 {
@@ -33,7 +35,8 @@ namespace RPGF.Core.SaveLoad
                 FloatValues = _gameData.FloatValues,
                 BoolValues = _gameData.BoolValues,
                 StringValues = _gameData.StringValues,
-                LocationName = _location.CurrentLocation.Name,
+                LocationTag = _location.CurrentLocation.Tag,
+                SaveDateTime = DateTime.UtcNow.ToString(),
                 PlayerPosition = ExplorerManager.GetPlayerPosition(),
                 PlayerDirection = ExplorerManager.GetPlayerViewDirection(),
                 SavedCharacters = SerializeCharacters(
@@ -51,7 +54,7 @@ namespace RPGF.Core.SaveLoad
         }
         public void GameLoad(int slotId)
         {
-            GameSlotData slotData = _gameFiles.LoadSlot($"Slot{slotId}");
+            var slotData = _gameFiles.LoadSlot($"Slot{slotId}");
 
             _gameData.IntValues = slotData.IntValues;
             _gameData.FloatValues = slotData.FloatValues;
@@ -68,7 +71,12 @@ namespace RPGF.Core.SaveLoad
             foreach (var item in slotData.InventoryItems.data)
                 _inventory.AddToItemCount(_gameData.Collectables.First(i => i.Tag == item.Key), item.Value);
 
-            RpgfLocationInfo location = _location.LoadLocationInfoByName(slotData.LocationName);
+            var location = _location.LoadLocationInfoByTag(slotData.LocationTag);
+            if (location == null)
+            {
+                Debug.LogError($"Location with tag {slotData.LocationTag} not found");
+                return;
+            }
 
             _location.ChangeLocation(location, slotData.PlayerPosition, slotData.PlayerDirection);
         }

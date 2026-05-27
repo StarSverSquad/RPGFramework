@@ -13,7 +13,7 @@ namespace RPGF.GUI.Abstractions
         private readonly DependencyInjection DI = null!;
 
         [SerializeField]
-        protected GUIBlock firstBlock;
+        protected GUIBlock root;
         [SerializeField]
         protected GameObject content;
 
@@ -81,9 +81,13 @@ namespace RPGF.GUI.Abstractions
 
         public void Open()
         {
+            Open(root);
+        }
+        public void Open(IGUIBlock block)
+        {
             content.SetActive(true);
 
-            NextBlock(firstBlock);
+            NextBlock(block);
 
             IsOpened = true;
 

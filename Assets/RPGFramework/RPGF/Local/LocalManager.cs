@@ -4,6 +4,7 @@ using RPGF.Core.Character;
 using RPGF.Core.Location;
 using RPGF.Domain.DI;
 using RPGF.Explorer;
+using RPGF.GUI;
 using RPGF.Shared;
 using UnityEngine;
 

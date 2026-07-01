@@ -9,6 +9,10 @@ namespace RPGF
 {
     public class AudioManager : RPGFrameworkBehaviour
     {
+        public const float MIN_MIXER_VOLUME = -30f;
+        public const float MAX_MIXER_VOLUME = 0;
+        public const float MUTE_MIXER_VOLUME = -80f;
+
         [SerializeField]
         private AudioSource BGMSource;
         [SerializeField]
@@ -65,6 +69,31 @@ namespace RPGF
         public void SetMEMixerVolume(float volume)
         {
             MEMixer.SetFloat("Volume", volume);
+        }
+
+        public void SetBGMMixerVolumeNormilized(float normalizedVolume)
+        {
+            SetBGMMixerVolume(ToMixerVolume(normalizedVolume));
+        }
+        public void SetBGSMixerVolumeNormilized(float normalizedVolume)
+        {
+            SetBGSMixerVolume(ToMixerVolume(normalizedVolume));
+        }
+        public void SetSEMixerVolumeNormilized(float normalizedVolume)
+        {
+            SetSEMixerVolume(ToMixerVolume(normalizedVolume));
+        }
+        public void SetMEMixerVolumeNormilized(float normalizedVolume)
+        {
+            SetMEMixerVolume(ToMixerVolume(normalizedVolume));
+        }
+
+        public float ToMixerVolume(float normalizedVolume)
+        {
+            if (normalizedVolume <= 0)
+                return MUTE_MIXER_VOLUME;
+
+            return Mathf.Lerp(MIN_MIXER_VOLUME, MAX_MIXER_VOLUME, Mathf.Clamp01(normalizedVolume));
         }
 
         #endregion

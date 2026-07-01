@@ -13,6 +13,8 @@ namespace RPGF.Core.SaveLoad
 
         public int ResolutionX;
         public int ResolutionY;
+        public uint RefreshRateDenominator;
+        public uint RefreshRateNumenator;
 
         public bool Fullscreen;
 

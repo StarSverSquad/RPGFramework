@@ -14,19 +14,28 @@ namespace RPGF.Core.SaveLoad
         [Inject]
         private readonly AudioManager _audio = null!;
 
-        public GameConfigData Config { get; private set; }
+        public GameConfigData Config { get; set; }
 
 
         public event Action OnConfigUpdated;
 
         public void Apply()
         {
-            _audio.SetBGMMixerVolume(Config.BGMVolume);
-            _audio.SetBGSMixerVolume(Config.BGSVolume);
-            _audio.SetSEMixerVolume(Config.SEVolume);
-            _audio.SetMEMixerVolume(Config.MEVolume);
+            _audio.SetBGMMixerVolumeNormilized(Config.BGMVolume);
+            _audio.SetBGSMixerVolumeNormilized(Config.BGSVolume);
+            _audio.SetSEMixerVolumeNormilized(Config.SEVolume);
+            _audio.SetMEMixerVolumeNormilized(Config.MEVolume);
 
-            Screen.SetResolution(Config.ResolutionX, Config.ResolutionY, Config.Fullscreen);
+            Screen.SetResolution(
+                Config.ResolutionX, 
+                Config.ResolutionY,
+                Config.Fullscreen ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed,
+                new RefreshRate()
+                {
+                    denominator = Config.RefreshRateDenominator,
+                    numerator = Config.RefreshRateNumenator
+                }
+                );
         }
 
         public void Load()
@@ -85,6 +94,8 @@ namespace RPGF.Core.SaveLoad
 
                 ResolutionX = actual.width,
                 ResolutionY = actual.height,
+                RefreshRateDenominator = actual.refreshRateRatio.denominator,
+                RefreshRateNumenator = actual.refreshRateRatio.numerator,
 
                 Fullscreen = true
             };

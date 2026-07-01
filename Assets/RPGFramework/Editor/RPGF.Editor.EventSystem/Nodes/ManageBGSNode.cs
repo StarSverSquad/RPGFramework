@@ -93,7 +93,7 @@ namespace RPGF.Editor.EventSystem.Nodes
             {
                 case ManageBGSAction.OperationType.Play:
 
-                    ObjectField clipField = new ObjectField("Аудио")
+                    var clipField = new ObjectField("Аудио")
                     {
                         objectType = typeof(AudioClip),
                         allowSceneObjects = true

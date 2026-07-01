@@ -96,7 +96,7 @@ namespace RPGF.Editor.EventSystem
             }
             else
             {
-                EditorUtility.DisplayDialog("Ошибка", $"Ноды для действия {action.GetType().Name} не существует", "Ок");
+                EditorDialog.DisplayAlertDialog("Р’РЅРёРјР°РЅРёРµ", $"РќРµ РЅР°Р№РґРµРЅР° РЅРѕРґР° РґР»СЏ {action.GetType().Name}", "РѕРє");
                 return;
             }
 
@@ -137,7 +137,7 @@ namespace RPGF.Editor.EventSystem
                 {
                     ActionBase action = node.action.Clone();
 
-                    evt.menu.AppendAction("Создать дубликат", i => CreateNode(action, mousePosition));
+                    evt.menu.AppendAction("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ", i => CreateNode(action, mousePosition));
                 }
             }
 

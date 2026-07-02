@@ -1,11 +1,12 @@
+using System;
+using System.Linq;
 using RPGF;
+using RPGF.Core.Extensions;
 using RPGF.Core.SaveLoad;
 using RPGF.Domain.DI;
 using RPGF.GUI;
 using RPGF.GUI.Elements;
 using RPGF.GUI.Interfaces;
-using System;
-using System.Linq;
 using UnityEngine;
 
 namespace GlackSaga.GUI.TitleMenu.Settings
@@ -36,12 +37,24 @@ namespace GlackSaga.GUI.TitleMenu.Settings
 
             fullsceenCheckbox.SetupCheckBox(Screen.fullScreenMode == FullScreenMode.FullScreenWindow);
 
-            var resolutionsOptions = Screen.resolutions.Select(item => new OptionSelectItem
+            var filteredResolutions = Screen.resolutions
+                .Where(resolution => Display.main.IsSupportedResolution(resolution))
+                .ToList();
+
+            var resolutionsOptions = filteredResolutions.Select(item => new OptionSelectItem
             {
                 Label = $"{item.width}x{item.height} ({Mathf.RoundToInt((float)item.refreshRateRatio.value)})",
                 Metadata = item,
             });
-            int currentResolutionIndex = Screen.resolutions.ToList().IndexOf(Screen.currentResolution);
+
+            var current = Screen.currentResolution;
+            var currentResolutionIndex = filteredResolutions.FindIndex(item =>
+                item.width == current.width && item.height == current.height 
+                && item.refreshRateRatio.numerator == current.refreshRateRatio.numerator
+                && item.refreshRateRatio.denominator == current.refreshRateRatio.denominator);
+
+            if (currentResolutionIndex < 0)
+                currentResolutionIndex = 0;
 
             resolutionSelect.SetupSelect(resolutionsOptions, currentResolutionIndex);
 
@@ -74,6 +87,7 @@ namespace GlackSaga.GUI.TitleMenu.Settings
             seSlider.OnSldierConfirmed.AddListener(OnSliderSaveConfig);
             meSlider.OnSldierConfirmed.AddListener(OnSliderSaveConfig);
         }
+
 
         private void OnResolutionOptionChanged(OptionSelectItem option)
         {
@@ -138,35 +152,6 @@ namespace GlackSaga.GUI.TitleMenu.Settings
             config.MEVolume = meSlider.Value;
 
             _config.Save();
-        }
-
-        protected override void OnDispose()
-        {
-            base.OnDispose();
-
-            resolutionSelect.OnOptionSelectionChanged.RemoveListener(OnResolutionOptionChanged);
-            resolutionSelect.OnOptionSelectionCanceled.RemoveListener(OnResolutionOptionChanged);
-
-            fullsceenCheckbox.OnChecked.RemoveListener(OnFullSceenChecked);
-
-            bgmSlider.OnSliderChanged.RemoveListener(OnBGMSliderChanged);
-            bgmSlider.OnSliderCanceled.RemoveListener(OnBGMSliderChanged);
-
-            bgsSlider.OnSliderChanged.RemoveListener(OnBGSSliderChanged);
-            bgsSlider.OnSliderCanceled.RemoveListener(OnBGSSliderChanged);
-
-            seSlider.OnSliderChanged.RemoveListener(OnSESliderChanged);
-            seSlider.OnSliderCanceled.RemoveListener(OnSESliderChanged);
-
-            meSlider.OnSliderChanged.RemoveListener(OnMESliderChanged);
-            meSlider.OnSliderCanceled.RemoveListener(OnMESliderChanged);
-
-            resolutionSelect.OnOptionSelected.RemoveListener(OnOptionSelectSaveConfig);
-
-            bgmSlider.OnSldierConfirmed.RemoveListener(OnSliderSaveConfig);
-            bgsSlider.OnSldierConfirmed.RemoveListener(OnSliderSaveConfig);
-            seSlider.OnSldierConfirmed.RemoveListener(OnSliderSaveConfig);
-            meSlider.OnSldierConfirmed.RemoveListener(OnSliderSaveConfig);
         }
     }
 }

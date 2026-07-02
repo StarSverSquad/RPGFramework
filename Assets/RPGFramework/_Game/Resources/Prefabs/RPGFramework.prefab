@@ -6909,7 +6909,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3844555555072987196
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8060,7 +8060,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.24047852}
+  m_AnchoredPosition: {x: 0, y: 110}
   m_SizeDelta: {x: -538.75, y: 107.03125}
   m_Pivot: {x: 0.5, y: 0.99999976}
 --- !u!222 &112086514887590365
@@ -16096,6 +16096,7 @@ GameObject:
   - component: {fileID: 8043555923447743728}
   - component: {fileID: 6743100989198082983}
   - component: {fileID: 7307946284496400948}
+  - component: {fileID: 5772269812070666346}
   m_Layer: 0
   m_Name: Label
   m_TagString: Untagged
@@ -16222,6 +16223,20 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &5772269812070666346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7213259209384172176}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01aec2be2ee125a408ebefd458a01119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RPGFramework::RPGF.Core.Localization.AutoTextMeshLocalize
+  translationTag: TITLEMENU_SETTINGS_LABEL
+  warningOnNotFound: 1
 --- !u!1 &7260706127895763883
 GameObject:
   m_ObjectHideFlags: 0
@@ -24431,6 +24446,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5054994897029576023, guid: 7d47f598467cd324db664e944264ee8c, type: 3}
+      propertyPath: translationTag
+      value: TITLEMENU_SETTINGS_FULLSCREEN
+      objectReference: {fileID: 0}
     - target: {fileID: 5360982624585609981, guid: 7d47f598467cd324db664e944264ee8c, type: 3}
       propertyPath: OnSelect.m_PersistentCalls.m_Calls.Array.size
       value: 2
@@ -25527,6 +25546,10 @@ PrefabInstance:
     - target: {fileID: 240399088663804551, guid: 7d47f598467cd324db664e944264ee8c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5054994897029576023, guid: 7d47f598467cd324db664e944264ee8c, type: 3}
+      propertyPath: translationTag
+      value: TITLEMENU_SETTINGS_ME
       objectReference: {fileID: 0}
     - target: {fileID: 5360982624585609981, guid: 7d47f598467cd324db664e944264ee8c, type: 3}
       propertyPath: OnSelect.m_PersistentCalls.m_Calls.Array.size
@@ -28275,6 +28298,10 @@ PrefabInstance:
     - target: {fileID: 240399088663804551, guid: 7d47f598467cd324db664e944264ee8c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5054994897029576023, guid: 7d47f598467cd324db664e944264ee8c, type: 3}
+      propertyPath: translationTag
+      value: TITLEMENU_SETTINGS_BGS
       objectReference: {fileID: 0}
     - target: {fileID: 5360982624585609981, guid: 7d47f598467cd324db664e944264ee8c, type: 3}
       propertyPath: OnSelect.m_PersistentCalls.m_Calls.Array.size
@@ -31035,6 +31062,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5054994897029576023, guid: 7d47f598467cd324db664e944264ee8c, type: 3}
+      propertyPath: translationTag
+      value: TITLEMENU_SETTINGS_SE
+      objectReference: {fileID: 0}
     - target: {fileID: 5360982624585609981, guid: 7d47f598467cd324db664e944264ee8c, type: 3}
       propertyPath: OnSelect.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -31546,6 +31577,10 @@ PrefabInstance:
     - target: {fileID: 240399088663804551, guid: 7d47f598467cd324db664e944264ee8c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5054994897029576023, guid: 7d47f598467cd324db664e944264ee8c, type: 3}
+      propertyPath: translationTag
+      value: TITLEMENU_SETTINGS_BGM
       objectReference: {fileID: 0}
     - target: {fileID: 5360982624585609981, guid: 7d47f598467cd324db664e944264ee8c, type: 3}
       propertyPath: OnSelect.m_PersistentCalls.m_Calls.Array.size
@@ -34212,6 +34247,10 @@ PrefabInstance:
     - target: {fileID: 240399088663804551, guid: 7d47f598467cd324db664e944264ee8c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5054994897029576023, guid: 7d47f598467cd324db664e944264ee8c, type: 3}
+      propertyPath: translationTag
+      value: TITLEMENU_SETTINGS_RESOLUTION
       objectReference: {fileID: 0}
     - target: {fileID: 5360982624585609981, guid: 7d47f598467cd324db664e944264ee8c, type: 3}
       propertyPath: OnSelect.m_PersistentCalls.m_Calls.Array.size

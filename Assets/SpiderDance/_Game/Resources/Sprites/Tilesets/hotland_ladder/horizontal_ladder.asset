@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
+  m_Name: horizontal_ladder
+  m_EditorClassIdentifier: Unity.2D.Tilemap.Extras::UnityEngine.Tilemaps.AnimatedTile
+  m_AnimatedSprites:
+  - {fileID: 3003951620648146750, guid: 8718e98b3354f9a4c8cc68535a792cdf, type: 3}
+  - {fileID: 612816051279618762, guid: 8718e98b3354f9a4c8cc68535a792cdf, type: 3}
+  - {fileID: 7638905724505497317, guid: 8718e98b3354f9a4c8cc68535a792cdf, type: 3}
+  - {fileID: -6066078125029373628, guid: 8718e98b3354f9a4c8cc68535a792cdf, type: 3}
+  - {fileID: -7146487107599993579, guid: 8718e98b3354f9a4c8cc68535a792cdf, type: 3}
+  m_MinSpeed: 20
+  m_MaxSpeed: 20
+  m_AnimationStartTime: 0
+  m_AnimationStartFrame: 0
+  m_TileColliderType: 0
+  m_TileAnimationFlags: 0

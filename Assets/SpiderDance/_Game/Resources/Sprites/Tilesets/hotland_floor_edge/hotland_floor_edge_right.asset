@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
+  m_Name: hotland_floor_edge_right
+  m_EditorClassIdentifier: Unity.2D.Tilemap.Extras::UnityEngine.Tilemaps.AnimatedTile
+  m_AnimatedSprites:
+  - {fileID: -398160881374148821, guid: 6ffcf913cd3ace74f91563b21506443e, type: 3}
+  - {fileID: 7485849232817358730, guid: 6ffcf913cd3ace74f91563b21506443e, type: 3}
+  - {fileID: -5169237067468983340, guid: 6ffcf913cd3ace74f91563b21506443e, type: 3}
+  - {fileID: 6525575222215151595, guid: 6ffcf913cd3ace74f91563b21506443e, type: 3}
+  - {fileID: -5462136738732965585, guid: 6ffcf913cd3ace74f91563b21506443e, type: 3}
+  - {fileID: 8906907494727657818, guid: 6ffcf913cd3ace74f91563b21506443e, type: 3}
+  - {fileID: 1657083875344935308, guid: 6ffcf913cd3ace74f91563b21506443e, type: 3}
+  - {fileID: 8216162993509377637, guid: 6ffcf913cd3ace74f91563b21506443e, type: 3}
+  - {fileID: -4391760397085518532, guid: 6ffcf913cd3ace74f91563b21506443e, type: 3}
+  - {fileID: -43723685371261755, guid: 6ffcf913cd3ace74f91563b21506443e, type: 3}
+  m_MinSpeed: 15
+  m_MaxSpeed: 15
+  m_AnimationStartTime: 0
+  m_AnimationStartFrame: 0
+  m_TileColliderType: 0
+  m_TileAnimationFlags: 0

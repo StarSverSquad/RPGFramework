@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RPGF.Battle.Choice;
 using RPGF.Battle.UI;
+using RPGF.Core;
 using RPGF.Core.Battle;
 using RPGF.Core.Battle.Enums;
 using RPGF.Core.Localization;
@@ -29,6 +30,8 @@ namespace RPGF.Battle
         }
 
         [Inject]
+        private readonly BaseOptions _options = null!;
+        [Inject]
         private readonly BattleManager _battle = null!;
         [Inject]
         private readonly SharedManager _shared = null!;
@@ -36,6 +39,8 @@ namespace RPGF.Battle
         private readonly DependencyInjection _di = null!;
         [Inject]
         private readonly InvokeUsableEventService _invokeUsableEvent = null!;
+        [Inject]
+        private readonly SceneLoadManager _sceneLoad = null!;
 
         #region PROPS
 
@@ -656,7 +661,7 @@ namespace RPGF.Battle
             }
 
             if (!Data.BattleInfo.CanLose)
-                SceneManager.LoadScene(Config.GameOverSceneName);
+                _sceneLoad.LoadScene(_options.GameOverScene);
         }
 
         private IEnumerator Win()

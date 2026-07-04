@@ -1,4 +1,5 @@
-﻿using RPGF.Domain;
+﻿using NaughtyAttributes;
+using RPGF.Domain;
 using RPGF.Domain.DI;
 using UnityEngine;
 
@@ -24,5 +25,13 @@ namespace RPGF.Core
         public CustomDictionary<float> FloatValues = new CustomDictionary<float>();
         public CustomDictionary<bool> BoolValues = new CustomDictionary<bool>();
         public CustomDictionary<string> StringValues = new CustomDictionary<string>();
+
+        [Header("Базовые сцены")]
+        [Scene]
+        public string GameStartScene;
+        [Scene]
+        public string MainMenuScene;
+        [Scene]
+        public string GameOverScene;
     }
 }

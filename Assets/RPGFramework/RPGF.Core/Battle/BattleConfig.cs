@@ -1,6 +1,7 @@
 ﻿using RPGF.Core.Battle.BattleField.Abstractions;
 using RPGF.Core.Battle.Enums;
 using RPGF.Domain.DI;
+using System;
 using UnityEngine;
 
 namespace RPGF.Core.Battle
@@ -19,10 +20,7 @@ namespace RPGF.Core.Battle
 
         [Header("Настройки")]
         public int MaxConcentration;
-
         public int AdditionConcentrationOnDefence = 10;
-
-        public string GameOverSceneName = "GameOver";
 
         [Header("Звуки")]
         public AudioClip HoverSound;

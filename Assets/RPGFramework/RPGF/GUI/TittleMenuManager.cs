@@ -1,6 +1,6 @@
-﻿using RPGF.Domain.DI;
+﻿using RPGF.Core;
+using RPGF.Domain.DI;
 using RPGF.Explorer.Player;
-using RPGF.GUI;
 using RPGF.GUI.Abstractions;
 using UnityEngine;
 
@@ -8,6 +8,10 @@ namespace RPGF.GUI
 {
     public class TittleMenuManager : GUIManagerBase
     {
+        [Inject]
+        private readonly BaseOptions _options = null!;
+        [Inject]
+        private readonly SceneLoadManager _sceneLoader = null!;
         [Inject]
         private readonly PlayerExplorerManager _playerExplorerManager = null!;
 
@@ -19,15 +23,6 @@ namespace RPGF.GUI
             base.Initialize();
         }
 
-        private void Update()
-        {
-            // TODO: Remove this after testing
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                OpenSaveMenu();
-            }
-        }
-
         public void OpenSaveMenu()
         {
             if (saveLoadGUIBlock is ISaveLoadGUIBlock saveLoad)
@@ -35,6 +30,16 @@ namespace RPGF.GUI
                 saveLoad.SetSaveMode(true);
                 Open(saveLoad);
             }
+        }
+
+        public void ExitToMenu()
+        {
+            _sceneLoader.LoadScene(_options.MainMenuScene);
+        }
+
+        public void ExitToOS()
+        {
+            Application.Quit();
         }
 
         public override void OnOpen()

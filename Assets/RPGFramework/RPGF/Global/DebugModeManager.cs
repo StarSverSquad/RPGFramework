@@ -12,7 +12,14 @@ namespace RPGF.Global
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.N))
+            {
                 Global.LocationManager.ChangeLocation(location);
+            }
+                
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                Local.TittleMenu.OpenSaveMenu();
+            }
         }
     }
 }

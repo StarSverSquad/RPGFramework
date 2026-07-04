@@ -8,12 +8,8 @@ using UnityEngine.EventSystems;
 namespace RPGF.GUI
 {
     [RequireComponent(typeof(RectTransform))]
-    public class GUIInteractable : RPGFrameworkBehaviour, IGUIInteractable, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
+    public class GUIInteractable : RPGFrameworkBehaviour, IGUIInteractable
     {
-        [SerializeField]
-        private bool withMouseInteract = true;
-        public bool WithMouseInteract => withMouseInteract;
-
         public bool Focused { get; private set; }
         public bool Selected { get; private set; }
 
@@ -80,24 +76,6 @@ namespace RPGF.GUI
         public virtual void OnSelected() { }
         public virtual void OnFocused() { }
         public virtual void OnUnfocused() { }
-
-        public virtual void OnPointerEnter(PointerEventData eventData)
-        {
-            if (WithMouseInteract)
-                SetFocus(true);
-        }
-
-        public virtual void OnPointerExit(PointerEventData eventData)
-        {
-            if (withMouseInteract)
-                SetFocus(false);
-        }
-
-        public virtual void OnPointerClick(PointerEventData eventData)
-        {
-            if (WithMouseInteract && eventData.button == PointerEventData.InputButton.Left)
-                Select();
-        }
 
         #endregion
 

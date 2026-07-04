@@ -977,9 +977,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   Info: {fileID: 11400000, guid: 828e6232552726842ad595ead6edc08c, type: 2}
-  SpawnPoints: []
-  CameraPoint: {fileID: 0}
-  MapContainer: {fileID: 0}
+  SpawnPoints:
+  - {fileID: 326016493}
+  CameraPoint: {fileID: 1285919143}
+  MapContainer: {fileID: 1977424683}
 --- !u!1 &485781975
 GameObject:
   m_ObjectHideFlags: 0

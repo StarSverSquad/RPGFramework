@@ -1002,8 +1002,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   Elements:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 4852147519491851253}
+  - {fileID: 1088147141543025218}
   startChoiceOnActivate: 1
   isHorizontal: 1
   OnSelectionChangedEvent:
@@ -1027,6 +1027,18 @@ MonoBehaviour:
       - m_Target: {fileID: 6385173303787070095}
         m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
         m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8721717244231974183}
+        m_TargetAssemblyTypeName: RPGF.GUI.GUISelectableBlock, RPGFramework
+        m_MethodName: Preview
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

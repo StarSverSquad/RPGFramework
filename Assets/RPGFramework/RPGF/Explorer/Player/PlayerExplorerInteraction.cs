@@ -17,7 +17,6 @@ namespace RPGF.Explorer.Player
 
         public bool CanInteract = true;
 
-        [SerializeField]
         private Collider2D raycastHit;
 
         private void FixedUpdate()

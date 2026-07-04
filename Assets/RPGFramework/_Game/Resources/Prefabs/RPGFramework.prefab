@@ -17873,7 +17873,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Direction: {x: 0, y: -1}
-  InteractionDistance: 0.5
+  InteractionDistance: 0.8
   CanInteract: 1
   raycastHit: {fileID: 0}
 --- !u!50 &6612724113824618219
@@ -18006,7 +18006,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.33, y: 0.56}
+  m_Size: {x: 0.4, y: 0.85}
   m_EdgeRadius: 0
 --- !u!1 &7711728882088506812
 GameObject:

@@ -91,7 +91,7 @@ namespace RPGF.Core.Location
 
                 _sceneLoader.LoadScene(message.Location.SceneName);
 
-                yield return new WaitWhile(() => _sceneLoader.IsLoading);
+                yield return new WaitWhile(() => _sceneLoader.IsLoading || Local == null);
             }
 
             if (!Local)

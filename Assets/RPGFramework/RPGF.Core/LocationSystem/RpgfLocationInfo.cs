@@ -1,4 +1,5 @@
 ﻿using NaughtyAttributes;
+using RPGF;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ namespace RPGF.Core.Location
         public string Tag;
         [Space]
         public MainCameraManager.CaptureType CameraCapture;
+        [ShowIf("CameraCapture", MainCameraManager.CaptureType.PlayerFollow)]
+        public Vector2 PlayerFollowBorder = new(5f, 4f);
         [Space]
         [Scene]
         public string SceneName;

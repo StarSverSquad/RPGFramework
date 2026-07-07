@@ -48,6 +48,12 @@ namespace GlackSaga.GUI.TitleMenu.SaveLoad
 
         protected override void OnChoiced(int index)
         {
+            if (!HasItems)
+            {
+                StartChoice();
+                return;
+            }
+
             var slot = GetItemAt(ToAbsoluteIndex(index));
 
             if (IsSaveMode)

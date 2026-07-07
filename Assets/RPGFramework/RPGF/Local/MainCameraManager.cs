@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using DG.Tweening;
 using System;
 using RPGF.Core;
@@ -16,7 +17,11 @@ namespace RPGF
 
         public float ZPosition = -5000;
 
-        public Vector2 PlayerFollowBorder;
+        [FormerlySerializedAs("PlayerFollowBorder")]
+        [SerializeField] private Vector2 defaultPlayerFollowBorder = new(5f, 4f);
+
+        private Vector2 playerFollowBorder;
+        private Vector2 playerFollowAnchor;
 
         #region PROPS
 
@@ -70,8 +75,10 @@ namespace RPGF
                 ZPosition);
         }
 
-        public void FollowToPlayer()
+        public void FollowToPlayer(Vector2 anchor, Vector2 border)
         {
+            playerFollowAnchor = anchor;
+            playerFollowBorder = border != Vector2.zero ? border : defaultPlayerFollowBorder;
             Capture = CaptureType.PlayerFollow;
         }
 
@@ -117,13 +124,13 @@ namespace RPGF
             Vector2 cameraToPlayer = playerPosition - cameraPosition;
 
             Vector2 borderX = new(
-                cameraPosition.x + PlayerFollowBorder.x,
-                cameraPosition.x - PlayerFollowBorder.x
+                cameraPosition.x + playerFollowBorder.x,
+                cameraPosition.x - playerFollowBorder.x
                 );
 
             Vector2 borderY = new(
-                cameraPosition.y + PlayerFollowBorder.y,
-                cameraPosition.y - PlayerFollowBorder.y
+                cameraPosition.y + playerFollowBorder.y,
+                cameraPosition.y - playerFollowBorder.y
                 );
 
             Vector3 newCameraPosition = Vector3.zero;
@@ -136,7 +143,7 @@ namespace RPGF
             {
                 bool minus = cameraToPlayer.x < 0;
 
-                float absDistance = Mathf.Abs(cameraToPlayer.x) - PlayerFollowBorder.x;
+                float absDistance = Mathf.Abs(cameraToPlayer.x) - playerFollowBorder.x;
 
                 newCameraPosition.x += minus ? -absDistance : absDistance;
             }
@@ -145,10 +152,19 @@ namespace RPGF
             {
                 bool minus = cameraToPlayer.y < 0;
 
-                float absDistance = Mathf.Abs(cameraToPlayer.y) - PlayerFollowBorder.y;
+                float absDistance = Mathf.Abs(cameraToPlayer.y) - playerFollowBorder.y;
 
                 newCameraPosition.y += minus ? -absDistance : absDistance;
             }
+
+            newCameraPosition.x = Mathf.Clamp(
+                newCameraPosition.x,
+                playerFollowAnchor.x - playerFollowBorder.x,
+                playerFollowAnchor.x + playerFollowBorder.x);
+            newCameraPosition.y = Mathf.Clamp(
+                newCameraPosition.y,
+                playerFollowAnchor.y - playerFollowBorder.y,
+                playerFollowAnchor.y + playerFollowBorder.y);
 
             transform.position = newCameraPosition;
         }

@@ -12,5 +12,8 @@ namespace RPGF.Core.Character
 
         public void MoveTo(Vector2 position, float time);
         public void MoveToRelative(Vector2 offset, float time);
+
+        public void Talk();
+        public void StopTalk();
     }
 }

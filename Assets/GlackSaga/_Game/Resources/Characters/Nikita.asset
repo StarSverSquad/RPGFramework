@@ -16,11 +16,11 @@ MonoBehaviour:
   Name: "\u041D\u0438\u043A\u0438\u0442\u0430"
   Description: "\u0421\u0430\u043C\u044B\u0439 \u043B\u0443\u0447\u0448\u0438\u0439
     \u0438\u043D\u0436\u0435\u043D\u0435\u0440"
-  DefaultHeal: 200
-  DefaultMana: 50
-  DefaultDamage: 5
+  DefaultHeal: 100
+  DefaultMana: 40
+  DefaultDamage: 4
   DefaultDefense: 3
-  DefaultAgility: 3
+  DefaultAgility: 5
   DefaultLuck: 1
   Class: "\u0438\u043D\u0436\u0435\u043D\u0435\u0440"
   Icon: {fileID: -1830782310, guid: 7718a304d2006c04a9863a6100cade02, type: 3}
@@ -28,13 +28,13 @@ MonoBehaviour:
   BattleTinyIcon: {fileID: -1830782310, guid: 7718a304d2006c04a9863a6100cade02, type: 3}
   BattleImage: {fileID: 7908151102274979147, guid: 9175785ce91e0a944bfe42b3c4436d30, type: 3}
   BattleQueryImage: {fileID: -1830782310, guid: 7718a304d2006c04a9863a6100cade02, type: 3}
-  Color: {r: 1, g: 0.8939036, b: 0, a: 0}
+  Color: {r: 1, g: 0.8939036, b: 0, a: 1}
   Model: {fileID: 4587981641305205653, guid: 596e2c1092b7bb04ab1e8ad42b773eeb, type: 3}
   ParticipateInBattle: 1
   CanMoveInBattle: 1
   Level: 1
   Expireance: 0
-  ExpireanceBorder: 50
+  ExpireanceBorder: 35
   ExpireanceBorderFactor:
     serializedVersion: 2
     m_Curve:

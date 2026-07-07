@@ -112,21 +112,29 @@ namespace RPGF.Core.Location
                     yield break;
                 }
 
-                var spawnPoint = location.SpawnPoints.FirstOrDefault(obj => obj.Name == message.Point)
-                                                     ?? location.SpawnPoints[0];
+                var spawnPoint = location.SpawnPoints.FirstOrDefault(obj => obj.Name == message.Point);
+                if (spawnPoint == null)
+                {
+                    spawnPoint = location.SpawnPoints.First();
+                }
 
                 Explorer.PlayerManager.TeleportToVector(spawnPoint.transform.position);
 
+                Local.Character.RebuildModels();
+
                 Explorer.PlayerManager.movement.RotateTo(spawnPoint.SpawnDirection);
+                Local.Character.Models.ForEach(model => model.RotateTo(spawnPoint.SpawnDirection));
             }
             else
             {
                 Explorer.PlayerManager.TeleportToVector(message.Position);
 
+                Local.Character.RebuildModels();
+
                 Explorer.PlayerManager.movement.RotateTo(message.Direction);
+                Local.Character.Models.ForEach(model => model.RotateTo(message.Direction));
             }
 
-            Local.Character.RebuildModels();
 
             switch (message.Location.CameraCapture)
             {
@@ -139,7 +147,9 @@ namespace RPGF.Core.Location
                 case MainCameraManager.CaptureType.PlayerFollow:
                     Local.Camera.PlaceToLocationPoint(location);
 
-                    Local.Camera.FollowToPlayer();
+                    Local.Camera.FollowToPlayer(
+                        location.CameraPoint.position,
+                        message.Location.PlayerFollowBorder);
                     break;
                 default:
                     Local.Camera.PlaceToPlayer();

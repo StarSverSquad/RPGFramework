@@ -1,7 +1,9 @@
 ﻿using RPGF.Domain.DI;
+using System;
 
 namespace RPGF.Actions.Condition
 {
+    [Serializable]
     [UseCondition("По переключателю")]
     public class BoolVarCondition : ConditionBase
     {

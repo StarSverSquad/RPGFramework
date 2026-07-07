@@ -1,8 +1,6 @@
 using System;
 using DG.Tweening;
-using RPGF.Core.Attributes;
 using RPGF.Core.Enums;
-using RPGF.Domain;
 using RPGF.EventSystem;
 using RPGF.Explorer;
 using UnityEngine;
@@ -12,20 +10,19 @@ namespace RPGF.Core.Character
     public abstract class CharacterModelControllerBase : RPGFrameworkBehaviour, IDisposable, ICharacterModelController
     {
         [Header("Starting direction:")]
-        [DisplayName("Starting direction")]
         [SerializeField]
-        private ViewDirection _startDirection = ViewDirection.Down;
-        [DisplayName("Auto ordering")]
+        private ViewDirection startDirection = ViewDirection.Down;
+        [Header("Config:")]
         [SerializeField]
-        private bool _autoOrdering = true;
-        [DisplayName("Auto initialize")]
+        private bool autoOrdering = true;
         [SerializeField]
-        private bool _autoInitialize = false;
+        private bool autoInitialize = false;
+        [SerializeField]
+        private string talkTag = string.Empty;
 
         [Header("Linked event:")]
-        [DisplayName("Linked event")]
         [SerializeField]
-        private LocationEvent _linkedEvent;
+        private LocationEvent linkedEvent;
 
         #region PROPS
 
@@ -58,24 +55,24 @@ namespace RPGF.Core.Character
 
         public override void Initialize()
         {
-            RotateTo(_startDirection);
+            RotateTo(startDirection);
 
-            if (_linkedEvent != null)
+            if (linkedEvent != null)
             {
-                _linkedEvent.InnerEvent.OnStart += OnLinkedEventStart;
-                _linkedEvent.InnerEvent.OnEnd += OnLinkedEventEnd;
+                linkedEvent.InnerEvent.OnStart += OnLinkedEventStart;
+                linkedEvent.InnerEvent.OnEnd += OnLinkedEventEnd;
             }
         }
 
         private void OnEnable()
         {
-            if (_autoInitialize)
+            if (autoInitialize)
                 Initialize();
         }
 
         private void Update()
         {
-            if (_autoOrdering)
+            if (autoOrdering)
                 transform.position = new Vector3(transform.position.x,
                                                  transform.position.y,
                                                  transform.position.y);
@@ -108,6 +105,16 @@ namespace RPGF.Core.Character
         public void MoveToRelative(Vector2 offset, float time)
         {
             MoveTo((Vector2)transform.position + offset, time);
+        }
+
+        public void Talk()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void StopTalk()
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -150,7 +157,7 @@ namespace RPGF.Core.Character
         }
         public void RotateToDefault()
         {
-            RotateTo(_startDirection);
+            RotateTo(startDirection);
         }
 
         public void PauseMove()
@@ -193,10 +200,10 @@ namespace RPGF.Core.Character
         {
             DisposeMoveTween();
 
-            if (_linkedEvent != null)
+            if (linkedEvent != null)
             {
-                _linkedEvent.InnerEvent.OnStart -= OnLinkedEventStart;
-                _linkedEvent.InnerEvent.OnEnd -= OnLinkedEventEnd;
+                linkedEvent.InnerEvent.OnStart -= OnLinkedEventStart;
+                linkedEvent.InnerEvent.OnEnd -= OnLinkedEventEnd;
             }
         }
 

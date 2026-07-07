@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using RPGF;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -40,6 +41,31 @@ namespace RPGF.Core.Location
             MapContainer.SetActive(false);
 
             OnLeaveLocation?.Invoke();
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (CameraPoint == null)
+                return;
+
+            Camera camera = Camera.main;
+            if (camera == null || !camera.orthographic)
+                return;
+
+            float height = camera.orthographicSize * 2f;
+            float width = height * camera.aspect;
+
+            Gizmos.color = new Color(0f, 1f, 1f, 0.8f);
+            Gizmos.DrawWireCube(CameraPoint.position, new Vector3(width, height, 0f));
+
+            if (Info != null && Info.CameraCapture == MainCameraManager.CaptureType.PlayerFollow)
+            {
+                Vector2 border = Info.PlayerFollowBorder;
+                Gizmos.color = new Color(1f, 1f, 0f, 0.8f);
+                Gizmos.DrawWireCube(
+                    CameraPoint.position,
+                    new Vector3(border.x * 2f, border.y * 2f, 0f));
+            }
         }
     }
 }

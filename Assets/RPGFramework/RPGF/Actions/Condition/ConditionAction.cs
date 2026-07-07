@@ -1,5 +1,6 @@
 ﻿using RPGF.Domain.DI;
 using RPGF.EventSystem;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using UnityEngine;
 
 namespace RPGF.Actions.Condition
 {
+    [Serializable]
     public class ConditionAction : ActionBase
     {
         [Inject]

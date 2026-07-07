@@ -15,7 +15,7 @@ namespace RPGF.EventSystem
 
         public InteractionType Interaction;
 
-        public bool OnlyOne = true;
+        public bool OnlyOne = false;
         public bool Parallel = false;
 
         [SerializeField]

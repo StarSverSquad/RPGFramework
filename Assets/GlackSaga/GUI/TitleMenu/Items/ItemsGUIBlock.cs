@@ -142,6 +142,12 @@ namespace GlackSaga.GUI.TitleMenu.Items
 
         protected override void OnChoiced(int index)
         {
+            if (!HasItems)
+            {
+                StartChoice();
+                return;
+            }
+
             var slot = GetItemAt(ToAbsoluteIndex(index));
 
             if (usingItemCoroutine is not null)

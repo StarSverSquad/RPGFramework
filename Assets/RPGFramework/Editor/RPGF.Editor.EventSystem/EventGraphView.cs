@@ -137,7 +137,7 @@ namespace RPGF.Editor.EventSystem
                 {
                     ActionBase action = node.action.Clone();
 
-                    evt.menu.AppendAction("������� ��������", i => CreateNode(action, mousePosition));
+                    evt.menu.AppendAction("Создать дубликат", i => CreateNode(action, mousePosition));
                 }
             }
 

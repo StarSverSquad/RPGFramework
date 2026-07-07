@@ -9218,7 +9218,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.03137255}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.101960786}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -13440,7 +13440,7 @@ MonoBehaviour:
       m_Calls: []
   Elements: []
   startChoiceOnActivate: 0
-  isHorizontal: 0
+  isHorizontal: 1
   OnSelectionChangedEvent:
     m_PersistentCalls:
       m_Calls:
@@ -17875,7 +17875,6 @@ MonoBehaviour:
   Direction: {x: 0, y: -1}
   InteractionDistance: 0.8
   CanInteract: 1
-  raycastHit: {fileID: 0}
 --- !u!50 &6612724113824618219
 Rigidbody2D:
   serializedVersion: 5
@@ -32464,7 +32463,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 415384308532423474, guid: 96aa4a2bd34c2ee4cab505032d91f3a3, type: 3}
       propertyPath: translationTag
-      value: SYS_WEAR_SLOT_TALISMAN_S
+      value: SYS_WEAR_SLOT_ACCESSORY_S
       objectReference: {fileID: 0}
     - target: {fileID: 513185854015324458, guid: 96aa4a2bd34c2ee4cab505032d91f3a3, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -32488,7 +32487,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5852560310687339677, guid: 96aa4a2bd34c2ee4cab505032d91f3a3, type: 3}
       propertyPath: m_text
-      value: SYS_WEAR_SLOT_TALISMAN_S
+      value: SYS_WEAR_SLOT_ACCESSORY_S
       objectReference: {fileID: 0}
     - target: {fileID: 5852560310687339677, guid: 96aa4a2bd34c2ee4cab505032d91f3a3, type: 3}
       propertyPath: m_fontColor32.rgba

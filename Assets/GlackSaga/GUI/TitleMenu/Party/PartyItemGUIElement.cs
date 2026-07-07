@@ -4,6 +4,7 @@ using RPGF.GUI;
 using RPGF.RPG;
 using System;
 using TMPro;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,7 +35,7 @@ namespace GlackSaga.GUI.TitleMenu.Party
         public void SetData(RPGCharacter character)
         {
             _image.sprite = character.TitleImage;
-            _gradient.color = character.Color;
+            _gradient.color = new Color(character.Color.r, character.Color.g, character.Color.b, _gradient.color.a);
             _name.text = GetLocale(character.Name);
         }
 

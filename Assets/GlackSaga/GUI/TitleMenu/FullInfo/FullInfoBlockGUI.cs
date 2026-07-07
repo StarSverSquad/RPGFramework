@@ -58,7 +58,7 @@ namespace GlackSaga.GUI.TitleMenu.FullInfo
         public void SetData(RPGCharacter value)
         {
             _charImage.sprite = value.Icon;
-            _charGradient.color = value.Color;
+            _charGradient.color = new Color(value.Color.r, value.Color.g, value.Color.b, _charGradient.color.a);
 
             _charName.text = GetLocale(value.Name);
             _charDescription.text = GetLocale(value.Description);

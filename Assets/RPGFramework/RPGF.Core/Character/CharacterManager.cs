@@ -70,7 +70,7 @@ namespace RPGF.Core.Character
             for (int i = 0; i < Characters.Length; i++)
             {
                 var newObject = Instantiate(Characters[i].Model.gameObject,
-                    ExplorerManager.GetPlayerPosition3D() + new Vector3(0, 0, 0.05f * i),
+                    ExplorerManager.GetPlayerPosition3D() + new Vector3(0, 0.1f * i, -0.10f * i),
                     Quaternion.identity, transform);
 
                 var model = newObject.GetComponent<PlayableCharacterModelController>();

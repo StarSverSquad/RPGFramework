@@ -128,7 +128,7 @@ namespace RPGF.GUI
                     }
                 }
 
-                if (Input.GetKeyDown(Global.BaseOptions.Accept))
+                if (Input.GetKeyDown(Global.BaseOptions.Accept) && Elements.Count > 0)
                 {
                     end = true;
 

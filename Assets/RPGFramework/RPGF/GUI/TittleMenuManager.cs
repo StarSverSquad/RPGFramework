@@ -1,7 +1,7 @@
 ﻿using RPGF.Core;
 using RPGF.Domain.DI;
-using RPGF.Overworld.Player;
 using RPGF.GUI.Abstractions;
+using RPGF.Overworld.Player;
 using UnityEngine;
 
 namespace RPGF.GUI
@@ -13,7 +13,7 @@ namespace RPGF.GUI
         [Inject]
         private readonly SceneLoadManager _sceneLoader = null!;
         [Inject]
-        private readonly PlayerOverworldManager _playerExplorerManager = null!;
+        private readonly PlayerOverworldManager _playerManager = null!;
 
         [SerializeField]
         private GUIBlock saveLoadGUIBlock;
@@ -44,14 +44,14 @@ namespace RPGF.GUI
 
         public override void OnOpen()
         {
-            _playerExplorerManager.movement.SetMovementAccess(false);
-            _playerExplorerManager.interaction.CanInteract = false;
+            _playerManager.movement.SetMovementAccess(false);
+            _playerManager.interaction.CanInteract = false;
         }
 
         public override void OnClose()
         {
-            _playerExplorerManager.movement.SetMovementAccess(true);
-            _playerExplorerManager.interaction.CanInteract = true;
+            _playerManager.movement.SetMovementAccess(true);
+            _playerManager.interaction.CanInteract = true;
         }
     }
 }

@@ -12,7 +12,7 @@ namespace RPGF.Core
         protected GameManager Game => GameManager.Instance;
         protected GlobalManager Global => GlobalManager.Instance;
         protected LocalManager Local => LocalManager.Instance;
-        protected OverworldManager Explorer => OverworldManager.Instance;
+        protected OverworldManager Overworld => OverworldManager.Instance;
         protected SharedManager Shared => SharedManager.Instance;
         protected BattleManager Battle => BattleManager.Instance;
 

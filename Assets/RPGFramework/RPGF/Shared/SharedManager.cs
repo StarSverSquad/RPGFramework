@@ -1,4 +1,5 @@
 using RPGF.Core;
+using UnityEngine;
 
 namespace RPGF.Shared
 {
@@ -10,13 +11,15 @@ namespace RPGF.Shared
         public MessageBoxManager MessageDialog;
         public MediaManager Media;
 
+        public Canvas Canvas;
+
         private LocalManager Local => LocalManager.Instance;
 
         public override void Initialize()
         {
             Instance = this;
 
-            Local.DI.AddSignleton(ChoiceDialog);
+            Local.DI.AddSignleton(this);
 
             InitializeChild();
         }

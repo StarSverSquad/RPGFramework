@@ -1,16 +1,17 @@
 ﻿using RPGF.Core;
+using RPGF.Domain.Interfaces;
 using RPGF.RPG;
 using System.Collections;
 using UnityEngine;
 
 namespace RPGF.Overworld
 {
-    public class OverworldItemConsumeManager : RPGFrameworkBehaviour
+    public class OverworldItemConsumeService : IService
     {
         private Coroutine consumeCoroutine;
         public bool IsCosuming => consumeCoroutine != null;
 
-        public void CosumeItem(RPGConsumed item, RPGEntity who, RPGEntity target)
+        public void CosumeItem(MonoBehaviour listener, RPGConsumed item, RPGEntity who, RPGEntity target)
         {
             if (IsCosuming)
             {
@@ -19,10 +20,10 @@ namespace RPGF.Overworld
                 return;
             }
 
-            consumeCoroutine = StartCoroutine(ConsumeCoroutine(item, who, target));
+            consumeCoroutine = listener.StartCoroutine(ConsumeCoroutine(listener, item, who, target));
         }
 
-        private IEnumerator ConsumeCoroutine(RPGConsumed item, RPGEntity who, RPGEntity target)
+        private IEnumerator ConsumeCoroutine(MonoBehaviour listener, RPGConsumed item, RPGEntity who, RPGEntity target)
         {
             if (item.Usage == Usability.Battle || item.Usage == Usability.Noway
                 || !GlobalManager.Instance.Inventory.HasItemSlot(item))
@@ -34,7 +35,7 @@ namespace RPGF.Overworld
 
             foreach (var effect in item.Effects)
             {
-                yield return StartCoroutine(effect.Invoke(who, target));
+                yield return listener.StartCoroutine(effect.Invoke(who, target));
             }
 
             who.Heal = who.Heal == 0 ? 1 : who.Heal;

@@ -17,16 +17,14 @@ namespace RPGF
 
         [Header("Общие ссылки")]
         public MainCameraManager Camera;
-        public CharacterManager Character;
         public LocalLocationManager Location;
         public TittleMenuManager TittleMenu;
-        public SunManager Sun;
 
         [Space]
 
         [Header("Ссылки для инициализации")]
         [SerializeField]
-        private OverworldManager explorer;
+        private OverworldManager overworld;
         [SerializeField]
         private SharedManager shared;
         [SerializeField]
@@ -41,10 +39,7 @@ namespace RPGF
             DI = new DependencyInjection();
 
             DI.AddSignleton(DI);
-
             DI.AddSubInjector(Game.DI);
-
-            DI.AddSignleton(Sun);
 
             InitializeChild();
         }
@@ -56,30 +51,24 @@ namespace RPGF
 
         private void Update()
         {
-            /// 0_o
             if (Input.GetKeyDown(GlobalManager.Instance.BaseOptions.Additional)
                 && !TittleMenu.IsOpened
-                && !explorer.EventHandler.EventPlaying)
+                && !overworld.EventHandler.EventPlaying)
                 TittleMenu.Open();
         }
 
         public override void InitializeChild()
         {
-            Camera.Initialize();
+            shared.Initialize();
+
+            overworld.Initialize();
+
             DI.AddSignleton(Camera);
-
-            explorer.Initialize();
-
+            Camera.Initialize();
+            DI.AddSignleton(Location);
+            Location.Initialize();
             DI.AddSignleton(TittleMenu);
             TittleMenu.Initialize();
-
-            Location.Initialize();
-            DI.AddSignleton(Location);
-
-            Character.Initialize();
-            DI.AddSignleton(Character);
-
-            shared.Initialize();
 
             battle.Initialize();
         }

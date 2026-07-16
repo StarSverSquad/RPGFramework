@@ -135,8 +135,8 @@ namespace SpiderDance.Misc
             player.interaction.CanInteract = false;
             player.movement.SetMovementAccess(false);
 
-            if (Local.Character.Models.Count > 0)
-                Local.Character.Models[0].transform.position = GetCenter();
+            if (Overworld.CharacterManager.Models.Count > 0)
+                Overworld.CharacterManager.Models[0].transform.position = GetCenter();
 
             if (launchDelay > 0f)
                 yield return new WaitForSeconds(launchDelay);

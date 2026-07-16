@@ -118,21 +118,21 @@ namespace RPGF.Core.Location
                     spawnPoint = location.SpawnPoints.First();
                 }
 
-                Explorer.PlayerManager.TeleportToVector(spawnPoint.transform.position);
+                Overworld.PlayerManager.TeleportToVector(spawnPoint.transform.position);
 
-                Local.Character.RebuildModels();
+                Overworld.CharacterManager.RebuildModels();
 
-                Explorer.PlayerManager.movement.RotateTo(spawnPoint.SpawnDirection);
-                Local.Character.Models.ForEach(model => model.RotateTo(spawnPoint.SpawnDirection));
+                Overworld.PlayerManager.movement.RotateTo(spawnPoint.SpawnDirection);
+                Overworld.CharacterManager.Models.ForEach(model => model.RotateTo(spawnPoint.SpawnDirection));
             }
             else
             {
-                Explorer.PlayerManager.TeleportToVector(message.Position);
+                Overworld.PlayerManager.TeleportToVector(message.Position);
 
-                Local.Character.RebuildModels();
+                Overworld.CharacterManager.RebuildModels();
 
-                Explorer.PlayerManager.movement.RotateTo(message.Direction);
-                Local.Character.Models.ForEach(model => model.RotateTo(message.Direction));
+                Overworld.PlayerManager.movement.RotateTo(message.Direction);
+                Overworld.CharacterManager.Models.ForEach(model => model.RotateTo(message.Direction));
             }
 
 

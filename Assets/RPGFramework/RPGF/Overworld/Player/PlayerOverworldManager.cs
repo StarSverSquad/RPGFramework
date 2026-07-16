@@ -1,10 +1,10 @@
+using System;
+using System.Linq;
 using DG.Tweening;
 using RPGF.Core;
 using RPGF.Core.Character;
 using RPGF.Core.Enums;
 using RPGF.Core.Location;
-using System;
-using System.Linq;
 using UnityEngine;
 
 namespace RPGF.Overworld.Player
@@ -29,7 +29,7 @@ namespace RPGF.Overworld.Player
 
             transform.position = point.transform.position;
 
-            LocalManager.Instance.Character.RebuildModels();
+            Overworld.CharacterManager.RebuildModels();
 
             movement.RotateTo(point.SpawnDirection);
         }
@@ -50,15 +50,15 @@ namespace RPGF.Overworld.Player
             interaction.CanInteract = false;
 
             movement.SnapTo(jumpFrom);
-            Local.Character.SetOtherModelsInvisible(CharacterManager.DEFAULT_FADE_TIME);
+            Overworld.CharacterManager.SetOtherModelsInvisible(CharacterManager.DEFAULT_FADE_TIME);
 
             Vector2 offset = DirectionHelper.GetVectorByViewDiretion(direction) * length;
             float time = speed > 0f ? length / speed : 0f;
 
             movement.TranslateByParabola(offset, time, arcHeight, ease, () =>
             {
-                Local.Character.ResetOthersPositions();
-                Local.Character.SetOtherModelsVisible(CharacterManager.DEFAULT_FADE_TIME);
+                Overworld.CharacterManager.ResetOthersPositions();
+                Overworld.CharacterManager.SetOtherModelsVisible(CharacterManager.DEFAULT_FADE_TIME);
 
                 movement.SetMovementAccess(true);
                 interaction.CanInteract = true;

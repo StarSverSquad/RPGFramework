@@ -167,7 +167,7 @@ namespace RPGF.Overworld.Player
 
             ViewDirection? newViewDirection = null;
 
-            if (CanWalk && !Explorer.EventHandler.EventPlaying)
+            if (CanWalk && !Overworld.EventHandler.EventPlaying)
             {
 
                 if (Input.GetKey(Global.BaseOptions.MoveRight))

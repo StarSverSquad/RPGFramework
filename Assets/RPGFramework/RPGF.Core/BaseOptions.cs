@@ -1,6 +1,7 @@
 ﻿using NaughtyAttributes;
 using RPGF.Domain;
 using RPGF.Domain.DI;
+using RPGF.Misc;
 using UnityEngine;
 
 namespace RPGF.Core
@@ -33,5 +34,9 @@ namespace RPGF.Core
         public string MainMenuScene;
         [Scene]
         public string GameOverScene;
+
+        [Header("Общие объекты")]
+        public FallingText DamageText;
+        public AudioClip HurtSound;
     }
 }

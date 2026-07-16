@@ -2217,6 +2217,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 972641263531201527}
+  - {fileID: 1055685103564977043}
   m_Father: {fileID: 6343221043466968680}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1011528707145964960
@@ -2229,8 +2230,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6343221043466968680}
   - component: {fileID: 2356675289498216603}
-  - component: {fileID: 506122218211345586}
   - component: {fileID: 3351690593132183500}
+  - component: {fileID: 7724338245337593872}
   m_Layer: 0
   m_Name: Overworld
   m_TagString: Untagged
@@ -2269,19 +2270,8 @@ MonoBehaviour:
   container: {fileID: 946301744828918298}
   EventHandler: {fileID: 3351690593132183500}
   PlayerManager: {fileID: 1018772513299120887}
-  ItemConsumer: {fileID: 506122218211345586}
---- !u!114 &506122218211345586
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1011528707145964960}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba9482c401b0ff4458070a3894f6caf4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  CharacterManager: {fileID: 7724338245337593872}
+  SunManager: {fileID: 6624202600712505020}
 --- !u!114 &3351690593132183500
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2294,6 +2284,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97495b2f0d59ab64aadbe7dc56affe30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: RPGFramework::RPGF.Overworld.OverworldEventHandler
+--- !u!114 &7724338245337593872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011528707145964960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1b0b104b373e8245ba66356d9f4171f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _updateTargetsDistance: 1
+  _modelMoveTime: 0.5
 --- !u!1 &1026380488932073841
 GameObject:
   m_ObjectHideFlags: 0
@@ -6177,9 +6181,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5099015730180991595}
   - component: {fileID: 79130533229604860}
-  - component: {fileID: 2317324867090149036}
   - component: {fileID: 1495541019343982985}
-  - component: {fileID: 4872088662257522434}
   m_Layer: 0
   m_Name: LocalController
   m_TagString: Untagged
@@ -6216,27 +6218,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   container: {fileID: 2917084531414461041}
   Camera: {fileID: 403678928952544789}
-  Character: {fileID: 2317324867090149036}
   Location: {fileID: 1495541019343982985}
   TittleMenu: {fileID: 8852652440333977664}
-  Sun: {fileID: 4872088662257522434}
-  explorer: {fileID: 2356675289498216603}
+  overworld: {fileID: 2356675289498216603}
   shared: {fileID: 6757614129400483524}
   battle: {fileID: 359477631808309587}
---- !u!114 &2317324867090149036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2917084531414461041}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1b0b104b373e8245ba66356d9f4171f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _updateTargetsDistance: 1
-  _modelMoveTime: 0.5
 --- !u!114 &1495541019343982985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6250,19 +6236,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Locations: []
---- !u!114 &4872088662257522434
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2917084531414461041}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cb390803dd1bb24fb104426d85480b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Light: {fileID: 6495213907554210044}
 --- !u!1 &2917584737121285056
 GameObject:
   m_ObjectHideFlags: 0
@@ -7755,6 +7728,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1055685103564977043}
   - component: {fileID: 6495213907554210044}
+  - component: {fileID: 6624202600712505020}
   m_Layer: 0
   m_Name: Sun
   m_TagString: Untagged
@@ -7770,12 +7744,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3573725088685992427}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1736847258508491885}
+  m_Father: {fileID: 7040866106288990459}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6495213907554210044
 MonoBehaviour:
@@ -7829,6 +7803,19 @@ MonoBehaviour:
   - {x: 0.5, y: -0.5, z: 0}
   - {x: 0.5, y: 0.5, z: 0}
   - {x: -0.5, y: 0.5, z: 0}
+--- !u!114 &6624202600712505020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3573725088685992427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5cb390803dd1bb24fb104426d85480b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Light: {fileID: 6495213907554210044}
 --- !u!1 &3590475540213869372
 GameObject:
   m_ObjectHideFlags: 0
@@ -11958,7 +11945,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5099015730180991595}
-  - {fileID: 1055685103564977043}
   - {fileID: 6748930043731217063}
   - {fileID: 6343221043466968680}
   - {fileID: 8292778852447529700}
@@ -12471,7 +12457,7 @@ GameObject:
   - component: {fileID: 9109514841680796866}
   - component: {fileID: 8546875510809735260}
   m_Layer: 0
-  m_Name: DialogCanvas
+  m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13876,6 +13862,7 @@ MonoBehaviour:
   ChoiceDialog: {fileID: 8546875510809735260}
   MessageDialog: {fileID: 9109514841680796866}
   Media: {fileID: 984269743443020230}
+  Canvas: {fileID: 3606350859928058046}
 --- !u!114 &984269743443020230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17853,13 +17840,13 @@ MonoBehaviour:
   CanWalk: 1
   CanRun: 1
   CanRotate: 1
-  Speed: 10
+  Speed: 4
   AccelerationFactor: 1.5
   Velocity: {x: 0, y: 0}
   NormolizedVelocity: {x: 0, y: 0}
   MoveDirection: -1
   ViewDirection: 1
-  rb: {fileID: 0}
+  rb: {fileID: 6612724113824618219}
 --- !u!114 &6409241148107646158
 MonoBehaviour:
   m_ObjectHideFlags: 0

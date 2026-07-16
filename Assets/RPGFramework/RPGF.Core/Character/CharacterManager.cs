@@ -24,8 +24,8 @@ namespace RPGF.Core.Character
 
         public List<PlayableCharacterModelController> Models => models;
 
-        private PlayerOverworldMovement PlayerMovement => Explorer.PlayerManager.movement;
-        private OverworldEventHandler EventHandler => Explorer.EventHandler;
+        private PlayerOverworldMovement PlayerMovement => Overworld.PlayerManager.movement;
+        private OverworldEventHandler EventHandler => Overworld.EventHandler;
 
         public override void Initialize()
         {
@@ -65,13 +65,13 @@ namespace RPGF.Core.Character
             foreach (var model in models.Skip(1))
             {
                 model.StopMove();
-                model.transform.position = Explorer.PlayerManager.transform.position;
+                model.transform.position = Overworld.PlayerManager.transform.position;
             }
 
             targets.Clear();
             foreach (var _ in models)
             {
-                targets.Add(Explorer.PlayerManager.transform.position);
+                targets.Add(Overworld.PlayerManager.transform.position);
             }
         }
 

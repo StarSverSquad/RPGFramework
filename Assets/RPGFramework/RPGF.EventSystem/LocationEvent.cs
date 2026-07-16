@@ -47,15 +47,15 @@ namespace RPGF.EventSystem
         public void InvokeEvent()
         {
             if (!IsBlocked() && !InnerEvent.IsPlaying
-                && (!Explorer.EventHandler.EventPlaying || Parallel))
+                && (!Overworld.EventHandler.EventPlaying || Parallel))
             {
                 if (Parallel)
                 {
-                    InnerEvent.Invoke(Explorer, Local.DI);
+                    InnerEvent.Invoke(Overworld, Local.DI);
                 }
                 else
                 {
-                    Explorer.EventHandler.InvokeEvent(InnerEvent);
+                    Overworld.EventHandler.InvokeEvent(InnerEvent);
                 }
             }
         }

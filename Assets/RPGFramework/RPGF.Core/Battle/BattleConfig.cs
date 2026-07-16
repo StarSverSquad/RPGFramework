@@ -15,7 +15,6 @@ namespace RPGF.Core.Battle
 
         [Header("Префабы")]
         public BattleAttackEffect DefaultEffect;
-        public FallingText DmgText;
         public BattleFieldBase DefaultBattleField;
 
         [Header("Настройки")]
@@ -28,7 +27,6 @@ namespace RPGF.Core.Battle
         public AudioClip CancelSound;
         public AudioClip DenySound;
         public AudioClip HealSound;
-        public AudioClip HurtSound;
         public AudioClip EnemyDamageSound;
         public AudioClip EnemyDeathSound;
         public AudioClip MissSound;

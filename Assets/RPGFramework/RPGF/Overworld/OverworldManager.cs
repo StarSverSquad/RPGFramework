@@ -1,5 +1,7 @@
 using RPGF.Core;
+using RPGF.Core.Character;
 using RPGF.Core.Enums;
+using RPGF.Explorer;
 using RPGF.Overworld.Player;
 using UnityEngine;
 
@@ -12,7 +14,11 @@ namespace RPGF.Overworld
 
         public OverworldEventHandler EventHandler;
         public PlayerOverworldManager PlayerManager;
-        public OverworldItemConsumeManager ItemConsumer;
+        public CharacterManager CharacterManager;
+        public SunManager SunManager;
+
+        public OverworldItemConsumeService ItemConsumeService { get; private set; }
+        public OverworldDamageService DamageService { get; private set; }
 
         private LocalManager Local => LocalManager.Instance;
 
@@ -20,9 +26,20 @@ namespace RPGF.Overworld
         {
             Instance = this;
 
+            InitializeChild();
+        }
+
+        public override void InitializeChild()
+        {
             Local.DI.AddSignleton(EventHandler);
+            Local.DI.AddSignleton(SunManager);
+
             Local.DI.AddSignleton(PlayerManager);
-            Local.DI.AddSignleton(ItemConsumer);
+            CharacterManager.Initialize();
+            Local.DI.AddSignleton(CharacterManager);
+
+            ItemConsumeService = Local.DI.CreateSingleton<OverworldItemConsumeService>();
+            DamageService = Local.DI.CreateSingleton<OverworldDamageService>();
         }
 
         public static Vector2 GetPlayerPosition()

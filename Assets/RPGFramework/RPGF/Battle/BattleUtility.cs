@@ -8,6 +8,8 @@ using RPGF.Core.Battle.Enums;
 using RPGF.Core.Battle;
 using RPGF.Core.Battle.Projectiles.Abstractions;
 using RPGF.Core.Localization;
+using RPGF.Core;
+using RPGF.Misc;
 
 namespace RPGF.Battle
 {
@@ -15,6 +17,9 @@ namespace RPGF.Battle
     {
         [Inject]
         private readonly LocalizationService _localization = null!;
+        [Inject]
+        private readonly BaseOptions _baseOptions = null!;
+
         private readonly BattleManager _battle;
 
         public BattleData Data => _battle.Data;
@@ -109,10 +114,10 @@ namespace RPGF.Battle
         }
         public void SpawnFallingText(Vector2 position, string text, Color colorStart, Color colorEnd)
         {
-            GameObject obj = Object.Instantiate(Config.DmgText.gameObject, position, Quaternion.identity, _battle.Canvas.transform);
+            GameObject obj = Object.Instantiate(_baseOptions.DamageText.gameObject, position, Quaternion.identity, _battle.Canvas.transform);
             obj.transform.position = position;
 
-            FallingText dmg = obj.GetComponent<FallingText>();
+            var dmg = obj.GetComponent<FallingText>();
 
             dmg.Invoke(text, colorStart, colorEnd);
         }
@@ -393,7 +398,7 @@ namespace RPGF.Battle
                     }
 
                     if (healDif < 0)
-                        _battle.BattleAudio.PlaySound(Config.HurtSound);
+                        _battle.BattleAudio.PlaySound(_baseOptions.HurtSound);
                     else
                         _battle.BattleAudio.PlaySound(Config.HealSound);
                 }

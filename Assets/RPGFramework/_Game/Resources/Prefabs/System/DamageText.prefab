@@ -103,6 +103,7 @@ MonoBehaviour:
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -145,9 +146,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2357440187071886130}
-  - component: {fileID: 8448606485995851385}
+  - component: {fileID: 5647693649222023366}
   m_Layer: 0
-  m_Name: FallingText
+  m_Name: DamageText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -173,7 +174,7 @@ RectTransform:
   m_AnchoredPosition: {x: 607, y: 115.77}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &8448606485995851385
+--- !u!114 &5647693649222023366
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -182,70 +183,54 @@ MonoBehaviour:
   m_GameObject: {fileID: 6150082249223539256}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be7d9c0db4656ec41bfb72298b88869c, type: 3}
+  m_Script: {fileID: 11500000, guid: ba6d7cfdb05ec7343bd892a21b971ab6, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: RPGFramework::RPGF.Misc.FallingText
   textMesh: {fileID: 3624501484668895468}
-  topDownCurve:
+  curve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.49752045
-      inSlope: 1.588468
-      outSlope: 1.588468
+      value: 1
+      inSlope: 8.427667
+      outSlope: 8.427667
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.30000684
-      value: 0.9740717
-      inSlope: -1.2273794
-      outSlope: -1.2273794
+      time: 0.08570319
+      value: 1.7222779
+      inSlope: 3.9317327
+      outSlope: 3.9317327
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.6516679
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.18964264
+      value: 0.71998715
+      inSlope: -0.9181254
+      outSlope: -0.9181254
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.049245797
+      outWeight: 0.07285848
     - serializedVersion: 3
       time: 1
-      value: 0.13978493
-      inSlope: 0.08948954
-      outSlope: 0.08948954
-      tangentMode: 0
+      value: 0.49343872
+      inSlope: -0.27956608
+      outSlope: -0.27956608
+      tangentMode: 34
       weightedMode: 0
-      inWeight: 0.09903094
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  upCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0.00330846
-      inSlope: 3.104761
-      outSlope: 3.104761
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.029304769
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0.3671623
-      outSlope: 0.3671623
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.08447862
+      inWeight: 0.33333334
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   DeleteOnEnd: 1
   DeletionDelay: 1
-  Delay: 0.075
-  Speed: 6
-  Effect: 0
-  Distance: 32
+  Delay: 0.1
+  Speed: 1
+  Distance: 0.2

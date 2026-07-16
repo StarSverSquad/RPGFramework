@@ -24,8 +24,8 @@ namespace RPGF.Overworld.Player
             if (Local == null)
                 return;
 
-            if (Explorer.PlayerManager.movement.CanWalk
-                && !Explorer.EventHandler.EventPlaying)
+            if (Overworld.PlayerManager.movement.CanWalk
+                && !Overworld.EventHandler.EventPlaying)
             {
                 if (Input.GetKey(KeyCode.RightArrow))
                 {

@@ -108,7 +108,7 @@ TextureImporter:
         width: 34
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -130,7 +130,7 @@ TextureImporter:
         width: 20
         height: 19
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -139,6 +139,28 @@ TextureImporter:
       bones: []
       spriteID: 8c7a2036a3a2bd4458c910d6ef215749
       internalID: -1699165987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: ruins_2
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 721
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 358c18969830d1c49833c30332293569
+      internalID: -2086139584
       vertices: []
       indices: 
       edges: []
@@ -160,6 +182,7 @@ TextureImporter:
       PC _ Computer - Undertale - Backgrounds - Ruins_0: 7837609474605432742
       ruins_0: 1878588090
       ruins_1: -1699165987
+      ruins_2: -2086139584
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

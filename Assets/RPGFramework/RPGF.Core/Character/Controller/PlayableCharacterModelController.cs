@@ -1,4 +1,5 @@
-﻿using RPGF.Core.Enums;
+﻿using DG.Tweening;
+using RPGF.Core.Enums;
 using UnityEngine;
 
 namespace RPGF.Core.Character
@@ -7,6 +8,8 @@ namespace RPGF.Core.Character
     public class PlayableCharacterModelController : CharacterModelControllerBase
     {
         private Animator _animator;
+        private SpriteRenderer[] _spriteRenderers;
+        private Tween _visibilityTween;
 
         #region CONSTS
 
@@ -23,8 +26,57 @@ namespace RPGF.Core.Character
         public override void Initialize()
         {
             _animator = GetComponent<Animator>();
+            _spriteRenderers = GetComponentsInChildren<SpriteRenderer>();
 
             base.Initialize();
+        }
+
+        public Tween SetVisibility(bool visible, float time)
+        {
+            DisposeVisibilityTween();
+
+            float targetAlpha = visible ? 1f : 0f;
+
+            if (_spriteRenderers.Length == 0 || time <= 0f)
+            {
+                SetVisibilityInstant(visible);
+                return null;
+            }
+
+            Sequence sequence = DOTween.Sequence();
+
+            foreach (var spriteRenderer in _spriteRenderers)
+            {
+                sequence.Join(spriteRenderer.DOFade(targetAlpha, time));
+            }
+
+            _visibilityTween = sequence;
+            return sequence;
+        }
+
+        public void SetVisibilityInstant(bool visible)
+        {
+            DisposeVisibilityTween();
+
+            float targetAlpha = visible ? 1f : 0f;
+
+            foreach (var spriteRenderer in _spriteRenderers)
+            {
+                Color color = spriteRenderer.color;
+                color.a = targetAlpha;
+                spriteRenderer.color = color;
+            }
+        }
+
+        public void StopVisibilityTween()
+        {
+            DisposeVisibilityTween();
+        }
+
+        private void DisposeVisibilityTween()
+        {
+            _visibilityTween?.Kill();
+            _visibilityTween = null;
         }
 
         #region ANIMATION API

@@ -14,7 +14,7 @@ namespace RPGF.Core.TextWriter.Abstractions
 {
     public abstract class TextWriterBase : RPGFrameworkBehaviour
     {
-        public TextParser _parser { get; protected set; }
+        public TextParser parser { get; protected set; }
 
         public WriterMessage BaseMessage { get; private set; }
 
@@ -23,8 +23,6 @@ namespace RPGF.Core.TextWriter.Abstractions
 
         public bool IsWriting => writeCoroutine != null;
 
-
-        [Tooltip("Букв в секунду")]
         public float defaultTextSpeed = 15;
 
         private Coroutine writeCoroutine;
@@ -64,7 +62,7 @@ namespace RPGF.Core.TextWriter.Abstractions
 
             var allowedActions = metas.ToDictionary((meta) => actions[metas.IndexOf(meta)] as TextActionBase);
 
-            _parser = new TextParser(allowedActions);
+            parser = new TextParser(allowedActions);
         }
 
         public void AddTextEffect(TextEffectBase effect, int startLetterIndex, int endLetterIndex)
@@ -78,7 +76,7 @@ namespace RPGF.Core.TextWriter.Abstractions
         {
             if (!IsWriting)
             {
-                this.BaseMessage = message;
+                BaseMessage = message;
 
                 writeCoroutine = StartCoroutine(WriteCoroutine());
                 StartCoroutine(SkipCoroutine());
@@ -140,7 +138,7 @@ namespace RPGF.Core.TextWriter.Abstractions
             OnStartWriting();
             OnStartWritingCallback?.Invoke();
 
-            var textData = _parser.ParseText(BaseMessage.text);
+            var textData = parser.ParseText(BaseMessage.text);
             textMeshPro.text = textData.ClearedText;
             textMeshPro.maxVisibleCharacters = 0;
 
@@ -150,16 +148,16 @@ namespace RPGF.Core.TextWriter.Abstractions
 
             writeText = textMeshPro.GetParsedText();
 
-            var tagDictionary = textData.Tags.ToDictionary(tag => tag.RealIndex);
+            var tags = textData.Tags.ToList();
 
             for (int index = 0; index < writeText.Length; index++)
             {
                 if (writeText[index] == ' ')
                     OnSpaceCallback?.Invoke();
 
-                if (tagDictionary.TryGetValue(index, out var tag)) 
+                foreach (var tag in tags.Where(t => t.RealIndex == index).ToList())
                 {
-                    yield return ProceedTag(tag, index, tagDictionary);
+                    yield return ProceedTag(tag, index, tags);
                 }
 
                 if (IsPause)
@@ -205,7 +203,7 @@ namespace RPGF.Core.TextWriter.Abstractions
             OnEndWritingCallback?.Invoke();
         }
 
-        private IEnumerator ProceedTag(TextParserTag tag, int index, Dictionary<int, TextParserTag> tagDictionary)
+        private IEnumerator ProceedTag(TextParserTag tag, int index, List<TextParserTag> tags)
         {
             bool isMajorTag = tag.Type == TextParserTag.TagType.Single || tag.Type == TextParserTag.TagType.ScopedOpen;
 
@@ -217,7 +215,7 @@ namespace RPGF.Core.TextWriter.Abstractions
 
                 if (tag.Type == TextParserTag.TagType.ScopedOpen)
                 {
-                    var futureTags = tagDictionary.Values.Where(t => t.RealIndex > tag.RealIndex).OrderBy((t) => t.RealIndex);
+                    var futureTags = tags.Where(t => t.RealIndex > tag.RealIndex).OrderBy(t => t.RealIndex);
 
                     int openCounter = 0;
                     TextParserTag closeTag = null;
@@ -267,11 +265,9 @@ namespace RPGF.Core.TextWriter.Abstractions
 
                     if (!string.IsNullOrWhiteSpace(action.ReturnText))
                     {
-                        var returnedTextData = _parser.ParseText(action.ReturnText);
+                        var returnedTextData = parser.ParseText(action.ReturnText);
 
-                        var oldTags = tagDictionary.Values.ToList();
-
-                        foreach (var item in oldTags.Where(t => t.RealIndex > tag.RealIndex))
+                        foreach (var item in tags.Where(t => t.RealIndex > tag.RealIndex))
                         {
                             item.RealIndex += returnedTextData.ClearedTextWithoutShadows.Length;
                         }
@@ -280,9 +276,7 @@ namespace RPGF.Core.TextWriter.Abstractions
                             subtag.RealIndex += index;
                         }
 
-                        oldTags.AddRange(returnedTextData.Tags);
-
-                        tagDictionary = oldTags.ToDictionary(t => t.RealIndex);
+                        tags.AddRange(returnedTextData.Tags);
 
                         textMeshPro.text = writeText.Insert(index, returnedTextData.ClearedText);
 

@@ -2,9 +2,9 @@ using RPGF.Core;
 using RPGF.EventSystem.Graph;
 using System;
 
-namespace RPGF.Explorer
+namespace RPGF.Overworld
 {
-    public class ExplorerEventHandler : RPGFrameworkBehaviour
+    public class OverworldEventHandler : RPGFrameworkBehaviour
     {
         private GraphEvent CurrentEvent = null;
         public GraphEvent HandledEvent => CurrentEvent;

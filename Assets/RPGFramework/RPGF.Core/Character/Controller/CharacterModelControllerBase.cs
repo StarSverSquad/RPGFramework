@@ -1,8 +1,9 @@
-using System;
 using DG.Tweening;
 using RPGF.Core.Enums;
 using RPGF.EventSystem;
 using RPGF.Explorer;
+using RPGF.Overworld;
+using System;
 using UnityEngine;
 
 namespace RPGF.Core.Character
@@ -149,7 +150,7 @@ namespace RPGF.Core.Character
 
         public void RotateToPlayer()
         {
-            Vector2 vectorDirection = (ExplorerManager.GetPlayerPosition3D() - transform.position).normalized;
+            Vector2 vectorDirection = (OverworldManager.GetPlayerPosition3D() - transform.position).normalized;
 
             ViewDirection direction = DirectionHelper.GetViewDirectionByVector(vectorDirection);
 

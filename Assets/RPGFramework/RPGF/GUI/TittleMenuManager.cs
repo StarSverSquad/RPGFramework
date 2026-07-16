@@ -1,6 +1,6 @@
 ﻿using RPGF.Core;
 using RPGF.Domain.DI;
-using RPGF.Explorer.Player;
+using RPGF.Overworld.Player;
 using RPGF.GUI.Abstractions;
 using UnityEngine;
 
@@ -13,7 +13,7 @@ namespace RPGF.GUI
         [Inject]
         private readonly SceneLoadManager _sceneLoader = null!;
         [Inject]
-        private readonly PlayerExplorerManager _playerExplorerManager = null!;
+        private readonly PlayerOverworldManager _playerExplorerManager = null!;
 
         [SerializeField]
         private GUIBlock saveLoadGUIBlock;

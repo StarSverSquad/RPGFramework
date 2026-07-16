@@ -2,9 +2,9 @@ using RPGF.Core;
 using RPGF.EventSystem;
 using UnityEngine;
 
-namespace RPGF.Explorer.Player
+namespace RPGF.Overworld.Player
 {
-    public class PlayerExplorerInteraction : RPGFrameworkBehaviour
+    public class PlayerOverworldInteraction : RPGFrameworkBehaviour
     {
         public enum ViewDirection
         {

@@ -2,12 +2,11 @@ using System;
 using DG.Tweening;
 using RPGF.Core;
 using RPGF.Core.Enums;
-using RPGF.Domain;
 using UnityEngine;
 
-namespace RPGF.Explorer.Player
+namespace RPGF.Overworld.Player
 {
-    public class PlayerExplorerMovement : RPGFrameworkBehaviour
+    public class PlayerOverworldMovement : RPGFrameworkBehaviour
     {
         public bool CanWalk = true;
         public bool CanRun = true;
@@ -71,15 +70,18 @@ namespace RPGF.Explorer.Player
         {
             TranslateByTime(vec, vec.magnitude / speed);
         }
-        public void TranslateByTime(Vector2 vec, float time)
+
+        public void TranslateByTime(Vector2 vec, float time, Ease ease = Ease.Linear, Action onComplete = null)
         {
             DisposeAutoMoveTween();
+
+            rb.linearVelocity = Vector2.zero;
 
             ViewDirection moveDir = DirectionHelper.GetViewDirectionByVector(vec.normalized);
 
             RotateTo(moveDir);
 
-            autoMoveTween = transform.DOMove(vec, time).SetRelative().SetEase(Ease.Linear);
+            autoMoveTween = transform.DOMove(vec, time).SetRelative().SetEase(ease);
 
             autoMoveTween.onPlay += () =>
             {
@@ -90,9 +92,63 @@ namespace RPGF.Explorer.Player
             {
                 OnStopMoving?.Invoke();
                 DisposeAutoMoveTween();
+                onComplete?.Invoke();
             };
 
             autoMoveTween.Play();
+        }
+
+        public void TranslateByParabola(Vector2 offset, float time, float arcHeight, Ease ease = Ease.Linear, Action onComplete = null)
+        {
+            DisposeAutoMoveTween();
+
+            rb.linearVelocity = Vector2.zero;
+
+            if (offset.sqrMagnitude > 0f)
+            {
+                ViewDirection moveDir = DirectionHelper.GetViewDirectionByVector(offset.normalized);
+                RotateTo(moveDir);
+            }
+
+            Vector2 start = transform.position;
+            Vector2 end = start + offset;
+            Vector2 travelDirection = offset.sqrMagnitude > 0f ? offset.normalized : Vector2.right;
+            Vector2 perpendicular = new(-travelDirection.y, travelDirection.x);
+            Vector2 control = (start + end) * 0.5f + perpendicular * arcHeight;
+
+            autoMoveTween = DOVirtual.Float(0f, 1f, time, t =>
+            {
+                float invertedT = 1f - t;
+                Vector2 position = invertedT * invertedT * start + 2f * invertedT * t * control + t * t * end;
+                transform.position = position;
+                OnMoving?.Invoke();
+            }).SetEase(ease);
+
+            autoMoveTween.onPlay += () =>
+            {
+                OnStartMoving?.Invoke();
+            };
+
+            autoMoveTween.onComplete += () =>
+            {
+                transform.position = end;
+                OnStopMoving?.Invoke();
+                DisposeAutoMoveTween();
+                onComplete?.Invoke();
+            };
+
+            autoMoveTween.Play();
+        }
+
+        public void SnapTo(Vector2 position)
+        {
+            DisposeAutoMoveTween();
+
+            rb.linearVelocity = Vector2.zero;
+            transform.position = position;
+
+            OnMoving?.Invoke();
+            OnStopMoving?.Invoke();
         }
 
         public void RotateTo(ViewDirection direction)

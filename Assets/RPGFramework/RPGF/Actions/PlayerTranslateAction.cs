@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections;
 using RPGF.Core.Enums;
-using RPGF.Domain;
 using RPGF.Domain.DI;
 using RPGF.EventSystem;
-using RPGF.Explorer;
-using RPGF.Explorer.Player;
+using RPGF.Overworld;
+using RPGF.Overworld.Player;
 using UnityEngine;
 
 namespace RPGF.Actions
@@ -19,7 +18,7 @@ namespace RPGF.Actions
         }
 
         [Inject]
-        private readonly PlayerExplorerManager _playerManager = null!;
+        private readonly PlayerOverworldManager _playerManager = null!;
 
         public MoveDirection Direction;
         public TranslateType Type;
@@ -43,7 +42,7 @@ namespace RPGF.Actions
 
         public override IEnumerator ActionCoroutine()
         {
-            Vector3 playerPosition = ExplorerManager.GetPlayerPosition3D();
+            Vector3 playerPosition = OverworldManager.GetPlayerPosition3D();
 
             switch (Type)
             {

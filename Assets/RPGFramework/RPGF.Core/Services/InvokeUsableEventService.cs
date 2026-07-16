@@ -1,7 +1,7 @@
 ﻿using RPGF.Battle;
 using RPGF.Domain.DI;
 using RPGF.Domain.Interfaces;
-using RPGF.Explorer;
+using RPGF.Overworld;
 using RPGF.RPG;
 using System.Collections;
 
@@ -10,7 +10,7 @@ namespace RPGF.Core.Services
     public class InvokeUsableEventService : IService
     {
         [Inject]
-        private readonly ExplorerEventHandler _eventHandler = null!;
+        private readonly OverworldEventHandler _eventHandler = null!;
         [Inject]
         private readonly DependencyInjection _di = null!;
 

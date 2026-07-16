@@ -1,6 +1,7 @@
-﻿using RPGF.Core.Battle.Abstractions;
-using DG.Tweening;
+﻿using DG.Tweening;
+using RPGF.Core.Battle.Abstractions;
 using RPGF.Explorer;
+using RPGF.Overworld;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -24,7 +25,7 @@ namespace RPGF.Battle.Transmitions
 
         public override IEnumerator PartOne()
         {
-            heart.transform.position = ExplorerManager.GetPlayerPosition3D() + new Vector3(0, 0.35f, 0);
+            heart.transform.position = OverworldManager.GetPlayerPosition3D() + new Vector3(0, 0.35f, 0);
 
             source.clip = tick;
 

@@ -1,7 +1,7 @@
 ﻿using RPGF.Domain.DI;
 using RPGF.EventSystem;
 using RPGF.EventSystem.Attributes;
-using RPGF.Explorer;
+using RPGF.Overworld;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -13,7 +13,7 @@ namespace RPGF.Actions
     public class InvokeEventAction : ActionBase
     {
         [Inject]
-        private readonly ExplorerEventHandler _eventHandler = null!;
+        private readonly OverworldEventHandler _eventHandler = null!;
 
         [ActionFieldOption("Событие", AllowSceneObjects = true)]
         public LocationEvent Event;

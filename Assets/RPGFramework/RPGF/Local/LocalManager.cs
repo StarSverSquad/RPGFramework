@@ -5,6 +5,7 @@ using RPGF.Core.Location;
 using RPGF.Domain.DI;
 using RPGF.Explorer;
 using RPGF.GUI;
+using RPGF.Overworld;
 using RPGF.Shared;
 using UnityEngine;
 
@@ -25,7 +26,7 @@ namespace RPGF
 
         [Header("Ссылки для инициализации")]
         [SerializeField]
-        private ExplorerManager explorer;
+        private OverworldManager explorer;
         [SerializeField]
         private SharedManager shared;
         [SerializeField]

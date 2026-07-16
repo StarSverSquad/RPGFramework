@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using RPGF;
+using System.Linq;
 using RPGF.Core.Enums;
-using RPGF.Domain;
-using RPGF.Explorer;
-using RPGF.Explorer.Player;
+using RPGF.Overworld;
+using RPGF.Overworld.Player;
 using RPGF.RPG;
 using UnityEngine;
 
@@ -11,20 +10,22 @@ namespace RPGF.Core.Character
 {
     public class CharacterManager : RPGFrameworkBehaviour
     {
+        public const float DEFAULT_FADE_TIME = .3f;
+
         [SerializeField]
         private float _updateTargetsDistance = 1f;
         [SerializeField]
         private float _modelMoveTime = 1f;
 
-        private List<PlayableCharacterModelController> models = new();
-        private List<Vector2> targets = new();
+        private readonly List<PlayableCharacterModelController> models = new();
+        private readonly List<Vector2> targets = new();
 
         public RPGCharacter[] Characters => GlobalManager.Instance.Character.Characters;
 
         public List<PlayableCharacterModelController> Models => models;
 
-        private PlayerExplorerMovement PlayerMovement => Explorer.PlayerManager.movement;
-        private ExplorerEventHandler EventHandler => Explorer.EventHandler;
+        private PlayerOverworldMovement PlayerMovement => Explorer.PlayerManager.movement;
+        private OverworldEventHandler EventHandler => Explorer.EventHandler;
 
         public override void Initialize()
         {
@@ -46,7 +47,7 @@ namespace RPGF.Core.Character
             model.transform.SetParent(transform);
 
             models.Add(model);
-            targets.Add(ExplorerManager.GetPlayerPosition());
+            targets.Add(OverworldManager.GetPlayerPosition());
         }
         public void RemoveModel(PlayableCharacterModelController model)
         {
@@ -57,6 +58,39 @@ namespace RPGF.Core.Character
 
             models.Remove(model);
             targets.RemoveAt(index);
+        }
+
+        public void ResetOthersPositions()
+        {
+            foreach (var model in models.Skip(1))
+            {
+                model.StopMove();
+                model.transform.position = Explorer.PlayerManager.transform.position;
+            }
+
+            targets.Clear();
+            foreach (var _ in models)
+            {
+                targets.Add(Explorer.PlayerManager.transform.position);
+            }
+        }
+
+        public void SetOtherModelsInvisible(float fadeTime)
+        {
+            for (int i = 1; i < models.Count; i++)
+            {
+                if (i > 0 && models[i] is PlayableCharacterModelController playable)
+                    playable.SetVisibility(false, fadeTime);
+            }
+        }
+
+        public void SetOtherModelsVisible(float fadeTime)
+        {
+            for (int i = 1; i < models.Count; i++)
+            {
+                if (models[i] is PlayableCharacterModelController playable)
+                    playable.SetVisibility(true, fadeTime);
+            }
         }
 
         public void RebuildModels()
@@ -70,7 +104,7 @@ namespace RPGF.Core.Character
             for (int i = 0; i < Characters.Length; i++)
             {
                 var newObject = Instantiate(Characters[i].Model.gameObject,
-                    ExplorerManager.GetPlayerPosition3D() + new Vector3(0, 0.1f * i, -0.10f * i),
+                    OverworldManager.GetPlayerPosition3D() + new Vector3(0, 0.1f * i, -0.10f * i),
                     Quaternion.identity, transform);
 
                 var model = newObject.GetComponent<PlayableCharacterModelController>();
@@ -78,7 +112,7 @@ namespace RPGF.Core.Character
                 model.Initialize();
 
                 models.Add(model);
-                targets.Add(ExplorerManager.GetPlayerPosition());
+                targets.Add(OverworldManager.GetPlayerPosition());
             }
         }
 
@@ -87,10 +121,12 @@ namespace RPGF.Core.Character
             if (models.Count == 0 || (EventHandler.EventPlaying && !PlayerMovement.IsAutoMoving))
                 return;
 
-            Vector2 playerPosition = ExplorerManager.GetPlayerPosition();
+            Vector2 playerPosition = OverworldManager.GetPlayerPosition();
 
             float distance = Vector2.Distance(playerPosition, targets[0]);
 
+            Models[0].SetRotationAnimation(PlayerMovement.ViewDirection);
+            Models[0].SetMoveAnimation(true);
             models[0].transform.position = playerPosition;
 
             if (distance > _updateTargetsDistance)
@@ -113,9 +149,6 @@ namespace RPGF.Core.Character
         {
             if (models.Count == 0 || (EventHandler.EventPlaying && !PlayerMovement.IsAutoMoving))
                 return;
-
-            Models[0].SetRotationAnimation(PlayerMovement.ViewDirection);
-            Models[0].SetMoveAnimation(true);
 
             for (int i = 1; i < Models.Count; i++)
             {

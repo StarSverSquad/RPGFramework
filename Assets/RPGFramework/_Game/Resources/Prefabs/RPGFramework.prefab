@@ -2229,10 +2229,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6343221043466968680}
   - component: {fileID: 2356675289498216603}
-  - component: {fileID: 7833594351632188847}
   - component: {fileID: 506122218211345586}
+  - component: {fileID: 3351690593132183500}
   m_Layer: 0
-  m_Name: Explorer
+  m_Name: Overworld
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2267,21 +2267,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   container: {fileID: 946301744828918298}
-  EventHandler: {fileID: 7833594351632188847}
+  EventHandler: {fileID: 3351690593132183500}
   PlayerManager: {fileID: 1018772513299120887}
   ItemConsumer: {fileID: 506122218211345586}
---- !u!114 &7833594351632188847
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1011528707145964960}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 035fbc790438b624ea33a3efbc69e722, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &506122218211345586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2294,6 +2282,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba9482c401b0ff4458070a3894f6caf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3351690593132183500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1011528707145964960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97495b2f0d59ab64aadbe7dc56affe30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: RPGFramework::RPGF.Overworld.OverworldEventHandler
 --- !u!1 &1026380488932073841
 GameObject:
   m_ObjectHideFlags: 0
@@ -17797,7 +17797,7 @@ GameObject:
   m_Component:
   - component: {fileID: 972641263531201527}
   - component: {fileID: 1018772513299120887}
-  - component: {fileID: 8290565872293351809}
+  - component: {fileID: 1274868044708105936}
   - component: {fileID: 6409241148107646158}
   - component: {fileID: 6612724113824618219}
   - component: {fileID: 8286834047000565395}
@@ -17836,9 +17836,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 117e3d02569eabb47a964e3f09c7ada4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movement: {fileID: 8290565872293351809}
+  movement: {fileID: 1274868044708105936}
   interaction: {fileID: 6409241148107646158}
---- !u!114 &8290565872293351809
+--- !u!114 &1274868044708105936
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -17847,19 +17847,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 7697028938042322099}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b48e6a22a522ece41990d409036694dd, type: 3}
+  m_Script: {fileID: 11500000, guid: eb9ec830893dceb4091c78c936332e49, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: RPGFramework::RPGF.Overworld.Player.PlayerOverworldMovement
   CanWalk: 1
   CanRun: 1
   CanRotate: 1
-  Speed: 3
-  AccelerationFactor: 2
+  Speed: 10
+  AccelerationFactor: 1.5
   Velocity: {x: 0, y: 0}
   NormolizedVelocity: {x: 0, y: 0}
-  MoveDirection: 0
-  ViewDirection: 2
-  rb: {fileID: 6612724113824618219}
+  MoveDirection: -1
+  ViewDirection: 1
+  rb: {fileID: 0}
 --- !u!114 &6409241148107646158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20986,7 +20986,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ZPosition: -5000
-  PlayerFollowBorder: {x: 5, y: 4}
+  defaultPlayerFollowBorder: {x: 5, y: 4}
+  playerGap: {x: 8, y: 4}
 --- !u!1 &8828136584060854842
 GameObject:
   m_ObjectHideFlags: 0

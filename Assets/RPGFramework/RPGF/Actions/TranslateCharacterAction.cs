@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections;
-using RPGF;
 using RPGF.Core.Character;
 using RPGF.Core.Enums;
-using RPGF.Domain;
 using RPGF.Domain.DI;
 using RPGF.EventSystem;
-using RPGF.Explorer;
-using RPGF.Explorer.Player;
+using RPGF.Overworld;
+using RPGF.Overworld.Player;
 using UnityEngine;
 
 namespace RPGF.Actions
@@ -23,7 +21,7 @@ namespace RPGF.Actions
         [Inject]
         private readonly CharacterManager _character = null!;
         [Inject]
-        private readonly PlayerExplorerManager _player = null!;
+        private readonly PlayerOverworldManager _player = null!;
 
         public bool InParty;
 
@@ -129,7 +127,7 @@ namespace RPGF.Actions
                         if (Type == TranslateType.Move)
                             _player.TeleportToVector(Point.transform.position);
                         else
-                            _player.TeleportToVector(ExplorerManager.GetPlayerPosition() + Offset);
+                            _player.TeleportToVector(OverworldManager.GetPlayerPosition() + Offset);
                     }
 
                     break;

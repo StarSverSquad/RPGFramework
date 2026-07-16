@@ -1,6 +1,6 @@
 ﻿using RPGF.Core.Location;
 using RPGF.EventSystem;
-using RPGF.Explorer;
+using RPGF.Overworld;
 using System;
 using System.Collections;
 using UnityEngine;
@@ -21,17 +21,17 @@ namespace RPGF.Actions
         {
             if (Dto.Location != null)
             {
-                if (ExplorerManager.Instance.EventHandler.isActiveAndEnabled)
-                    ExplorerManager.Instance.EventHandler.ForceUnhandle();
+                if (OverworldManager.Instance.EventHandler.isActiveAndEnabled)
+                    OverworldManager.Instance.EventHandler.ForceUnhandle();
 
-                ExplorerManager.PlayerMovement.CanWalk = false;
+                OverworldManager.PlayerMovement.CanWalk = false;
 
                 GlobalManager.Instance.LocationManager.ChangeLocation(Dto);
             }
 
             yield return new WaitWhile(() => GlobalManager.Instance.LocationManager.IsChanging);
 
-            ExplorerManager.PlayerMovement.CanWalk = true;
+            OverworldManager.PlayerMovement.CanWalk = true;
         }
     }
 }

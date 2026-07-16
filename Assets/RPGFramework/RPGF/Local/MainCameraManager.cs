@@ -1,10 +1,10 @@
+using System;
+using DG.Tweening;
+using RPGF.Core;
+using RPGF.Core.Location;
+using RPGF.Overworld;
 using UnityEngine;
 using UnityEngine.Serialization;
-using DG.Tweening;
-using System;
-using RPGF.Core;
-using RPGF.Explorer;
-using RPGF.Core.Location;
 
 namespace RPGF
 {
@@ -18,7 +18,10 @@ namespace RPGF
         public float ZPosition = -5000;
 
         [FormerlySerializedAs("PlayerFollowBorder")]
-        [SerializeField] private Vector2 defaultPlayerFollowBorder = new(5f, 4f);
+        [SerializeField]
+        private Vector2 defaultPlayerFollowBorder = new(5f, 4f);
+        [SerializeField]
+        private Vector2 playerGap = new(3f, 3f);
 
         private Vector2 playerFollowBorder;
         private Vector2 playerFollowAnchor;
@@ -80,12 +83,16 @@ namespace RPGF
             playerFollowAnchor = anchor;
             playerFollowBorder = border != Vector2.zero ? border : defaultPlayerFollowBorder;
             Capture = CaptureType.PlayerFollow;
+
+            Vector2 playerPosition = OverworldManager.GetPlayerPosition();
+            Vector2 clampedPosition = ClampCameraCenter(playerPosition);
+            transform.position = new Vector3(clampedPosition.x, clampedPosition.y, ZPosition);
         }
 
         public void PlaceToPlayer()
         {
             Capture = CaptureType.Player;
-            Vector2 playerPos = ExplorerManager.GetPlayerPosition();
+            Vector2 playerPos = OverworldManager.GetPlayerPosition();
             transform.position = new Vector3(playerPos.x, playerPos.y, transform.position.z);
 
         }
@@ -119,54 +126,74 @@ namespace RPGF
 
         private void PlayerFollow()
         {
-            Vector2 playerPosition = ExplorerManager.GetPlayerPosition();
+            Vector2 playerPosition = OverworldManager.GetPlayerPosition();
             Vector2 cameraPosition = transform.position;
-            Vector2 cameraToPlayer = playerPosition - cameraPosition;
+            Vector2 newCameraPosition = cameraPosition;
 
-            Vector2 borderX = new(
-                cameraPosition.x + playerFollowBorder.x,
-                cameraPosition.x - playerFollowBorder.x
-                );
-
-            Vector2 borderY = new(
-                cameraPosition.y + playerFollowBorder.y,
-                cameraPosition.y - playerFollowBorder.y
-                );
-
-            Vector3 newCameraPosition = Vector3.zero;
-
-            newCameraPosition.z = ZPosition;
-            newCameraPosition.x = cameraPosition.x;
-            newCameraPosition.y = cameraPosition.y;
-
-            if (playerPosition.x > borderX.x || playerPosition.x < borderX.y)
+            if (TryGetCameraHalfExtents(out Vector2 halfExtents))
             {
-                bool minus = cameraToPlayer.x < 0;
+                float rightEdge = cameraPosition.x + halfExtents.x;
+                float leftEdge = cameraPosition.x - halfExtents.x;
+                float topEdge = cameraPosition.y + halfExtents.y;
+                float bottomEdge = cameraPosition.y - halfExtents.y;
 
-                float absDistance = Mathf.Abs(cameraToPlayer.x) - playerFollowBorder.x;
+                float followRight = rightEdge - playerGap.x;
+                float followLeft = leftEdge + playerGap.x;
+                float followTop = topEdge - playerGap.y;
+                float followBottom = bottomEdge + playerGap.y;
 
-                newCameraPosition.x += minus ? -absDistance : absDistance;
+                if (playerPosition.x > followRight)
+                    newCameraPosition.x += playerPosition.x - followRight;
+                else if (playerPosition.x < followLeft)
+                    newCameraPosition.x += playerPosition.x - followLeft;
+
+                if (playerPosition.y > followTop)
+                    newCameraPosition.y += playerPosition.y - followTop;
+                else if (playerPosition.y < followBottom)
+                    newCameraPosition.y += playerPosition.y - followBottom;
             }
 
-            if (playerPosition.y > borderY.x || playerPosition.y < borderY.y)
+            Vector2 clampedPosition = ClampCameraCenter(newCameraPosition);
+            transform.position = new Vector3(clampedPosition.x, clampedPosition.y, ZPosition);
+        }
+
+        private bool TryGetCameraHalfExtents(out Vector2 halfExtents)
+        {
+            var camera = Camera.main;
+            if (camera != null && camera.orthographic)
             {
-                bool minus = cameraToPlayer.y < 0;
-
-                float absDistance = Mathf.Abs(cameraToPlayer.y) - playerFollowBorder.y;
-
-                newCameraPosition.y += minus ? -absDistance : absDistance;
+                float halfHeight = camera.orthographicSize;
+                halfExtents = new Vector2(halfHeight * camera.aspect, halfHeight);
+                return true;
             }
 
-            newCameraPosition.x = Mathf.Clamp(
-                newCameraPosition.x,
-                playerFollowAnchor.x - playerFollowBorder.x,
-                playerFollowAnchor.x + playerFollowBorder.x);
-            newCameraPosition.y = Mathf.Clamp(
-                newCameraPosition.y,
-                playerFollowAnchor.y - playerFollowBorder.y,
-                playerFollowAnchor.y + playerFollowBorder.y);
+            halfExtents = Vector2.zero;
+            return false;
+        }
 
-            transform.position = newCameraPosition;
+        private Vector2 ClampCameraCenter(Vector2 center)
+        {
+            if (!TryGetCameraHalfExtents(out Vector2 halfExtents))
+            {
+                return new Vector2(
+                    Mathf.Clamp(center.x, playerFollowAnchor.x - playerFollowBorder.x, playerFollowAnchor.x + playerFollowBorder.x),
+                    Mathf.Clamp(center.y, playerFollowAnchor.y - playerFollowBorder.y, playerFollowAnchor.y + playerFollowBorder.y));
+            }
+
+            float minX = playerFollowAnchor.x - playerFollowBorder.x + halfExtents.x;
+            float maxX = playerFollowAnchor.x + playerFollowBorder.x - halfExtents.x;
+            float minY = playerFollowAnchor.y - playerFollowBorder.y + halfExtents.y;
+            float maxY = playerFollowAnchor.y + playerFollowBorder.y - halfExtents.y;
+
+            if (minX > maxX)
+                minX = maxX = playerFollowAnchor.x;
+
+            if (minY > maxY)
+                minY = maxY = playerFollowAnchor.y;
+
+            return new Vector2(
+                Mathf.Clamp(center.x, minX, maxX),
+                Mathf.Clamp(center.y, minY, maxY));
         }
 
         private void DisposeMoveTween()

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using RPGF.Core.Character;
+﻿using RPGF.Core.Character;
 using RPGF.Core.Inventory;
 using RPGF.Core.Location;
 using RPGF.Domain.DI;
-using RPGF.Explorer;
+using RPGF.Overworld;
 using RPGF.RPG;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace RPGF.Core.SaveLoad
@@ -37,8 +37,8 @@ namespace RPGF.Core.SaveLoad
                 StringValues = _gameData.StringValues,
                 LocationTag = _location.CurrentLocation.Tag,
                 SaveDateTime = DateTime.UtcNow.ToString(),
-                PlayerPosition = ExplorerManager.GetPlayerPosition(),
-                PlayerDirection = ExplorerManager.GetPlayerViewDirection(),
+                PlayerPosition = OverworldManager.GetPlayerPosition(),
+                PlayerDirection = OverworldManager.GetPlayerViewDirection(),
                 SavedCharacters = SerializeCharacters(
                     _characters.RegistredCharacters.ToList(),
                     _characters.Characters.ToList()),

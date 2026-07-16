@@ -1,19 +1,18 @@
 using RPGF.Core;
 using RPGF.Core.Enums;
-using RPGF.Domain;
-using RPGF.Explorer.Player;
+using RPGF.Overworld.Player;
 using UnityEngine;
 
-namespace RPGF.Explorer
+namespace RPGF.Overworld
 {
-    public class ExplorerManager : KernelManagerBase
+    public class OverworldManager : KernelManagerBase
     {
-        public static ExplorerManager Instance;
-        public static PlayerExplorerMovement PlayerMovement => Instance.PlayerManager.movement;
+        public static OverworldManager Instance;
+        public static PlayerOverworldMovement PlayerMovement => Instance.PlayerManager.movement;
 
-        public ExplorerEventHandler EventHandler;
-        public PlayerExplorerManager PlayerManager;
-        public ExplorerItemConsumeManager ItemConsumer;
+        public OverworldEventHandler EventHandler;
+        public PlayerOverworldManager PlayerManager;
+        public OverworldItemConsumeManager ItemConsumer;
 
         private LocalManager Local => LocalManager.Instance;
 

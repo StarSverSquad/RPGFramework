@@ -1,5 +1,5 @@
-﻿using RPGF.RPG;
-using System;
+﻿using System;
+using RPGF.RPG;
 using UnityEngine;
 
 namespace RPGF.Core.Battle.Projectiles.Abstractions
@@ -27,7 +27,7 @@ namespace RPGF.Core.Battle.Projectiles.Abstractions
                 if (hide)
                 {
                     renderer.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
-                    renderer.renderingLayerMask = RenderingLayerMask.GetMask(RenderLayerMaskConstants.HiddenProjetilesLayerName);
+                    renderer.renderingLayerMask = RenderingLayerMask.GetMask(RenderLayerMaskConstants.HiddenProjectilesLayerName);
                 }
                 else
                 {

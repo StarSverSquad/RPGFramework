@@ -72,6 +72,10 @@ Prefab: `Assets/RPGFramework/_Game/Resources/Prefabs/RPGFramework.prefab`.
 - Сервисы: plain C#, `ISupportDI`, регистрация через `CreateSingleton` / `AddSingleton`
 - Экшены графа: `[Serializable] class XAction : ActionBase` + editor node
 - DOTween, NaughtyAttributes, TMP, URP 2D
+- **Теги / render layers** — не хардкодить строки; брать из констант в `RPGF.Core`:
+  - `TagConstants` — Unity tags (`PlayerTag`, `ProjectileTag`, …)
+  - `RenderLayerMaskConstants` — имена rendering layer mask (`DefaultLayerName`, `HiddenProjectilesLayerName`, …)
+  - Новые значения добавлять туда же;
 
 ## Gotchas
 

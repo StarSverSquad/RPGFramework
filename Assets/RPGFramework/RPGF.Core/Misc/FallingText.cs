@@ -29,8 +29,11 @@ namespace RPGF.Misc
         private bool[] characterActive;
         private Color32 startColor;
         private Color32 endColor;
+        private float fadeAlpha = 1f;
 
-        public bool IsAnimate => animationSequence != null && animationSequence.IsActive();
+        public bool IsAnimate =>
+            (animationSequence != null && animationSequence.IsActive()) ||
+            (deletionTween != null && deletionTween.IsActive());
 
         public void Invoke(string text, Color32 startColor, Color32 endColor)
         {
@@ -67,6 +70,7 @@ namespace RPGF.Misc
             if (count > 0)
                 characterActive[0] = true;
 
+            fadeAlpha = 1f;
             ApplyMesh();
 
             float duration = Speed > 0f ? 1f / Speed : 0f;
@@ -91,19 +95,45 @@ namespace RPGF.Misc
             }
 
             animationSequence.OnUpdate(ApplyMesh);
-            animationSequence.OnComplete(OnAnimationComplete);
+            animationSequence.OnComplete(OnAppearComplete);
             animationSequence.Play();
         }
 
-        private void OnAnimationComplete()
+        private void OnAppearComplete()
         {
             animationSequence = null;
             ApplyMesh();
 
-            if (!DeleteOnEnd)
-                return;
+            deletionTween = DOVirtual.DelayedCall(DeletionDelay, PlayDisappearAnimation);
+        }
 
-            deletionTween = DOVirtual.DelayedCall(DeletionDelay, () => Destroy(gameObject));
+        private void PlayDisappearAnimation()
+        {
+            deletionTween = null;
+
+            float duration = Speed > 0f ? 1f / Speed : 0f;
+            animationSequence = DOTween.Sequence();
+
+            animationSequence.Append(
+                DOTween.To(
+                        () => fadeAlpha,
+                        value => fadeAlpha = value,
+                        0f,
+                        duration)
+                    .SetEase(Ease.Linear));
+
+            animationSequence.OnUpdate(ApplyMesh);
+            animationSequence.OnComplete(OnDisappearComplete);
+            animationSequence.Play();
+        }
+
+        private void OnDisappearComplete()
+        {
+            animationSequence = null;
+            ApplyMesh();
+
+            if (DeleteOnEnd)
+                Destroy(gameObject);
         }
 
         private void ApplyMesh()
@@ -127,6 +157,7 @@ namespace RPGF.Misc
 
                 float time = characterTimes[i];
                 Color32 current = Color.Lerp(startColor, endColor, time);
+                current.a = (byte)Mathf.RoundToInt(current.a * fadeAlpha);
 
                 transformText.SetCharacterColor(i, current);
                 transformText.SetCharacterPosition(

@@ -17869,6 +17869,7 @@ MonoBehaviour:
   AccelerationFactor: 1.5
   Velocity: {x: 0, y: 0}
   NormolizedVelocity: {x: 0, y: 0}
+  ExternalVelocity: {x: 0, y: 0}
   MoveDirection: -1
   ViewDirection: 1
   rb: {fileID: 6612724113824618219}
@@ -20999,7 +21000,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ZPosition: -5000
   defaultPlayerFollowBorder: {x: 5, y: 4}
-  playerGap: {x: 8, y: 4}
+  playerGap: {x: 9, y: 5}
 --- !u!1 &8828136584060854842
 GameObject:
   m_ObjectHideFlags: 0

@@ -62,6 +62,8 @@ namespace RPGF.Overworld
         private void ApplyDamage(RPGCharacter character, Vector3 position, int damage)
         {
             int resultDamage = character.GiveDamage(damage);
+            if (character.Heal <= 0)
+                character.Heal = 1;
 
             SpawnFallingText(position + Vector3.up * DamageTextHeightOffset, resultDamage.ToString());
 

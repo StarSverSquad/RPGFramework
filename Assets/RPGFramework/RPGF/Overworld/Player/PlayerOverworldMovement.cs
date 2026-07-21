@@ -17,6 +17,7 @@ namespace RPGF.Overworld.Player
 
         public Vector2 Velocity = Vector2.zero;
         public Vector2 NormolizedVelocity = Vector2.zero;
+        public Vector2 ExternalVelocity = Vector2.zero;
 
         public MoveDirection MoveDirection = MoveDirection.Stay;
         public ViewDirection ViewDirection = ViewDirection.Down;
@@ -213,6 +214,9 @@ namespace RPGF.Overworld.Player
                 IsMoving = false;
 
                 OnStopMoving?.Invoke();
+
+                if (ExternalVelocity.sqrMagnitude > 0f)
+                    OnMoving?.Invoke();
             }
 
 
@@ -238,7 +242,7 @@ namespace RPGF.Overworld.Player
 
             Velocity = ResultSpeed * Velocity.normalized;
 
-            rb.linearVelocity = Velocity;
+            rb.linearVelocity = Velocity + ExternalVelocity;
         }
 
         private void DisposeAutoMoveTween()

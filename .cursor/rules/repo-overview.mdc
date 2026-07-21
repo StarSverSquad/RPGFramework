@@ -16,3 +16,5 @@ Unity JRPG (Undertale-like). Три слоя контента:
 Подробные карты: правила `rpgframework` и `glacksaga` (подхватываются по globs).
 
 **Не путать:** геймплей мира/бой/ивенты → RPGFramework; pause/party/gear/items UI → GlackSaga; playable сцена сейчас → SpiderDance.
+
+**Общие константы** (namespace `RPGF.Core`, даже из GlackSaga/SpiderDance): `TagConstants` (Unity tags), `RenderLayerMaskConstants` (rendering layer names) — не хардкодить строки.

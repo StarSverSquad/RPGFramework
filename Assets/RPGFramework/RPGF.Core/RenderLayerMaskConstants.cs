@@ -2,7 +2,7 @@
 {
     public static class RenderLayerMaskConstants
     {
-        public const string HiddenProjetilesLayerName = "HiddenProjectiles";
+        public const string HiddenProjectilesLayerName = "HiddenProjectiles";
         public const string DefaultLayerName = "Default";
     }
 }

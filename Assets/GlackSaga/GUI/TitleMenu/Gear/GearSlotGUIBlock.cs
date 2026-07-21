@@ -1,4 +1,4 @@
-﻿using RPGF.Domain.Interfaces;
+using RPGF.Domain.Interfaces;
 using RPGF.GUI;
 using RPGF.RPG;
 using TMPro;
@@ -39,7 +39,7 @@ namespace GlackSaga.GUI.TitleMenu.Gear
             var element = Elements[CurrentIndex] as GearSlotItem;
             if (element != null)
             {
-                SetItemPreview(character.GetWerableByType(element.UsedType));
+                SetItemPreview(character.GetWearableByType(element.UsedType));
             }
         }
 
@@ -59,7 +59,7 @@ namespace GlackSaga.GUI.TitleMenu.Gear
             {
                 if (slot is GearSlotItem gearSlotItem)
                 {
-                    gearSlotItem.SetData(character.GetWerableByType(gearSlotItem.UsedType));
+                    gearSlotItem.SetData(character.GetWearableByType(gearSlotItem.UsedType));
                 }
             }
         }
@@ -82,7 +82,7 @@ namespace GlackSaga.GUI.TitleMenu.Gear
             luckDisplay.SetStat($"{GetLocale("SYS_LUCK_S")}: {character.Luck}");
         }
 
-        public void SetItemPreview(RPGWerable value)
+        public void SetItemPreview(RPGWearable value)
         {
             if (value == null)
             {
@@ -91,7 +91,7 @@ namespace GlackSaga.GUI.TitleMenu.Gear
             }
             itemDescriptionText.text = GetLocale(value.GetLocaleDesciptionTag(), value.Description);
 
-            var oldValue = character.GetWerableByType(value.UsedOn);
+            var oldValue = character.GetWearableByType(value.UsedOn);
             if (oldValue != null)
             {
                 maxHpDisplay.SetStatChange(value.Heal - oldValue.Heal);
@@ -124,11 +124,11 @@ namespace GlackSaga.GUI.TitleMenu.Gear
             luckDisplay.SetStatChange(0);
         }
 
-        public void SetUnequipPreview(RPGWerable.UsedType type)
+        public void SetUnequipPreview(RPGWearable.UsedType type)
         {
             itemDescriptionText.text = string.Empty;
 
-            var equipped = character.GetWerableByType(type);
+            var equipped = character.GetWearableByType(type);
             if (equipped == null)
             {
                 maxHpDisplay.SetStatChange(0);

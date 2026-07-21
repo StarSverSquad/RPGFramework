@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GlackSaga.GUI.TitleMenu.CharactetSelector
+namespace GlackSaga.GUI.TitleMenu.CharacterSelector
 {
     [RequireComponent(typeof(Image))]
     public class CharacterSelectorItem : GUIInteractable

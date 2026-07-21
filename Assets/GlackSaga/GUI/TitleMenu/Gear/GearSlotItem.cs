@@ -1,4 +1,4 @@
-﻿using DG.Tweening;
+using DG.Tweening;
 using RPGF.Domain.Interfaces;
 using RPGF.GUI;
 using RPGF.RPG;
@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace GlackSaga.GUI.TitleMenu.Gear
 {
-    public class GearSlotItem : GUIInteractable, ISetData<RPGWerable>
+    public class GearSlotItem : GUIInteractable, ISetData<RPGWearable>
     {
         [Header("LINKS:")]
         [SerializeField]
@@ -18,7 +18,7 @@ namespace GlackSaga.GUI.TitleMenu.Gear
 
         [Header("OPTIONS:")]
         [SerializeField]
-        private RPGWerable.UsedType usedType;
+        private RPGWearable.UsedType usedType;
         [SerializeField]
         private Color focusedColor = Color.orange;
         [SerializeField]
@@ -26,9 +26,9 @@ namespace GlackSaga.GUI.TitleMenu.Gear
 
         private Sequence selectionTween;
 
-        public RPGWerable.UsedType UsedType => usedType;
+        public RPGWearable.UsedType UsedType => usedType;
 
-        public void SetData(RPGWerable value)
+        public void SetData(RPGWearable value)
         {
             if (value == null)
             {

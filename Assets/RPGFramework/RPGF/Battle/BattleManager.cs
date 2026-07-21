@@ -51,37 +51,37 @@ namespace RPGF.Battle
             Instance = this;
 
             Config = Resources.Load<BattleConfig>("BattleConfig");
-            Local.DI.AddSignleton(Config);
+            Local.DI.AddSingleton(Config);
 
-            Local.DI.AddSignleton(Data);
-            Local.DI.AddSignleton(EnemyModels);
-            Local.DI.AddSignleton(BattleAudio);
+            Local.DI.AddSingleton(Data);
+            Local.DI.AddSingleton(EnemyModels);
+            Local.DI.AddSingleton(BattleAudio);
 
             InitializeChild();
         }
 
         public override void InitializeChild()
         {
-            Local.DI.AddSignleton(BattleField);
+            Local.DI.AddSingleton(BattleField);
             BattleField.Initialize();
 
-            Local.DI.AddSignleton(Projectiles);
+            Local.DI.AddSingleton(Projectiles);
             Projectiles.Initialize();
 
-            Local.DI.AddSignleton(EnemyBehaviour);
+            Local.DI.AddSingleton(EnemyBehaviour);
             EnemyBehaviour.Initialize();
 
             Pipeline = new BattlePipeline(this, SharedManager.Instance);
-            Local.DI.AddSignleton(Pipeline);
+            Local.DI.AddSingleton(Pipeline);
 
             Utility = new BattleUtility(this);
-            Local.DI.AddSignleton(Utility);
+            Local.DI.AddSingleton(Utility);
 
             Choice.Initialize();
 
             SpashWriter.Initialize();
 
-            Local.DI.AddSignleton(Player);
+            Local.DI.AddSingleton(Player);
             Player.Initialize();
             Player.SetActive(false);
         }

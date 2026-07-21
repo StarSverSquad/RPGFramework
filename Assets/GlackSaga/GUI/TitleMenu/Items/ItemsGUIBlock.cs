@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GlackSaga.GUI.TitleMenu.CharactetSelector;
+using GlackSaga.GUI.TitleMenu.CharacterSelector;
 using NaughtyAttributes;
 using RPGF.Core.Character;
 using RPGF.Core.Inventory;
@@ -178,9 +178,9 @@ namespace GlackSaga.GUI.TitleMenu.Items
             }
         }
 
-        protected override void OnDiativate()
+        protected override void OnDeactivate()
         {
-            base.OnDiativate();
+            base.OnDeactivate();
 
             foreach (var item in itemsGUITabs)
             {
@@ -290,7 +290,7 @@ namespace GlackSaga.GUI.TitleMenu.Items
                         yield break;
                     }
 
-                    targets = new[] { characterSelector.SeletedCharacter };
+                    targets = new[] { characterSelector.SelectedCharacter };
 
                     break;
                 case UsabilityDirection.All:

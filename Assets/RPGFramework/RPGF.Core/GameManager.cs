@@ -1,4 +1,4 @@
-﻿using RPGF.Core.Services;
+using RPGF.Core.Services;
 using RPGF.Domain.DI;
 using System.Collections;
 using UnityEngine;
@@ -39,7 +39,7 @@ namespace RPGF.Core
         {
             DI = new DependencyInjection();
 
-            DI.AddSignleton(DI);
+            DI.AddSingleton(DI);
 
             DI.AddScoped<InvokeUsableEventService>();
 

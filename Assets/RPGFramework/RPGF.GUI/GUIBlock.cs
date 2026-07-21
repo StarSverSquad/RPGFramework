@@ -1,4 +1,4 @@
-﻿using NaughtyAttributes;
+using NaughtyAttributes;
 using RPGF.Core;
 using RPGF.GUI.Interfaces;
 using UnityEngine;
@@ -10,8 +10,8 @@ namespace RPGF.GUI
     {
         [Header("Block options:")]
         [SerializeField]
-        private bool _disableOnDiactivate = true;
-        public bool DisableOnDiactivate => _disableOnDiactivate;
+        private bool _disableOnDeactivate = true;
+        public bool DisableOnDeactivate => _disableOnDeactivate;
         [SerializeField]
         private bool _enableOnActivate = true;
         public bool EnableOnActivate => _enableOnActivate;
@@ -26,7 +26,7 @@ namespace RPGF.GUI
         [Foldout("Block events")]
         public UnityEvent OnActivateEvent;
         [Foldout("Block events")]
-        public UnityEvent OnDiativateEvent;
+        public UnityEvent OnDeactivateEvent;
         [Foldout("Block events")]
         public UnityEvent OnDisposeEvent;
         [Foldout("Block events")]
@@ -68,18 +68,18 @@ namespace RPGF.GUI
 
             IsActivated = true;
         }
-        public void Diativate()
+        public void Deactivate()
         {
             if (!IsActivated)
                 return;
 
             if (gameObject.activeInHierarchy)
             {
-                OnDiativate();
-                OnDiativateEvent?.Invoke();
+                OnDeactivate();
+                OnDeactivateEvent?.Invoke();
             }
 
-            if (_disableOnDiactivate)
+            if (_disableOnDeactivate)
                 gameObject.SetActive(false);
 
             IsActivated = false;
@@ -143,7 +143,7 @@ namespace RPGF.GUI
 
         #region VIRTUALS
         protected virtual void OnActivate() { }
-        protected virtual void OnDiativate() { }
+        protected virtual void OnDeactivate() { }
 
         protected virtual void OnFocus() { }
         protected virtual void OnLostFocus() { }

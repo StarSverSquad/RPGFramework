@@ -101,9 +101,9 @@ namespace RPGF.GUI
             OnItemSelected(GetCurrentItem());
         }
 
-        protected override void OnDiativate()
+        protected override void OnDeactivate()
         {
-            base.OnDiativate();
+            base.OnDeactivate();
 
             Page = 0;
             SelectedItems.Clear();

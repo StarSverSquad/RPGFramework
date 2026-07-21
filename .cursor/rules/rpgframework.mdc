@@ -1,0 +1,81 @@
+---
+description: Карта RPGFramework — архитектура, DI, менеджеры, куда смотреть
+globs: Assets/RPGFramework/**
+alwaysApply: false
+---
+
+# RPGFramework — карта для агента
+
+Undertale-like JRPG framework. Игры (GlackSaga, SpiderDance) **не форкают** менеджеры — добавляют контент в `_Game/Resources` + опциональные скрипты/asmdef.
+
+## Папки
+
+| Путь | Что внутри |
+|------|------------|
+| `RPGF/` | Рантайм: Global / Local / Overworld / Battle / Shared / Actions / RPG SO / GUI |
+| `RPGF.Core/` | Сервисы: location, character, inventory, save, battle field, text |
+| `RPGF.Domain/` | Без Unity: DI, интерфейсы (`noEngineReferences`) |
+| `RPGF.EventSystem/` | Граф событий: `Event` → `ActionBase` |
+| `RPGF.GUI/` | Базовый UI-стек (`GUIBlock`, selectable/paginated) |
+| `_Game/Resources/` | Prefab ядра, Options, BattleConfig, шрифты, дефолтные сцены |
+| `Editor/` | Граф событий, инспекторы |
+
+`RPGF.Core` / `GUI` / `EventSystem` — **не** отдельные asmdef, компилируются в `RPGFramework`. Отдельно только `RPGFramework.Domain` и `RPGFramework.Editor`.
+
+## Иерархия bootstrap
+
+```
+GameManager (DDOL, Game.DI)
+  → GlobalManager (аудио, сейвы, party, GameData, Localization…)
+Scene → LocalManager (Local.DI + SubInjector → Game.DI)
+  → Shared → Overworld → Camera/Location/TittleMenu → Battle
+```
+
+Prefab: `Assets/RPGFramework/_Game/Resources/Prefabs/RPGFramework.prefab`.
+
+Доступ к менеджерам: `RPGFrameworkBehaviour` → `Game` / `Global` / `Local` / `Overworld` / `Shared` / `Battle`.
+
+## DI (кастомный)
+
+Файл: `RPGF.Domain/DI/DependencyInjection.cs`
+
+- API: `AddSingleton`, `CreateSingleton`, `AddScoped`, `AddSubInjector`
+- Инжект только в **`[Inject] private readonly`** поля; точное совпадение типа (не по интерфейсу)
+- Два контейнера: `Game.DI` (живёт всегда) и `Local.DI` (на сцену)
+
+## Подсистемы — куда смотреть
+
+| Задача | Старт |
+|--------|-------|
+| Bootstrap / null Instance | `GameManager` → `GlobalManager` → `LocalManager` |
+| Overworld move/interact | `PlayerOverworldMovement`, `PlayerOverworldInteraction` |
+| Ивенты / катсцены | `LocationEvent`, `Event`, `RPGF/Actions/*` |
+| Бой | `BattleUtility.StartBattle`, `BattlePipeline`, `InvokeBattleAction` |
+| Party / статы | `RPGCharacter`, `CharacterService`, `GameData` |
+| Save/load | `SaveLoadService`, `GameFilesService` |
+| Локации | `GlobalLocationManager`, `LocationController`, `RpgfLocationInfo` |
+| Камера / свет | `MainCameraManager`, `SunManager` |
+| Title menu open/close | `TittleMenuManager`, `LocalManager` (клавиша Additional) |
+
+Бой — **не отдельная сцена**: включается внутри Local; overworld остаётся.
+
+## Данные
+
+- Каталоги: `Resources.LoadAll` из `Characters` / `Items` / `Abilities` / `EntityStates` (все `Resources/` папки Unity мержит)
+- Input: legacy `KeyCode` в `BaseOptions` (`_Game/Resources/Options.asset`), не Input System
+- SO иерархия: `RPGBase` → `RPGEntity` → `RPGCharacter` / `RPGEnemy`; предметы `RPGCollectable` → consumed/wearable/weapon
+
+## Конвенции
+
+- Опечатки в API **не «чинить» casually**: `TittleMenu`, `Heal` (= HP)
+- Менеджеры: `*Manager` + `KernelManagerBase` / `RPGFrameworkBehaviour`
+- Сервисы: plain C#, `ISupportDI`, регистрация через `CreateSingleton` / `AddSingleton`
+- Экшены графа: `[Serializable] class XAction : ActionBase` + editor node
+- DOTween, NaughtyAttributes, TMP, URP 2D
+
+## Gotchas
+
+1. Папка `RPGF/Explorer/` пустая; overworld в `Overworld/`; у `SunManager` namespace `RPGF.Explorer`
+2. После смены сцены Local DI новый; Global сохраняется
+3. Коллизии имён в `Resources/` между играми и фреймворком критичны
+4. `CharacterService.RegistredCharacters` — подозрительный геттер (может отдавать party вместо registered)

@@ -19,7 +19,7 @@ namespace RPGF.Shared
         {
             Instance = this;
 
-            Local.DI.AddSignleton(this);
+            Local.DI.AddSingleton(this);
 
             InitializeChild();
         }
@@ -27,13 +27,13 @@ namespace RPGF.Shared
         public override void InitializeChild()
         {
             MessageDialog.Initialize();
-            Local.DI.AddSignleton(MessageDialog);
+            Local.DI.AddSingleton(MessageDialog);
 
             ChoiceDialog.Initialize();
-            Local.DI.AddSignleton(ChoiceDialog);
+            Local.DI.AddSingleton(ChoiceDialog);
 
             Media.Initialize();
-            Local.DI.AddSignleton(Media);
+            Local.DI.AddSingleton(Media);
         }
     }
 }

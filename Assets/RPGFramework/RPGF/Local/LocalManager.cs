@@ -1,4 +1,4 @@
-п»їusing RPGF.Battle;
+using RPGF.Battle;
 using RPGF.Core;
 using RPGF.Core.Character;
 using RPGF.Core.Location;
@@ -15,14 +15,14 @@ namespace RPGF
     {
         public static LocalManager Instance;
 
-        [Header("РћР±С‰РёРµ СЃСЃС‹Р»РєРё")]
+        [Header("Общие ссылки")]
         public MainCameraManager Camera;
         public LocalLocationManager Location;
         public TittleMenuManager TittleMenu;
 
         [Space]
 
-        [Header("РЎСЃС‹Р»РєРё РґР»СЏ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё")]
+        [Header("Ссылки для инициализации")]
         [SerializeField]
         private OverworldManager overworld;
         [SerializeField]
@@ -38,7 +38,7 @@ namespace RPGF
 
             DI = new DependencyInjection();
 
-            DI.AddSignleton(DI);
+            DI.AddSingleton(DI);
             DI.AddSubInjector(Game.DI);
 
             InitializeChild();
@@ -63,11 +63,11 @@ namespace RPGF
 
             overworld.Initialize();
 
-            DI.AddSignleton(Camera);
+            DI.AddSingleton(Camera);
             Camera.Initialize();
-            DI.AddSignleton(Location);
+            DI.AddSingleton(Location);
             Location.Initialize();
-            DI.AddSignleton(TittleMenu);
+            DI.AddSingleton(TittleMenu);
             TittleMenu.Initialize();
 
             battle.Initialize();

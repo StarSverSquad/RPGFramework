@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
@@ -51,7 +51,7 @@ namespace RPGF.GUI
             StopChoice();
         }
 
-        protected override void OnDiativate()
+        protected override void OnDeactivate()
         {
             foreach (var item in Elements)
                 item.SetFocus(false);

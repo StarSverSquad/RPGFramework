@@ -1,0 +1,18 @@
+---
+description: Обзор репозитория — RPGFramework / GlackSaga / SpiderDance
+alwaysApply: true
+---
+
+# Репозиторий RPGFramework
+
+Unity JRPG (Undertale-like). Три слоя контента:
+
+| Папка | Роль |
+|-------|------|
+| `Assets/RPGFramework/` | Ядро: менеджеры, DI, бой, overworld, events, save, GUI-база |
+| `Assets/GlackSaga/` | Title Menu UI + party characters (Nikita/Oleg/Dimain) |
+| `Assets/SpiderDance/` | Демо-локация / сцена (`SDLocation`), почти без C# |
+
+Подробные карты: правила `rpgframework` и `glacksaga` (подхватываются по globs).
+
+**Не путать:** геймплей мира/бой/ивенты → RPGFramework; pause/party/gear/items UI → GlackSaga; playable сцена сейчас → SpiderDance.

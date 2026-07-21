@@ -41,14 +41,14 @@ namespace RPGF.RPG
         [Header("Способности")]
         public List<RPGAbility> Abilities = new List<RPGAbility>();
 
-        public const RPGWerable.UsedType WeaponType = RPGWerable.UsedType.Weapon;
+        public const RPGWearable.UsedType WeaponType = RPGWearable.UsedType.Weapon;
         [Header("Вещи")]
         public RPGWeapon WeaponSlot = null;
 
-        public RPGWerable HeadSlot = null;
-        public RPGWerable BodySlot = null;
-        public RPGWerable ShieldSlot = null;
-        public RPGWerable AccessorySlot = null;
+        public RPGWearable HeadSlot = null;
+        public RPGWearable BodySlot = null;
+        public RPGWearable ShieldSlot = null;
+        public RPGWearable AccessorySlot = null;
 
         public override void InitializeEntity()
         {
@@ -143,19 +143,19 @@ namespace RPGF.RPG
             Heal = MaxHeal; Mana = MaxMana;
         }
 
-        public RPGWerable GetWerableByType(RPGWerable.UsedType type)
+        public RPGWearable GetWearableByType(RPGWearable.UsedType type)
         {
             switch (type)
             {
-                case RPGWerable.UsedType.Weapon:
+                case RPGWearable.UsedType.Weapon:
                     return WeaponSlot;
-                case RPGWerable.UsedType.Head:
+                case RPGWearable.UsedType.Head:
                     return HeadSlot;
-                case RPGWerable.UsedType.Body:
+                case RPGWearable.UsedType.Body:
                     return BodySlot;
-                case RPGWerable.UsedType.Shield:
+                case RPGWearable.UsedType.Shield:
                     return ShieldSlot;
-                case RPGWerable.UsedType.Accessory:
+                case RPGWearable.UsedType.Accessory:
                     return AccessorySlot;
                 default:
                     Debug.LogError($"Unknown used type: {type}");
@@ -163,12 +163,12 @@ namespace RPGF.RPG
             }
         }
 
-        public void SetWerableByType(RPGWerable.UsedType type, RPGWerable value)
+        public void SetWearableByType(RPGWearable.UsedType type, RPGWearable value)
         {
             switch (type)
             {
-                case RPGWerable.UsedType.Weapon:
-                    if (type == RPGWerable.UsedType.Weapon && value is RPGWeapon)
+                case RPGWearable.UsedType.Weapon:
+                    if (type == RPGWearable.UsedType.Weapon && value is RPGWeapon)
                     {
                         WeaponSlot = value as RPGWeapon;
                     }
@@ -181,16 +181,16 @@ namespace RPGF.RPG
                         Debug.LogError($"Item is not a weapon");
                     }
                     break;
-                case RPGWerable.UsedType.Head:
+                case RPGWearable.UsedType.Head:
                     HeadSlot = value;
                     break;
-                case RPGWerable.UsedType.Body:
+                case RPGWearable.UsedType.Body:
                     BodySlot = value;
                     break;
-                case RPGWerable.UsedType.Shield:
+                case RPGWearable.UsedType.Shield:
                     ShieldSlot = value;
                     break;
-                case RPGWerable.UsedType.Accessory:
+                case RPGWearable.UsedType.Accessory:
                     AccessorySlot = value;
                     break;
                 default:

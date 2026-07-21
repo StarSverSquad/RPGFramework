@@ -8,7 +8,7 @@ namespace RPGF.Domain.DI
     public class DependencyInjection : Injectable
     {
         private List<Type> scopedTypes;
-        private Dictionary<Type, Type> scopedWithImplimentTypes;
+        private Dictionary<Type, Type> scopedWithImplementTypes;
 
         private List<Injectable> signletons;
 
@@ -17,7 +17,7 @@ namespace RPGF.Domain.DI
         public DependencyInjection()
         {
             scopedTypes = new List<Type>();
-            scopedWithImplimentTypes = new Dictionary<Type, Type>();
+            scopedWithImplementTypes = new Dictionary<Type, Type>();
             signletons = new List<Injectable>();
             subInjectors = new List<DependencyInjection>();
         }
@@ -79,7 +79,7 @@ namespace RPGF.Domain.DI
 
                 resultType = scopedTypes.FirstOrDefault(t => t == target.FieldType);
 
-                resultType ??= scopedWithImplimentTypes.FirstOrDefault(dt => dt.Key == target.FieldType).Value;
+                resultType ??= scopedWithImplementTypes.FirstOrDefault(dt => dt.Key == target.FieldType).Value;
 
                 if (resultType is not null)
                     resultInject = Activator.CreateInstance(resultType) as Injectable;
@@ -103,10 +103,10 @@ namespace RPGF.Domain.DI
             where I : Injectable
             where T : class, I
         {
-            scopedWithImplimentTypes.Add(typeof(I), typeof(T));
+            scopedWithImplementTypes.Add(typeof(I), typeof(T));
         }
 
-        public void AddSignleton<T>(T value)
+        public void AddSingleton<T>(T value)
             where T : class, Injectable
         {
             if (value is InjectionTarget target)
@@ -127,7 +127,7 @@ namespace RPGF.Domain.DI
         {
             T value = Activator.CreateInstance<T>();
 
-            AddSignleton(value);
+            AddSingleton(value);
 
             return value;
         }

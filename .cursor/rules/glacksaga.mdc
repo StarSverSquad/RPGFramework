@@ -1,0 +1,75 @@
+---
+description: Карта GlackSaga — Title Menu UI + party-контент поверх RPGFramework
+globs: Assets/GlackSaga/**
+alwaysApply: false
+---
+
+# GlackSaga — карта для агента
+
+Тонкий **game-layer** (~29 C#): кастомный Title Menu (pause/party UI) + 3 персонажа партии. **Не** полный геймплей-проект.
+
+Локации / бой / квесты / диалоги / event graph → смотри `Assets/RPGFramework` (+ демо-сцена `Assets/SpiderDance`).
+
+## Структура
+
+```
+Assets/GlackSaga/
+├── GlackSaga.asmdef          # refs: RPGFramework, Domain, Plugins, TMP, NaughtyAttributes
+├── GUI/TitleMenu/            # весь C# — только меню
+└── _Game/Resources/
+    ├── Characters/           # Dimain, Nikita, Oleg (RPGCharacter SO)
+    ├── Prefabs/Characters/   # overworld models + animators
+    ├── Prefabs/GUI/…         # UI prefabs меню
+    ├── Sprites/              # UI / title / battle atlases
+    └── Audio/Music/          # Main_menu_1.mp3
+```
+
+Сцен в GlackSaga **нет**. UI вшит в `RPGFramework/_Game/Resources/Prefabs/RPGFramework.prefab`.
+
+## Связь с фреймворком
+
+| Что | Где |
+|-----|-----|
+| Открытие меню | `LocalManager` → клавиша `BaseOptions.Additional` → `TittleMenuManager.Open()` |
+| Root UI | `GlackSaga.GUI.TitleMenu.Main.TittleMenuMainBlock` |
+| Базовый UI-стек | `RPGF.GUI` (`GUIBlock`, `GUISelectableBlock`, `PaginatedSelectableGUIBlock<T>`) |
+| DI сервисов | `[Inject]` → `CharacterService`, `InventoryService`, `SaveLoadService`… |
+| Персонажи в рантайме | `GameData` → `Resources.LoadAll<RPGCharacter>("Characters")` подхватывает GlackSaga assets |
+
+Навигация блоков: `Next(block)` / `Preview()` / `Manager.Close` (стек в `GUIManagerBase`).
+
+## GUI блоки — куда править
+
+| Задача | Файл |
+|--------|------|
+| Root open/close, money, strip | `GUI/TitleMenu/MainBlock/TittleMenuMainBlock.cs` |
+| Items (tabs, use, target) | `Items/ItemsGUIBlock.cs` |
+| Party list → full card | `Party/PartyGUIBlock.cs` → `FullInfo/FullInfoBlockGUI.cs` |
+| Equip / unequip | `Gear/GearSlotGUIBlock.cs` → `GearSelectionGUIBlock.cs` |
+| Target picker (item use) | `CharactetSelector/CharacterSelectorGUIBlock.cs` |
+| Save / Load UI | `SaveLoad/SaveLoadGUIBlock.cs` |
+| Settings | `Settings/SettingsGUIBlock.cs` |
+| HP/MP strip | `CharacterInfoGUI/CharacterInformationManager.cs` |
+
+Локаль строк меню: `RPGFramework/_Game/Resources/Localizations/TITLEMENU.asset`.
+
+## Контент партии
+
+- Cap в UI: **4** слота
+- Теги: Dimain→`Dimas`, Nikita→`nikita`, Oleg→`oleg`
+- Новый персонаж: SO в `Characters/` + model prefab + учесть лимит 4 в UI
+- Статы/эффекты предметов — в framework (`RPGCollectable`, `RPGWearable`), не здесь
+
+## Конвенции
+
+- Namespace: `GlackSaga.*`
+- `ISetData<T>.SetData`, DOTween-анимации, input через `Global.BaseOptions`
+- Опечатки **не чинить casually** (prefab refs): `Tittle` / `TIttleMenu`
+
+## Gotchas
+
+1. Правки UI почти всегда требуют `RPGFramework.prefab`, не отдельной сцены
+2. `ItemsGUIBlock`: battle-only items → deny; item с `Event` закрывает всё меню
+3. Gear: первый элемент списка = unequip (`null`); фильтр по `UsedType` + `RequireClasses`
+4. Не дублировать path `Characters/` в другом `_Game/Resources` без нужды
+5. Часть prefab type refs может быть устаревшей (`Assembly-CSharp` vs `GlackSaga`) — риск Missing Script

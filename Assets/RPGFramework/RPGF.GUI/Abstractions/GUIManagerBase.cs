@@ -64,7 +64,7 @@ namespace RPGF.GUI.Abstractions
             var block = GUIStack.Pop();
 
             block.SetFocus(false);
-            block.Diativate();
+            block.Deactivate();
 
             if (GUIStack.Count > 0)
             {
@@ -98,7 +98,7 @@ namespace RPGF.GUI.Abstractions
         {
             foreach (var item in GUIStack)
             {
-                item.Diativate();
+                item.Deactivate();
                 item.Dispose();
             }
             GUIStack.Clear();

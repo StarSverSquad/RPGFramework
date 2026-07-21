@@ -33,9 +33,9 @@ namespace RPGF.Core.Inventory
         {
             return _data.Slots.Where(i => i.Item is RPGConsumed).Select(i => i.Item as RPGConsumed).ToList();
         }
-        public List<RPGWerable> GetWerables()
+        public List<RPGWearable> GetWearables()
         {
-            return _data.Slots.Where(i => i.Item is RPGWerable).Select(i => i.Item as RPGWerable).ToList();
+            return _data.Slots.Where(i => i.Item is RPGWearable).Select(i => i.Item as RPGWearable).ToList();
         }
 
         public InventorySlotData GetSlotByItemTag(string tag)
@@ -44,9 +44,9 @@ namespace RPGF.Core.Inventory
         }
 
         /// <summary>
-        /// <br>Создаёт пустой слот</br>
-        /// <br>[Не рекомендуеться]</br>
-        /// <br>Используйте AddToItemCount, SetItemCount</br>
+        /// <br>пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ</br>
+        /// <br>[пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ]</br>
+        /// <br>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ AddToItemCount, SetItemCount</br>
         /// </summary>
         public InventorySlotData CreateSlot(RPGCollectable slotfor)
         {
@@ -62,9 +62,9 @@ namespace RPGF.Core.Inventory
         }
 
         /// <summary>
-        /// <br>Удаляет слот</br>
-        /// <br>[Не рекомендуеться]</br>
-        /// <br>Используйте AddToItemCount, SetItemCount</br>
+        /// <br>пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ</br>
+        /// <br>[пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ]</br>
+        /// <br>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ AddToItemCount, SetItemCount</br>
         /// </summary>
         public void DeleteSlot(InventorySlotData slot) => _data.Slots.Remove(slot);
 
@@ -84,7 +84,7 @@ namespace RPGF.Core.Inventory
         }
 
         /// <summary>
-        /// Проверяет наличие слота под этот предмет
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         /// </summary>
         public bool HasItemSlot(RPGCollectable item)
         {
@@ -98,17 +98,17 @@ namespace RPGF.Core.Inventory
         }
 
         /// <summary>
-        /// Добавляет значение к количеству предметов
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         /// </summary>
-        /// <param name="item">Предмет</param>
-        /// <param name="value">Значение</param>
+        /// <param name="item">пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</param>
+        /// <param name="value">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</param>
         public void AddToItemCount(RPGCollectable item, int value)
         {
             InventorySlotData slot = this[item.Tag];
 
             if (slot == null && value <= 0)
             {
-                Debug.LogWarning("Предмет не найден в инвентаре");
+                Debug.LogWarning("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
                 return;
             }
 
@@ -120,17 +120,17 @@ namespace RPGF.Core.Inventory
                 DeleteSlotByItemTag(item.Tag);
         }
         /// <summary>
-        /// Устанавлиет кол-во предметов
+        /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ-пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
         /// </summary>
-        /// <param name="item">Предмет</param>
-        /// <param name="value">Значение</param>
+        /// <param name="item">пїЅпїЅпїЅпїЅпїЅпїЅпїЅ</param>
+        /// <param name="value">пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</param>
         public void SetItemCount(RPGCollectable item, int value)
         {
             InventorySlotData slot = GetSlotByItemTag(item.name);
 
             if (slot == null && value <= 0)
             {
-                Debug.LogWarning("Предмет не найден в инвентаре");
+                Debug.LogWarning("пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ");
                 return;
             }
 

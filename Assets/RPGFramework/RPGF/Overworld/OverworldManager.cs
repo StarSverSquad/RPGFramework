@@ -31,12 +31,12 @@ namespace RPGF.Overworld
 
         public override void InitializeChild()
         {
-            Local.DI.AddSignleton(EventHandler);
-            Local.DI.AddSignleton(SunManager);
+            Local.DI.AddSingleton(EventHandler);
+            Local.DI.AddSingleton(SunManager);
 
-            Local.DI.AddSignleton(PlayerManager);
+            Local.DI.AddSingleton(PlayerManager);
             CharacterManager.Initialize();
-            Local.DI.AddSignleton(CharacterManager);
+            Local.DI.AddSingleton(CharacterManager);
 
             ItemConsumeService = Local.DI.CreateSingleton<OverworldItemConsumeService>();
             DamageService = Local.DI.CreateSingleton<OverworldDamageService>();

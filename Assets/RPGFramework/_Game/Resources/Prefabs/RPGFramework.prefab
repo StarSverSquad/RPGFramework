@@ -978,12 +978,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ff73d1f086e4704ca5868a1c91e06ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: RPGFramework::RPGF.GUI.GUISelectableBlock
-  _disableOnDiactivate: 1
+  _disableOnDeactivate: 1
   _enableOnActivate: 1
   OnActivateEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnDiativateEvent:
+  OnDeactivateEvent:
     m_PersistentCalls:
       m_Calls: []
   OnDisposeEvent:
@@ -7341,12 +7341,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 934f6bd76d576c149ace5fc364efbf0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _disableOnDiactivate: 1
+  _disableOnDeactivate: 1
   _enableOnActivate: 1
   OnActivateEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnDiativateEvent:
+  OnDeactivateEvent:
     m_PersistentCalls:
       m_Calls: []
   OnDisposeEvent:
@@ -7444,12 +7444,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42024ad5c8ef80f4a996a2c1581f0b94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlackSaga::GlackSaga.GUI.TitleMenu.Settings.SettingsGUIBlock
-  _disableOnDiactivate: 1
+  _disableOnDeactivate: 1
   _enableOnActivate: 1
   OnActivateEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnDiativateEvent:
+  OnDeactivateEvent:
     m_PersistentCalls:
       m_Calls: []
   OnDisposeEvent:
@@ -8157,12 +8157,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5af4a24211e54848a42bb1043c61b1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GlackSaga.GUI.TittleMenu.CharactetSelector.CharacterSelectorGUIBlock
-  _disableOnDiactivate: 1
+  _disableOnDeactivate: 1
   _enableOnActivate: 1
   OnActivateEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnDiativateEvent:
+  OnDeactivateEvent:
     m_PersistentCalls:
       m_Calls: []
   OnDisposeEvent:
@@ -12869,6 +12869,7 @@ GameObject:
   - component: {fileID: 2205794596650153188}
   - component: {fileID: 5196945614764494544}
   - component: {fileID: 9194740170961774011}
+  - component: {fileID: 1989748384511397301}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -12994,6 +12995,30 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &1989748384511397301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5627996019652483417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c88f5cead0c0b2a4eb05b5900433f8d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.2D.Runtime::UnityEngine.Rendering.Universal.PixelPerfectCamera
+  m_ComponentVersion: 1
+  m_AssetsPPU: 60
+  m_RefResolutionX: 1280
+  m_RefResolutionY: 720
+  m_CropFrame: 4
+  m_GridSnapping: 1
+  m_FilterMode: 1
+  m_UpscaleRT: 0
+  m_PixelSnapping: 0
+  m_CropFrameX: 0
+  m_CropFrameY: 0
+  m_StretchFill: 0
 --- !u!1 &5673313068531867210
 GameObject:
   m_ObjectHideFlags: 0
@@ -13181,7 +13206,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0.015625, y: -9}
+  m_AnchoredPosition: {x: 0.015625, y: -9.000183}
   m_SizeDelta: {x: 0, y: 181.31}
   m_Pivot: {x: 0.5, y: 1.0000001}
 --- !u!114 &913235897017741975
@@ -13196,12 +13221,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9897781cfc7183c42ba2b25c531463e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _disableOnDiactivate: 0
+  _disableOnDeactivate: 0
   _enableOnActivate: 0
   OnActivateEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnDiativateEvent:
+  OnDeactivateEvent:
     m_PersistentCalls:
       m_Calls: []
   OnDisposeEvent:
@@ -13389,12 +13414,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 572e2d6472cd5ab4e991e4a147e96222, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _disableOnDiactivate: 1
+  _disableOnDeactivate: 1
   _enableOnActivate: 1
   OnActivateEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnDiativateEvent:
+  OnDeactivateEvent:
     m_PersistentCalls:
       m_Calls: []
   OnDisposeEvent:
@@ -15736,12 +15761,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43d1a2ddabc27a445a1869d0806f1689, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GlackSaga.GUI.TitleMenu.Gear.GearSelectionGUIBlock
-  _disableOnDiactivate: 1
+  _disableOnDeactivate: 1
   _enableOnActivate: 1
   OnActivateEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnDiativateEvent:
+  OnDeactivateEvent:
     m_PersistentCalls:
       m_Calls: []
   OnDisposeEvent:
@@ -18080,12 +18105,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4eda4221bba05f4cbf0f684e2e315b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GlackSaga.GUI.TittleMenu.Items.ItemsGUIBlock
-  _disableOnDiactivate: 1
+  _disableOnDeactivate: 1
   _enableOnActivate: 1
   OnActivateEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnDiativateEvent:
+  OnDeactivateEvent:
     m_PersistentCalls:
       m_Calls: []
   OnDisposeEvent:
@@ -18240,12 +18265,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2a0b5ac47ad3554e8da8b0e354fa9ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GlackSaga.GUI.TitleMenu.Gear.GearCharacterSelectionGUIBlock
-  _disableOnDiactivate: 1
+  _disableOnDeactivate: 1
   _enableOnActivate: 1
   OnActivateEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnDiativateEvent:
+  OnDeactivateEvent:
     m_PersistentCalls:
       m_Calls: []
   OnDisposeEvent:
@@ -19157,12 +19182,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae3580a01c8004349b47fded13a64a89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlackSaga::GlackSaga.GUI.TitleMenu.SaveLoad.SaveLoadGUIBlock
-  _disableOnDiactivate: 1
+  _disableOnDeactivate: 1
   _enableOnActivate: 1
   OnActivateEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnDiativateEvent:
+  OnDeactivateEvent:
     m_PersistentCalls:
       m_Calls: []
   OnDisposeEvent:
@@ -21254,12 +21279,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c28e1cfd4ce61840b7741d3f189e051, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GlackSaga.GUI.TitleMenu.Gear.GearSlotGUIBlock
-  _disableOnDiactivate: 0
+  _disableOnDeactivate: 0
   _enableOnActivate: 0
   OnActivateEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnDiativateEvent:
+  OnDeactivateEvent:
     m_PersistentCalls:
       m_Calls: []
   OnDisposeEvent:
@@ -21661,12 +21686,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a4f44babd0943743bb43816566f3a2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _disableOnDiactivate: 1
+  _disableOnDeactivate: 1
   _enableOnActivate: 1
   OnActivateEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnDiativateEvent:
+  OnDeactivateEvent:
     m_PersistentCalls:
       m_Calls: []
   OnDisposeEvent:

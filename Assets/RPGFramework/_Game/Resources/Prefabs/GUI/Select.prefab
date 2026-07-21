@@ -423,12 +423,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d51f83a23695bf48a65469f5be7ed7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: RPGFramework::RPGF.GUI.Elements.OptionSelectGUI
-  _disableOnDiactivate: 0
+  _disableOnDeactivate: 0
   _enableOnActivate: 0
   OnActivateEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnDiativateEvent:
+  OnDeactivateEvent:
     m_PersistentCalls:
       m_Calls: []
   OnDisposeEvent:

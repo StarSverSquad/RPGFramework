@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace RPGF.GUI.Interfaces
 {
@@ -15,7 +15,7 @@ namespace RPGF.GUI.Interfaces
         public void Next(IGUIBlock gUIBlock);
 
         public void Activate();
-        public void Diativate();
+        public void Deactivate();
 
         public void SetFocus(bool focus);
     }

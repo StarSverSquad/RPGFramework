@@ -1,4 +1,4 @@
-﻿using RPGF.Core;
+using RPGF.Core;
 using RPGF.Domain.Interfaces;
 using RPGF.GUI;
 using RPGF.RPG;
@@ -8,16 +8,16 @@ using UnityEngine.UI;
 
 namespace GlackSaga.GUI.TitleMenu.FullInfo
 {
-    public class FullInfoGearItem : GUIWidget, ISetData<RPGWerable>
+    public class FullInfoGearItem : GUIWidget, ISetData<RPGWearable>
     {
         [SerializeField]
         private Image _icon;
         [SerializeField]
         private TextMeshProUGUI _name;
 
-        public void SetData(RPGWerable werable)
+        public void SetData(RPGWearable wearable)
         {
-            if (werable == null)
+            if (wearable == null)
             {
                 _icon.enabled = false;
 
@@ -27,9 +27,9 @@ namespace GlackSaga.GUI.TitleMenu.FullInfo
             {
                 _icon.enabled = true;
 
-                _icon.sprite = werable.Icon;
+                _icon.sprite = wearable.Icon;
 
-                _name.text = GetLocale(werable.Name);
+                _name.text = GetLocale(wearable.Name);
             }
         }
     }

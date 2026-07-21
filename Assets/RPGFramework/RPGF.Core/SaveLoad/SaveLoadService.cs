@@ -1,4 +1,4 @@
-﻿using RPGF.Core.Character;
+using RPGF.Core.Character;
 using RPGF.Core.Inventory;
 using RPGF.Core.Location;
 using RPGF.Domain.DI;
@@ -153,16 +153,16 @@ namespace RPGF.Core.SaveLoad
                 Glek.WeaponSlot = (RPGWeapon)_gameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.WeaponTag);
 
             if (SavedCharacter.HeadTag != string.Empty)
-                Glek.HeadSlot = (RPGWerable)_gameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.HeadTag);
+                Glek.HeadSlot = (RPGWearable)_gameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.HeadTag);
 
             if (SavedCharacter.BodyTag != string.Empty)
-                Glek.BodySlot = (RPGWerable)_gameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.BodyTag);
+                Glek.BodySlot = (RPGWearable)_gameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.BodyTag);
 
             if (SavedCharacter.ShieldTag != string.Empty)
-                Glek.ShieldSlot = (RPGWerable)_gameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.ShieldTag);
+                Glek.ShieldSlot = (RPGWearable)_gameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.ShieldTag);
 
             if (SavedCharacter.TalismanTag != string.Empty)
-                Glek.AccessorySlot = (RPGWerable)_gameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.TalismanTag);
+                Glek.AccessorySlot = (RPGWearable)_gameData.Collectables.FirstOrDefault(i => i.Tag == SavedCharacter.TalismanTag);
 
             Glek.Abilities.Clear();
             foreach (var ability in SavedCharacter.Abilities)

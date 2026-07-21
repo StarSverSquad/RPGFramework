@@ -4,8 +4,8 @@ using UnityEngine;
 namespace RPGF.RPG
 {
 
-    [CreateAssetMenu(fileName = "WerableItem", menuName = "RPG/WerableItem")]
-    public class RPGWerable : RPGCollectable
+    [CreateAssetMenu(fileName = "WearableItem", menuName = "RPG/WearableItem")]
+    public class RPGWearable : RPGCollectable
     {
         public enum UsedType
         {

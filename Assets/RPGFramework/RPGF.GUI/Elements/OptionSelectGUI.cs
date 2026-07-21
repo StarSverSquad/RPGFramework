@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using NaughtyAttributes;
@@ -79,7 +79,7 @@ namespace RPGF.GUI.Elements
             StartInput();
         }
 
-        protected override void OnDiativate()
+        protected override void OnDeactivate()
         {
             StopInput();
         }

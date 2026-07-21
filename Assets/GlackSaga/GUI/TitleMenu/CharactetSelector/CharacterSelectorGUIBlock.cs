@@ -1,10 +1,10 @@
-﻿using RPGF.Core.Character;
+using RPGF.Core.Character;
 using RPGF.Domain.DI;
 using RPGF.GUI;
 using RPGF.RPG;
 using UnityEngine;
 
-namespace GlackSaga.GUI.TitleMenu.CharactetSelector
+namespace GlackSaga.GUI.TitleMenu.CharacterSelector
 {
     public class CharacterSelectorGUIBlock : GUISelectableBlock
     {
@@ -15,7 +15,7 @@ namespace GlackSaga.GUI.TitleMenu.CharactetSelector
         [SerializeField]
         private CharacterInformationManager characterInformation;
 
-        public RPGCharacter SeletedCharacter { get; private set; } = null;
+        public RPGCharacter SelectedCharacter { get; private set; } = null;
 
         public int CharactersAmount { get; private set; }
 
@@ -28,9 +28,9 @@ namespace GlackSaga.GUI.TitleMenu.CharactetSelector
             characterInformation.Show();
         }
 
-        protected override void OnDiativate()
+        protected override void OnDeactivate()
         {
-            base.OnDiativate();
+            base.OnDeactivate();
 
             characterInformation.Hide();
 
@@ -44,7 +44,7 @@ namespace GlackSaga.GUI.TitleMenu.CharactetSelector
         {
             base.OnChoiced(index);
 
-            SeletedCharacter = _characterService.Characters[index];
+            SelectedCharacter = _characterService.Characters[index];
 
             Preview();
         }

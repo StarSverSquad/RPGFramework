@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using GlackSaga.GUI.TitleMenu;
 using RPGF.Core.Inventory;
@@ -23,9 +23,9 @@ namespace GlackSaga.GUI.TitleMenu.Gear
         private AudioSource unequipSound;
 
         private RPGCharacter character;
-        private RPGWerable.UsedType usedType;
+        private RPGWearable.UsedType usedType;
 
-        public void SetData(RPGCharacter character, RPGWerable.UsedType usedType)
+        public void SetData(RPGCharacter character, RPGWearable.UsedType usedType)
         {
             this.character = character;
             this.usedType = usedType;
@@ -78,15 +78,15 @@ namespace GlackSaga.GUI.TitleMenu.Gear
                 return;
             }
 
-            var newItem = slot.Item as RPGWerable;
-            var oldItem = character.GetWerableByType(usedType);
+            var newItem = slot.Item as RPGWearable;
+            var oldItem = character.GetWearableByType(usedType);
 
             if (oldItem != null)
             {
                 Inventory.AddToItemCount(oldItem, 1);
             }
 
-            character.SetWerableByType(usedType, newItem);
+            character.SetWearableByType(usedType, newItem);
             character.UpdateStats();
 
             Inventory.AddToItemCount(newItem, -1);
@@ -105,14 +105,14 @@ namespace GlackSaga.GUI.TitleMenu.Gear
             unequipSound.Play();
             gearSlotGUIBlock.ClearItemPreview();
 
-            var oldItem = character.GetWerableByType(usedType);
+            var oldItem = character.GetWearableByType(usedType);
             if (oldItem == null)
             {
                 return;
             }
 
             Inventory.AddToItemCount(oldItem, 1);
-            character.SetWerableByType(usedType, null);
+            character.SetWearableByType(usedType, null);
             character.UpdateStats();
 
             gearSlotGUIBlock.UpdateSlots();
@@ -121,7 +121,7 @@ namespace GlackSaga.GUI.TitleMenu.Gear
 
         protected override void OnCanceled()
         {
-            var equipped = character.GetWerableByType(usedType);
+            var equipped = character.GetWearableByType(usedType);
             if (equipped != null)
             {
                 gearSlotGUIBlock.SetItemPreview(equipped);
@@ -165,17 +165,17 @@ namespace GlackSaga.GUI.TitleMenu.Gear
                 return;
             }
 
-            gearSlotGUIBlock.SetItemPreview(slot.Item as RPGWerable);
+            gearSlotGUIBlock.SetItemPreview(slot.Item as RPGWearable);
         }
 
         private bool MatchesSlot(InventorySlotData slot)
         {
-            if (slot.Item is not RPGWerable wearable || wearable.UsedOn != usedType)
+            if (slot.Item is not RPGWearable wearable || wearable.UsedOn != usedType)
             {
                 return false;
             }
 
-            if (usedType == RPGWerable.UsedType.Weapon && slot.Item is not RPGWeapon)
+            if (usedType == RPGWearable.UsedType.Weapon && slot.Item is not RPGWeapon)
             {
                 return false;
             }

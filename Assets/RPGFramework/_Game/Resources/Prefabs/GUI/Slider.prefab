@@ -280,12 +280,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a513fc4f78882447a6e4181dbcedbd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: RPGFramework::RPGF.GUI.Elements.SliderGUI
-  _disableOnDiactivate: 0
+  _disableOnDeactivate: 0
   _enableOnActivate: 0
   OnActivateEvent:
     m_PersistentCalls:
       m_Calls: []
-  OnDiativateEvent:
+  OnDeactivateEvent:
     m_PersistentCalls:
       m_Calls: []
   OnDisposeEvent:

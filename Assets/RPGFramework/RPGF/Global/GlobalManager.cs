@@ -39,10 +39,10 @@ namespace RPGF
         {
             Instance = this;
 
-            Game.DI.AddSignleton(LoadingScreen);
-            Game.DI.AddSignleton(GameAudio);
-            Game.DI.AddSignleton(SceneLoader);
-            Game.DI.AddSignleton(LocationManager);
+            Game.DI.AddSingleton(LoadingScreen);
+            Game.DI.AddSingleton(GameAudio);
+            Game.DI.AddSingleton(SceneLoader);
+            Game.DI.AddSingleton(LocationManager);
 
             InitializeChild();
         }
@@ -56,7 +56,7 @@ namespace RPGF
             Inventory = Game.DI.CreateSingleton<InventoryService>();
 
             BaseOptions = Resources.Load<BaseOptions>("Options");
-            Game.DI.AddSignleton(BaseOptions);
+            Game.DI.AddSingleton(BaseOptions);
 
             GameData = Game.DI.CreateSingleton<GameData>();
             GameData.Initialize();
